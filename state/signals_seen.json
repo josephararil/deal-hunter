@@ -1,4 +1,9 @@
 {
-  "seen": {},
-  "monthly_count": {}
+  "seen": {
+    "Bansko, Bulgaria (Regnum Bansko Ski Hotel & Spa)|Aug 1-31, 2026": "2026-06-26",
+    "Velingrad, Bulgaria (Arte Spa & Park Hotel)|Jul 10 - Sep 3, 2026": "2026-06-26"
+  },
+  "monthly_count": {
+    "2026-06": 1
+  }
 }

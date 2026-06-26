@@ -2,33 +2,41 @@
   "generated": "2026-06-26",
   "signals": [
     {
-      "city": "Bansko, Bulgaria (Kempinski Hotel Grand Arena)",
-      "window": "July - August 2026",
-      "reason": "Live room prices on Expedia and Booking.com for July/August 2026 are hovering at $155 - $174 per night (~€142 - €160) including a gourmet breakfast and taxes. This is a massive 70%+ price drop compared to winter peak rates (which exceed €500/night). Located just a 2.5-hour drive from Plovdiv, transit friction for a 4-year-old is practically zero. The property is an elite 5-star mountain resort offering a fully operating kids' club (supervised childcare), heated indoor and outdoor pools, playground, and baby amenities like free cribs, strollers, and baby bath tubs.",
+      "city": "Potos, Thassos, Greece (Alexandra Beach Thassos Spa Resort)",
+      "window": "Sep 8 - Oct 15, 2026",
+      "reason": "An outstanding premium shoulder-season play [2.3.7] where a high-end 4-star beachfront resort collapses to $131.85 (~€120)/night for a family of 3. The live package includes a 20% room discount, a 30% upgrade to Half Board (breakfast + dinner included), and 'Kids Stay Free' (1st child under 12). Additionally, children receive free daily snacks worth €10/day. Perfect for a 4-year-old with its outdoor kids' pool, playground, supervised mini-club, and beachfront gardens. Highly accessible via a borderline Tier 1 drive of ~3.5 hours from Plovdiv plus a fun, low-friction ferry ride from Keramoti.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "city": "Bansko, Bulgaria (Regnum Bansko Ski Hotel & Spa)",
+      "window": "Aug 1-31, 2026",
+      "reason": "A massive off-season discount on a premier 5-star mountain resort, dropping to $79-$103 (~€72-€95)/night (compared to winter rates exceeding €250/night). For a 4-year-old, the highlight is the fully active 'Regnum' Aqua Park operating on-site during August, complete with multiple waterslides, children's pools, and a supervised kids' club. This is paired with indoor heated mineral pools and hot springs for parents. It offers extremely low logistical friction, being only a 2-hour drive from Plovdiv.",
       "type": "anomaly",
       "confidence": "high",
       "hunt": false
     },
     {
+      "city": "Bansko, Bulgaria (Kempinski Hotel Grand Arena)",
+      "window": "Aug 1-31, 2026",
+      "reason": "An extreme off-season trough play at Bulgaria's most renowned luxury ski resort. August prices plummet to $147 (~€135)/night, compared to peak winter rates of €350-€500+/night. It provides top-tier comfort and safety for a 4-year-old, featuring a fully staffed kids' club that is free for hotel guests, indoor and outdoor heated family pools, and sprawling mountain gardens perfect for outdoor play in mild summer weather. Accessible via an easy 2-hour drive from Plovdiv with zero airport friction.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
       "city": "Velingrad, Bulgaria (Arte Spa & Park Hotel)",
-      "window": "July 10 - September 3, 2026",
-      "reason": "Velingrad is only a 1.5-hour drive from Plovdiv (Tier 1). Under the 'Summer Package 2026', prices hover around BGN 400 (~€205) per night for a double room (minimum 2 nights). The utility is massive: it includes buffet breakfast and dinner, and children up to 12 stay completely free. Families get full access to extensive indoor/outdoor mineral pools, children's mineral pools, and all-day professional children's animation.",
-      "type": "reminder",
+      "window": "Jul 10 - Sep 3, 2026",
+      "reason": "Located in the 'Spa Capital of the Balkans' and only a 1.5-hour drive from Plovdiv, this premier 5-star resort's 'Summer Package' offers high relative utility at $179 (~€165)/night. This price includes a massive buffet breakfast and dinner (half-board) where the 4-year-old child stays and eats for free. The child utility is unrivaled: the hotel offers all-day professional children's animation and an indoor kids' playroom supervised from 9 AM to 10 PM daily, plus heated indoor and outdoor children's mineral pools.",
+      "type": "anomaly",
       "confidence": "high",
       "hunt": false
     },
     {
-      "city": "Bari, Italy (Sofia to Bari direct flight via Ryanair/Wizz Air)",
-      "window": "September 14-25, 2026",
-      "reason": "Live searches show Ryanair and Wizz Air have direct flights from Sofia (SOF) to Bari (BRI) in September starting at $35 - $45 (€32 - €41) round-trip per passenger. Total round-trip airfare for a family of three is under €120. At only 1 hour and 20 minutes, the direct flight has minimal friction. Early September in Puglia offers beautiful 26°C weather, shallow sandy beaches for a 4-year-old, and nearby attractions like the Zoosafari in Fasano.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Greek Isles Cruise (Celestyal Discovery departing Athens)",
-      "window": "July 27, 2026 (3-Night Iconic Aegean)",
-      "reason": "Celestyal Discovery's 3-night 'Iconic Aegean' cruise has cabins starting at $389 - $589 per person (~€360 - €540) including full-board dining, select drinks, entertainment, and port taxes. For a family of 3, this is a premium all-inclusive value play. To get there, families can drive from Plovdiv to Athens (Piraeus) in ~6 hours or take a quick 1.5-hour direct flight from Sofia. The cruise features dedicated kids' activities and pools.",
+      "city": "Antalya, Turkey (Grand Park Lara Hotel)",
+      "window": "Sep 1-15, 2026",
+      "reason": "An excellent Tier 2 flight + resort package opportunity utilizing direct flights from Sofia (SOF) to Antalya (AYT) on SunExpress for only ~$143 roundtrip per person in September. Grand Park Lara is a highly-rated, family-focused all-inclusive resort with rates collapsing to $69-$90 (~€63-€83)/night during the September shoulder season. It offers massive child utility, featuring 2 outdoor pools with waterslides, a private sandy beach, a fully open kids' club, and kids' animation, totally offsetting the 1h 40m direct flight transit friction.",
       "type": "reminder",
       "confidence": "high",
       "hunt": false

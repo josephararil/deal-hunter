@@ -35,7 +35,7 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
 
-      - name: Find city signals (planner + web search)
+      - name: Run find_city_anomalies.py (planner + web search)
         run: python find_city_anomalies.py
 
       - name: Persist state

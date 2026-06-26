@@ -41,7 +41,7 @@ MODEL_DIAMOND = "claude-sonnet-4-6"
 # here whenever a new model role is added to config; never hard-code Gemini model
 # names anywhere else.
 GEMINI_MODEL_MAP = {
-    "claude-sonnet-4-6": "gemini-3.5-pro",
+    "claude-sonnet-4-6": "gemini-3.5-flash",
 }
 
 # ── LLM token budgets ────────────────────────────────────────────────────────

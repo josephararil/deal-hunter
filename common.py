@@ -52,6 +52,11 @@ def _gemini(messages, model, max_tokens, want_search):
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{gmodel}:generateContent?key={GEMINI_API_KEY}")
     r = requests.post(url, json=body, timeout=180)
+    if r.status_code in (400, 422) and want_search:
+        # Gemini rejected the google_search tool; retry without it so the planner
+        # still returns signals from patterns + baselines rather than crashing.
+        body.pop("tools", None)
+        r = requests.post(url, json=body, timeout=180)
     r.raise_for_status()
     cand = r.json().get("candidates", [{}])[0]
     parts = cand.get("content", {}).get("parts", [])

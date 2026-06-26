@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Project context for Claude Code. Read this before editing.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What this is
 
@@ -86,6 +86,10 @@ by percentage. Absolute-EUR ranking is intentional: it favours luxury-for-cheap 
 - `LLM_PROVIDER=gemini` → `generateContent`; `want_search` enables `google_search`.
 - Model *roles* live in `config.py` (`MODEL_PLANNER`, `MODEL_FILTER`); Gemini equivalents are
   mapped in `common.GEMINI_MODELS`. Add new roles there, not as literals in pipelines.
+- `_gemini` degrades gracefully: if Gemini rejects the `google_search` tool (HTTP 400/422), it
+  retries once without it so the planner still returns signals from patterns + baselines.
+- `common.py` still has legacy `anthropic()` and `text_of()` functions — they are no longer
+  called by any pipeline and exist only as backward-compat stubs. Do not add new callers.
 
 Secrets/vars: `APIFY_TOKEN`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY` (secrets), `LLM_PROVIDER`
 (repo variable), plus SMTP_* and EMAIL_* for the digest.
@@ -112,8 +116,9 @@ is no test suite by design; a throwaway sim script is the expected way to verify
   planner's reasoning carries it meanwhile. A louder, less precise first month is expected.
 - **Weekly digest vs ephemerality:** crawl horizons are 10/17/24 days so weekday finds survive
   to the Sunday digest; sub-3-day fire-sales are intentionally out of scope.
-- **Gemini + live search:** Gemini uses `google_search`, not Anthropic's `web_search`; the
-  abstraction handles it, but search quality/behaviour differs between providers.
+- **Gemini + live search:** Gemini uses `google_search`, not Anthropic's `web_search`; if
+  Gemini rejects the tool the call retries without search (graceful degradation), but search
+  quality/behaviour differs between providers regardless.
 - **Board type** (all-inclusive) is unreliable from some actors; the final LLM is the backstop.
 
 ## Out of scope (Phase 2 — do not start without a request)

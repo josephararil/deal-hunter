@@ -31,6 +31,50 @@ CITIES = {
     "Birmingham, United Kingdom": (3, 7), "Manchester, United Kingdom": (3, 7),
 }
 
+# Cities grouped by transit tier — used to build the structured city block in
+# FIND_PROMPT. Keeps country labels out of the individual city names so the LLM
+# receives a clean, hierarchy-aware list instead of a flat comma-separated mess.
+CITY_TIER_GROUPS = [
+    ("Tier 1 — Drive ≤3h from Plovdiv or Direct PDV Flight", [
+        ("Bulgaria", [
+            "Asenovgrad", "Chepelare", "Velingrad", "Bansko", "Pamporovo", "Borovets", "Hisarya", 
+            "Banya", "Burgas", "Sozopol", "Nessebar"
+        ]),
+        ("Greece (Drive)", [
+            "Kavala", "Alexandroupoli", "Thassos"
+        ]),
+        ("Turkey (Drive)", [
+            "Edirne", "Kirklareli"
+        ]),
+        ("Direct Flights from PDV", [
+            "London", "Birmingham", "Manchester", "Milan", "Bratislava"
+        ])
+    ]),
+    ("Tier 2 — Low-cost/Direct Flight from SOF", [
+        ("Turkey", ["Istanbul", "Antalya", "Bodrum"]),
+        ("Italy", ["Rome", "Bari", "Naples", "Bologna", "Venice"]),
+        ("Greece", ["Athens", "Thessaloniki", "Chania", "Corfu"]),
+        ("Central Europe", ["Vienna", "Budapest", "Prague", "Bratislava"]),
+        ("Spain", ["Barcelona", "Madrid", "Valencia", "Malaga"]),
+        ("Cyprus", ["Larnaca", "Paphos"]),
+        ("Malta", ["Valetta"]),
+        ("Germany", ["Munich", "Frankfurt", "Memmingen", "Berlin"]),
+        ("France", ["Paris", "Nice"]),
+        ("United Kingdom", ["London", "Bristol", "Edinburgh"])
+    ]),
+]
+
+
+def cities_prompt_text():
+    """Return cities formatted as a structured tier block for the find prompt."""
+    lines = []
+    for tier, regions in CITY_TIER_GROUPS:
+        lines.append(f"{tier}:")
+        for region, cities in regions:
+            lines.append(f"  {region}: {', '.join(cities)}")
+    return "\n".join(lines)
+
+
 # ── LLM models ──────────────────────────────────────────────────────────────
 # Model used for both Stage 1 (find + web search) and Stage 2 (skeptic).
 # This is an Anthropic model name; the Gemini equivalent lives in GEMINI_MODEL_MAP.
@@ -107,7 +151,8 @@ Your scoring dictates the pipeline routing. A score of 80 or above means the dea
    - Baseline: High transit friction for a 4-year-old. 
    - Evaluation: Standard discounts or normal cheap flights from SOF must be scored **below 80**. To cross the **80+ email threshold**, a Sofia transit option must offer a staggering price drop on a premium experience (e.g., a 5-star Antalya resort collapsing to €100/night with active indoor kid facilities).
 
-Anchor Cities/Regions to target first: {cities}
+Target destinations, grouped by transit tier (aligns with the scoring hierarchy above):
+{cities}
 
 ---
 

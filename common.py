@@ -1,6 +1,6 @@
 """Shared helpers for the diamond-finder pipeline."""
 
-import os, json, ssl, smtplib, datetime as dt
+import os, json, ssl, smtplib, datetime as dt, time
 from email.message import EmailMessage
 import requests
 import config as C
@@ -12,6 +12,29 @@ GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 STATE_DIR = "state"
+
+_RETRY_STATUSES = {429, 500, 502, 503, 504}
+_MAX_RETRIES = 3
+_RETRY_DELAYS = [2, 4]  # seconds between attempts 1→2 and 2→3
+
+
+def _post_with_retry(url, headers, json_body, timeout=180):
+    """POST with exponential backoff on transient errors (5xx, 429, network).
+    Auth failures (401, 403) and client errors (400, 422) are returned immediately."""
+    for attempt in range(_MAX_RETRIES):
+        try:
+            r = requests.post(url, headers=headers, json=json_body, timeout=timeout)
+            if r.status_code not in _RETRY_STATUSES or attempt == _MAX_RETRIES - 1:
+                return r
+            delay = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
+            print(f"  [retry {attempt + 1}/{_MAX_RETRIES}] HTTP {r.status_code}, retrying in {delay}s")
+            time.sleep(delay)
+        except requests.exceptions.RequestException as exc:
+            if attempt == _MAX_RETRIES - 1:
+                raise
+            delay = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
+            print(f"  [retry {attempt + 1}/{_MAX_RETRIES}] {type(exc).__name__}: {exc}, retrying in {delay}s")
+            time.sleep(delay)
 
 
 def llm(messages, model, max_tokens=2000, want_search=False):
@@ -27,10 +50,10 @@ def _anthropic(messages, model, max_tokens, want_search):
     if want_search:
         body["tools"] = [{"type": "web_search_20250305", "name": "web_search",
                           "max_uses": C.WEB_SEARCH_MAX_USES}]
-    r = requests.post("https://api.anthropic.com/v1/messages",
+    r = _post_with_retry("https://api.anthropic.com/v1/messages",
         headers={"x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01",
                  "content-type": "application/json"},
-        json=body, timeout=180)
+        json_body=body)
     r.raise_for_status()
     return "".join(b.get("text", "") for b in r.json().get("content", [])
                    if b.get("type") == "text").strip()
@@ -48,12 +71,12 @@ def _gemini(messages, model, max_tokens, want_search):
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{gmodel}:generateContent")
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
-    r = requests.post(url, headers=headers, json=body, timeout=180)
+    r = _post_with_retry(url, headers=headers, json_body=body)
     if r.status_code in (400, 422) and want_search:
         # Gemini rejected google_search; retry without it so Stage 1 still returns
         # signals from reasoning alone rather than crashing.
         body.pop("tools", None)
-        r = requests.post(url, headers=headers, json=body, timeout=180)
+        r = _post_with_retry(url, headers=headers, json_body=body)
     r.raise_for_status()
     cand = r.json().get("candidates", [{}])[0]
     parts = cand.get("content", {}).get("parts", [])

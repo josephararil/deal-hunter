@@ -143,11 +143,10 @@ def write_md(today, candidates, diamonds):
 
 def main():
     today = X.today_iso()
-    cities_list = ", ".join(C.CITIES.keys())
 
     # Stage 1: find candidates with web search
     raw1 = X.llm(
-        messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=cities_list)}],
+        messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
         model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
     )
     parsed1 = X.parse_json_block(raw1) or {}

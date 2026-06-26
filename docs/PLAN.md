@@ -1,76 +1,96 @@
 # Design Notes & Roadmap
 
-## The problem with v1, and the fix
-The first design did cross-sectional outlier detection only: flag a hotel far below its
-same-class peers in the same crawl. That catches a "crazy manager" but is blind to the bigger,
-more common prize — a *whole city/class* dropping (Antalya post-NYE, Milan post-fashion-week,
-a destination after a shock). When everything drops together the median drops with it, so
-nothing is a relative outlier and the system goes quiet exactly when the deals are best.
+## Current product: the Diamond Finder
 
-Two additions fix it, and they're the same fix from two ends:
-1. A **seasonal baseline** (city|class|month medians) gives an external reference, so "cheap
-   even for this season" becomes measurable — that's the market-wide-drop and absolute-bargain
-   detector.
-2. An **LLM planner at the front** supplies that reference before the baseline matures, using
-   recurring-pattern knowledge + live web search, and steers the expensive crawl to where the
-   deals likely are.
+The active system is `find_city_anomalies.py` — a daily LLM-only script that emails
+immediately when it finds something genuinely exceptional. It runs on GitHub Actions, costs
+nothing beyond API tokens, and has no Apify dependency.
 
-## The LLM sandwich
-- **Front (Pipeline A):** Claude reasons about *where* to look — recurring troughs and live
-  shocks — and ranks cities. Cheap, runs daily, valuable on its own as a "go look here" memo.
-- **Middle (deterministic):** crawling + both detectors + absolute-EUR ranking. No LLM; scales
-  to thousands of rows; numerically reliable.
-- **Back (Pipeline B filter):** one harsh Claude call judges the shortlist against seasonal
-  context and rejects boring low-season non-deals.
+### Why LLM-only (no scraping)?
 
-Why not let the LLM do detection over all the rows? It's worse at precise numeric outlier
-detection than one line of math, and far more expensive. Math scans; the LLM judges.
+The original design (v1) did cross-sectional outlier detection over Apify hotel data: flag a
+hotel far below its same-class peers in the same crawl. That catches a "crazy manager" but is
+blind to a *whole city* dropping — when everything drops together the median drops with it, so
+the detector goes quiet exactly when the deals are best.
 
-## Split into three scripts, auto-triggered
-- `baseline_sampler.py` — continuous cheap memory. Separated from hunting because *recording a
-  median* needs a light scrape and no LLM, while *finding bookable rooms* needs deep crawls and
-  judgment. Keeping the cheap part always-on means the baseline matures even though the
-  expensive part runs rarely.
-- `find_city_anomalies.py` (A) — the planner. Output is independently useful (the reminder/
-  teacher Marti asked for): even with B disabled, it tells you which city to manually search.
-- `hunt.py` (B) — auto-triggered only on the cities A flags (`hunt: true`), or manually via the
-  `manual-hunt` workflow. Cost scales with real signals, not with the city list.
+The v2 design added a seasonal baseline (city|class|month medians) and an LLM planner at the
+front to steer the expensive crawl. This worked but introduced complexity: Apify costs, a
+slow baseline warm-up period, and a weekly digest cadence that missed short-window deals.
 
-## Reminders vs anomalies
-A drop that recurs every year (shoulder-season coast) isn't an anomaly — it's a known pattern.
-Pipeline A tags those `reminder` (heads-up, go do your manual thing) and tags genuine current
-oddities `anomaly` (worth a deep crawl). Both appear in `city_signals.md`; only `hunt: true`
-ones trigger B.
+The current (v3) design cuts Apify entirely. LLM + live web search can detect market shocks,
+post-event collapses, flight sales, and currency moves faster and cheaper than periodic
+scraping — and the two-stage gate is the spam protection. The trade-off is that the LLM can
+miss deals not surfaced in search results, and can occasionally hallucinate. The hostile
+skeptic stage exists to catch this.
 
-## Qualify by anomaly, rank by absolute EUR
-Detection qualifies a candidate (statistical outlier OR below seasonal norm); ranking is always
-by absolute EUR saved per night, which favours luxury-for-cheap (€140 off a 5-star beats €50
-off a budget place) — exactly the priority Joseph specified.
+### The two-stage gate
 
-## patterns.json are priors, not facts
-The Antalya example is instructive: New Year is a price *peak*; the drop is the days *after*.
-Seasonal knowledge is directionally reliable but the LLM's absolute price memory is weak and
-frozen at its cutoff. So patterns carry `confidence`, and the planner is told to confirm/reject
-them with live search and baseline data rather than trust them blindly. Soft expectations steer;
-the deterministic detectors and the maturing baseline are the spam-proof backbone.
+The core design decision is: **two separate LLM calls with different postures**.
 
-## Accepted trade-offs (Pareto)
-- **Cold start:** market-drop detection is fuzzy until the baseline fills (a few weeks). A
-  louder, less precise first month was an accepted choice.
-- **Board type** unreliable from some actors → the final LLM catches room-only-posing-as-more.
-- **Thin crawls / classes** under `MIN_PEERS` skip the cross-sectional detector but can still
-  fire the baseline detector once a norm exists.
-- **Session/geo pricing** pinned via EUR + BG proxy.
-- **Weekly digest vs ephemerality:** crawl horizons are 10/17/24 days so a weekday find
-  survives to the Sunday digest; sub-3-day fire-sales are out of scope under a weekly cadence.
+**Stage 1 — find (want_search=True)**
 
-## Parked / Day-2
-1. **Flights** for fly-to cities — only surface a hotel when a cheap flight exists in-window.
-   Deferred; revisit if you keep seeing fly-to deals you can't act on.
-2. **Urgent override** — same-day email for an outrageous short-fuse find, alongside the weekly
-   digest, if weekly turns out to miss too much.
-3. **Phase 2 — travel packages** (operators dumping unsold flight+hotel charters near
-   departure): the richest vein, hardest to source (no aggregator; scattered across operator
-   sites, JS-heavy). Same architecture pointed at 3-5 Bulgarian-market operators, near-term
-   departures, ranked by per-person-per-night vs the operator's norm or DIY equivalent. Ship
-   the hotel system first, live with it a month, then add this.
+A generalist prompt that casts wide: hotels, resort closeouts, post-event collapses, cruises
+departing from the region, flight error/sale fares from Sofia (SOF) and nearby airports,
+package dumps, currency-driven cheapness. Uses web search to ground every claim in recent
+findings. Scores each candidate 0–100. Includes lower-scoring candidates too, so `city_signals.md`
+is a useful daily log even on silent days.
+
+**Stage 2 — skeptic (want_search=False, only candidates >= 80)**
+
+A deliberately hostile prompt with a default-reject stance. Kill conditions: normal low-season
+pricing, vague evidence, modest savings (< 30% off normal), narrow window (< 72h), poor fit
+for a 4-year-old, long connection times. A result of zero keepers is correct and expected most
+days.
+
+The two-call structure matters: the finder is optimistic and broad, the skeptic is adversarial
+and narrow. Combining them into one prompt would muddy both objectives.
+
+### Anti-spam memory
+
+`state/signals_seen.json` keyed by `destination|window`. 30-day TTL. Prevents a genuine
+but persistent window (e.g. "cheap Antalya for the next 3 weeks") from generating daily email.
+Monthly count also tracked; if it exceeds 3 in a month, a conscience note is added to the
+email body so you can judge whether thresholds need tuning.
+
+### Email-now vs weekly digest
+
+The original design accumulated deals into a weekly Sunday digest so weekday finds would
+survive to the send window (crawl horizons were 10/17/24 days out). The diamond finder drops
+this: any window worth an email is worth an email today. The 30-day TTL handles deduplication.
+
+### Broadened scope
+
+The original scope was hotels only. The diamond finder hunts across:
+- Hotels / resorts — any class, with or without all-inclusive
+- Seasonal resort closeouts — end-of-season fire sales
+- Post-event price collapses — conventions, festivals, sporting events ending
+- Cruises — family-friendly itineraries from Istanbul, Athens, Thessaloniki or similar ports
+- Flight error/sale fares — published from SOF, OHD, VAR, BOJ, SKP
+- Holiday package dumps — operators offloading unsold flight+hotel allocations
+- Currency-driven cheapness — EUR buying power spikes
+
+The anchor city list (`config.CITIES`) guides the search but the Stage 1 prompt explicitly
+allows nearby or thematically related destinations when a confirmed opportunity exists.
+
+## Dormant: Apify / hotel-crawl pipeline
+
+The original scraping pipeline (`hunt.py`, `baseline_sampler.py`, `patterns.json`) lives in
+`_dormant/`. It is not active, not imported, and not referenced by any live code. It is kept
+as a design archive, not as a restore-ready fallback. See `_dormant/README.md` for the full
+list of what restoration would require.
+
+Restore only if the LLM-only approach demonstrably fails and you are prepared to take on
+Apify costs, a slow cold-start period, and the operational complexity of a scraping pipeline.
+That is a deliberate product decision, not a configuration change.
+
+## What's parked (do not start without an explicit request)
+
+1. **Flights** — surface a hotel only when a cheap outbound flight exists in-window. Natural
+   complement to the hotel-crawl pipeline if that is ever restored.
+
+2. **Package operators** — scrape Bulgarian-market charter operators (Comet Tours, Prima
+   Holidays, etc.) for unsold near-departure allocations. JS-heavy sites, scattered supply.
+   Same two-stage architecture could apply, pointed at operator search results.
+
+3. **Urgent override** — a separate immediate-email path for outrageous short-window finds
+   that would be lost under a weekly digest. Moot under the current email-now design.

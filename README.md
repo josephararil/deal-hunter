@@ -44,22 +44,34 @@ week), because if everything drops together, nothing is a relative outlier. This
 ## Setup
 
 1. Push this repo to GitHub.
-2. Add secrets under *Settings → Secrets and variables → Actions*:
+2. Add secrets and variables under *Settings → Secrets and variables → Actions*:
+
+   **Secrets** (encrypted):
 
    | Secret | What |
    |---|---|
    | `APIFY_TOKEN` | apify.com → API tokens |
-   | `ANTHROPIC_API_KEY` | console.anthropic.com |
+   | `ANTHROPIC_API_KEY` | console.anthropic.com — required if `LLM_PROVIDER=anthropic` |
+   | `GEMINI_API_KEY` | aistudio.google.com/apikey — required if `LLM_PROVIDER=gemini` |
    | `SMTP_HOST` / `SMTP_PORT` | e.g. `smtp.gmail.com` / `587` |
    | `SMTP_USER` / `SMTP_PASS` | sending address + app password (Gmail: 2FA → App Password) |
    | `EMAIL_TO` / `EMAIL_FROM` | recipient / sender (both default to `SMTP_USER`) |
 
+   **Variables** (plain text, *Variables* tab in the same page):
+
+   | Variable | Values | Default |
+   |---|---|---|
+   | `LLM_PROVIDER` | `anthropic` or `gemini` | `anthropic` |
+
 3. Enable Actions. Test:
    - **daily** workflow → *Run workflow* → tick `force_digest` to email immediately.
+   - **signals-only** workflow → zero-cost check: runs the planner only, no hotel crawl or email. Tick `skip_baseline` to make it a near-free single LLM call.
    - **manual-hunt** workflow → enter cities (e.g. `Antalya, Turkey`) to crawl on demand.
 
-> The web-search step in Pipeline A uses the Anthropic API's `web_search` tool. If your
-> account needs it enabled, do that in the console.
+> **Web search:** with `LLM_PROVIDER=anthropic` Pipeline A uses the Anthropic `web_search`
+> tool — enable it in the console if needed. With `LLM_PROVIDER=gemini` it uses
+> `google_search`; if Gemini rejects the tool the planner falls back to patterns + baselines
+> rather than failing.
 
 ## The one fiddly step: map the Apify actor fields
 
@@ -89,9 +101,10 @@ less precise first month — that's expected and was a deliberate choice.
 
 ## Cost
 
-Claude is cheap (a couple of calls a day). **Apify dominates** (pay-per-result + residential
-proxy). The architecture already controls it: the baseline sampler uses light crawls, and the
-deep crawl only fires on flagged cities. Set an Apify spend limit in the console as a backstop.
+The LLM is cheap (a couple of calls a day — Claude or Gemini, both free-tier-friendly at this
+volume). **Apify dominates** (pay-per-result + residential proxy). The architecture already
+controls it: the baseline sampler uses light crawls, and the deep crawl only fires on flagged
+cities. Set an Apify spend limit in the console as a backstop.
 The seasonal dates in `hunt.checkin_anchors()` and `patterns.json` need a yearly refresh.
 
 ## patterns.json

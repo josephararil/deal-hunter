@@ -1,17 +1,12 @@
 name: daily
 
-# Runs every day: refresh the baseline (cheap), find city signals (cheap),
-# then deep-crawl only the cities that got flagged (auto-trigger of pipeline B).
+# Daily diamond finder: two-stage LLM gate, emails immediately on genuine finds.
+# No hotel crawling, no Apify. Dormant Apify pipeline lives in _dormant/ and does not run here.
 
 on:
   schedule:
     - cron: "0 6 * * *"     # 06:00 UTC daily
   workflow_dispatch:
-    inputs:
-      force_digest:
-        description: "Send the weekly digest now regardless of weekday"
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -24,17 +19,15 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      APIFY_TOKEN:       ${{ secrets.APIFY_TOKEN }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+      LLM_PROVIDER:      ${{ vars.LLM_PROVIDER }}
       SMTP_HOST:         ${{ secrets.SMTP_HOST }}
       SMTP_PORT:         ${{ secrets.SMTP_PORT }}
       SMTP_USER:         ${{ secrets.SMTP_USER }}
       SMTP_PASS:         ${{ secrets.SMTP_PASS }}
-      GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
-      LLM_PROVIDER:      ${{ vars.LLM_PROVIDER }}
       EMAIL_TO:          ${{ secrets.EMAIL_TO }}
       EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
-      FORCE_DIGEST:      ${{ github.event.inputs.force_digest }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -42,14 +35,8 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
 
-      - name: Update seasonal baseline (cheap, no LLM)
-        run: python baseline_sampler.py
-
       - name: Find city signals (planner + web search)
         run: python find_city_anomalies.py
-
-      - name: Deep-crawl flagged cities only
-        run: python hunt.py
 
       - name: Persist state
         run: |

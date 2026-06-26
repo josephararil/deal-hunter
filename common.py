@@ -1,26 +1,22 @@
-"""Shared helpers used by all three pipelines."""
+"""Shared helpers for the diamond-finder pipeline."""
 
-import os, json, datetime as dt
+import os, json, ssl, smtplib, datetime as dt
+from email.message import EmailMessage
 import requests
 import config as C
 
 # ---------------------------- LLM provider ----------------------------
 
-PROVIDER = os.environ.get("LLM_PROVIDER", "anthropic").strip().lower()
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-APIFY_TOKEN       = os.environ.get("APIFY_TOKEN", "")
+PROVIDER          = os.environ.get("LLM_PROVIDER", "anthropic").strip().lower()
+GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 STATE_DIR = "state"
 
-# map the model roles in config.py to each provider's model names
-GEMINI_MODELS = {
-    "claude-sonnet-4-6": "gemini-2.5-pro",   # planner / filter equivalent
-}
 
 def llm(messages, model, max_tokens=2000, want_search=False):
-    """Single entry point used by all pipelines. Returns plain text.
-    messages is a list of {"role","content"} with string content."""
+    """Single entry point for all LLM calls. Returns plain text.
+    messages is a list of {"role", "content"} dicts with string content."""
     if PROVIDER == "gemini":
         return _gemini(messages, model, max_tokens, want_search)
     return _anthropic(messages, model, max_tokens, want_search)
@@ -29,7 +25,8 @@ def llm(messages, model, max_tokens=2000, want_search=False):
 def _anthropic(messages, model, max_tokens, want_search):
     body = {"model": model, "max_tokens": max_tokens, "messages": messages}
     if want_search:
-        body["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 6}]
+        body["tools"] = [{"type": "web_search_20250305", "name": "web_search",
+                          "max_uses": C.WEB_SEARCH_MAX_USES}]
     r = requests.post("https://api.anthropic.com/v1/messages",
         headers={"x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01",
                  "content-type": "application/json"},
@@ -40,21 +37,20 @@ def _anthropic(messages, model, max_tokens, want_search):
 
 
 def _gemini(messages, model, max_tokens, want_search):
-    gmodel = GEMINI_MODELS.get(model, "gemini-2.5-pro")
-    # Gemini uses a single combined text input; merge the messages.
+    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-2.5-pro")
     text = "\n\n".join(m["content"] for m in messages)
     body = {
         "contents": [{"parts": [{"text": text}]}],
         "generationConfig": {"maxOutputTokens": max_tokens},
     }
     if want_search:
-        body["tools"] = [{"google_search": {}}]   # Gemini's live-search tool
+        body["tools"] = [{"google_search": {}}]
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{gmodel}:generateContent?key={GEMINI_API_KEY}")
     r = requests.post(url, json=body, timeout=180)
     if r.status_code in (400, 422) and want_search:
-        # Gemini rejected the google_search tool; retry without it so the planner
-        # still returns signals from patterns + baselines rather than crashing.
+        # Gemini rejected google_search; retry without it so Stage 1 still returns
+        # signals from reasoning alone rather than crashing.
         body.pop("tools", None)
         r = requests.post(url, json=body, timeout=180)
     r.raise_for_status()
@@ -63,67 +59,29 @@ def _gemini(messages, model, max_tokens, want_search):
     return "".join(p.get("text", "") for p in parts).strip()
 
 
+# ------------------------------ Email ------------------------------
 
-# ------------------------------ Apify ------------------------------
-
-def scrape(city, checkin, checkout, max_items):
-    """One Booking crawl for a city + date range. Returns raw item list."""
-    url = (f"https://api.apify.com/v2/acts/{C.APIFY_ACTOR}"
-           f"/run-sync-get-dataset-items?token={APIFY_TOKEN}")
-    body = {
-        "search": city,
-        "checkIn": checkin.isoformat(), "checkOut": checkout.isoformat(),
-        "currency": C.CURRENCY, "adults": C.ADULTS, "children": C.CHILDREN,
-        "childrenAges": C.CHILDREN_AGES, "rooms": C.ROOMS, "maxItems": max_items,
-        "proxyConfiguration": {"useApifyProxy": True,
-                               "apifyProxyGroups": ["RESIDENTIAL"],
-                               "countryCode": C.PROXY_GEO},
-    }
-    r = requests.post(url, json=body, timeout=600)
-    r.raise_for_status()
-    return r.json()
-
-
-def normalize(items, nights, min_reviews):
-    """Map raw items to clean per-night records. Field names are actor-specific —
-    confirm them against your actor's sample output and rename here if needed."""
-    out = []
-    for h in items:
-        price = h.get("price")
-        score = h.get("reviewScore") or h.get("rating")
-        nrev  = h.get("reviewsCount") or h.get("numberOfReviews") or 0
-        stars = str(h.get("stars") or h.get("classCode") or "unknown")
-        board = (h.get("mealPlan") or h.get("board") or "").lower()
-        if price is None or score is None or int(nrev) < min_reviews:
-            continue
-        out.append({
-            "name": h.get("name"), "stars": stars, "score": float(score),
-            "reviews": int(nrev), "per_night": round(float(price) / max(nights, 1), 2),
-            "board": board or "?",
-            "all_inclusive": ("all" in board and "incl" in board),
-            "url": h.get("url"),
-        })
-    return out
+def send_email(subject, html, text):
+    """Send a plain + HTML email. SMTP_HOST/USER/PASS must be set in env."""
+    host = os.environ["SMTP_HOST"]
+    port = int(os.environ.get("SMTP_PORT", "587"))
+    user = os.environ["SMTP_USER"]
+    pw   = os.environ["SMTP_PASS"]
+    to   = os.environ.get("EMAIL_TO", user)
+    frm  = os.environ.get("EMAIL_FROM", user)
+    msg  = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"]    = frm
+    msg["To"]      = to
+    msg.set_content(text)
+    msg.add_alternative(html, subtype="html")
+    with smtplib.SMTP(host, port) as s:
+        s.starttls(context=ssl.create_default_context())
+        s.login(user, pw)
+        s.send_message(msg)
 
 
-# ---------------------------- Anthropic ----------------------------
-
-def anthropic(messages, model, max_tokens=2000, tools=None):
-    body = {"model": model, "max_tokens": max_tokens, "messages": messages}
-    if tools:
-        body["tools"] = tools
-    r = requests.post("https://api.anthropic.com/v1/messages",
-        headers={"x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01",
-                 "content-type": "application/json"},
-        json=body, timeout=180)
-    r.raise_for_status()
-    return r.json()
-
-
-def text_of(resp):
-    return "".join(b.get("text", "") for b in resp.get("content", [])
-                   if b.get("type") == "text").strip()
-
+# ------------------------------ State ------------------------------
 
 def parse_json_block(text):
     """Strip markdown fences and parse the outermost JSON value the model returned,
@@ -142,8 +100,6 @@ def parse_json_block(text):
             return None
     return None
 
-
-# ------------------------------ State ------------------------------
 
 def load_json(name, default):
     try:

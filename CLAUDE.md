@@ -1,135 +1,144 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this repository.
 
 ## What this is
 
-A personal hotel deal-finder for someone based near Plovdiv, Bulgaria. It surfaces
-great-value *trips* — not just lone underpriced hotels, but whole cities that are unusually
-cheap right now — and emails a weekly digest. Runs entirely on free GitHub Actions; there is
-no server and no real database, just JSON state files committed back by CI.
+A personal travel deal-finder for a family of 3 (2 adults + 4-year-old) based near Plovdiv,
+Bulgaria. It runs daily on free GitHub Actions, emails immediately when something genuinely
+exceptional is found, and is silent the rest of the time. No server, no real database — just
+JSON state files committed back by CI.
 
-It is deliberately a **Pareto build**: small, flat, readable scripts over clever abstractions.
-Keep it that way. If a change adds a framework, a class hierarchy, or a layer of indirection to
-save a few lines, it's probably wrong for this repo. One great deal a year and less manual
-Booking scrolling is the whole success criterion.
+It is a deliberate **Pareto build**: small, flat, readable scripts over clever abstractions.
+If a change adds a framework, a class hierarchy, or a layer of indirection to save a few
+lines, it's probably wrong for this repo. One genuine find a year justifies the whole thing.
 
-## Mental model: an LLM sandwich, three pipelines
+## Active product: the Diamond Finder
+
+`find_city_anomalies.py` is the only script that runs automatically (daily via `daily.yml`).
+It is self-contained: no Apify, no baseline data, no external crawlers.
 
 ```
-baseline_sampler.py   → seasonal memory: median price per city|class|month
-find_city_anomalies.py→ PLANNER (LLM + web search): "where should I look?" → city_signals
-hunt.py               → deep crawl of FLAGGED cities + 2 detectors + harsh LLM filter → digest
+find_city_anomalies.py
+  │
+  ├─ Stage 1 (llm, want_search=True)
+  │    Score candidates 0–100 across: hotels, resort closeouts, post-event collapses,
+  │    cruises, flight fares, package dumps, currency plays — anchored to CITIES but
+  │    can extend to nearby destinations if a real opportunity exists.
+  │
+  ├─ Stage 2 (llm, want_search=False) — only candidates scoring >= STAGE1_MIN_SCORE
+  │    Hostile skeptic reviewer. Returns keep/kill + why + red_flags.
+  │    Most candidates should die here. Silence is correct.
+  │
+  ├─ Anti-spam gate — state/signals_seen.json
+  │    Keyed by destination+window, 30-day TTL. Prevents repeat emails.
+  │
+  ├─ Email (common.send_email) — only if new diamonds survive
+  │    One email per run, max MAX_EMAILS_PER_RUN diamonds.
+  │    Conscience note in the email if monthly count >= 3.
+  │
+  └─ Always writes
+       state/city_signals.json  — all Stage 1 candidates (hunt: false always)
+       state/city_signals.md    — human-readable log; useful even on silent days
+       state/signals_seen.json  — updated TTL state
 ```
 
-- **Front (planner):** the LLM decides *where* deals likely are (recurring troughs + live
-  shocks). Cheap. Output is useful on its own.
-- **Middle (deterministic, no LLM):** crawling + outlier math + ranking. Scales, cheap, exact.
-- **Back (harsh filter):** one LLM call judges the shortlist and rejects boring low-season
-  non-deals.
-
-The math finds candidates; the LLM judges them. Never push large row sets through the LLM for
-detection — that's slower, costlier, and numerically worse than the median/MAD math already in
-`hunt.detect()`.
-
-## The two detectors in hunt.py (the core value)
-
-1. **Cross-sectional outlier** — a hotel far below its same-class peers *in the same crawl*
-   (robust z-score via median + MAD). Catches a "crazy manager." Needs `MIN_PEERS`.
-2. **Below seasonal baseline** — a hotel well under the `city|class|month` norm from
-   `state/baselines.json`. Catches market-wide drops (whole city cheap) and absolute bargains,
-   and works even when nothing is a *relative* outlier.
-
-Both feed one shortlist. **Qualify by anomaly, rank by absolute EUR saved per night** — never
-by percentage. Absolute-EUR ranking is intentional: it favours luxury-for-cheap (€140 off a
-5-star beats €50 off a budget place). Don't "fix" this to percentage.
-
-## Critical invariants — do not break these
-
-- **All model calls go through `common.llm()`.** It abstracts Anthropic vs Gemini, selected by
-  the `LLM_PROVIDER` env var. Do not call provider HTTP endpoints directly from the pipelines.
-- **The A→B handoff is via `state/city_signals.json`.** `find_city_anomalies.py` writes it;
-  `hunt.py` reads it and only crawls cities with `"hunt": true`. Keep that contract intact —
-  changing the signal schema means updating both ends.
-- **State files in `state/` are CI-managed.** `baselines.json`, `city_signals.json`,
-  `city_signals.md`, `seen.json`, `pending_digest.json` are committed by the workflows after
-  each run. They are real state, not scratch — don't delete or .gitignore them. Seed values
-  (`{}`, `[]`) are the empty starting point.
-- **`MIN_REVIEW_SCORE = 8.0` is a hard floor**, never relaxed anywhere. It's the single most
-  trusted heuristic. Star rating is only ever used for *grouping* (apples-to-apples), never as
-  a filter.
-- **Apify field names are actor-specific.** The keys in `common.scrape()` (input) and
-  `common.normalize()` (output) must match the chosen actor's schema (`config.APIFY_ACTOR`). If
-  results come back empty, this mapping is the first suspect, not the logic.
-- **patterns.json entries are priors, not facts.** The planner confirms/rejects them with live
-  search + baselines. Don't write logic that treats a pattern as a guaranteed truth.
-
-## Files
+## Files — active pipeline
 
 | File | Role |
 |---|---|
-| `config.py` | All tunables: cities + night ranges, occupancy, thresholds, model roles |
-| `common.py` | Shared helpers: `scrape`, `normalize`, `llm`, `parse_json_block`, state IO |
-| `baseline_sampler.py` | Pipeline 0 — daily cheap median capture, no LLM |
-| `find_city_anomalies.py` | Pipeline A — planner, writes `city_signals.{json,md}` |
-| `hunt.py` | Pipeline B — dual detector + harsh filter + weekly email digest |
-| `patterns.json` | Seeded recurring price-window priors (editable) |
-| `state/*` | CI-managed JSON state (see invariants) |
-| `.github/workflows/daily.yml` | baseline → signals → hunt, daily; auto-triggers B on flags |
-| `.github/workflows/manual-hunt.yml` | crawl named cities on demand |
-| `.github/workflows/signals.yml` | signals-only, manual, no crawl/email (the cheap button) |
+| `config.py` | City list + diamond-finder knobs |
+| `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
+| `find_city_anomalies.py` | The diamond finder — runs daily, emails on exceptional finds |
+| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
+| `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
+| `state/city_signals.md` | Latest Stage 1 output (human-readable log) |
+| `state/signals_seen.json` | Anti-spam TTL memory: `destination\|window → date_emailed`, monthly count |
+
+## Files — dormant Apify pipeline
+
+`_dormant/` contains the original hotel-crawling pipeline (Apify scraper, statistical
+detectors, weekly digest). It does **not** run, is **not** imported, and is kept only as
+a reference for a possible future Phase 2. See `_dormant/README.md` for what restoration
+requires. Do not reference or revive any of it without an explicit request.
+
+## Critical invariants — do not break these
+
+- **All LLM calls go through `common.llm()`.** Abstracts Anthropic vs Gemini via
+  `LLM_PROVIDER`. Do not call provider HTTP endpoints directly.
+- **All email goes through `common.send_email()`.** Single SMTP path. No duplication.
+- **State files in `state/` are CI-managed.** `city_signals.json`, `city_signals.md`,
+  `signals_seen.json` are committed after each run. They are real state, not scratch.
+  Seed values: `{}` / `{"seen":{}, "monthly_count":{}}`.
+- **`STAGE1_MIN_SCORE = 80`** is the Stage 2 gate. Raise to make email rarer. Lower
+  cautiously — it lets more through the hostile skeptic.
+- **Silence is the intended outcome most days.** Don't treat low email volume as a bug.
+  Only investigate if the prompts demonstrably fail to surface known real opportunities.
+- **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger
+  Apify crawls. The field exists for schema compatibility only.
 
 ## Providers
 
-`common.llm(messages, model, max_tokens, want_search)` is the single entry point.
-- `LLM_PROVIDER=anthropic` (default) → Messages API; `want_search` enables the `web_search` tool.
-- `LLM_PROVIDER=gemini` → `generateContent`; `want_search` enables `google_search`.
-- Model *roles* live in `config.py` (`MODEL_PLANNER`, `MODEL_FILTER`); Gemini equivalents are
-  mapped in `common.GEMINI_MODELS`. Add new roles there, not as literals in pipelines.
-- `_gemini` degrades gracefully: if Gemini rejects the `google_search` tool (HTTP 400/422), it
-  retries once without it so the planner still returns signals from patterns + baselines.
-- `common.py` still has legacy `anthropic()` and `text_of()` functions — they are no longer
-  called by any pipeline and exist only as backward-compat stubs. Do not add new callers.
+`common.llm(messages, model, max_tokens, want_search)` — single entry point.
 
-Secrets/vars: `APIFY_TOKEN`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY` (secrets), `LLM_PROVIDER`
-(repo variable), plus SMTP_* and EMAIL_* for the digest.
+- `LLM_PROVIDER=anthropic` (default): Messages API; `want_search` → `web_search` tool.
+- `LLM_PROVIDER=gemini`: `generateContent`; `want_search` → `google_search` tool.
+  Degrades gracefully if Gemini rejects the search tool (retries without it).
+- Model role lives in `config.py` as `MODEL_DIAMOND`. Gemini equivalent is mapped in
+  `common.GEMINI_MODELS`. Add new roles there, never as literals in pipeline code.
 
-## Running & testing locally
+## Required secrets / variables
+
+| Name | Type | Purpose |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | secret | Anthropic LLM calls |
+| `GEMINI_API_KEY` | secret | Gemini LLM calls |
+| `LLM_PROVIDER` | repo variable | `"anthropic"` or `"gemini"` |
+| `SMTP_HOST` | secret | Email delivery |
+| `SMTP_PORT` | secret | Email delivery (default 587) |
+| `SMTP_USER` | secret | Email delivery |
+| `SMTP_PASS` | secret | Email delivery |
+| `EMAIL_TO` | secret | Recipient (defaults to SMTP_USER) |
+| `EMAIL_FROM` | secret | Sender (defaults to SMTP_USER) |
+
+## Running locally
 
 ```bash
 pip install -r requirements.txt
-export APIFY_TOKEN=... GEMINI_API_KEY=... LLM_PROVIDER=gemini   # or anthropic + ANTHROPIC_API_KEY
-python baseline_sampler.py        # fills state/baselines.json
-python find_city_anomalies.py     # writes state/city_signals.{json,md}
-python hunt.py                    # crawls flagged cities; FORCE_DIGEST=1 to email now
+export GEMINI_API_KEY=...  LLM_PROVIDER=gemini
+# or: export ANTHROPIC_API_KEY=...  LLM_PROVIDER=anthropic
+python find_city_anomalies.py   # writes state/; emails if diamonds found + SMTP vars set
 ```
 
-To hunt specific cities regardless of signals: `HUNT_CITIES="Antalya, Turkey, Vienna, Austria" python hunt.py`.
+To test without sending email, leave SMTP vars unset — the `try/except` around the send
+catches the `KeyError` and prints the error without crashing.
 
-When changing detection or parsing logic, stub `common.scrape` and `common.llm` and run the
-pipelines offline with a planted outlier to confirm behaviour before touching real APIs. There
-is no test suite by design; a throwaway sim script is the expected way to verify.
+To test the two-stage gate offline: stub `common.llm` to return canned JSON, then run the
+script and inspect `state/city_signals.md` and `state/signals_seen.json`.
 
 ## Known trade-offs (accepted — don't "fix" without asking)
 
-- **Cold start:** market-drop detection is weak until `baselines.json` fills (a few weeks); the
-  planner's reasoning carries it meanwhile. A louder, less precise first month is expected.
-- **Weekly digest vs ephemerality:** crawl horizons are 10/17/24 days so weekday finds survive
-  to the Sunday digest; sub-3-day fire-sales are intentionally out of scope.
-- **Gemini + live search:** Gemini uses `google_search`, not Anthropic's `web_search`; if
-  Gemini rejects the tool the call retries without search (graceful degradation), but search
-  quality/behaviour differs between providers regardless.
-- **Board type** (all-inclusive) is unreliable from some actors; the final LLM is the backstop.
+- **No price data.** The diamond finder is pure LLM reasoning + web search. It can miss
+  deals that don't appear in search results, and can hallucinate if search is weak. The
+  two-stage gate exists to compensate.
+- **Gemini + search:** `google_search` quality and behaviour differ from Anthropic's
+  `web_search`. If Gemini rejects the tool the call retries without search — Stage 1 still
+  runs, just from prior knowledge rather than live data.
+- **30-day TTL:** a great deal that persists for more than a month will be suppressed after
+  the first email. Acceptable given the "rare, act-now" framing.
+- **Family-only scope.** Destinations that require arduous travel or are poor fits for a
+  4-year-old are excluded by the skeptic prompt. This is intentional, not a filter bug.
 
-## Out of scope (Phase 2 — do not start without a request)
+## Out of scope (do not start without an explicit request)
 
-- **Flights** for fly-to cities (only surface a hotel when a cheap flight exists in-window).
-- **Travel packages** (operators dumping unsold flight+hotel charters). Same architecture, new
-  sources; ship and live with the hotel system first.
+- **Apify/hotel crawling** — see `_dormant/`. Requires Apify budget and significant
+  restoration work. Not a near-term goal.
+- **Flight data integration** — surface a hotel only when a cheap flight exists in-window.
+- **Package operators** — scrape Bulgarian-market charter operators for unsold allocations.
 
 ## Style
 
-Flat functions, plain stdlib + `requests`, clear names, short modules. Match the existing tone
-of the code. Prefer editing in place over adding files. State assumptions in comments where a
-choice isn't obvious (e.g. why a threshold is set where it is). No emoji in code; the digest
-HTML and `city_signals.md` may use them.
+Flat functions, plain stdlib + `requests`, clear names, short modules. Match the existing
+tone. Prefer editing in place over adding files. Comment only the non-obvious (a hidden
+constraint, a threshold's rationale, a workaround). No emoji in code; `city_signals.md`
+and email HTML may use them.

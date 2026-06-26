@@ -16,8 +16,7 @@ told the city was flagged and why, and to reject boring low-season non-deals. Su
 accumulate into a weekly email digest.
 """
 
-import os, statistics, random, ssl, smtplib, datetime as dt
-from email.message import EmailMessage
+import os, statistics, random, datetime as dt
 import config as C
 import common as X
 
@@ -138,10 +137,6 @@ def harsh_filter(shortlist, context):
 
 
 def send_digest(deals):
-    host = os.environ["SMTP_HOST"]; port = int(os.environ.get("SMTP_PORT", "587"))
-    user = os.environ["SMTP_USER"]; pw = os.environ["SMTP_PASS"]
-    to = os.environ.get("EMAIL_TO", user); frm = os.environ.get("EMAIL_FROM", user)
-
     rows = ""
     for d in deals:
         ai = " · all-inclusive" if d.get("all_inclusive") else ""
@@ -165,14 +160,7 @@ def send_digest(deals):
     text = "\n\n".join(f"{d['name']} ({d['city']}) — EUR{d['per_night']}/night, "
                        f"save EUR{d['saved']}/night\n{d.get('why','')}\n{d.get('url','')}"
                        for d in deals)
-    msg = EmailMessage()
-    msg["Subject"] = f"🏨 Deal Hunter: {len(deals)} find(s) this week"
-    msg["From"] = frm; msg["To"] = to
-    msg.set_content(text); msg.add_alternative(html, subtype="html")
-    with smtplib.SMTP(host, port) as s:
-        s.starttls(context=ssl.create_default_context())
-        s.login(user, pw)
-        s.send_message(msg)
+    X.send_email(f"Deal Hunter: {len(deals)} find(s) this week", html, text)
 
 
 def cities_to_hunt():

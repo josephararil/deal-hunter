@@ -1,0 +1,58 @@
+name: daily
+
+# Runs every day: refresh the baseline (cheap), find city signals (cheap),
+# then deep-crawl only the cities that got flagged (auto-trigger of pipeline B).
+
+on:
+  schedule:
+    - cron: "0 6 * * *"     # 06:00 UTC daily
+  workflow_dispatch:
+    inputs:
+      force_digest:
+        description: "Send the weekly digest now regardless of weekday"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deal-hunter-daily
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      APIFY_TOKEN:       ${{ secrets.APIFY_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      SMTP_HOST:         ${{ secrets.SMTP_HOST }}
+      SMTP_PORT:         ${{ secrets.SMTP_PORT }}
+      SMTP_USER:         ${{ secrets.SMTP_USER }}
+      SMTP_PASS:         ${{ secrets.SMTP_PASS }}
+      EMAIL_TO:          ${{ secrets.EMAIL_TO }}
+      EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
+      FORCE_DIGEST:      ${{ github.event.inputs.force_digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Update seasonal baseline (cheap, no LLM)
+        run: python baseline_sampler.py
+
+      - name: Find city signals (planner + web search)
+        run: python find_city_anomalies.py
+
+      - name: Deep-crawl flagged cities only
+        run: python hunt.py
+
+      - name: Persist state
+        run: |
+          git config user.name "deal-hunter"
+          git config user.email "actions@users.noreply.github.com"
+          git add state/
+          git commit -m "update state [skip ci]" || echo "no changes"
+          git push

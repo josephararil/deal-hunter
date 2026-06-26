@@ -50,7 +50,9 @@ GEMINI_MODEL_MAP = {
 MAX_TOKENS_FIND    = 4000
 
 # Stage 2 (skeptic) is a compact verdict-only call: keep/kill + one sentence per candidate.
-MAX_TOKENS_SKEPTIC = 2000
+# Must be large enough to absorb thinking-model overhead (gemini-3.5-flash uses ~2k tokens
+# for internal reasoning before writing output — 2000 was not enough).
+MAX_TOKENS_SKEPTIC = 8000
 
 # ── Web search ───────────────────────────────────────────────────────────────
 # Maximum number of individual web-search tool uses allowed in a single Stage 1

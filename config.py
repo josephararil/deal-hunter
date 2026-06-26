@@ -1,4 +1,4 @@
-"""Configuration for the diamond-finder pipeline. Edit freely."""
+﻿"""Configuration for the diamond-finder pipeline. Edit freely."""
 
 # ── City list ───────────────────────────────────────────────────────────────
 # Cities the diamond finder uses as a search anchor. The LLM receives these as
@@ -144,7 +144,7 @@ JSON Schema:
   ]
 }}
 
-If no verifiable deals meet these criteria today, return `{"candidates": []}`."""
+If no verifiable deals meet these criteria today, return `{{"candidates": []}}`."""
 
 
 SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst. Your job is to filter daily travel alerts and identify high-value plays/arbitrage opportunities for a young family. 

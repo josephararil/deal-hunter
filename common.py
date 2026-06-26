@@ -4,10 +4,59 @@ import os, json, datetime as dt
 import requests
 import config as C
 
+# ---------------------------- LLM provider ----------------------------
+
+PROVIDER = os.environ.get("LLM_PROVIDER", "anthropic").strip().lower()
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 APIFY_TOKEN       = os.environ.get("APIFY_TOKEN", "")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
 STATE_DIR = "state"
+
+# map the model roles in config.py to each provider's model names
+GEMINI_MODELS = {
+    "claude-sonnet-4-6": "gemini-2.5-pro",   # planner / filter equivalent
+}
+
+def llm(messages, model, max_tokens=2000, want_search=False):
+    """Single entry point used by all pipelines. Returns plain text.
+    messages is a list of {"role","content"} with string content."""
+    if PROVIDER == "gemini":
+        return _gemini(messages, model, max_tokens, want_search)
+    return _anthropic(messages, model, max_tokens, want_search)
+
+
+def _anthropic(messages, model, max_tokens, want_search):
+    body = {"model": model, "max_tokens": max_tokens, "messages": messages}
+    if want_search:
+        body["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 6}]
+    r = requests.post("https://api.anthropic.com/v1/messages",
+        headers={"x-api-key": ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01",
+                 "content-type": "application/json"},
+        json=body, timeout=180)
+    r.raise_for_status()
+    return "".join(b.get("text", "") for b in r.json().get("content", [])
+                   if b.get("type") == "text").strip()
+
+
+def _gemini(messages, model, max_tokens, want_search):
+    gmodel = GEMINI_MODELS.get(model, "gemini-2.5-pro")
+    # Gemini uses a single combined text input; merge the messages.
+    text = "\n\n".join(m["content"] for m in messages)
+    body = {
+        "contents": [{"parts": [{"text": text}]}],
+        "generationConfig": {"maxOutputTokens": max_tokens},
+    }
+    if want_search:
+        body["tools"] = [{"google_search": {}}]   # Gemini's live-search tool
+    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+           f"{gmodel}:generateContent?key={GEMINI_API_KEY}")
+    r = requests.post(url, json=body, timeout=180)
+    r.raise_for_status()
+    cand = r.json().get("candidates", [{}])[0]
+    parts = cand.get("content", {}).get("parts", [])
+    return "".join(p.get("text", "") for p in parts).strip()
+
 
 
 # ------------------------------ Apify ------------------------------

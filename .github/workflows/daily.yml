@@ -30,6 +30,8 @@ jobs:
       SMTP_PORT:         ${{ secrets.SMTP_PORT }}
       SMTP_USER:         ${{ secrets.SMTP_USER }}
       SMTP_PASS:         ${{ secrets.SMTP_PASS }}
+      GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
+      LLM_PROVIDER:      ${{ vars.LLM_PROVIDER }}
       EMAIL_TO:          ${{ secrets.EMAIL_TO }}
       EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
       FORCE_DIGEST:      ${{ github.event.inputs.force_digest }}

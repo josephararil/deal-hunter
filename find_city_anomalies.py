@@ -84,12 +84,11 @@ def main():
         baselines=baseline_digest(),
     )
 
-    resp = X.anthropic(
+    raw = X.llm(
         messages=[{"role": "user", "content": prompt}],
-        model=C.MODEL_PLANNER, max_tokens=3000,
-        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 6}],
+        model=C.MODEL_PLANNER, max_tokens=3000, want_search=True,
     )
-    parsed = X.parse_json_block(X.text_of(resp)) or {"signals": []}
+    parsed = X.parse_json_block(raw) or {"signals": []}
     signals = parsed.get("signals", [])
 
     out = {"generated": X.today_iso(), "signals": signals}

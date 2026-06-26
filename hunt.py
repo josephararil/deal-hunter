@@ -123,11 +123,10 @@ def harsh_filter(shortlist, context):
              "all_inclusive": h["all_inclusive"], "saved": h["saved"],
              "signals": h["signals"]} for i, h in enumerate(shortlist)]
     import json
-    resp = X.anthropic(
-        messages=[{"role": "user", "content": HARSH_PROMPT.format(
-            context=context, candidates=json.dumps(slim, ensure_ascii=False))}],
+    raw = X.llm(messages=[{"role": "user", "content": HARSH_PROMPT.format(
+        context=context, candidates=json.dumps(slim, ensure_ascii=False))}],
         model=C.MODEL_FILTER, max_tokens=2000)
-    verdicts = X.parse_json_block(X.text_of(resp)) or []
+    verdicts = X.parse_json_block(raw) or []
     passed = []
     for v in verdicts:
         if isinstance(v, dict) and v.get("confidence", 0) >= C.LLM_CONFIDENCE:

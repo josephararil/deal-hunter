@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      PYTHONUNBUFFERED: "1"
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
       LLM_PROVIDER:      ${{ vars.LLM_PROVIDER }}

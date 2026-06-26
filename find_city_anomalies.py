@@ -143,22 +143,27 @@ def write_md(today, candidates, diamonds):
 
 def main():
     today = X.today_iso()
+    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | model: {C.MODEL_DIAMOND} ===")
 
     # Stage 1: find candidates with web search
+    print("Stage 1: calling LLM with web search...")
     raw1 = X.llm(
         messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
         model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
     )
     parsed1 = X.parse_json_block(raw1) or {}
     candidates = parsed1.get("candidates", [])
-    print(f"Stage 1: {len(candidates)} candidate(s)")
+    print(f"Stage 1: {len(candidates)} candidate(s) returned")
+    for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
+        print(f"  {c.get('score', '?'):>3}/100  {c.get('destination', '?')}  [{c.get('type', '?')}]")
 
     high_score = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
-    print(f"Stage 1 >= {C.STAGE1_MIN_SCORE}: {len(high_score)}")
+    print(f"Stage 1 gate (>= {C.STAGE1_MIN_SCORE}): {len(high_score)} forwarded to skeptic")
 
     # Stage 2: skeptic review, no search
     diamonds = []
     if high_score:
+        print("Stage 2: calling skeptic LLM...")
         skeptic = C.SKEPTIC_PROMPT.format(
             today=today,
             min_score=C.STAGE1_MIN_SCORE,
@@ -172,7 +177,10 @@ def main():
         if not isinstance(verdicts, list):
             verdicts = []
         for v in verdicts:
-            if isinstance(v, dict) and v.get("verdict") == "keep":
+            verdict = v.get("verdict", "?") if isinstance(v, dict) else "?"
+            dest = v.get("destination", "?") if isinstance(v, dict) else "?"
+            print(f"  {verdict.upper():>4}  {dest}")
+            if isinstance(v, dict) and verdict == "keep":
                 orig = next(
                     (c for c in high_score if c.get("destination") == v.get("destination")), {}
                 )

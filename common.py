@@ -46,13 +46,14 @@ def _gemini(messages, model, max_tokens, want_search):
     if want_search:
         body["tools"] = [{"google_search": {}}]
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
-           f"{gmodel}:generateContent?key={GEMINI_API_KEY}")
-    r = requests.post(url, json=body, timeout=180)
+           f"{gmodel}:generateContent")
+    headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
+    r = requests.post(url, headers=headers, json=body, timeout=180)
     if r.status_code in (400, 422) and want_search:
         # Gemini rejected google_search; retry without it so Stage 1 still returns
         # signals from reasoning alone rather than crashing.
         body.pop("tools", None)
-        r = requests.post(url, json=body, timeout=180)
+        r = requests.post(url, headers=headers, json=body, timeout=180)
     r.raise_for_status()
     cand = r.json().get("candidates", [{}])[0]
     parts = cand.get("content", {}).get("parts", [])

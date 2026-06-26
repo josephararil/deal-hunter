@@ -1,70 +1,76 @@
 # Design Notes & Roadmap
 
-## Cross-sectional, not time-series
-The baseline is the peer group of comparable hotels *in the same crawl*, not a stored price
-history. When you manually filter a country to "5-star, 8+, pool" and scroll for the one
-that's too cheap for its rating, the other hotels on screen ARE the baseline. This makes the
-system stateless — no database, just a script.
+## The problem with v1, and the fix
+The first design did cross-sectional outlier detection only: flag a hotel far below its
+same-class peers in the same crawl. That catches a "crazy manager" but is blind to the bigger,
+more common prize — a *whole city/class* dropping (Antalya post-NYE, Milan post-fashion-week,
+a destination after a shock). When everything drops together the median drops with it, so
+nothing is a relative outlier and the system goes quiet exactly when the deals are best.
+
+Two additions fix it, and they're the same fix from two ends:
+1. A **seasonal baseline** (city|class|month medians) gives an external reference, so "cheap
+   even for this season" becomes measurable — that's the market-wide-drop and absolute-bargain
+   detector.
+2. An **LLM planner at the front** supplies that reference before the baseline matures, using
+   recurring-pattern knowledge + live web search, and steers the expensive crawl to where the
+   deals likely are.
+
+## The LLM sandwich
+- **Front (Pipeline A):** Claude reasons about *where* to look — recurring troughs and live
+  shocks — and ranks cities. Cheap, runs daily, valuable on its own as a "go look here" memo.
+- **Middle (deterministic):** crawling + both detectors + absolute-EUR ranking. No LLM; scales
+  to thousands of rows; numerically reliable.
+- **Back (Pipeline B filter):** one harsh Claude call judges the shortlist against seasonal
+  context and rejects boring low-season non-deals.
+
+Why not let the LLM do detection over all the rows? It's worse at precise numeric outlier
+detection than one line of math, and far more expensive. Math scans; the LLM judges.
+
+## Split into three scripts, auto-triggered
+- `baseline_sampler.py` — continuous cheap memory. Separated from hunting because *recording a
+  median* needs a light scrape and no LLM, while *finding bookable rooms* needs deep crawls and
+  judgment. Keeping the cheap part always-on means the baseline matures even though the
+  expensive part runs rarely.
+- `find_city_anomalies.py` (A) — the planner. Output is independently useful (the reminder/
+  teacher Marti asked for): even with B disabled, it tells you which city to manually search.
+- `hunt.py` (B) — auto-triggered only on the cities A flags (`hunt: true`), or manually via the
+  `manual-hunt` workflow. Cost scales with real signals, not with the city list.
+
+## Reminders vs anomalies
+A drop that recurs every year (shoulder-season coast) isn't an anomaly — it's a known pattern.
+Pipeline A tags those `reminder` (heads-up, go do your manual thing) and tags genuine current
+oddities `anomaly` (worth a deep crawl). Both appear in `city_signals.md`; only `hunt: true`
+ones trigger B.
 
 ## Qualify by anomaly, rank by absolute EUR
-- **"Did a manager deliberately underprice this?"** → robust z-score (median + MAD) within
-  the star class. MAD instead of standard deviation so a few weird listings don't poison the
-  baseline. z ≤ −3.5 = absurdly cheap for its peers.
-- **"How much do I care?"** → absolute EUR below the peer median. This is the ranking key and
-  deliberately favours luxury-for-cheap: EUR 140/night off the InterContinental beats EUR 50
-  off a budget place, even at a lower percentage. The LLM also leans on brand knowledge — if
-  it recognises a property whose true rate is far above the local median, the real saving is
-  bigger than the raw number.
+Detection qualifies a candidate (statistical outlier OR below seasonal norm); ranking is always
+by absolute EUR saved per night, which favours luxury-for-cheap (€140 off a 5-star beats €50
+off a budget place) — exactly the priority Joseph specified.
 
-The 8.0 review score is the only hard *filter*. Star rating is used purely for grouping, so a
-genuinely good 3-star find still surfaces within the 3-star group.
-
-## All-inclusive bias
-All-inclusive properties carry the highest fixed costs and run the deepest, most genuine
-fire-sales, so they surface naturally — and the LLM prompt is told to favour them as more
-likely to be real. (Board type isn't perfectly reported by every actor, so this is a soft
-nudge, not a hard rule.)
-
-## Randomized trip length
-Each city has a `(min, max)` nights range; each run picks a random length. Over time this
-samples many lengths and finds the best deal at any of them, instead of hardcoding one.
-Minimums encode "worth the trip" — longer for far places (Istanbul 3+, UK 3+), short for
-nearby towns.
-
-## Weekly digest vs ephemeral deals (the real trade-off)
-A weekly email is calmer than real-time pings, but a deal found mid-week for a stay "in 4
-days" would be dead by digest time. Mitigation: the crawl runs daily and near-term horizons
-are pushed to 10/17/24 days, so weekday finds survive to the digest. Genuinely short-fuse
-dumps (stay in 1–3 days) are out of scope under a weekly cadence. If that turns out to cost
-real money, the Day-2 lever is an immediate "urgent" email for anything above a high absolute
-threshold, alongside the weekly digest.
-
-## Why a single harsh LLM call
-Cheap math is good at "which numbers are outliers" and bad at "is this a real, bookable,
-non-scammy deal." The LLM is the reverse. Math scans thousands of rows; one batched Claude
-call does the scam-review on the handful of survivors — the step that eats your time
-manually. The prompt rejects by default; silence is the expected output most days.
+## patterns.json are priors, not facts
+The Antalya example is instructive: New Year is a price *peak*; the drop is the days *after*.
+Seasonal knowledge is directionally reliable but the LLM's absolute price memory is weak and
+frozen at its cutoff. So patterns carry `confidence`, and the planner is told to confirm/reject
+them with live search and baseline data rather than trust them blindly. Soft expectations steer;
+the deterministic detectors and the maturing baseline are the spam-proof backbone.
 
 ## Accepted trade-offs (Pareto)
-- **Board type** unreliable → a room-only rate can masquerade as a steal; LLM catches most.
-- **Thin crawls** — towns with fewer than `MIN_PEERS` hotels in a class are skipped rather
-  than guessed. (Future: fall back to the LLM's absolute prior when there's no peer group.)
-- **Star data** occasionally wrong on Booking; review floor + LLM backstop absorb most of it.
-- **Session/geo pricing** pinned via EUR + BG proxy; don't change casually.
+- **Cold start:** market-drop detection is fuzzy until the baseline fills (a few weeks). A
+  louder, less precise first month was an accepted choice.
+- **Board type** unreliable from some actors → the final LLM catches room-only-posing-as-more.
+- **Thin crawls / classes** under `MIN_PEERS` skip the cross-sectional detector but can still
+  fire the baseline detector once a norm exists.
+- **Session/geo pricing** pinned via EUR + BG proxy.
+- **Weekly digest vs ephemerality:** crawl horizons are 10/17/24 days so a weekday find
+  survives to the Sunday digest; sub-3-day fire-sales are out of scope under a weekly cadence.
 
-## Open questions parked for later
-1. **Flights** for fly-to cities — deferred to Day 2; revisit if you keep seeing Milan/UK
-   hotel deals you don't act on because flights are expensive.
-2. **Urgent override** — same-day email for outrageous short-fuse finds, if the weekly
-   cadence misses too much.
-
-## Phase 2 — Travel packages
-The richest arbitrage (operators dumping unsold flight+hotel charters near departure) is the
-hardest to source: no aggregator, inventory scattered across operator sites (TUI, Coral, Anex,
-Bulgarian-market operators), much of it JS-heavy. Approach when ready: a separate but
-architecturally identical pipeline — pick 3–5 operators serving Bulgaria, scrape their
-package listings on near-term departures, flag packages whose per-person-per-night cost is
-far below the operator's normal pricing or the DIY flight+hotel equivalent. JS-heavy sites
-may need a browser agent (Claude in Chrome or a Playwright MCP). Crawl → outlier → harsh LLM
-filter → digest, pointed at different sources. Ship the hotel hunter first, live with it a
-month, then bolt this on.
+## Parked / Day-2
+1. **Flights** for fly-to cities — only surface a hotel when a cheap flight exists in-window.
+   Deferred; revisit if you keep seeing fly-to deals you can't act on.
+2. **Urgent override** — same-day email for an outrageous short-fuse find, alongside the weekly
+   digest, if weekly turns out to miss too much.
+3. **Phase 2 — travel packages** (operators dumping unsold flight+hotel charters near
+   departure): the richest vein, hardest to source (no aggregator; scattered across operator
+   sites, JS-heavy). Same architecture pointed at 3-5 Bulgarian-market operators, near-term
+   departures, ranked by per-person-per-night vs the operator's norm or DIY equivalent. Ship
+   the hotel system first, live with it a month, then add this.

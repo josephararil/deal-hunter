@@ -2,49 +2,41 @@
   "generated": "2026-06-26",
   "signals": [
     {
-      "city": "Piraeus (Athens), Greece to Venice (Ravenna), Italy Cruise on Norwegian Pearl",
-      "window": "July 5, 2026 - July 12, 2026",
-      "reason": "An exceptional 7-night peak-summer Mediterranean cruise on the family-friendly Norwegian Pearl is currently priced from just $449 per person (~$64/night) [1.4.7]. Departing from Athens (Piraeus)—which is easily reachable via a direct flight or drive from Sofia—the ship sails to Santorini, Kotor, Dubrovnik, and Koper. This is an incredibly rare value for peak July travel, offering superb kids' clubs and pools perfect for a 4-year-old.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Sofia, Bulgaria (SOF) to Bari, Italy on Wizz Air",
-      "window": "July 29, 2026 - August 26, 2026",
-      "reason": "Wizz Air is offering an astonishing peak-season round-trip price from Sofia to Bari starting from just $30 (€27) per passenger. Bari is the gateway to the beautiful Puglia region, known for family-friendly beaches and the fairytale-like 'trulli' stone houses of Alberobello that delight young kids. This price represents a major mid-summer flight arbitrage opportunity that a savvy traveller should book immediately.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Sofia, Bulgaria (SOF) to Santander, Spain on Wizz Air",
-      "window": "July 7, 2026 or August 1, 2026",
-      "reason": "To capture the summer 2026 season, Wizz Air has aggressively priced its newly launched direct route from Sofia to Santander, with one-way fares starting from just $45 (€41). Northern Spain offers a temperate escape from the intense Balkan summer heat, featuring stunning, child-friendly sandy beaches along the Cantabrian coast. Launch-pricing values like this are highly time-sensitive.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Bansko, Bulgaria (Lucky Bansko Aparthotel)",
-      "window": "June 2026 - December 3, 2026",
-      "reason": "Elite ski resorts slash their prices in the summer, and the highly-rated Lucky Bansko Aparthotel is offering 'Summer SPA Vacations' from €104 per room, or family half-board (breakfast and dinner) packages from €141 (275.77 BGN) per night. This represents incredible value for a family of 3, as it includes access to heated indoor mineral pools, children's pools, and a fully-equipped kids' club with professional animation.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Hisarya, Bulgaria (Augusta SPA Hotel)",
-      "window": "Summer 2026",
-      "reason": "Located just 45 minutes from Plovdiv, the popular Augusta SPA Hotel in Hisarya has released its 'SPA Summer' flash package offering 30% off standard rates, starting at €65.85 (128.80 BGN) per room per day. This is highly actionable and perfect for a young family, featuring a brand-new outdoor playground, children's water slides, electronic games, and fully-equipped medical spa facilities for the parents.",
+      "city": "7-Night Mediterranean Cruise (Athens to Venice/Ravenna) on Norwegian Pearl",
+      "window": "July 5 - July 12, 2026",
+      "reason": "Norwegian Cruise Line is offloading cabin inventory on this peak-summer sailing with interior rates dropping to an unprecedented $449/person ($64/night) [1.3.4]. The family-friendly cruise departs from Athens (Piraeus) and stops in Santorini, Kotor, Dubrovnik, and Corfu before ending in Ravenna. It is highly accessible for Bulgarian families via a drive to Athens or a cheap budget flight from Sofia.",
       "type": "reminder",
       "confidence": "high",
       "hunt": false
     },
     {
       "city": "Edirne & Istanbul, Turkey",
-      "window": "June - August 2026",
-      "reason": "The Turkish Lira has depreciated sharply by approximately 17% over the last 12 months, trading at historic lows near 46.6 TRY per USD. While local inflation has affected prices in coastal beach hotspots, mid-range family hotels and traditional dining in Edirne (under 2 hours drive from Plovdiv) and Istanbul remain an exceptional currency-driven arbitrage where Euros and Bulgarian Levs stretch significantly further than in Europe.",
+      "window": "July - August 2026",
+      "reason": "The Turkish Lira continues to hit historic lows, trading at an unprecedented 53.15+ TRY per 1 EUR in late June 2026 (a 14.5% drop in 12 months). This creates massive purchasing power for Bulgarian families driving across the border (~2 hours to Edirne, ~4 hours to Istanbul), making 5-star hotel stays, dining, and shopping up to 50% cheaper compared to EU destinations.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "city": "Bari (Puglia), Italy from Sofia (SOF)",
+      "window": "July 5 or July 7, 2026",
+      "reason": "Wizz Air has launched a massive summer seat dump on its direct route from Sofia (SOF) to Bari (BRI), with one-way fares plummeting to just €15 (~$16) for early July departures. This allows a family of three to secure direct flights to the kid-friendly beaches of southern Italy's Puglia region for under €50 total base fare.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "city": "Rome, Italy from Sofia (SOF)",
+      "window": "June 30 or July 5, 2026",
+      "reason": "Last-minute flight pricing on direct routes from Sofia (SOF) to Rome has crashed, with Wizz Air offering one-way tickets on July 5 for $13 and June 30 for $17, and Ryanair following closely with $21-$24 fares. This provides an incredibly cheap, sub-2-hour direct path to an Italian summer escape for a family of three.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "city": "Lucky Bansko Aparthotel SPA & Relax, Bansko, Bulgaria",
+      "window": "July 1 - August 31, 2026",
+      "reason": "The highly-rated, family-friendly 5-star Lucky Bansko resort has launched summer SPA packages starting at just €104/night per room. This includes access to bio-pools, spa facilities, and their specialized children's programs, which is up to 70% cheaper than their winter peak pricing and only a 2-hour drive from Plovdiv.",
       "type": "reminder",
       "confidence": "high",
       "hunt": false

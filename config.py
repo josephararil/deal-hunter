@@ -76,17 +76,26 @@ def cities_prompt_text():
 
 
 # ── LLM models ──────────────────────────────────────────────────────────────
-# Model used for both Stage 1 (find + web search) and Stage 2 (skeptic).
-# This is an Anthropic model name; the Gemini equivalent lives in GEMINI_MODEL_MAP.
-MODEL_DIAMOND = "claude-sonnet-4-6"
+# Per-stage model roles. Values are canonical Anthropic model names; Gemini
+# equivalents are looked up in GEMINI_MODEL_MAP below.
+MODEL_FIND    = "claude-haiku-4-5-20251001"  # Stage 1: fast + web-search capable
+MODEL_SKEPTIC = "claude-sonnet-4-6"          # Stage 2: stronger reasoning
+MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable (no call site yet)
 
-# Maps Anthropic model names (the canonical identifiers used throughout the code)
-# to their Gemini equivalents. Used when LLM_PROVIDER=gemini. Add a new entry
-# here whenever a new model role is added to config; never hard-code Gemini model
-# names anywhere else.
+# Maps Anthropic model names (canonical keys) to Gemini equivalents.
+# Used when LLM_PROVIDER=gemini. Add a new entry here whenever a new model role
+# is added; never hard-code Gemini model names anywhere else.
 GEMINI_MODEL_MAP = {
-    "claude-sonnet-4-6": "gemini-3.5-flash",
+    "claude-haiku-4-5-20251001": "gemini-3.5-flash",
+    # Placeholder — swap to the exact Gemini pro ID when confirmed (e.g. gemini-2.5-pro)
+    "claude-sonnet-4-6": "gemini-3.1-pro",
 }
+
+# Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.
+# Set to "anthropic" or "gemini" to run a specific stage on a different provider.
+PROVIDER_FIND    = None
+PROVIDER_SKEPTIC = None
+PROVIDER_VERIFY  = None
 
 # ── LLM token budgets ────────────────────────────────────────────────────────
 # Stage 1 (find) needs more room: it receives web-search grounding text and must

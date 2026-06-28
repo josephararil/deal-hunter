@@ -143,13 +143,14 @@ def write_md(today, candidates, diamonds):
 
 def main():
     today = X.today_iso()
-    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | model: {C.MODEL_DIAMOND} ===")
+    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | find: {C.MODEL_FIND} | skeptic: {C.MODEL_SKEPTIC} ===")
 
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
     raw1 = X.llm(
         messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
-        model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+        model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+        provider=C.PROVIDER_FIND,
     )
     parsed1 = X.parse_json_block(raw1) or {}
     candidates = parsed1.get("candidates", [])
@@ -171,7 +172,8 @@ def main():
         )
         raw2 = X.llm(
             messages=[{"role": "user", "content": skeptic}],
-            model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            provider=C.PROVIDER_SKEPTIC,
         )
         verdicts = X.parse_json_block(raw2) or []
         if not isinstance(verdicts, list):

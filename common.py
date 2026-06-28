@@ -37,10 +37,12 @@ def _post_with_retry(url, headers, json_body, timeout=180):
             time.sleep(delay)
 
 
-def llm(messages, model, max_tokens=2000, want_search=False):
+def llm(messages, model, max_tokens=2000, want_search=False, provider=None):
     """Single entry point for all LLM calls. Returns plain text.
-    messages is a list of {"role", "content"} dicts with string content."""
-    if PROVIDER == "gemini":
+    messages is a list of {"role", "content"} dicts with string content.
+    provider overrides the global LLM_PROVIDER for this call; None uses the global."""
+    p = (provider or PROVIDER).strip().lower()
+    if p == "gemini":
         return _gemini(messages, model, max_tokens, want_search)
     return _anthropic(messages, model, max_tokens, want_search)
 

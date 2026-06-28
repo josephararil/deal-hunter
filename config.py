@@ -76,32 +76,18 @@ def cities_prompt_text():
 
 
 # ── LLM models ──────────────────────────────────────────────────────────────
-<<<<<<< HEAD
-# Stage 1 (find + web search): faster model with grounding.
-# Stage 2 (skeptic): more capable model for hostile review, no search.
-# These are Anthropic model names; Gemini equivalents live in GEMINI_MODEL_MAP.
-MODEL_DIAMOND         = "claude-sonnet-4-6"
-MODEL_DIAMOND_SKEPTIC = "claude-opus-4-8"
-=======
 # Per-stage model roles. Values are canonical Anthropic model names; Gemini
 # equivalents are looked up in GEMINI_MODEL_MAP below.
 MODEL_FIND    = "claude-haiku-4-5-20251001"  # Stage 1: fast + web-search capable
 MODEL_SKEPTIC = "claude-sonnet-4-6"          # Stage 2: stronger reasoning
-MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable (no call site yet)
->>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
+MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable
 
 # Maps Anthropic model names (canonical keys) to Gemini equivalents.
 # Used when LLM_PROVIDER=gemini. Add a new entry here whenever a new model role
 # is added; never hard-code Gemini model names anywhere else.
 GEMINI_MODEL_MAP = {
-<<<<<<< HEAD
-    "claude-sonnet-4-6": "gemini-3.5-flash",
-    "claude-opus-4-8":   "gemini-3.1-pro-preview",
-=======
     "claude-haiku-4-5-20251001": "gemini-3.5-flash",
-    # Placeholder — swap to the exact Gemini pro ID when confirmed (e.g. gemini-2.5-pro)
-    "claude-sonnet-4-6": "gemini-3.1-pro-preview",
->>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
+    "claude-sonnet-4-6":         "gemini-3.1-pro-preview",
 }
 
 # Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.
@@ -317,48 +303,6 @@ JSON Schema:
 Remember: An empty or all-kill batch for today's run is the standard statistical outcome. Keep only the highest utility-to-price plays."""
 
 
-<<<<<<< HEAD
-# ── Response schemas (Gemini response_format) ────────────────────────────────
-# Passed to _gemini() via llm(response_schema=...) to constrain output to valid
-# JSON. The Anthropic path ignores these — prompt engineering suffices there.
-# Keep in sync with the JSON schemas documented in FIND_PROMPT / SKEPTIC_PROMPT.
-
-STAGE1_RESPONSE_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "candidates": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "destination": {"type": "string"},
-                    "score":       {"type": "integer"},
-                    "type":        {"type": "string"},
-                    "window":      {"type": "string"},
-                    "reason":      {"type": "string"},
-                    "confidence":  {"type": "string"},
-                },
-                "required": ["destination", "score", "type", "window", "reason", "confidence"],
-            },
-        },
-    },
-    "required": ["candidates"],
-}
-
-STAGE2_RESPONSE_SCHEMA = {
-    "type": "array",
-    "items": {
-        "type": "object",
-        "properties": {
-            "destination": {"type": "string"},
-            "verdict":     {"type": "string", "enum": ["keep", "kill"]},
-            "why":         {"type": "string"},
-            "red_flags":   {"type": "string"},
-        },
-        "required": ["destination", "verdict", "why", "red_flags"],
-    },
-}
-=======
 VERIFY_PROMPT = """Today is {today}. You are a Personal Travel Concierge with live web-search access. One travel deal has survived a two-stage expert filter. Your job is to ground it in reality: find real prices at specific bookable dates, a real booking path, and produce an honest assistant-style summary.
 
 Candidate deal to verify:
@@ -406,4 +350,73 @@ Return a single JSON object only. No markdown fences, no extra commentary outsid
 
 verdict: confirm (deal is real and price holds as stated) | correct (deal exists but at different price or dates than claimed) | kill (hallucination, real price is unremarkable, or no supporting evidence found)
 confidence: high (live search confirmed specific price and dates) | medium (indirect evidence, e.g. rate cards or press) | low (no live data available — do not fabricate)"""
->>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
+
+
+# ── Response schemas (Gemini response_format) ────────────────────────────────
+# Passed to _gemini() via llm(response_schema=...) to constrain output to valid
+# JSON. The Anthropic path ignores these — prompt engineering suffices there.
+# Keep in sync with the JSON schemas in FIND_PROMPT / SKEPTIC_PROMPT / VERIFY_PROMPT.
+
+STAGE1_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "candidates": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "destination": {"type": "string"},
+                    "score":       {"type": "integer"},
+                    "type":        {"type": "string"},
+                    "window":      {"type": "string"},
+                    "reason":      {"type": "string"},
+                    "confidence":  {"type": "string"},
+                },
+                "required": ["destination", "score", "type", "window", "reason", "confidence"],
+            },
+        },
+    },
+    "required": ["candidates"],
+}
+
+STAGE2_RESPONSE_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "destination": {"type": "string"},
+            "verdict":     {"type": "string", "enum": ["keep", "kill"]},
+            "why":         {"type": "string"},
+            "red_flags":   {"type": "string"},
+        },
+        "required": ["destination", "verdict", "why", "red_flags"],
+    },
+}
+
+STAGE3_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "destination":       {"type": "string"},
+        "verdict":           {"type": "string", "enum": ["confirm", "correct", "kill"]},
+        "options": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "dates":               {"type": "string"},
+                    "nights":              {"type": "integer"},
+                    "price_per_night_eur": {"type": "number"},
+                    "total_eur":           {"type": "number"},
+                    "booking_url":         {"type": "string"},
+                    "source":              {"type": "string"},
+                },
+                "required": ["dates", "nights", "price_per_night_eur", "total_eur", "source"],
+            },
+        },
+        "how_to_book":       {"type": "string"},
+        "grounding":         {"type": "string"},
+        "assistant_summary": {"type": "string"},
+        "confidence":        {"type": "string", "enum": ["high", "medium", "low"]},
+    },
+    "required": ["destination", "verdict", "options", "how_to_book", "grounding", "assistant_summary", "confidence"],
+}

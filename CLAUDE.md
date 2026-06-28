@@ -130,23 +130,17 @@ Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret sto
 `common.llm(messages, model, max_tokens, want_search, provider=None)` — single entry point.
 
 - `LLM_PROVIDER=anthropic` (default): Messages API; `want_search` → `web_search` tool.
-<<<<<<< HEAD
 - `LLM_PROVIDER=gemini`: Interactions API (`/v1beta/interactions`); `want_search` →
   `{"type": "google_search"}` tool. Degrades gracefully if Gemini rejects the search
-  tool (retries without it). Both stages use `thinking_level: "high"`.
-- Model roles live in `config.py` as `MODEL_DIAMOND` (Stage 1, find + search →
-  `gemini-3.5-flash`) and `MODEL_DIAMOND_SKEPTIC` (Stage 2, skeptic, no search →
-  `gemini-3.1-pro-preview`). Gemini equivalents are mapped in `config.GEMINI_MODEL_MAP`.
-  Add new roles there, never as literals in pipeline code.
-=======
-- `LLM_PROVIDER=gemini`: `generateContent`; `want_search` → `google_search` tool.
-  Degrades gracefully if Gemini rejects the search tool (retries without it).
+  tool (retries without it). All stages use `thinking_level: "high"`.
 - Per-stage model roles are in `config.py` as `MODEL_FIND`, `MODEL_SKEPTIC`, `MODEL_VERIFY`.
   Gemini equivalents are mapped in `GEMINI_MODEL_MAP`. Add new roles there, never as
   literals in pipeline code.
 - Optional per-stage provider overrides: `PROVIDER_FIND / PROVIDER_SKEPTIC / PROVIDER_VERIFY`
   (all default to `None` = use global `LLM_PROVIDER`).
->>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
+- `response_schema` (Gemini only): JSON Schema passed as `response_format` to constrain
+  output to valid JSON. Schemas for all three stages live in `config.py` as
+  `STAGE1/2/3_RESPONSE_SCHEMA`. Anthropic path ignores these (prompt engineering suffices).
 
 ## Required secrets / variables
 

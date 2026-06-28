@@ -249,6 +249,7 @@ def _ground_llm(diamond, mem_text, today):
     raw3 = X.llm(
         messages=[{"role": "user", "content": verify_prompt}],
         model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
+        response_schema=C.STAGE3_RESPONSE_SCHEMA,
         provider=C.PROVIDER_VERIFY,
     )
     return X.parse_json_block(raw3) or {}
@@ -275,17 +276,12 @@ def main():
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
     raw1 = X.llm(
-<<<<<<< HEAD
-        messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
-        model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
-        response_schema=C.STAGE1_RESPONSE_SCHEMA,
-=======
         messages=[{"role": "user", "content": C.FIND_PROMPT.format(
             today=today, cities=C.cities_prompt_text(), memory=mem_text
         )}],
         model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+        response_schema=C.STAGE1_RESPONSE_SCHEMA,
         provider=C.PROVIDER_FIND,
->>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
     )
     parsed1 = X.parse_json_block(raw1) or {}
     candidates = parsed1.get("candidates", [])
@@ -308,13 +304,9 @@ def main():
         )
         raw2 = X.llm(
             messages=[{"role": "user", "content": skeptic}],
-<<<<<<< HEAD
-            model=C.MODEL_DIAMOND_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
-            response_schema=C.STAGE2_RESPONSE_SCHEMA,
-=======
             model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            response_schema=C.STAGE2_RESPONSE_SCHEMA,
             provider=C.PROVIDER_SKEPTIC,
->>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
         )
         verdicts = X.parse_json_block(raw2) or []
         if not isinstance(verdicts, list):

@@ -9,11 +9,20 @@ Ledger is capped to MAX_LEDGER_ENTRIES entries and MAX_LEDGER_DAYS days.
 summarize_for_prompt() produces a compact, bounded text block for prompt injection.
 """
 
-import json, datetime as dt, os
+import json, datetime as dt, os, re
 
 STATE_DIR = "state"
 _MEMORY_FILE = "memory.json"
 _MEMORY_MD   = "memory.md"
+
+_MONTH_NAMES = {
+    "january": "01", "february": "02", "march": "03", "april": "04",
+    "may": "05", "june": "06", "july": "07", "august": "08",
+    "september": "09", "october": "10", "november": "11", "december": "12",
+    "jan": "01", "feb": "02", "mar": "03", "apr": "04",
+    "jun": "06", "jul": "07", "aug": "08",
+    "sep": "09", "oct": "10", "nov": "11", "dec": "12",
+}
 
 MAX_LEDGER_ENTRIES  = 200    # hard cap on ledger rows
 MAX_LEDGER_DAYS     = 180    # TTL for ledger entries
@@ -23,6 +32,49 @@ MAX_PROMPT_OUTCOMES  = 10    # recent corrections/kills injected per prompt
 
 def _path(name):
     return os.path.join(STATE_DIR, name)
+
+
+def season_key(text):
+    """Map a free-text window/dates string to a coarse 'YYYY-MM' key.
+
+    Looks for the first month name (or number) paired with a 4-digit year.
+    Falls back to the stripped input string if nothing is parseable."""
+    t = text.strip()
+    # Numeric YYYY-MM / YYYY/MM
+    m = re.search(r'(20\d{2})[-/](\d{1,2})\b', t)
+    if m:
+        return f"{m.group(1)}-{int(m.group(2)):02d}"
+    # Numeric MM-YYYY / MM/YYYY
+    m = re.search(r'\b(\d{1,2})[-/](20\d{2})\b', t)
+    if m:
+        return f"{m.group(2)}-{int(m.group(1)):02d}"
+    # Month name + 4-digit year (first month name found wins)
+    yr = re.search(r'(20\d{2})', t)
+    if yr:
+        tl = t.lower()
+        for name, num in _MONTH_NAMES.items():
+            if re.search(rf'\b{re.escape(name)}\b', tl):
+                return f"{yr.group(1)}-{num}"
+    return t
+
+
+def _extract_price(text):
+    """Best-effort extraction of the first EUR amount from a string.
+
+    Handles €72, EUR 72, 72 EUR, and ranges like €72-95 (returns lower bound).
+    Returns None when nothing parseable is found."""
+    if not text:
+        return None
+    m = re.search(r'€(\d+(?:[.,]\d+)?)', text)
+    if m:
+        return float(m.group(1).replace(',', '.'))
+    m = re.search(r'\bEUR\s+(\d+(?:[.,]\d+)?)', text, re.IGNORECASE)
+    if m:
+        return float(m.group(1).replace(',', '.'))
+    m = re.search(r'(\d+(?:[.,]\d+)?)\s*EUR\b', text, re.IGNORECASE)
+    if m:
+        return float(m.group(1).replace(',', '.'))
+    return None
 
 
 # ── load / save ────────────────────────────────────────────────────────────────
@@ -119,7 +171,7 @@ def summarize_for_prompt(memory, cities=None):
     # --- Recent corrections and kills only (confirmations don't add signal) ---
     ledger = memory.get("ledger", [])
     recent_bad = sorted(
-        [e for e in ledger if e.get("verdict") in ("correct", "kill", "hallucinated")],
+        [e for e in ledger if e.get("verdict") in ("correct", "kill", "hallucinated", "skeptic_kill")],
         key=lambda e: e.get("date", ""),
         reverse=True,
     )[:MAX_PROMPT_OUTCOMES]

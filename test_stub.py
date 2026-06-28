@@ -12,12 +12,30 @@ Run: python test_stub.py
 Expected: email attempted for 2 diamonds (fails gracefully with no SMTP),
 city_signals.md shows 3 Stage 3 entries (✅ 🔧 ❌), email HTML/text shows concrete dates,
 prices, booking links, and sensible no-URL fallback for the second Regnum option.
+
+Non-destructive: snapshots state/ files at startup and restores them in a finally block.
 """
 
 import json, os, sys
 
 # Ensure state/ directory exists
 os.makedirs("state", exist_ok=True)
+
+# ── Snapshot state files before the test touches them ───────────────────────
+_STATE_FILES = [
+    os.path.join("state", "signals_seen.json"),
+    os.path.join("state", "city_signals.json"),
+    os.path.join("state", "city_signals.md"),
+    os.path.join("state", "memory.json"),
+    os.path.join("state", "memory.md"),
+]
+_snapshots = {}
+for _sf in _STATE_FILES:
+    if os.path.exists(_sf):
+        with open(_sf, encoding="utf-8") as _fh:
+            _snapshots[_sf] = _fh.read()
+    else:
+        _snapshots[_sf] = None
 
 # Seed minimal seen state so anti-spam doesn't block our new test diamonds
 import common as X
@@ -178,93 +196,103 @@ common.send_email = _stub_send_email
 import find_city_anomalies as fa
 
 print("\n=== Running stub test ===\n")
-fa.main()
+try:
+    fa.main()
 
-# ── Assert ──────────────────────────────────────────────────────────────────
+    # ── Assert ──────────────────────────────────────────────────────────────────
 
-print("\n=== Assertions ===")
+    print("\n=== Assertions ===")
 
-with open("state/city_signals.md", encoding="utf-8") as f:
-    md = f.read()
+    with open("state/city_signals.md", encoding="utf-8") as f:
+        md = f.read()
 
-assert "Stage 3 Verification" in md, "city_signals.md missing Stage 3 section"
-assert "CONFIRM" in md, "CONFIRM outcome not in md"
-assert "CORRECT" in md, "CORRECT outcome not in md"
-assert "KILL" in md, "KILL outcome not in md"
-assert "€98" in md or "€95" in md, "Antalya price not in md"
-assert "€112" in md or "€105" in md, "Regnum corrected price not in md"
-assert "Velingrad" in md, "Velingrad should appear in md (as killed)"
-print("city_signals.md: Stage 3 outcomes present [OK]")
+    assert "Stage 3 Verification" in md, "city_signals.md missing Stage 3 section"
+    assert "CONFIRM" in md, "CONFIRM outcome not in md"
+    assert "CORRECT" in md, "CORRECT outcome not in md"
+    assert "KILL" in md, "KILL outcome not in md"
+    assert "€98" in md or "€95" in md, "Antalya price not in md"
+    assert "€112" in md or "€105" in md, "Regnum corrected price not in md"
+    assert "Velingrad" in md, "Velingrad should appear in md (as killed)"
+    print("city_signals.md: Stage 3 outcomes present [OK]")
 
-seen = X.load_json("signals_seen.json", {})
-# No email was sent (no SMTP), so seen should be empty
-assert seen.get("seen", {}) == {}, f"seen should be empty (email failed), got: {seen['seen']}"
-print("signals_seen.json: no entries (email failed gracefully) [OK]")
+    seen = X.load_json("signals_seen.json", {})
+    # No email was sent (no SMTP), so seen should be empty
+    assert seen.get("seen", {}) == {}, f"seen should be empty (email failed), got: {seen['seen']}"
+    print("signals_seen.json: no entries (email failed gracefully) [OK]")
 
-# Stub call count confirms Stage 3 ran exactly 3 times (once per Stage-2 diamond)
-assert _call_idx == 5, f"Expected 5 llm() calls, got {_call_idx}"
-print(f"llm() call count: {_call_idx} (stage1 + stage2 + 3x stage3) [OK]")
+    # Stub call count confirms Stage 3 ran exactly 3 times (once per Stage-2 diamond)
+    assert _call_idx == 5, f"Expected 5 llm() calls, got {_call_idx}"
+    print(f"llm() call count: {_call_idx} (stage1 + stage2 + 3x stage3) [OK]")
 
-# A4: assert email renders grounded structure (assistant_summary, dates, prices, links)
-assert _captured_email, "send_email was never called — no diamonds reached email path"
-html = _captured_email["html"]
-text = _captured_email["text"]
-print("\n=== A4 email assertions ===")
+    # A4: assert email renders grounded structure (assistant_summary, dates, prices, links)
+    assert _captured_email, "send_email was never called — no diamonds reached email path"
+    html = _captured_email["html"]
+    text = _captured_email["text"]
+    print("\n=== A4 email assertions ===")
 
-# assistant_summary leads each diamond block
-assert "I confirmed Rixos Premium Antalya" in html, "Antalya assistant_summary missing from HTML"
-assert "The claimed" in html and "understates" in html, "Regnum assistant_summary missing from HTML"
-assert "I confirmed Rixos Premium Antalya" in text, "Antalya assistant_summary missing from text"
-print("assistant_summary: present in HTML and text [OK]")
+    # assistant_summary leads each diamond block
+    assert "I confirmed Rixos Premium Antalya" in html, "Antalya assistant_summary missing from HTML"
+    assert "The claimed" in html and "understates" in html, "Regnum assistant_summary missing from HTML"
+    assert "I confirmed Rixos Premium Antalya" in text, "Antalya assistant_summary missing from text"
+    print("assistant_summary: present in HTML and text [OK]")
 
-# Concrete dates appear
-assert "Jan 10-14, 2027" in html, "Antalya dates missing from HTML"
-assert "Aug 8-10, 2026" in html, "Regnum dates missing from HTML"
-assert "Jan 10-14, 2027" in text, "Antalya dates missing from text"
-assert "Aug 8-10, 2026" in text, "Regnum dates missing from text"
-print("Concrete dates: present in HTML and text [OK]")
+    # Concrete dates appear
+    assert "Jan 10-14, 2027" in html, "Antalya dates missing from HTML"
+    assert "Aug 8-10, 2026" in html, "Regnum dates missing from HTML"
+    assert "Jan 10-14, 2027" in text, "Antalya dates missing from text"
+    assert "Aug 8-10, 2026" in text, "Regnum dates missing from text"
+    print("Concrete dates: present in HTML and text [OK]")
 
-# Prices appear
-assert "€98" in html, "Antalya €98/night missing from HTML"
-assert "€112" in html, "Regnum €112/night missing from HTML"
-assert "€392" in html, "Antalya €392 total missing from HTML"
-assert "€98" in text and "€392" in text, "Antalya prices missing from text"
-print("Prices: present in HTML and text [OK]")
+    # Prices appear
+    assert "€98" in html, "Antalya €98/night missing from HTML"
+    assert "€112" in html, "Regnum €112/night missing from HTML"
+    assert "€392" in html, "Antalya €392 total missing from HTML"
+    assert "€98" in text and "€392" in text, "Antalya prices missing from text"
+    print("Prices: present in HTML and text [OK]")
 
-# Booking URL (option with URL)
-assert "booking.com/hotel/tr/rixos-premium-antalya" in html, "Antalya booking URL missing from HTML"
-assert "booking.com/hotel/bg/regnum-bansko" in html, "Regnum booking URL missing from HTML"
-assert "booking.com/hotel/tr/rixos-premium-antalya" in text, "Antalya booking URL missing from text"
-print("Booking URLs: present in HTML and text [OK]")
+    # Booking URL (option with URL)
+    assert "booking.com/hotel/tr/rixos-premium-antalya" in html, "Antalya booking URL missing from HTML"
+    assert "booking.com/hotel/bg/regnum-bansko" in html, "Regnum booking URL missing from HTML"
+    assert "booking.com/hotel/tr/rixos-premium-antalya" in text, "Antalya booking URL missing from text"
+    print("Booking URLs: present in HTML and text [OK]")
 
-# No-URL fallback for Regnum Aug 22-25 option (uses how_to_book)
-assert "Book at booking.com" in html, "Regnum no-URL how_to_book fallback missing from HTML"
-assert "Book at booking.com" in text, "Regnum no-URL how_to_book fallback missing from text"
-print("No-URL how_to_book fallback: present in HTML and text [OK]")
+    # No-URL fallback for Regnum Aug 22-25 option (uses how_to_book)
+    assert "Book at booking.com" in html, "Regnum no-URL how_to_book fallback missing from HTML"
+    assert "Book at booking.com" in text, "Regnum no-URL how_to_book fallback missing from text"
+    print("No-URL how_to_book fallback: present in HTML and text [OK]")
 
-# Grounding appears
-assert "Source:" in html, "Grounding 'Source:' label missing from HTML"
-assert "Source:" in text, "Grounding 'Source:' label missing from text"
-print("Grounding: present in HTML and text [OK]")
+    # Grounding appears
+    assert "Source:" in html, "Grounding 'Source:' label missing from HTML"
+    assert "Source:" in text, "Grounding 'Source:' label missing from text"
+    print("Grounding: present in HTML and text [OK]")
 
-# Red flags still appear
-assert "Confirm kids club" in html, "Antalya red_flags missing from HTML"
-assert "Verify exact August" in html, "Regnum red_flags missing from HTML"
-print("Red flags: present in HTML [OK]")
+    # Red flags still appear
+    assert "Confirm kids club" in html, "Antalya red_flags missing from HTML"
+    assert "Verify exact August" in html, "Regnum red_flags missing from HTML"
+    print("Red flags: present in HTML [OK]")
 
-# Footer and heading preserved
-assert "Verify before booking" in html, "Footer missing from HTML"
-assert "Diamond Finder" in html, "Heading missing from HTML"
-print("Footer and heading: preserved [OK]")
+    # Footer and heading preserved
+    assert "Verify before booking" in html, "Footer missing from HTML"
+    assert "Diamond Finder" in html, "Heading missing from HTML"
+    print("Footer and heading: preserved [OK]")
 
-# Velingrad (killed) must not appear in email
-assert "Velingrad" not in html, "Killed deal (Velingrad) leaked into email HTML"
-assert "Velingrad" not in text, "Killed deal (Velingrad) leaked into email text"
-print("Killed deal not in email: [OK]")
+    # Velingrad (killed) must not appear in email
+    assert "Velingrad" not in html, "Killed deal (Velingrad) leaked into email HTML"
+    assert "Velingrad" not in text, "Killed deal (Velingrad) leaked into email text"
+    print("Killed deal not in email: [OK]")
 
-print("\n--- HTML preview (first 1200 chars) ---")
-print(html[:1200])
-print("\n--- text preview ---")
-print(text[:800])
+    print("\n--- HTML preview (first 1200 chars) ---")
+    print(html[:1200])
+    print("\n--- text preview ---")
+    print(text[:800])
 
-print("\nAll assertions passed.")
+    print("\nAll assertions passed.")
+
+finally:
+    for _sf, _content in _snapshots.items():
+        if _content is None:
+            if os.path.exists(_sf):
+                os.remove(_sf)
+        else:
+            with open(_sf, "w", encoding="utf-8") as _fh:
+                _fh.write(_content)

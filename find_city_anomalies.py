@@ -318,6 +318,20 @@ def main():
                 )
                 if orig:
                     diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
+        # Record skeptic kills in memory so future runs learn from them (Issue 4)
+        for v in verdicts:
+            if not isinstance(v, dict) or v.get("verdict") != "kill":
+                continue
+            dest = v.get("destination", "")
+            orig = next((c for c in high_score if c.get("destination") == dest), None)
+            if orig:
+                M.record_outcome(
+                    mem, dest, orig.get("window", ""), orig.get("type", ""),
+                    claimed_price=M._extract_price(orig.get("reason", "")),
+                    verdict="skeptic_kill",
+                    source=v.get("why", ""),
+                    note=(v.get("red_flags") or "")[:200],
+                )
     print(f"Stage 2: {len(diamonds)} diamond(s)")
 
     # Stage 3: verify each Stage-2 survivor with a focused web-search call.
@@ -359,7 +373,7 @@ def main():
 
         M.record_outcome(
             mem, dest, window, type_,
-            claimed_price=None,
+            claimed_price=M._extract_price(diamond.get("reason", "")),
             verdict=verdict3,
             actual_price=actual_price,
             source=source3,
@@ -367,7 +381,9 @@ def main():
         )
         # Record a price baseline for every confirmed or corrected deal
         if verdict3 in ("confirm", "correct") and actual_price:
-            M.record_baseline(mem, dest, window, actual_price,
+            # Use the first verified option's dates for the season key when available
+            season = M.season_key(options[0].get("dates", "") if options else window)
+            M.record_baseline(mem, dest, season, actual_price,
                               note=summary[:150], source=source3)
 
     M.prune(mem)
@@ -375,13 +391,14 @@ def main():
     print(f"Memory updated: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s)")
 
     # Write city_signals.json — hunt=False always; field kept for schema compatibility
-    diamond_dests = {d["destination"] for d in diamonds}
+    # "anomaly" only for deals that survived all three stages (not just Stage-2)
+    verified_dests = {d["destination"] for d in verified_diamonds}
     signals = [
         {
             "city": c.get("destination", ""),
             "window": c.get("window", ""),
             "reason": c.get("reason", ""),
-            "type": "anomaly" if c.get("destination") in diamond_dests else "reminder",
+            "type": "anomaly" if c.get("destination") in verified_dests else "reminder",
             "confidence": c.get("confidence", "low"),
             "hunt": False,
         }

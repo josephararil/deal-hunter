@@ -1,7 +1,7 @@
 name: daily
 
-# Daily diamond finder: two-stage LLM gate, emails immediately on genuine finds.
-# No hotel crawling, no Apify. Dormant Apify pipeline lives in _dormant/ and does not run here.
+# Daily diamond finder: three-stage LLM gate, emails immediately on genuine finds.
+# No Apify. Apify grounding stub lives in verify_apify.py; credits renew 2026-07-26.
 
 on:
   schedule:

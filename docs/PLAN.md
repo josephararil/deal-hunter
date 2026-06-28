@@ -72,16 +72,19 @@ The original scope was hotels only. The diamond finder hunts across:
 The anchor city list (`config.CITIES`) guides the search but the Stage 1 prompt explicitly
 allows nearby or thematically related destinations when a confirmed opportunity exists.
 
-## Dormant: Apify / hotel-crawl pipeline
+## Apify / hotel-crawl pipeline (retired)
 
-The original scraping pipeline (`hunt.py`, `baseline_sampler.py`, `patterns.json`) lives in
-`_dormant/`. It is not active, not imported, and not referenced by any live code. It is kept
-as a design archive, not as a restore-ready fallback. See `_dormant/README.md` for the full
-list of what restoration would require.
+The original scraping pipeline (`hunt.py`, `baseline_sampler.py`, `patterns.json`) has been
+retired and the `_dormant/` directory removed. It was preserved as a design archive while the
+v3 LLM-only approach was being established, but is no longer in the repository.
 
-Restore only if the LLM-only approach demonstrably fails and you are prepared to take on
-Apify costs, a slow cold-start period, and the operational complexity of a scraping pipeline.
-That is a deliberate product decision, not a configuration change.
+Apify capability for Layer-3 grounding now lives in `verify_apify.py` as a not-yet-wired
+stub. Free credits renew **2026-07-26**. The attach point is the `ground_deal` seam in
+`find_city_anomalies.py` — see CLAUDE.md "Apify grounding seam" section for wiring details.
+
+Restore full Apify crawling only if the LLM-only approach demonstrably fails and you are
+prepared to take on Apify costs, a slow cold-start period, and the operational complexity of
+a scraping pipeline. That is a deliberate product decision, not a configuration change.
 
 ## What's parked (do not start without an explicit request)
 

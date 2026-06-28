@@ -236,6 +236,32 @@ def write_md(today, candidates, diamonds, stage3_results=None):
         f.write("\n".join(lines))
 
 
+# --- Layer-3 grounding ---
+
+def _ground_llm(diamond, mem_text, today):
+    """Layer-3 grounding via LLM concierge + web search (current active implementation)."""
+    candidate_json = json.dumps(diamond, ensure_ascii=False, indent=2)
+    verify_prompt = C.VERIFY_PROMPT.format(
+        today=today,
+        candidate=candidate_json,
+        memory=mem_text,
+    )
+    raw3 = X.llm(
+        messages=[{"role": "user", "content": verify_prompt}],
+        model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
+        provider=C.PROVIDER_VERIFY,
+    )
+    return X.parse_json_block(raw3) or {}
+
+
+# ── GROUNDING SEAM ──────────────────────────────────────────────────────────
+# ground_deal is the active Layer-3 grounding function. Currently uses the LLM
+# concierge. To switch to Apify when credits renew (2026-07-26):
+#   from verify_apify import apify_ground
+#   ground_deal = apify_ground
+ground_deal = _ground_llm
+
+
 # --- main ---
 
 def main():
@@ -295,26 +321,14 @@ def main():
     print(f"Stage 2: {len(diamonds)} diamond(s)")
 
     # Stage 3: verify each Stage-2 survivor with a focused web-search call.
-    # One llm() call per deal (rare — almost always 0-2 per run).
+    # One ground_deal() call per deal (rare — almost always 0-2 per run).
     # Merges verified fields onto the diamond dict; drops verdict=="kill".
-    # NOTE: Apify grounding will slot in here in a later phase behind the same interface.
     verified_diamonds = []
     stage3_results = []
     if diamonds:
         print(f"Stage 3: verifying {len(diamonds)} diamond(s)...")
         for diamond in diamonds:
-            candidate_json = json.dumps(diamond, ensure_ascii=False, indent=2)
-            verify_prompt = C.VERIFY_PROMPT.format(
-                today=today,
-                candidate=candidate_json,
-                memory=mem_text,
-            )
-            raw3 = X.llm(
-                messages=[{"role": "user", "content": verify_prompt}],
-                model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
-                provider=C.PROVIDER_VERIFY,
-            )
-            result = X.parse_json_block(raw3) or {}
+            result = ground_deal(diamond, mem_text, today)
             verdict3 = result.get("verdict", "kill")
             dest3 = diamond.get("destination", "?")
             print(f"  Stage 3 {verdict3.upper():>7}  {dest3}")
@@ -360,7 +374,7 @@ def main():
     M.save(mem)
     print(f"Memory updated: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s)")
 
-    # Write city_signals.json — hunt=False always; the Apify hunt pipeline is dormant
+    # Write city_signals.json — hunt=False always; field kept for schema compatibility
     diamond_dests = {d["destination"] for d in diamonds}
     signals = [
         {

@@ -6,8 +6,8 @@
 # places when a confirmed opportunity exists (e.g. a cruise from a regional port).
 #
 # Values are (min_nights, max_nights). The diamond finder uses only the city
-# names (CITIES.keys()); the night-range values are kept for reference and are
-# used by the dormant Apify/hunt pipeline in _dormant/.
+# names (CITIES.keys()); the night-range values are kept for reference (and
+# will be used by the Apify grounding layer when it is wired in).
 CITIES = {
     # --- Bulgaria, by car (<3h) ---
     "Asenovgrad, Bulgaria": (1, 3),   "Banya, Bulgaria": (2, 4),

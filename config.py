@@ -88,7 +88,7 @@ MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable 
 GEMINI_MODEL_MAP = {
     "claude-haiku-4-5-20251001": "gemini-3.5-flash",
     # Placeholder — swap to the exact Gemini pro ID when confirmed (e.g. gemini-2.5-pro)
-    "claude-sonnet-4-6": "gemini-3.1-pro",
+    "claude-sonnet-4-6": "gemini-3.1-pro-preview",
 }
 
 # Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.
@@ -100,7 +100,7 @@ PROVIDER_VERIFY  = None
 # ── LLM token budgets ────────────────────────────────────────────────────────
 # Stage 1 (find) needs more room: it receives web-search grounding text and must
 # reason across many candidate types before outputting a scored JSON list.
-MAX_TOKENS_FIND    = 4000
+MAX_TOKENS_FIND    = 8000
 
 # Stage 2 (skeptic) is a compact verdict-only call: keep/kill + one sentence per candidate.
 # Must be large enough to absorb thinking-model overhead (gemini-3.5-flash uses ~2k tokens

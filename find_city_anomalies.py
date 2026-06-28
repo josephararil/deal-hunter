@@ -66,18 +66,60 @@ def build_email_html(diamonds, month_count):
     rows = ""
     for d in diamonds:
         type_label = d.get("type", "").replace("_", " ").title()
+        summary = d.get("assistant_summary") or d.get("reason", "")
+
+        # Options list — each with dates, price, and a booking link or how-to-book text
+        opts_html = ""
+        options = d.get("options") or []
+        if options:
+            items = ""
+            for opt in options:
+                dates = opt.get("dates", "")
+                pn = opt.get("price_per_night_eur")
+                total = opt.get("total_eur")
+                url = opt.get("booking_url") or ""
+                source = opt.get("source", "")
+                price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
+                if url:
+                    book_part = f"<a href='{url}' style='color:#1a56db;text-decoration:none'>Book now</a>"
+                    src_note = (
+                        f" &nbsp;<span style='color:#999;font-size:12px'>({source})</span>"
+                        if source else ""
+                    )
+                else:
+                    how = d.get("how_to_book") or source or "see grounding below"
+                    book_part = f"<span style='color:#555'>{how}</span>"
+                    src_note = ""
+                cells = " &nbsp;·&nbsp; ".join(p for p in [dates, price_str, book_part + src_note] if p)
+                items += f"<li style='margin:5px 0;font-size:14px'>{cells}</li>"
+            opts_html = f"<ul style='margin:6px 0 6px 20px;padding:0'>{items}</ul>"
+        elif d.get("how_to_book"):
+            opts_html = (
+                f"<div style='font-size:14px;color:#444;margin:6px 0'>"
+                f"<b>How to book:</b> {d['how_to_book']}</div>"
+            )
+
+        grounding_html = (
+            f"<div style='font-size:12px;color:#777;margin:4px 0'>Source: {d['grounding']}</div>"
+            if d.get("grounding") else ""
+        )
+        red_flags_html = (
+            f"<div style='font-size:13px;color:#c00;margin:4px 0'>Red flags: {d['red_flags']}</div>"
+            if d.get("red_flags") else ""
+        )
+
         rows += (
             f"<tr><td style='padding:14px 0;border-bottom:1px solid #eee'>"
             f"<div style='font-size:17px;font-weight:bold'>{d['destination']}</div>"
             f"<div style='font-size:13px;color:#777;margin:3px 0'>"
             f"{type_label} &nbsp;·&nbsp; {d.get('window', '')}</div>"
-            f"<div style='font-size:14px;color:#222;margin:6px 0'>{d.get('reason', '')}</div>"
-            f"<div style='font-size:14px;color:#1a6a1a;margin:4px 0'>"
-            f"<b>Why it's exceptional:</b> {d.get('why', '')}</div>"
-            + (f"<div style='font-size:13px;color:#c00;margin:4px 0'>"
-               f"Red flags: {d['red_flags']}</div>" if d.get("red_flags") else "")
-            + "</td></tr>"
+            f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
+            f"{opts_html}"
+            f"{grounding_html}"
+            f"{red_flags_html}"
+            f"</td></tr>"
         )
+
     conscience = ""
     if month_count >= 3:
         conscience = (
@@ -102,15 +144,37 @@ def build_email_html(diamonds, month_count):
 def build_email_text(diamonds):
     parts = []
     for d in diamonds:
-        part = (
-            f"{d['destination']} ({d.get('type', '')})\n"
-            f"Window: {d.get('window', '')}\n"
-            f"{d.get('reason', '')}\n"
-            f"Why exceptional: {d.get('why', '')}"
-        )
+        summary = d.get("assistant_summary") or d.get("reason", "")
+        lines = [
+            f"{d['destination']} ({d.get('type', '')})",
+            f"Window: {d.get('window', '')}",
+            summary,
+        ]
+        options = d.get("options") or []
+        if options:
+            lines.append("Options:")
+            for opt in options:
+                dates = opt.get("dates", "")
+                pn = opt.get("price_per_night_eur")
+                total = opt.get("total_eur")
+                url = opt.get("booking_url") or ""
+                source = opt.get("source", "")
+                price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
+                if url:
+                    book_str = url
+                    src_note = f" ({source})" if source else ""
+                else:
+                    book_str = d.get("how_to_book") or source or ""
+                    src_note = ""
+                cells = " · ".join(p for p in [dates, price_str, book_str + src_note] if p)
+                lines.append(f"  - {cells}")
+        elif d.get("how_to_book"):
+            lines.append(f"How to book: {d['how_to_book']}")
+        if d.get("grounding"):
+            lines.append(f"Source: {d['grounding']}")
         if d.get("red_flags"):
-            part += f"\nRed flags: {d['red_flags']}"
-        parts.append(part)
+            lines.append(f"Red flags: {d['red_flags']}")
+        parts.append("\n".join(lines))
     return "\n\n---\n\n".join(parts)
 
 

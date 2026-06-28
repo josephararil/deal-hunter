@@ -1,4 +1,56 @@
 {
-  "baselines": {},
-  "ledger": []
+  "baselines": {
+    "Kempinski Hotel Grand Arena, Bansko, Bulgaria|2026-07": {
+      "realistic_price_eur": 158,
+      "note": "I wasn't able to pull specific live rates for the September 10–14 window, but I did verify off-peak pricing for July 26–27 at ~$172 (€158) total per n",
+      "source": "Expedia",
+      "updated": "2026-06-28"
+    }
+  },
+  "ledger": [
+    {
+      "date": "2026-06-28",
+      "destination": "Hot Springs Medical and SPA, Banya, Bulgaria",
+      "window": "Sep 15-20, 2026",
+      "type": "hotel",
+      "claimed_price": null,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "Paying $168-$185 per night for a 4-star regional spa hotel is a classic absolute-value trap, as the local market offers comparable thermal resort utility for a family at significantly lower price floors.",
+      "note": "High absolute baseline price masquerading as a seasonal deal; local dining and extras will inflate costs further."
+    },
+    {
+      "date": "2026-06-28",
+      "destination": "Arte Spa & Park Hotel, Velingrad, Bulgaria",
+      "window": "Aug 15-19, 2026",
+      "type": "hotel",
+      "claimed_price": null,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "At roughly €145/night, this falls directly into the absolute-value trap for Velingrad, where the framed discount is irrelevant because the absolute price buys nothing exceptional compared to cheaper regional competitors.",
+      "note": "Peak-season price anchoring disguising a completely standard, unexceptional absolute rate for the region."
+    },
+    {
+      "date": "2026-06-28",
+      "destination": "Alexandra Beach Thassos Spa Resort, Potos, Thassos, Greece",
+      "window": "Sep 8-15, 2026",
+      "type": "hotel",
+      "claimed_price": 10.0,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "The 3.5-hour drive plus a 40-minute ferry crossing pushes door-to-door transit well past the 4-hour threshold, adding too much logistical friction and toddler tax for a completely standard shoulder-season rate.",
+      "note": "Ferry wait times, boarding logistics, and island driving will push total travel time past 5 hours, defeating the purpose of a low-friction getaway."
+    },
+    {
+      "date": "2026-06-28",
+      "destination": "Kempinski Hotel Grand Arena, Bansko, Bulgaria",
+      "window": "Sep 10-14, 2026",
+      "type": "hotel",
+      "claimed_price": null,
+      "verdict": "correct",
+      "actual_price": 158,
+      "source": "Expedia",
+      "note": "I wasn't able to pull specific live rates for the September 10–14 window, but I did verify off-peak pricing for July 26–27 at ~$172 (€158) total per night on Expedia. This confirms the massive offseas"
+    }
+  ]
 }

@@ -1,24 +1,28 @@
 """
 find_city_anomalies.py  —  Diamond Finder (daily, LLM-only, no Apify)
 
-Two-stage gate:
+Three-stage gate:
   Stage 1 (find):    one llm() call with web search. Asks for travel-arbitrage
                      candidates scored 0-100 across hotels, cruises, flight fares,
                      packages, and currency plays reachable from Plovdiv.
   Stage 2 (skeptic): one llm() call, no search. Hostile reviewer confirms only
                      genuinely exceptional candidates (verdict: keep / kill).
+  Stage 3 (verify):  one llm() call per Stage-2 survivor, with web search.
+                     Grounds the deal in real prices at specific bookable dates;
+                     corrects or kills hallucinations. (verdict: confirm/correct/kill)
 
 Outputs every run:
   state/city_signals.json  — Stage 1 candidate list (hunt=False always; schema kept for reference)
-  state/city_signals.md    — human-readable log; useful even on silent days
+  state/city_signals.md    — human-readable log including Stage 3 outcomes; useful even on silent days
   state/signals_seen.json  — anti-spam TTL state, committed by CI
 
-Emails immediately when diamonds survive. Silence is the normal outcome.
+Emails immediately when diamonds survive all three stages. Silence is the normal outcome.
 """
 
 import json, datetime as dt
 import config as C
 import common as X
+import memory as M
 
 
 # --- anti-spam state helpers ---
@@ -63,18 +67,60 @@ def build_email_html(diamonds, month_count):
     rows = ""
     for d in diamonds:
         type_label = d.get("type", "").replace("_", " ").title()
+        summary = d.get("assistant_summary") or d.get("reason", "")
+
+        # Options list — each with dates, price, and a booking link or how-to-book text
+        opts_html = ""
+        options = d.get("options") or []
+        if options:
+            items = ""
+            for opt in options:
+                dates = opt.get("dates", "")
+                pn = opt.get("price_per_night_eur")
+                total = opt.get("total_eur")
+                url = opt.get("booking_url") or ""
+                source = opt.get("source", "")
+                price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
+                if url:
+                    book_part = f"<a href='{url}' style='color:#1a56db;text-decoration:none'>Book now</a>"
+                    src_note = (
+                        f" &nbsp;<span style='color:#999;font-size:12px'>({source})</span>"
+                        if source else ""
+                    )
+                else:
+                    how = d.get("how_to_book") or source or "see grounding below"
+                    book_part = f"<span style='color:#555'>{how}</span>"
+                    src_note = ""
+                cells = " &nbsp;·&nbsp; ".join(p for p in [dates, price_str, book_part + src_note] if p)
+                items += f"<li style='margin:5px 0;font-size:14px'>{cells}</li>"
+            opts_html = f"<ul style='margin:6px 0 6px 20px;padding:0'>{items}</ul>"
+        elif d.get("how_to_book"):
+            opts_html = (
+                f"<div style='font-size:14px;color:#444;margin:6px 0'>"
+                f"<b>How to book:</b> {d['how_to_book']}</div>"
+            )
+
+        grounding_html = (
+            f"<div style='font-size:12px;color:#777;margin:4px 0'>Source: {d['grounding']}</div>"
+            if d.get("grounding") else ""
+        )
+        red_flags_html = (
+            f"<div style='font-size:13px;color:#c00;margin:4px 0'>Red flags: {d['red_flags']}</div>"
+            if d.get("red_flags") else ""
+        )
+
         rows += (
             f"<tr><td style='padding:14px 0;border-bottom:1px solid #eee'>"
             f"<div style='font-size:17px;font-weight:bold'>{d['destination']}</div>"
             f"<div style='font-size:13px;color:#777;margin:3px 0'>"
             f"{type_label} &nbsp;·&nbsp; {d.get('window', '')}</div>"
-            f"<div style='font-size:14px;color:#222;margin:6px 0'>{d.get('reason', '')}</div>"
-            f"<div style='font-size:14px;color:#1a6a1a;margin:4px 0'>"
-            f"<b>Why it's exceptional:</b> {d.get('why', '')}</div>"
-            + (f"<div style='font-size:13px;color:#c00;margin:4px 0'>"
-               f"Red flags: {d['red_flags']}</div>" if d.get("red_flags") else "")
-            + "</td></tr>"
+            f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
+            f"{opts_html}"
+            f"{grounding_html}"
+            f"{red_flags_html}"
+            f"</td></tr>"
         )
+
     conscience = ""
     if month_count >= 3:
         conscience = (
@@ -99,21 +145,43 @@ def build_email_html(diamonds, month_count):
 def build_email_text(diamonds):
     parts = []
     for d in diamonds:
-        part = (
-            f"{d['destination']} ({d.get('type', '')})\n"
-            f"Window: {d.get('window', '')}\n"
-            f"{d.get('reason', '')}\n"
-            f"Why exceptional: {d.get('why', '')}"
-        )
+        summary = d.get("assistant_summary") or d.get("reason", "")
+        lines = [
+            f"{d['destination']} ({d.get('type', '')})",
+            f"Window: {d.get('window', '')}",
+            summary,
+        ]
+        options = d.get("options") or []
+        if options:
+            lines.append("Options:")
+            for opt in options:
+                dates = opt.get("dates", "")
+                pn = opt.get("price_per_night_eur")
+                total = opt.get("total_eur")
+                url = opt.get("booking_url") or ""
+                source = opt.get("source", "")
+                price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
+                if url:
+                    book_str = url
+                    src_note = f" ({source})" if source else ""
+                else:
+                    book_str = d.get("how_to_book") or source or ""
+                    src_note = ""
+                cells = " · ".join(p for p in [dates, price_str, book_str + src_note] if p)
+                lines.append(f"  - {cells}")
+        elif d.get("how_to_book"):
+            lines.append(f"How to book: {d['how_to_book']}")
+        if d.get("grounding"):
+            lines.append(f"Source: {d['grounding']}")
         if d.get("red_flags"):
-            part += f"\nRed flags: {d['red_flags']}"
-        parts.append(part)
+            lines.append(f"Red flags: {d['red_flags']}")
+        parts.append("\n".join(lines))
     return "\n\n---\n\n".join(parts)
 
 
 # --- markdown log ---
 
-def write_md(today, candidates, diamonds):
+def write_md(today, candidates, diamonds, stage3_results=None):
     diamond_dests = {d["destination"] for d in diamonds}
     lines = [f"# Diamond Finder — {today}", ""]
     if not candidates:
@@ -121,7 +189,8 @@ def write_md(today, candidates, diamonds):
     else:
         lines.append(
             f"_Stage 1: {len(candidates)} candidate(s). "
-            f"{len(diamonds)} diamond(s) confirmed._"
+            f"{len(diamonds)} Stage-2 diamond(s). "
+            f"{len(stage3_results or [])} Stage-3 verified._"
         )
         lines.append("")
         for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
@@ -135,22 +204,88 @@ def write_md(today, candidates, diamonds):
             )
             lines.append(f"{c.get('reason', '')}")
             lines.append("")
+    if stage3_results:
+        lines.append("## Stage 3 Verification")
+        lines.append("")
+        for r in stage3_results:
+            verdict3 = r.get("verdict", "?")
+            icon = "✅" if verdict3 == "confirm" else "🔧" if verdict3 == "correct" else "❌"
+            dest3 = r.get("destination", "?")
+            conf3 = r.get("confidence", "?")
+            lines.append(f"### {icon} {dest3} — {verdict3.upper()} (confidence: {conf3})")
+            if r.get("assistant_summary"):
+                lines.append(f"**Summary:** {r['assistant_summary']}")
+            opts = r.get("options", [])
+            if opts:
+                lines.append("**Options:**")
+                for opt in opts:
+                    dates = opt.get("dates", "?")
+                    pn = opt.get("price_per_night_eur", "?")
+                    total = opt.get("total_eur", "?")
+                    url = opt.get("booking_url") or ""
+                    src = opt.get("source", "")
+                    link = f" · [book]({url})" if url else ""
+                    src_note = f" · _{src}_" if src else ""
+                    lines.append(f"  - {dates} · €{pn}/night · €{total} total{link}{src_note}")
+            if r.get("how_to_book"):
+                lines.append(f"**How to book:** {r['how_to_book']}")
+            if r.get("grounding"):
+                lines.append(f"**Grounding:** {r['grounding']}")
+            lines.append("")
     with open("state/city_signals.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
+
+
+# --- Layer-3 grounding ---
+
+def _ground_llm(diamond, mem_text, today):
+    """Layer-3 grounding via LLM concierge + web search (current active implementation)."""
+    candidate_json = json.dumps(diamond, ensure_ascii=False, indent=2)
+    verify_prompt = C.VERIFY_PROMPT.format(
+        today=today,
+        candidate=candidate_json,
+        memory=mem_text,
+    )
+    raw3 = X.llm(
+        messages=[{"role": "user", "content": verify_prompt}],
+        model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
+        provider=C.PROVIDER_VERIFY,
+    )
+    return X.parse_json_block(raw3) or {}
+
+
+# ── GROUNDING SEAM ──────────────────────────────────────────────────────────
+# ground_deal is the active Layer-3 grounding function. Currently uses the LLM
+# concierge. To switch to Apify when credits renew (2026-07-26):
+#   from verify_apify import apify_ground
+#   ground_deal = apify_ground
+ground_deal = _ground_llm
 
 
 # --- main ---
 
 def main():
     today = X.today_iso()
-    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | model: {C.MODEL_DIAMOND} ===")
+    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | find: {C.MODEL_FIND} | skeptic: {C.MODEL_SKEPTIC} | verify: {C.MODEL_VERIFY} ===")
+
+    # Load memory once; inject into all three stage prompts
+    mem = M.load()
+    mem_text = M.summarize_for_prompt(mem)
 
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
     raw1 = X.llm(
+<<<<<<< HEAD
         messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
         model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
         response_schema=C.STAGE1_RESPONSE_SCHEMA,
+=======
+        messages=[{"role": "user", "content": C.FIND_PROMPT.format(
+            today=today, cities=C.cities_prompt_text(), memory=mem_text
+        )}],
+        model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+        provider=C.PROVIDER_FIND,
+>>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
     )
     parsed1 = X.parse_json_block(raw1) or {}
     candidates = parsed1.get("candidates", [])
@@ -169,11 +304,17 @@ def main():
             today=today,
             min_score=C.STAGE1_MIN_SCORE,
             candidates=json.dumps(high_score, ensure_ascii=False, indent=2),
+            memory=mem_text,
         )
         raw2 = X.llm(
             messages=[{"role": "user", "content": skeptic}],
+<<<<<<< HEAD
             model=C.MODEL_DIAMOND_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
             response_schema=C.STAGE2_RESPONSE_SCHEMA,
+=======
+            model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            provider=C.PROVIDER_SKEPTIC,
+>>>>>>> ff8288596ed92e759e3417de8282d9bac2b31ba3
         )
         verdicts = X.parse_json_block(raw2) or []
         if not isinstance(verdicts, list):
@@ -188,16 +329,87 @@ def main():
                 )
                 if orig:
                     diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
+        # Record skeptic kills in memory so future runs learn from them (Issue 4)
+        for v in verdicts:
+            if not isinstance(v, dict) or v.get("verdict") != "kill":
+                continue
+            dest = v.get("destination", "")
+            orig = next((c for c in high_score if c.get("destination") == dest), None)
+            if orig:
+                M.record_outcome(
+                    mem, dest, orig.get("window", ""), orig.get("type", ""),
+                    claimed_price=M._extract_price(orig.get("reason", "")),
+                    verdict="skeptic_kill",
+                    source=v.get("why", ""),
+                    note=(v.get("red_flags") or "")[:200],
+                )
     print(f"Stage 2: {len(diamonds)} diamond(s)")
 
-    # Write city_signals.json — hunt=False always; the Apify hunt pipeline is dormant
-    diamond_dests = {d["destination"] for d in diamonds}
+    # Stage 3: verify each Stage-2 survivor with a focused web-search call.
+    # One ground_deal() call per deal (rare — almost always 0-2 per run).
+    # Merges verified fields onto the diamond dict; drops verdict=="kill".
+    verified_diamonds = []
+    stage3_results = []
+    if diamonds:
+        print(f"Stage 3: verifying {len(diamonds)} diamond(s)...")
+        for diamond in diamonds:
+            result = ground_deal(diamond, mem_text, today)
+            verdict3 = result.get("verdict", "kill")
+            dest3 = diamond.get("destination", "?")
+            print(f"  Stage 3 {verdict3.upper():>7}  {dest3}")
+            stage3_results.append(result)
+            if verdict3 in ("confirm", "correct"):
+                verified_diamonds.append({**diamond, **{
+                    "verdict": verdict3,
+                    "options": result.get("options", []),
+                    "how_to_book": result.get("how_to_book", ""),
+                    "grounding": result.get("grounding", ""),
+                    "assistant_summary": result.get("assistant_summary", ""),
+                    "confidence": result.get("confidence", "low"),
+                }})
+    print(f"Stage 3: {len(verified_diamonds)} diamond(s) verified")
+
+    # Record outcomes and baselines in memory — every run, including silent days.
+    # diamonds and stage3_results are parallel lists (same order, same length).
+    for diamond, r3 in zip(diamonds, stage3_results):
+        dest     = diamond.get("destination", "")
+        window   = diamond.get("window", "")
+        type_    = diamond.get("type", "")
+        verdict3 = r3.get("verdict", "kill") if r3 else "kill"
+        options  = (r3.get("options") or []) if r3 else []
+        actual_price = options[0].get("price_per_night_eur") if options else None
+        source3  = (options[0].get("source", "") if options
+                    else (r3.get("grounding", "") if r3 else ""))
+        summary  = ((r3.get("assistant_summary") or "")[:200]) if r3 else ""
+
+        M.record_outcome(
+            mem, dest, window, type_,
+            claimed_price=M._extract_price(diamond.get("reason", "")),
+            verdict=verdict3,
+            actual_price=actual_price,
+            source=source3,
+            note=summary,
+        )
+        # Record a price baseline for every confirmed or corrected deal
+        if verdict3 in ("confirm", "correct") and actual_price:
+            # Use the first verified option's dates for the season key when available
+            season = M.season_key(options[0].get("dates", "") if options else window)
+            M.record_baseline(mem, dest, season, actual_price,
+                              note=summary[:150], source=source3)
+
+    M.prune(mem)
+    M.save(mem)
+    print(f"Memory updated: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s)")
+
+    # Write city_signals.json — hunt=False always; field kept for schema compatibility
+    # "anomaly" only for deals that survived all three stages (not just Stage-2)
+    verified_dests = {d["destination"] for d in verified_diamonds}
     signals = [
         {
             "city": c.get("destination", ""),
             "window": c.get("window", ""),
             "reason": c.get("reason", ""),
-            "type": "anomaly" if c.get("destination") in diamond_dests else "reminder",
+            "type": "anomaly" if c.get("destination") in verified_dests else "reminder",
             "confidence": c.get("confidence", "low"),
             "hunt": False,
         }
@@ -206,14 +418,14 @@ def main():
     X.save_json("city_signals.json", {"generated": today, "signals": signals})
 
     # Write markdown every run regardless of email outcome
-    write_md(today, candidates, diamonds)
+    write_md(today, candidates, diamonds, stage3_results)
 
-    # Anti-spam check + email
+    # Anti-spam check + email — uses verified_diamonds (Stage-3 survivors only)
     seen_state = load_seen()
     seen_state = prune_seen(seen_state)
 
     new_diamonds = [
-        d for d in diamonds
+        d for d in verified_diamonds
         if not is_already_seen(seen_state, d["destination"], d["window"])
     ]
     print(f"New (not seen within {C.SIGNAL_TTL_DAYS}d TTL): {len(new_diamonds)}")

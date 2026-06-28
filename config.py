@@ -132,14 +132,19 @@ SIGNAL_TTL_DAYS = 30
 
 # ── LLM prompts ─────────────────────────────────────────────────────────────
 # Placeholders filled at runtime by find_city_anomalies.py:
-#   FIND_PROMPT    → {today}, {cities}
-#   SKEPTIC_PROMPT → {today}, {min_score}, {candidates}
-#   VERIFY_PROMPT  → {today}, {candidate}, {memory}  (memory="" until Phase B)
+#   FIND_PROMPT    → {today}, {cities}, {memory}
+#   SKEPTIC_PROMPT → {today}, {min_score}, {candidates}, {memory}
+#   VERIFY_PROMPT  → {today}, {candidate}, {memory}
 # Use {{...}} for literal braces in the JSON schema examples (Python .format() escaping).
 
 FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to perform live web searches to find 3-5 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
 
 Your objective is to find high-utility value plays where a premium experience or location drops dramatically in price while maintaining high utility and comfort for a 4-year-old.
+
+---
+
+### PRIOR CORRECTIONS (from past pipeline runs — treat as ground truth; do not repeat past hallucinations)
+{memory}
 
 ---
 
@@ -218,6 +223,11 @@ Target Demographics & Logistics:
 
 Input Candidates (scored >= {min_score}/100 in preliminary filtering):
 {candidates}
+
+---
+
+### PRIOR VERIFIED PRICES (from past pipeline runs — use for absolute-value calibration)
+{memory}
 
 ---
 

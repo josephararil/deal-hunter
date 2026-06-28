@@ -22,6 +22,7 @@ Emails immediately when diamonds survive all three stages. Silence is the normal
 import json, datetime as dt
 import config as C
 import common as X
+import memory as M
 
 
 # --- anti-spam state helpers ---
@@ -241,10 +242,16 @@ def main():
     today = X.today_iso()
     print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | find: {C.MODEL_FIND} | skeptic: {C.MODEL_SKEPTIC} | verify: {C.MODEL_VERIFY} ===")
 
+    # Load memory once; inject into all three stage prompts
+    mem = M.load()
+    mem_text = M.summarize_for_prompt(mem)
+
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
     raw1 = X.llm(
-        messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
+        messages=[{"role": "user", "content": C.FIND_PROMPT.format(
+            today=today, cities=C.cities_prompt_text(), memory=mem_text
+        )}],
         model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
         provider=C.PROVIDER_FIND,
     )
@@ -265,6 +272,7 @@ def main():
             today=today,
             min_score=C.STAGE1_MIN_SCORE,
             candidates=json.dumps(high_score, ensure_ascii=False, indent=2),
+            memory=mem_text,
         )
         raw2 = X.llm(
             messages=[{"role": "user", "content": skeptic}],
@@ -299,7 +307,7 @@ def main():
             verify_prompt = C.VERIFY_PROMPT.format(
                 today=today,
                 candidate=candidate_json,
-                memory="",  # Phase B wires in real memory here
+                memory=mem_text,
             )
             raw3 = X.llm(
                 messages=[{"role": "user", "content": verify_prompt}],
@@ -321,6 +329,36 @@ def main():
                     "confidence": result.get("confidence", "low"),
                 }})
     print(f"Stage 3: {len(verified_diamonds)} diamond(s) verified")
+
+    # Record outcomes and baselines in memory — every run, including silent days.
+    # diamonds and stage3_results are parallel lists (same order, same length).
+    for diamond, r3 in zip(diamonds, stage3_results):
+        dest     = diamond.get("destination", "")
+        window   = diamond.get("window", "")
+        type_    = diamond.get("type", "")
+        verdict3 = r3.get("verdict", "kill") if r3 else "kill"
+        options  = (r3.get("options") or []) if r3 else []
+        actual_price = options[0].get("price_per_night_eur") if options else None
+        source3  = (options[0].get("source", "") if options
+                    else (r3.get("grounding", "") if r3 else ""))
+        summary  = ((r3.get("assistant_summary") or "")[:200]) if r3 else ""
+
+        M.record_outcome(
+            mem, dest, window, type_,
+            claimed_price=None,
+            verdict=verdict3,
+            actual_price=actual_price,
+            source=source3,
+            note=summary,
+        )
+        # Record a price baseline for every confirmed or corrected deal
+        if verdict3 in ("confirm", "correct") and actual_price:
+            M.record_baseline(mem, dest, window, actual_price,
+                              note=summary[:150], source=source3)
+
+    M.prune(mem)
+    M.save(mem)
+    print(f"Memory updated: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s)")
 
     # Write city_signals.json — hunt=False always; the Apify hunt pipeline is dormant
     diamond_dests = {d["destination"] for d in diamonds}

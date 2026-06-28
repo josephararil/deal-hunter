@@ -132,7 +132,7 @@ Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret sto
 - `LLM_PROVIDER=anthropic` (default): Messages API; `want_search` → `web_search` tool.
 - `LLM_PROVIDER=gemini`: Interactions API (`/v1beta/interactions`); `want_search` →
   `{"type": "google_search"}` tool. Degrades gracefully if Gemini rejects the search
-  tool (retries without it). All stages use `thinking_level: "high"`.
+  tool (retries without it).
 - Per-stage model roles are in `config.py` as `MODEL_FIND`, `MODEL_SKEPTIC`, `MODEL_VERIFY`.
   Gemini equivalents are mapped in `GEMINI_MODEL_MAP`. Add new roles there, never as
   literals in pipeline code.

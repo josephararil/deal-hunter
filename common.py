@@ -65,14 +65,7 @@ def _anthropic(messages, model, max_tokens, want_search):
 def _gemini(messages, model, max_tokens, want_search, response_schema=None):
     gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-3.5-flash")
     text = "\n\n".join(m["content"] for m in messages)
-    body = {
-        "model": gmodel,
-        "input": text,
-        "generation_config": {
-            "thinking_level": "high",
-            "maxOutputTokens": max_tokens,
-        },
-    }
+    body = {"model": gmodel, "input": text}
     if want_search:
         body["tools"] = [{"type": "google_search"}]
     if response_schema is not None:
@@ -89,6 +82,8 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None):
         # signals from reasoning alone rather than crashing.
         body.pop("tools", None)
         r = _post_with_retry(url, headers=headers, json_body=body)
+    if not r.ok:
+        print(f"  [gemini error] HTTP {r.status_code}: {r.text[:1000]}")
     r.raise_for_status()
     parts = []
     for step in r.json().get("steps", []):

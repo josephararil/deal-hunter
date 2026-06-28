@@ -129,6 +129,23 @@ MAX_EMAILS_PER_RUN = 3
 # Prevents daily spam about a deal that persists for weeks.
 SIGNAL_TTL_DAYS = 30
 
+# ── Price ceilings ───────────────────────────────────────────────────────────
+# A candidate priced above its country ceiling is, by definition, not a diamond
+# regardless of star rating or framed discount. It is logged but NEVER emailed.
+PRICE_CEILING_EUR = {"Bulgaria": 100, "Turkey": 100}
+DEFAULT_PRICE_CEILING_EUR = 130  # rest of Europe (~+30%)
+
+
+def get_price_ceiling(destination):
+    """Return the applicable per-night price ceiling (EUR) for a destination string.
+    Matches country names as substrings; falls back to DEFAULT_PRICE_CEILING_EUR."""
+    dest_lower = (destination or "").lower()
+    for country, ceiling in PRICE_CEILING_EUR.items():
+        if country.lower() in dest_lower:
+            return ceiling
+    return DEFAULT_PRICE_CEILING_EUR
+
+
 # ── LLM prompts ─────────────────────────────────────────────────────────────
 # Placeholders filled at runtime by find_city_anomalies.py:
 #   FIND_PROMPT    → {today}, {cities}, {memory}
@@ -192,6 +209,9 @@ Perform active web searches across these specific categories:
 ### OUTPUT FORMAT
 Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON object matching the schema below.
 
+Field notes:
+- est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). Used for price gating downstream.
+
 JSON Schema:
 {{
   "candidates": [
@@ -200,6 +220,7 @@ JSON Schema:
       "score": 82,
       "type": "hotel",
       "window": "Specific exact dates or tight window (e.g., Jan 10-17)",
+      "est_price_eur": 79,
       "reason": "Cite live prices found via search. Quantify the utility vs. price play (e.g., peak price vs current live price). State why it fits a 4-year-old.",
       "confidence": "high"
     }}
@@ -365,14 +386,15 @@ STAGE1_RESPONSE_SCHEMA = {
             "items": {
                 "type": "object",
                 "properties": {
-                    "destination": {"type": "string"},
-                    "score":       {"type": "integer"},
-                    "type":        {"type": "string"},
-                    "window":      {"type": "string"},
-                    "reason":      {"type": "string"},
-                    "confidence":  {"type": "string"},
+                    "destination":   {"type": "string"},
+                    "score":         {"type": "integer"},
+                    "type":          {"type": "string"},
+                    "window":        {"type": "string"},
+                    "est_price_eur": {"type": "number"},
+                    "reason":        {"type": "string"},
+                    "confidence":    {"type": "string"},
                 },
-                "required": ["destination", "score", "type", "window", "reason", "confidence"],
+                "required": ["destination", "score", "type", "window", "est_price_eur", "reason", "confidence"],
             },
         },
     },

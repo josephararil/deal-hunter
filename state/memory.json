@@ -1,12 +1,5 @@
 {
-  "baselines": {
-    "Kempinski Hotel Grand Arena, Bansko, Bulgaria|2026-07": {
-      "realistic_price_eur": 158,
-      "note": "I wasn't able to pull specific live rates for the September 10–14 window, but I did verify off-peak pricing for July 26–27 at ~$172 (€158) total per n",
-      "source": "Expedia",
-      "updated": "2026-06-28"
-    }
-  },
+  "baselines": {},
   "ledger": [
     {
       "date": "2026-06-28",
@@ -35,7 +28,7 @@
       "destination": "Alexandra Beach Thassos Spa Resort, Potos, Thassos, Greece",
       "window": "Sep 8-15, 2026",
       "type": "hotel",
-      "claimed_price": 10.0,
+      "claimed_price": null,
       "verdict": "skeptic_kill",
       "actual_price": null,
       "source": "The 3.5-hour drive plus a 40-minute ferry crossing pushes door-to-door transit well past the 4-hour threshold, adding too much logistical friction and toddler tax for a completely standard shoulder-season rate.",
@@ -47,10 +40,10 @@
       "window": "Sep 10-14, 2026",
       "type": "hotel",
       "claimed_price": null,
-      "verdict": "correct",
-      "actual_price": 158,
-      "source": "Expedia",
-      "note": "I wasn't able to pull specific live rates for the September 10–14 window, but I did verify off-peak pricing for July 26–27 at ~$172 (€158) total per night on Expedia. This confirms the massive offseas"
+      "verdict": "over_ceiling",
+      "actual_price": null,
+      "source": "est_price_eur 158 > Bulgaria ceiling 100",
+      "note": "Removed poisoned baseline: Stage 3 verified July 26-27 pricing (€158) for a September window at low confidence — out-of-window, unreliable."
     }
   ]
 }

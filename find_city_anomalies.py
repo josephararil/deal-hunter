@@ -181,28 +181,41 @@ def build_email_text(diamonds):
 
 # --- markdown log ---
 
-def write_md(today, candidates, diamonds, stage3_results=None):
+def write_md(today, candidates, diamonds, stage3_results=None, over_ceiling=None):
     diamond_dests = {d["destination"] for d in diamonds}
+    over_ceiling_dests = {c["destination"] for c in (over_ceiling or [])}
     lines = [f"# Diamond Finder — {today}", ""]
     if not candidates:
         lines.append("_No candidates found today._")
     else:
+        oc_count = len(over_ceiling or [])
         lines.append(
             f"_Stage 1: {len(candidates)} candidate(s). "
             f"{len(diamonds)} Stage-2 diamond(s). "
-            f"{len(stage3_results or [])} Stage-3 verified._"
+            + (f"{oc_count} over-ceiling (logged only). " if oc_count else "")
+            + f"{len(stage3_results or [])} Stage-3 verified._"
         )
         lines.append("")
         for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
             dest = c.get("destination", "?")
-            gem = " 💎" if dest in diamond_dests else ""
+            if dest in diamond_dests:
+                marker = " 💎"
+            elif dest in over_ceiling_dests:
+                marker = " 🔒"
+            else:
+                marker = ""
             score = c.get("score", 0)
             conf = c.get("confidence", "?")
-            lines.append(f"### {dest}{gem} — {score}/100 ({conf})")
+            est = c.get("est_price_eur")
+            est_str = f" · est €{est}/night" if est is not None else ""
+            lines.append(f"### {dest}{marker} — {score}/100 ({conf}){est_str}")
             lines.append(
                 f"**Type:** {c.get('type', '?')} &nbsp; **Window:** {c.get('window', '?')}"
             )
             lines.append(f"{c.get('reason', '')}")
+            if dest in over_ceiling_dests:
+                ceiling = C.get_price_ceiling(dest)
+                lines.append(f"_🔒 Over ceiling — est €{est}/night > €{ceiling} ceiling. Logged only, not emailed._")
             lines.append("")
     if stage3_results:
         lines.append("## Stage 3 Verification")
@@ -231,9 +244,25 @@ def write_md(today, candidates, diamonds, stage3_results=None):
                 lines.append(f"**How to book:** {r['how_to_book']}")
             if r.get("grounding"):
                 lines.append(f"**Grounding:** {r['grounding']}")
+            if r.get("_block_reason"):
+                lines.append(f"_🔒 Email blocked: {r['_block_reason']}_")
             lines.append("")
     with open("state/city_signals.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
+
+
+# --- helpers ---
+
+def _dates_in_window(option_dates, candidate_window):
+    """Rough sanity check: option dates should fall in the same YYYY-MM as the candidate window.
+    If either string can't be parsed to YYYY-MM, let it through (don't block on ambiguity)."""
+    import re
+    opt_season = M.season_key(option_dates)
+    win_season = M.season_key(candidate_window)
+    ym = re.compile(r'^\d{4}-\d{2}$')
+    if ym.match(opt_season) and ym.match(win_season):
+        return opt_season == win_season
+    return True
 
 
 # --- Layer-3 grounding ---
@@ -290,16 +319,38 @@ def main():
         print(f"  {c.get('score', '?'):>3}/100  {c.get('destination', '?')}  [{c.get('type', '?')}]")
 
     high_score = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
-    print(f"Stage 1 gate (>= {C.STAGE1_MIN_SCORE}): {len(high_score)} forwarded to skeptic")
+    # Ceiling gate: candidates priced above their country ceiling are logged + recorded,
+    # but never forwarded to Stage 2/3. If est_price_eur is missing, let through.
+    stage2_candidates, over_ceiling = [], []
+    for c in high_score:
+        est = c.get("est_price_eur")
+        ceiling = C.get_price_ceiling(c.get("destination", ""))
+        if est is not None and est > ceiling:
+            over_ceiling.append(c)
+        else:
+            stage2_candidates.append(c)
+    print(f"Stage 1 gate (>= {C.STAGE1_MIN_SCORE}): {len(high_score)} above threshold, "
+          f"{len(over_ceiling)} over-ceiling, {len(stage2_candidates)} forwarded to skeptic")
+
+    # Record over-ceiling candidates in memory now (before Stage 2)
+    for c in over_ceiling:
+        ceiling = C.get_price_ceiling(c.get("destination", ""))
+        M.record_outcome(
+            mem, c.get("destination", ""), c.get("window", ""), c.get("type", ""),
+            claimed_price=c.get("est_price_eur"),
+            verdict="over_ceiling",
+            source=f"est_price_eur {c.get('est_price_eur')} > ceiling {ceiling}",
+            note=M._clip(c.get("reason", ""), 200),
+        )
 
     # Stage 2: skeptic review, no search
     diamonds = []
-    if high_score:
+    if stage2_candidates:
         print("Stage 2: calling skeptic LLM...")
         skeptic = C.SKEPTIC_PROMPT.format(
             today=today,
             min_score=C.STAGE1_MIN_SCORE,
-            candidates=json.dumps(high_score, ensure_ascii=False, indent=2),
+            candidates=json.dumps(stage2_candidates, ensure_ascii=False, indent=2),
             memory=mem_text,
         )
         raw2 = X.llm(
@@ -317,23 +368,23 @@ def main():
             print(f"  {verdict.upper():>4}  {dest}")
             if isinstance(v, dict) and verdict == "keep":
                 orig = next(
-                    (c for c in high_score if c.get("destination") == v.get("destination")), {}
+                    (c for c in stage2_candidates if c.get("destination") == v.get("destination")), {}
                 )
                 if orig:
                     diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
-        # Record skeptic kills in memory so future runs learn from them (Issue 4)
+        # Record skeptic kills in memory so future runs learn from them
         for v in verdicts:
             if not isinstance(v, dict) or v.get("verdict") != "kill":
                 continue
             dest = v.get("destination", "")
-            orig = next((c for c in high_score if c.get("destination") == dest), None)
+            orig = next((c for c in stage2_candidates if c.get("destination") == dest), None)
             if orig:
                 M.record_outcome(
                     mem, dest, orig.get("window", ""), orig.get("type", ""),
-                    claimed_price=M._extract_price(orig.get("reason", "")),
+                    claimed_price=orig.get("est_price_eur"),
                     verdict="skeptic_kill",
                     source=v.get("why", ""),
-                    note=(v.get("red_flags") or "")[:200],
+                    note=M._clip(v.get("red_flags") or "", 200),
                 )
     print(f"Stage 2: {len(diamonds)} diamond(s)")
 
@@ -346,20 +397,41 @@ def main():
         print(f"Stage 3: verifying {len(diamonds)} diamond(s)...")
         for diamond in diamonds:
             result = ground_deal(diamond, mem_text, today)
+            if not result:
+                result = {}
             verdict3 = result.get("verdict", "kill")
             dest3 = diamond.get("destination", "?")
             print(f"  Stage 3 {verdict3.upper():>7}  {dest3}")
-            stage3_results.append(result)
+
+            # Email guards: confidence must be medium/high, dates must be in window,
+            # and grounded price must be under the country ceiling.
             if verdict3 in ("confirm", "correct"):
-                verified_diamonds.append({**diamond, **{
-                    "verdict": verdict3,
-                    "options": result.get("options", []),
-                    "how_to_book": result.get("how_to_book", ""),
-                    "grounding": result.get("grounding", ""),
-                    "assistant_summary": result.get("assistant_summary", ""),
-                    "confidence": result.get("confidence", "low"),
-                }})
-    print(f"Stage 3: {len(verified_diamonds)} diamond(s) verified")
+                conf3 = result.get("confidence", "low")
+                options3 = result.get("options") or []
+                first_dates = options3[0].get("dates", "") if options3 else ""
+                grounded_price = options3[0].get("price_per_night_eur") if options3 else None
+                ceiling = C.get_price_ceiling(diamond.get("destination", ""))
+                block_reason = None
+                if conf3 == "low":
+                    block_reason = "low confidence"
+                elif not _dates_in_window(first_dates, diamond.get("window", "")):
+                    block_reason = f"dates out of window ({first_dates!r} vs window {diamond.get('window', '')!r})"
+                elif grounded_price is not None and grounded_price > ceiling:
+                    block_reason = f"grounded €{grounded_price} > ceiling €{ceiling}"
+                if block_reason:
+                    result["_block_reason"] = block_reason
+                    print(f"  Stage 3 email blocked: {block_reason}")
+                else:
+                    verified_diamonds.append({**diamond, **{
+                        "verdict": verdict3,
+                        "options": result.get("options", []),
+                        "how_to_book": result.get("how_to_book", ""),
+                        "grounding": result.get("grounding", ""),
+                        "assistant_summary": result.get("assistant_summary", ""),
+                        "confidence": result.get("confidence", "low"),
+                    }})
+            stage3_results.append(result)
+    print(f"Stage 3: {len(verified_diamonds)} diamond(s) verified (email-eligible)")
 
     # Record outcomes and baselines in memory — every run, including silent days.
     # diamonds and stage3_results are parallel lists (same order, same length).
@@ -372,22 +444,26 @@ def main():
         actual_price = options[0].get("price_per_night_eur") if options else None
         source3  = (options[0].get("source", "") if options
                     else (r3.get("grounding", "") if r3 else ""))
-        summary  = ((r3.get("assistant_summary") or "")[:200]) if r3 else ""
+        summary  = M._clip((r3.get("assistant_summary") or "") if r3 else "", 200)
 
         M.record_outcome(
             mem, dest, window, type_,
-            claimed_price=M._extract_price(diamond.get("reason", "")),
+            claimed_price=diamond.get("est_price_eur"),
             verdict=verdict3,
             actual_price=actual_price,
             source=source3,
             note=summary,
         )
-        # Record a price baseline for every confirmed or corrected deal
-        if verdict3 in ("confirm", "correct") and actual_price:
-            # Use the first verified option's dates for the season key when available
-            season = M.season_key(options[0].get("dates", "") if options else window)
+        # Only write a baseline when confidence is high AND grounded dates are in-window.
+        # Out-of-window or low-confidence verifications produce unreliable price data.
+        conf3 = (r3.get("confidence", "low") if r3 else "low")
+        first_dates = options[0].get("dates", "") if options else ""
+        if (verdict3 in ("confirm", "correct") and actual_price
+                and conf3 == "high"
+                and _dates_in_window(first_dates, window)):
+            season = M.season_key(first_dates or window)
             M.record_baseline(mem, dest, season, actual_price,
-                              note=summary[:150], source=source3)
+                              note=M._clip(summary, 300), source=source3)
 
     M.prune(mem)
     M.save(mem)
@@ -410,7 +486,7 @@ def main():
     X.save_json("city_signals.json", {"generated": today, "signals": signals})
 
     # Write markdown every run regardless of email outcome
-    write_md(today, candidates, diamonds, stage3_results)
+    write_md(today, candidates, diamonds, stage3_results, over_ceiling=over_ceiling)
 
     # Anti-spam check + email — uses verified_diamonds (Stage-3 survivors only)
     seen_state = load_seen()

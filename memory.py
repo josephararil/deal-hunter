@@ -58,6 +58,13 @@ def season_key(text):
     return t
 
 
+def _clip(text, limit):
+    """Clip text at the last word boundary before limit, appending an ellipsis."""
+    if not text or len(text) <= limit:
+        return text
+    return text[:limit].rsplit(" ", 1)[0] + "…"
+
+
 def _extract_price(text):
     """Best-effort extraction of the first EUR amount from a string.
 
@@ -193,8 +200,7 @@ def summarize_for_prompt(memory, cities=None):
             if actual:
                 parts.append(f"actual €{actual}")
             if note:
-                # Keep the note short; it comes from assistant_summary (possibly long)
-                parts.append(note[:120])
+                parts.append(_clip(note, 120))
             lines.append(", ".join(parts))
 
     return "\n".join(lines) if lines else "(no prior memory)"
@@ -246,7 +252,7 @@ def _write_md(memory):
                 price_str += f" claimed=€{claimed}"
             if actual:
                 price_str += f" actual=€{actual}"
-            suffix = f" — {note[:100]}" if note else ""
+            suffix = f" — {_clip(note, 100)}" if note else ""
             lines.append(f"- {icon} {date} | {dest} | {win} | {verdict}{price_str}{suffix}")
         if len(ledger) > 50:
             lines.append(f"_... and {len(ledger) - 50} earlier entries_")

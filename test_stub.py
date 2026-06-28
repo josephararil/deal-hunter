@@ -1,17 +1,22 @@
 """
-Stub verification for Phases A2 + A3 + A4.
+Stub verification for the diamond finder pipeline.
 
 Monkey-patches common.llm with canned responses covering:
-  - Stage 1: 3 candidates all >= 80
-  - Stage 2: all 3 kept (go to Stage 3)
-  - Stage 3 call 1 (Antalya):   confirm → must reach email (both options have booking URLs)
-  - Stage 3 call 2 (Regnum):    correct → must reach email (second option has no URL → how_to_book fallback)
-  - Stage 3 call 3 (Velingrad): kill    → must NOT reach email
+  - Stage 1: 4 candidates — Antalya (Turkey, est €98), Regnum Bansko (Bulgaria, est €84),
+    Arte Spa Velingrad (Bulgaria, est €80), Kempinski Bansko (Bulgaria, est €158 → OVER CEILING)
+  - Ceiling gate: Kempinski filtered before Stage 2 (est €158 > Bulgaria ceiling €100)
+  - Stage 2: 3 candidates forwarded (Antalya, Regnum, Arte Spa), all kept
+  - Stage 3 call 1 (Antalya):   confirm, high confidence, in-window, €95-98 ≤ Turkey ceiling → EMAIL
+  - Stage 3 call 2 (Regnum):    correct, high confidence, in-window, but €112 > Bulgaria ceiling → BLOCKED
+  - Stage 3 call 3 (Arte Spa):  kill → not emailed
 
 Run: python test_stub.py
-Expected: email attempted for 2 diamonds (fails gracefully with no SMTP),
-city_signals.md shows 3 Stage 3 entries (✅ 🔧 ❌), email HTML/text shows concrete dates,
-prices, booking links, and sensible no-URL fallback for the second Regnum option.
+Expected:
+  - Only Antalya reaches email (1 diamond).
+  - Regnum in Stage 3 CORRECT section of md with "Email blocked" note.
+  - Kempinski in Stage 1 section of md with "🔒 over ceiling" marker and in memory ledger.
+  - Arte Spa in Stage 3 KILL section, not in email.
+  - 5 llm() calls total (Stage1 + Stage2 + 3x Stage3).
 
 Non-destructive: snapshots state/ files at startup and restores them in a finally block.
 """
@@ -50,24 +55,36 @@ _STAGE1 = json.dumps({
             "score": 88,
             "type": "hotel",
             "window": "Jan 10-20, 2027",
+            "est_price_eur": 98,
             "reason": "Rixos Premium drops to €98/night (down from €420 peak) — indoor pools and kids club fully open in January.",
             "confidence": "high",
         },
         {
-            "destination": "Regnum Bansko",
+            "destination": "Regnum Bansko, Bulgaria",
             "score": 84,
             "type": "hotel",
             "window": "Aug 1-31, 2026",
+            "est_price_eur": 84,
             "reason": "Claimed at €72-95/night (down from €220 peak) — luxury ski resort, indoor pool open year-round.",
             "confidence": "high",
         },
         {
-            "destination": "Arte Spa & Park, Velingrad",
+            "destination": "Arte Spa & Park, Velingrad, Bulgaria",
             "score": 81,
             "type": "hotel",
             "window": "Jul 15 - Aug 15, 2026",
-            "reason": "Listed at €165/night, framed as 35% off peak €255. Thermal pools open. Drive 1.5h from Plovdiv.",
+            "est_price_eur": 80,
+            "reason": "Estimated deal at ~€80/night for thermal spa package. Thermal pools open. Drive 1.5h from Plovdiv.",
             "confidence": "medium",
+        },
+        {
+            "destination": "Kempinski Hotel Grand Arena, Bansko, Bulgaria",
+            "score": 83,
+            "type": "hotel",
+            "window": "Jul 2026",
+            "est_price_eur": 158,
+            "reason": "5-star ski resort at €158/night, framed as 30% off peak €225. Spa open year-round.",
+            "confidence": "high",
         },
     ]
 })
@@ -80,16 +97,16 @@ _STAGE2 = json.dumps([
         "red_flags": "Confirm kids club hours in January.",
     },
     {
-        "destination": "Regnum Bansko",
+        "destination": "Regnum Bansko, Bulgaria",
         "verdict": "keep",
         "why": "Luxury alpine resort at claimed €72-95 with indoor pool — needs price verification.",
         "red_flags": "Verify exact August weekend prices — may vary from monthly low.",
     },
     {
-        "destination": "Arte Spa & Park, Velingrad",
+        "destination": "Arte Spa & Park, Velingrad, Bulgaria",
         "verdict": "keep",
         "why": "Thermal spa with family facilities 1.5h drive.",
-        "red_flags": "Absolute price of €165/night may be unremarkable for the market.",
+        "red_flags": "Absolute price of €80/night looks reasonable but verify market comparables.",
     },
 ])
 
@@ -121,7 +138,7 @@ _STAGE3_CONFIRM = json.dumps({
 })
 
 _STAGE3_CORRECT = json.dumps({
-    "destination": "Regnum Bansko",
+    "destination": "Regnum Bansko, Bulgaria",
     "verdict": "correct",
     "options": [
         {
@@ -148,7 +165,7 @@ _STAGE3_CORRECT = json.dumps({
 })
 
 _STAGE3_KILL = json.dumps({
-    "destination": "Arte Spa & Park, Velingrad",
+    "destination": "Arte Spa & Park, Velingrad, Bulgaria",
     "verdict": "kill",
     "options": [],
     "how_to_book": "",
@@ -163,7 +180,7 @@ _call_idx = 0
 _RESPONSES = [_STAGE1, _STAGE2, _STAGE3_CONFIRM, _STAGE3_CORRECT, _STAGE3_KILL]
 
 
-def _stub_llm(messages, model, max_tokens=2000, want_search=False, provider=None):
+def _stub_llm(messages, model, max_tokens=2000, want_search=False, response_schema=None, provider=None):
     global _call_idx
     resp = _RESPONSES[_call_idx]
     stage = ["Stage1-find", "Stage2-skeptic", "Stage3-confirm", "Stage3-correct", "Stage3-kill"][_call_idx]
@@ -206,6 +223,7 @@ try:
     with open("state/city_signals.md", encoding="utf-8") as f:
         md = f.read()
 
+    # Stage 3 section present with all three outcomes
     assert "Stage 3 Verification" in md, "city_signals.md missing Stage 3 section"
     assert "CONFIRM" in md, "CONFIRM outcome not in md"
     assert "CORRECT" in md, "CORRECT outcome not in md"
@@ -215,71 +233,79 @@ try:
     assert "Velingrad" in md, "Velingrad should appear in md (as killed)"
     print("city_signals.md: Stage 3 outcomes present [OK]")
 
+    # Kempinski over-ceiling: must appear in md with 🔒 marker, NOT emailed
+    assert "Kempinski" in md, "Kempinski should appear in city_signals.md"
+    assert "over ceiling" in md.lower() or "Over ceiling" in md, \
+        "Kempinski should have over-ceiling marker in md"
+    print("city_signals.md: Kempinski over-ceiling marker present [OK]")
+
+    # Regnum CORRECT but email blocked by ceiling — block reason in md
+    assert "Email blocked" in md, "Regnum ceiling block should appear in md"
+    print("city_signals.md: Regnum email-blocked note present [OK]")
+
+    # Kempinski must appear in memory ledger with verdict=over_ceiling
+    mem = X.load_json("memory.json", {})
+    kempinski_entries = [e for e in mem.get("ledger", [])
+                         if "Kempinski" in e.get("destination", "")
+                         and e.get("verdict") == "over_ceiling"]
+    assert kempinski_entries, "Kempinski should have an over_ceiling ledger entry in memory"
+    print("memory.json: Kempinski over_ceiling ledger entry present [OK]")
+
     seen = X.load_json("signals_seen.json", {})
     # No email was sent (no SMTP), so seen should be empty
     assert seen.get("seen", {}) == {}, f"seen should be empty (email failed), got: {seen['seen']}"
     print("signals_seen.json: no entries (email failed gracefully) [OK]")
 
-    # Stub call count confirms Stage 3 ran exactly 3 times (once per Stage-2 diamond)
+    # Stub call count: Stage1 + Stage2 + 3x Stage3 (Kempinski filtered before Stage 2)
     assert _call_idx == 5, f"Expected 5 llm() calls, got {_call_idx}"
     print(f"llm() call count: {_call_idx} (stage1 + stage2 + 3x stage3) [OK]")
 
-    # A4: assert email renders grounded structure (assistant_summary, dates, prices, links)
+    # Email assertions — only Antalya (Turkey, €98 ≤ ceiling €100) reaches email.
+    # Regnum is blocked (grounded €112 > Bulgaria ceiling €100).
     assert _captured_email, "send_email was never called — no diamonds reached email path"
     html = _captured_email["html"]
     text = _captured_email["text"]
-    print("\n=== A4 email assertions ===")
+    print("\n=== Email assertions (Antalya only) ===")
 
-    # assistant_summary leads each diamond block
+    # Antalya assistant_summary present
     assert "I confirmed Rixos Premium Antalya" in html, "Antalya assistant_summary missing from HTML"
-    assert "The claimed" in html and "understates" in html, "Regnum assistant_summary missing from HTML"
     assert "I confirmed Rixos Premium Antalya" in text, "Antalya assistant_summary missing from text"
-    print("assistant_summary: present in HTML and text [OK]")
+    print("Antalya assistant_summary: present in HTML and text [OK]")
 
-    # Concrete dates appear
+    # Antalya concrete dates and prices
     assert "Jan 10-14, 2027" in html, "Antalya dates missing from HTML"
-    assert "Aug 8-10, 2026" in html, "Regnum dates missing from HTML"
     assert "Jan 10-14, 2027" in text, "Antalya dates missing from text"
-    assert "Aug 8-10, 2026" in text, "Regnum dates missing from text"
-    print("Concrete dates: present in HTML and text [OK]")
-
-    # Prices appear
     assert "€98" in html, "Antalya €98/night missing from HTML"
-    assert "€112" in html, "Regnum €112/night missing from HTML"
     assert "€392" in html, "Antalya €392 total missing from HTML"
     assert "€98" in text and "€392" in text, "Antalya prices missing from text"
-    print("Prices: present in HTML and text [OK]")
+    print("Antalya dates and prices: present [OK]")
 
-    # Booking URL (option with URL)
+    # Antalya booking URL
     assert "booking.com/hotel/tr/rixos-premium-antalya" in html, "Antalya booking URL missing from HTML"
-    assert "booking.com/hotel/bg/regnum-bansko" in html, "Regnum booking URL missing from HTML"
     assert "booking.com/hotel/tr/rixos-premium-antalya" in text, "Antalya booking URL missing from text"
-    print("Booking URLs: present in HTML and text [OK]")
+    print("Antalya booking URL: present [OK]")
 
-    # No-URL fallback for Regnum Aug 22-25 option (uses how_to_book)
-    assert "Book at booking.com" in html, "Regnum no-URL how_to_book fallback missing from HTML"
-    assert "Book at booking.com" in text, "Regnum no-URL how_to_book fallback missing from text"
-    print("No-URL how_to_book fallback: present in HTML and text [OK]")
+    # Regnum must NOT appear in email (grounded price €112 > Bulgaria ceiling €100)
+    assert "Regnum Bansko" not in html, "Regnum (ceiling-blocked) leaked into email HTML"
+    assert "Regnum Bansko" not in text, "Regnum (ceiling-blocked) leaked into email text"
+    print("Regnum not in email (ceiling-blocked): [OK]")
 
-    # Grounding appears
-    assert "Source:" in html, "Grounding 'Source:' label missing from HTML"
-    assert "Source:" in text, "Grounding 'Source:' label missing from text"
-    print("Grounding: present in HTML and text [OK]")
-
-    # Red flags still appear
-    assert "Confirm kids club" in html, "Antalya red_flags missing from HTML"
-    assert "Verify exact August" in html, "Regnum red_flags missing from HTML"
-    print("Red flags: present in HTML [OK]")
-
-    # Footer and heading preserved
-    assert "Verify before booking" in html, "Footer missing from HTML"
-    assert "Diamond Finder" in html, "Heading missing from HTML"
-    print("Footer and heading: preserved [OK]")
-
-    # Velingrad (killed) must not appear in email
+    # Velingrad (Stage 3 killed) must not appear in email
     assert "Velingrad" not in html, "Killed deal (Velingrad) leaked into email HTML"
     assert "Velingrad" not in text, "Killed deal (Velingrad) leaked into email text"
-    print("Killed deal not in email: [OK]")
+    print("Velingrad not in email (killed): [OK]")
+
+    # Kempinski must not appear in email (over-ceiling before Stage 2)
+    assert "Kempinski" not in html, "Kempinski (over-ceiling) leaked into email HTML"
+    assert "Kempinski" not in text, "Kempinski (over-ceiling) leaked into email text"
+    print("Kempinski not in email (over-ceiling): [OK]")
+
+    # Grounding, red flags, footer still present for Antalya
+    assert "Source:" in html, "Grounding 'Source:' label missing from HTML"
+    assert "Confirm kids club" in html, "Antalya red_flags missing from HTML"
+    assert "Verify before booking" in html, "Footer missing from HTML"
+    assert "Diamond Finder" in html, "Heading missing from HTML"
+    print("Grounding, red flags, footer: present [OK]")
 
     print("\n--- HTML preview (first 1200 chars) ---")
     print(html[:1200])

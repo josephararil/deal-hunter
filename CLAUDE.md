@@ -21,25 +21,34 @@ It is self-contained: no Apify, no baseline data, no external crawlers.
 ```
 find_city_anomalies.py
   │
-  ├─ Stage 1 (llm, want_search=True)
+  ├─ Stage 1 (llm, want_search=True, model=MODEL_FIND)
   │    Score candidates 0–100 across: hotels, resort closeouts, post-event collapses,
   │    cruises, flight fares, package dumps, currency plays — anchored to CITIES but
   │    can extend to nearby destinations if a real opportunity exists.
   │
-  ├─ Stage 2 (llm, want_search=False) — only candidates scoring >= STAGE1_MIN_SCORE
+  ├─ Stage 2 (llm, want_search=False, model=MODEL_SKEPTIC) — candidates >= STAGE1_MIN_SCORE only
   │    Hostile skeptic reviewer. Returns keep/kill + why + red_flags.
+  │    Checks relative discount AND absolute-value floor (see SKEPTIC_PROMPT Example 5).
   │    Most candidates should die here. Silence is correct.
+  │
+  ├─ Stage 3 (llm, want_search=True, model=MODEL_VERIFY) — one call per Stage-2 survivor
+  │    Concierge/verifier. Web-searches real prices at SPECIFIC bookable date windows
+  │    (not month-wide minimums), corrects or kills hallucinations.
+  │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
+  │    assistant_summary, confidence. Merges verified fields onto surviving diamonds.
+  │    NOTE: Apify grounding will slot in here later behind the same call site.
   │
   ├─ Anti-spam gate — state/signals_seen.json
   │    Keyed by destination+window, 30-day TTL. Prevents repeat emails.
+  │    Only Stage-3 survivors (confirm/correct) reach this gate.
   │
-  ├─ Email (common.send_email) — only if new diamonds survive
+  ├─ Email (common.send_email) — only if new diamonds survive all three stages
   │    One email per run, max MAX_EMAILS_PER_RUN diamonds.
   │    Conscience note in the email if monthly count >= 3.
   │
   └─ Always writes
        state/city_signals.json  — all Stage 1 candidates (hunt: false always)
-       state/city_signals.md    — human-readable log; useful even on silent days
+       state/city_signals.md    — human-readable log with Stage 3 outcomes; useful even on silent days
        state/signals_seen.json  — updated TTL state
 ```
 
@@ -52,7 +61,7 @@ find_city_anomalies.py
 | `find_city_anomalies.py` | The diamond finder — runs daily, emails on exceptional finds |
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
-| `state/city_signals.md` | Latest Stage 1 output (human-readable log) |
+| `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
 | `state/signals_seen.json` | Anti-spam TTL memory: `destination\|window → date_emailed`, monthly count |
 
 ## Files — dormant Apify pipeline
@@ -72,6 +81,11 @@ requires. Do not reference or revive any of it without an explicit request.
   Seed values: `{}` / `{"seen":{}, "monthly_count":{}}`.
 - **`STAGE1_MIN_SCORE = 80`** is the Stage 2 gate. Raise to make email rarer. Lower
   cautiously — it lets more through the hostile skeptic.
+- **Stage 3 only removes candidates, never adds them.** A Stage-3 kill means the deal
+  was hallucinated or unremarkable after live verification — it never triggers email.
+- **Stage 3 `verdict: correct`** means the deal exists but the price was wrong; the
+  corrected figures are emailed. `verdict: kill` means even the corrected reality doesn't
+  justify the email. Both must be handled; do not treat `correct` as a kill.
 - **Silence is the intended outcome most days.** Don't treat low email volume as a bug.
   Only investigate if the prompts demonstrably fail to surface known real opportunities.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger

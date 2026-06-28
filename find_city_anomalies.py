@@ -1,19 +1,22 @@
 """
 find_city_anomalies.py  —  Diamond Finder (daily, LLM-only, no Apify)
 
-Two-stage gate:
+Three-stage gate:
   Stage 1 (find):    one llm() call with web search. Asks for travel-arbitrage
                      candidates scored 0-100 across hotels, cruises, flight fares,
                      packages, and currency plays reachable from Plovdiv.
   Stage 2 (skeptic): one llm() call, no search. Hostile reviewer confirms only
                      genuinely exceptional candidates (verdict: keep / kill).
+  Stage 3 (verify):  one llm() call per Stage-2 survivor, with web search.
+                     Grounds the deal in real prices at specific bookable dates;
+                     corrects or kills hallucinations. (verdict: confirm/correct/kill)
 
 Outputs every run:
   state/city_signals.json  — Stage 1 candidate list (hunt=False always; schema kept for reference)
-  state/city_signals.md    — human-readable log; useful even on silent days
+  state/city_signals.md    — human-readable log including Stage 3 outcomes; useful even on silent days
   state/signals_seen.json  — anti-spam TTL state, committed by CI
 
-Emails immediately when diamonds survive. Silence is the normal outcome.
+Emails immediately when diamonds survive all three stages. Silence is the normal outcome.
 """
 
 import json, datetime as dt
@@ -113,7 +116,7 @@ def build_email_text(diamonds):
 
 # --- markdown log ---
 
-def write_md(today, candidates, diamonds):
+def write_md(today, candidates, diamonds, stage3_results=None):
     diamond_dests = {d["destination"] for d in diamonds}
     lines = [f"# Diamond Finder — {today}", ""]
     if not candidates:
@@ -121,7 +124,8 @@ def write_md(today, candidates, diamonds):
     else:
         lines.append(
             f"_Stage 1: {len(candidates)} candidate(s). "
-            f"{len(diamonds)} diamond(s) confirmed._"
+            f"{len(diamonds)} Stage-2 diamond(s). "
+            f"{len(stage3_results or [])} Stage-3 verified._"
         )
         lines.append("")
         for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
@@ -135,6 +139,34 @@ def write_md(today, candidates, diamonds):
             )
             lines.append(f"{c.get('reason', '')}")
             lines.append("")
+    if stage3_results:
+        lines.append("## Stage 3 Verification")
+        lines.append("")
+        for r in stage3_results:
+            verdict3 = r.get("verdict", "?")
+            icon = "✅" if verdict3 == "confirm" else "🔧" if verdict3 == "correct" else "❌"
+            dest3 = r.get("destination", "?")
+            conf3 = r.get("confidence", "?")
+            lines.append(f"### {icon} {dest3} — {verdict3.upper()} (confidence: {conf3})")
+            if r.get("assistant_summary"):
+                lines.append(f"**Summary:** {r['assistant_summary']}")
+            opts = r.get("options", [])
+            if opts:
+                lines.append("**Options:**")
+                for opt in opts:
+                    dates = opt.get("dates", "?")
+                    pn = opt.get("price_per_night_eur", "?")
+                    total = opt.get("total_eur", "?")
+                    url = opt.get("booking_url") or ""
+                    src = opt.get("source", "")
+                    link = f" · [book]({url})" if url else ""
+                    src_note = f" · _{src}_" if src else ""
+                    lines.append(f"  - {dates} · €{pn}/night · €{total} total{link}{src_note}")
+            if r.get("how_to_book"):
+                lines.append(f"**How to book:** {r['how_to_book']}")
+            if r.get("grounding"):
+                lines.append(f"**Grounding:** {r['grounding']}")
+            lines.append("")
     with open("state/city_signals.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
@@ -143,7 +175,7 @@ def write_md(today, candidates, diamonds):
 
 def main():
     today = X.today_iso()
-    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | find: {C.MODEL_FIND} | skeptic: {C.MODEL_SKEPTIC} ===")
+    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | find: {C.MODEL_FIND} | skeptic: {C.MODEL_SKEPTIC} | verify: {C.MODEL_VERIFY} ===")
 
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
@@ -190,6 +222,42 @@ def main():
                     diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
     print(f"Stage 2: {len(diamonds)} diamond(s)")
 
+    # Stage 3: verify each Stage-2 survivor with a focused web-search call.
+    # One llm() call per deal (rare — almost always 0-2 per run).
+    # Merges verified fields onto the diamond dict; drops verdict=="kill".
+    # NOTE: Apify grounding will slot in here in a later phase behind the same interface.
+    verified_diamonds = []
+    stage3_results = []
+    if diamonds:
+        print(f"Stage 3: verifying {len(diamonds)} diamond(s)...")
+        for diamond in diamonds:
+            candidate_json = json.dumps(diamond, ensure_ascii=False, indent=2)
+            verify_prompt = C.VERIFY_PROMPT.format(
+                today=today,
+                candidate=candidate_json,
+                memory="",  # Phase B wires in real memory here
+            )
+            raw3 = X.llm(
+                messages=[{"role": "user", "content": verify_prompt}],
+                model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
+                provider=C.PROVIDER_VERIFY,
+            )
+            result = X.parse_json_block(raw3) or {}
+            verdict3 = result.get("verdict", "kill")
+            dest3 = diamond.get("destination", "?")
+            print(f"  Stage 3 {verdict3.upper():>7}  {dest3}")
+            stage3_results.append(result)
+            if verdict3 in ("confirm", "correct"):
+                verified_diamonds.append({**diamond, **{
+                    "verdict": verdict3,
+                    "options": result.get("options", []),
+                    "how_to_book": result.get("how_to_book", ""),
+                    "grounding": result.get("grounding", ""),
+                    "assistant_summary": result.get("assistant_summary", ""),
+                    "confidence": result.get("confidence", "low"),
+                }})
+    print(f"Stage 3: {len(verified_diamonds)} diamond(s) verified")
+
     # Write city_signals.json — hunt=False always; the Apify hunt pipeline is dormant
     diamond_dests = {d["destination"] for d in diamonds}
     signals = [
@@ -206,14 +274,14 @@ def main():
     X.save_json("city_signals.json", {"generated": today, "signals": signals})
 
     # Write markdown every run regardless of email outcome
-    write_md(today, candidates, diamonds)
+    write_md(today, candidates, diamonds, stage3_results)
 
-    # Anti-spam check + email
+    # Anti-spam check + email — uses verified_diamonds (Stage-3 survivors only)
     seen_state = load_seen()
     seen_state = prune_seen(seen_state)
 
     new_diamonds = [
-        d for d in diamonds
+        d for d in verified_diamonds
         if not is_already_seen(seen_state, d["destination"], d["window"])
     ]
     print(f"New (not seen within {C.SIGNAL_TTL_DAYS}d TTL): {len(new_diamonds)}")

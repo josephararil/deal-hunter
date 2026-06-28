@@ -26,11 +26,15 @@ find_city_anomalies.py
   │    (past corrections and kills). Injected as {memory} into all three stage prompts.
   │
   ├─ Stage 1 (llm, want_search=True, model=MODEL_FIND)
-  │    Score candidates 0–100 across: hotels, resort closeouts, post-event collapses,
-  │    cruises, flight fares, package dumps, currency plays — anchored to CITIES but
-  │    can extend to nearby destinations if a real opportunity exists.
+  │    Score candidates 0–100. Each candidate includes est_price_eur (structured number —
+  │    NOT extracted from prose). Anchored to CITIES but can extend to nearby destinations.
   │
-  ├─ Stage 2 (llm, want_search=False, model=MODEL_SKEPTIC) — candidates >= STAGE1_MIN_SCORE only
+  ├─ Ceiling gate — candidates with est_price_eur > country ceiling are over_ceiling:
+  │    logged in city_signals.md (🔒 marker) and memory (verdict=over_ceiling), but
+  │    NEVER forwarded to Stage 2/3 or emailed. Bulgaria/Turkey ceiling €100; rest €130.
+  │    If est_price_eur is missing, candidate passes through (don't block on unknown price).
+  │
+  ├─ Stage 2 (llm, want_search=False, model=MODEL_SKEPTIC) — candidates >= STAGE1_MIN_SCORE AND under ceiling
   │    Hostile skeptic reviewer. Returns keep/kill + why + red_flags.
   │    Checks relative discount AND absolute-value floor (see SKEPTIC_PROMPT Example 5).
   │    Most candidates should die here. Silence is correct.
@@ -40,6 +44,10 @@ find_city_anomalies.py
   │    (not month-wide minimums), corrects or kills hallucinations.
   │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
   │    assistant_summary, confidence. Merges verified fields onto surviving diamonds.
+  │    Additional email guards: a confirm/correct is blocked from email (logged only) if
+  │    confidence=low, OR grounded option dates are out of candidate window, OR grounded
+  │    price_per_night_eur > country ceiling. Blocked entries appear in city_signals.md
+  │    with a 🔒 "Email blocked: <reason>" note.
   │    Grounding is swappable: currently uses LLM concierge; Apify slots in here
   │    behind the same ground_deal signature (see verify_apify.py; credits renew 2026-07-26).
   │
@@ -116,8 +124,18 @@ Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret sto
 - **Stage 3 only removes candidates, never adds them.** A Stage-3 kill means the deal
   was hallucinated or unremarkable after live verification — it never triggers email.
 - **Stage 3 `verdict: correct`** means the deal exists but the price was wrong; the
-  corrected figures are emailed. `verdict: kill` means even the corrected reality doesn't
-  justify the email. Both must be handled; do not treat `correct` as a kill.
+  corrected figures are emailed IF the grounded price passes the ceiling, confidence is
+  medium/high, and dates are in window. `verdict: kill` means the reality doesn't justify
+  email. Do not treat `correct` as a kill — it can still email.
+- **Price ceilings are hard gates.** `PRICE_CEILING_EUR` in config.py. A Stage-1 candidate
+  over its ceiling is never forwarded to Stage 2/3. A Stage-3 confirm/correct with grounded
+  price over the ceiling is logged but not emailed. Never bypass these.
+- **Baselines are only written** when Stage-3 confidence is "high" AND the grounded option
+  dates fall within the candidate window (rough season_key match). Low-confidence or
+  out-of-window verifications produce unreliable data — do not store them as baselines.
+- **`est_price_eur`** is a structured numeric field emitted by Stage 1 for each candidate.
+  It is the source of truth for ceiling gating and `claimed_price` in memory. Never
+  use `_extract_price()` from prose for this purpose.
 - **Silence is the intended outcome most days.** Don't treat low email volume as a bug.
   Only investigate if the prompts demonstrably fail to surface known real opportunities.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger

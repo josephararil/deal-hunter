@@ -82,10 +82,13 @@ requires. Do not reference or revive any of it without an explicit request.
 `common.llm(messages, model, max_tokens, want_search)` — single entry point.
 
 - `LLM_PROVIDER=anthropic` (default): Messages API; `want_search` → `web_search` tool.
-- `LLM_PROVIDER=gemini`: `generateContent`; `want_search` → `google_search` tool.
-  Degrades gracefully if Gemini rejects the search tool (retries without it).
-- Model role lives in `config.py` as `MODEL_DIAMOND`. Gemini equivalent is mapped in
-  `common.GEMINI_MODELS`. Add new roles there, never as literals in pipeline code.
+- `LLM_PROVIDER=gemini`: Interactions API (`/v1beta/interactions`); `want_search` →
+  `{"type": "google_search"}` tool. Degrades gracefully if Gemini rejects the search
+  tool (retries without it). Both stages use `thinking_level: "high"`.
+- Model roles live in `config.py` as `MODEL_DIAMOND` (Stage 1, find + search →
+  `gemini-3.5-flash`) and `MODEL_DIAMOND_SKEPTIC` (Stage 2, skeptic, no search →
+  `gemini-3.1-pro-preview`). Gemini equivalents are mapped in `config.GEMINI_MODEL_MAP`.
+  Add new roles there, never as literals in pipeline code.
 
 ## Required secrets / variables
 

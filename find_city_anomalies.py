@@ -150,6 +150,7 @@ def main():
     raw1 = X.llm(
         messages=[{"role": "user", "content": C.FIND_PROMPT.format(today=today, cities=C.cities_prompt_text())}],
         model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+        response_schema=C.STAGE1_RESPONSE_SCHEMA,
     )
     parsed1 = X.parse_json_block(raw1) or {}
     candidates = parsed1.get("candidates", [])
@@ -171,7 +172,8 @@ def main():
         )
         raw2 = X.llm(
             messages=[{"role": "user", "content": skeptic}],
-            model=C.MODEL_DIAMOND, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            model=C.MODEL_DIAMOND_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            response_schema=C.STAGE2_RESPONSE_SCHEMA,
         )
         verdicts = X.parse_json_block(raw2) or []
         if not isinstance(verdicts, list):

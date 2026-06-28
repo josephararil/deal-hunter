@@ -37,11 +37,12 @@ def _post_with_retry(url, headers, json_body, timeout=180):
             time.sleep(delay)
 
 
-def llm(messages, model, max_tokens=2000, want_search=False):
+def llm(messages, model, max_tokens=2000, want_search=False, response_schema=None):
     """Single entry point for all LLM calls. Returns plain text.
-    messages is a list of {"role", "content"} dicts with string content."""
+    messages is a list of {"role", "content"} dicts with string content.
+    response_schema: Gemini only — JSON Schema dict added as response_format."""
     if PROVIDER == "gemini":
-        return _gemini(messages, model, max_tokens, want_search)
+        return _gemini(messages, model, max_tokens, want_search, response_schema)
     return _anthropic(messages, model, max_tokens, want_search)
 
 
@@ -59,17 +60,26 @@ def _anthropic(messages, model, max_tokens, want_search):
                    if b.get("type") == "text").strip()
 
 
-def _gemini(messages, model, max_tokens, want_search):
-    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-2.5-pro")
+def _gemini(messages, model, max_tokens, want_search, response_schema=None):
+    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-3.5-flash")
     text = "\n\n".join(m["content"] for m in messages)
     body = {
-        "contents": [{"parts": [{"text": text}]}],
-        "generationConfig": {"maxOutputTokens": max_tokens},
+        "model": gmodel,
+        "input": text,
+        "generation_config": {
+            "thinking_level": "high",
+            "maxOutputTokens": max_tokens,
+        },
     }
     if want_search:
-        body["tools"] = [{"google_search": {}}]
-    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
-           f"{gmodel}:generateContent")
+        body["tools"] = [{"type": "google_search"}]
+    if response_schema is not None:
+        body["response_format"] = {
+            "type": "text",
+            "mime_type": "application/json",
+            "schema": response_schema,
+        }
+    url = "https://generativelanguage.googleapis.com/v1beta/interactions"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
     r = _post_with_retry(url, headers=headers, json_body=body)
     if r.status_code in (400, 422) and want_search:
@@ -78,9 +88,13 @@ def _gemini(messages, model, max_tokens, want_search):
         body.pop("tools", None)
         r = _post_with_retry(url, headers=headers, json_body=body)
     r.raise_for_status()
-    cand = r.json().get("candidates", [{}])[0]
-    parts = cand.get("content", {}).get("parts", [])
-    return "".join(p.get("text", "") for p in parts).strip()
+    parts = []
+    for step in r.json().get("steps", []):
+        if step.get("type") == "model_output":
+            for block in step.get("content", []):
+                if block.get("type") == "text":
+                    parts.append(block.get("text", ""))
+    return "".join(parts).strip()
 
 
 # ------------------------------ Email ------------------------------

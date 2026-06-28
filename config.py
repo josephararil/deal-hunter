@@ -76,9 +76,11 @@ def cities_prompt_text():
 
 
 # ── LLM models ──────────────────────────────────────────────────────────────
-# Model used for both Stage 1 (find + web search) and Stage 2 (skeptic).
-# This is an Anthropic model name; the Gemini equivalent lives in GEMINI_MODEL_MAP.
-MODEL_DIAMOND = "claude-sonnet-4-6"
+# Stage 1 (find + web search): faster model with grounding.
+# Stage 2 (skeptic): more capable model for hostile review, no search.
+# These are Anthropic model names; Gemini equivalents live in GEMINI_MODEL_MAP.
+MODEL_DIAMOND         = "claude-sonnet-4-6"
+MODEL_DIAMOND_SKEPTIC = "claude-opus-4-8"
 
 # Maps Anthropic model names (the canonical identifiers used throughout the code)
 # to their Gemini equivalents. Used when LLM_PROVIDER=gemini. Add a new entry
@@ -86,6 +88,7 @@ MODEL_DIAMOND = "claude-sonnet-4-6"
 # names anywhere else.
 GEMINI_MODEL_MAP = {
     "claude-sonnet-4-6": "gemini-3.5-flash",
+    "claude-opus-4-8":   "gemini-3.1-pro-preview",
 }
 
 # ── LLM token budgets ────────────────────────────────────────────────────────
@@ -270,3 +273,45 @@ JSON Schema:
 ]
 
 Remember: An empty or all-kill batch for today's run is the standard statistical outcome. Keep only the highest utility-to-price plays."""
+
+
+# ── Response schemas (Gemini response_format) ────────────────────────────────
+# Passed to _gemini() via llm(response_schema=...) to constrain output to valid
+# JSON. The Anthropic path ignores these — prompt engineering suffices there.
+# Keep in sync with the JSON schemas documented in FIND_PROMPT / SKEPTIC_PROMPT.
+
+STAGE1_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "candidates": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "destination": {"type": "string"},
+                    "score":       {"type": "integer"},
+                    "type":        {"type": "string"},
+                    "window":      {"type": "string"},
+                    "reason":      {"type": "string"},
+                    "confidence":  {"type": "string"},
+                },
+                "required": ["destination", "score", "type", "window", "reason", "confidence"],
+            },
+        },
+    },
+    "required": ["candidates"],
+}
+
+STAGE2_RESPONSE_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "destination": {"type": "string"},
+            "verdict":     {"type": "string", "enum": ["keep", "kill"]},
+            "why":         {"type": "string"},
+            "red_flags":   {"type": "string"},
+        },
+        "required": ["destination", "verdict", "why", "red_flags"],
+    },
+}

@@ -285,12 +285,12 @@ def _ground_llm(diamond, mem_text, today):
 
 
 # ── GROUNDING SEAM ──────────────────────────────────────────────────────────
-# ground_deal is the active Layer-3 grounding function. Defaults to the Xotelo
-# API provider; falls back to _ground_llm on any import or runtime failure.
+# ground_deal is the active Layer-3 grounding function. Defaults to the apidojo
+# Booking.com provider; falls back to _ground_llm on any import or runtime failure.
 # Set HOTEL_PROVIDER="" to force LLM-only grounding.
 
 def _resolve_ground_deal():
-    if (C.HOTEL_PROVIDER or "").strip().lower() == "xotelo":
+    if (C.HOTEL_PROVIDER or "").strip().lower() == "apidojo":
         try:
             from providers import ground_api
             return ground_api          # ground_api falls back to _ground_llm at runtime

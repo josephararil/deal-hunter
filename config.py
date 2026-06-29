@@ -149,18 +149,18 @@ def get_price_ceiling(destination):
 
 
 # ── Hotel grounding ─────────────────────────────────────────────────────────
-HOTEL_PROVIDER       = os.environ.get("HOTEL_PROVIDER", "xotelo").strip().lower()
-RAPIDAPI_KEY         = os.environ.get("RAPIDAPI_KEY", "")
-XOTELO_RAPIDAPI_HOST = os.environ.get("XOTELO_RAPIDAPI_HOST", "xotelo-hotel-prices.p.rapidapi.com")
-XOTELO_BASE_URL      = os.environ.get("XOTELO_BASE_URL", f"https://{XOTELO_RAPIDAPI_HOST}/api")
+HOTEL_PROVIDER        = os.environ.get("HOTEL_PROVIDER", "apidojo").strip().lower()
+RAPIDAPI_KEY          = os.environ.get("RAPIDAPI_KEY", "")
+BOOKING_RAPIDAPI_HOST = os.environ.get("BOOKING_RAPIDAPI_HOST", "apidojo-booking-v1.p.rapidapi.com")
+BOOKING_BASE_URL      = os.environ.get("BOOKING_BASE_URL", f"https://{BOOKING_RAPIDAPI_HOST}")
 HOTEL_ADULTS        = 2
 HOTEL_ROOMS         = 1
 HOTEL_CHILDREN_AGES = [4]
-HOTEL_CURRENCY      = "EUR"   # ALWAYS request EUR from /rates — Xotelo defaults to USD
+HOTEL_CURRENCY      = "EUR"
 HOTEL_HTTP_TIMEOUT  = 20
 HOTEL_MAPPING = {
-    # Optional override/cache for known or ambiguous hotels (skips /search):
-    # "kempinski grand arena": {"key": "g304100-d556553", "name": "Kempinski Hotel Grand Arena Bansko"},
+    # Optional override for known/ambiguous destinations (skips /locations/auto-complete):
+    # "kempinski grand arena": {"dest_id": "-835297", "search_type": "city", "name": "Kempinski Hotel Grand Arena Bansko"},
 }
 
 

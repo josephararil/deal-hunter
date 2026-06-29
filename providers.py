@@ -66,72 +66,74 @@ def _longest_token(hotel_name):
 def resolve_hotel(diamond):
     """Return {dest_id, search_type, name, match_name, country, kind, raw} or None.
 
-    Reads hotel_name, city, country from the Stage-1 diamond dict.
-    Returns None if hotel_name is empty (city-level/cruise/flight → LLM fallback).
-    Prefers dest_type=="hotel" entries over landmark when both are present.
+    kind="hotel": exact hotel-type dest (APIDojo search_type=hotel) → verified path.
+    kind="city":  city-type dest → alternatives path (best-value city hotels).
+    None: nothing useful found → caller falls back to LLM.
+
+    Priority: hotel-type entry overlapping hotel_name > city-type entry.
+    Landmark entries are not used.
     """
     hotel_name = (diamond.get("hotel_name") or "").strip()
     city       = (diamond.get("city")       or "").strip()
     country    = (diamond.get("country")    or "").strip()
 
-    # City-level / cruise / flight deal → no specific hotel → LLM fallback
-    if not hotel_name:
+    # HOTEL_MAPPING override first (case-insensitive substring match on hotel_name + city)
+    if hotel_name:
+        lookup = f"{hotel_name} {city}".lower().strip()
+        for alias, ref_data in C.HOTEL_MAPPING.items():
+            if alias.lower() in lookup or lookup in alias.lower():
+                return {
+                    "dest_id":     ref_data["dest_id"],
+                    "search_type": ref_data["search_type"],
+                    "name":        ref_data.get("name", alias),
+                    "match_name":  hotel_name,
+                    "country":     ref_data.get("country", ""),
+                    "kind":        ref_data.get("kind", "hotel"),
+                    "raw":         ref_data,
+                }
+
+    # Query text: hotel + city when hotel_name is set; city only otherwise
+    text = f"{hotel_name} {city}".strip() if hotel_name else city
+    if not text:
         return None
 
-    # HOTEL_MAPPING override first (case-insensitive substring match on hotel_name + city)
-    lookup = f"{hotel_name} {city}".lower().strip()
-    for alias, ref_data in C.HOTEL_MAPPING.items():
-        if alias.lower() in lookup or lookup in alias.lower():
-            return {
-                "dest_id":     ref_data["dest_id"],
-                "search_type": ref_data["search_type"],
-                "name":        ref_data.get("name", alias),
-                "match_name":  hotel_name,
-                "country":     ref_data.get("country", ""),
-                "kind":        "specific",
-                "raw":         ref_data,
-            }
-
-    data = _get("/locations/auto-complete", {
-        "languagecode": "en-us",
-        "text": f"{hotel_name} {city}".strip(),
-    })
+    data = _get("/locations/auto-complete", {"languagecode": "en-us", "text": text})
     if not isinstance(data, list) or not data:
         return None
 
-    hotel_tokens = _normalize(hotel_name)
+    hotel_tokens = _normalize(hotel_name) if hotel_name else set()
     hotel_entry = None
-    landmark_entry = None
+    city_entry  = None
 
     for item in data:
-        dtype = (item.get("dest_type") or "").lower()
-        name = item.get("name") or item.get("label") or ""
+        dtype        = (item.get("dest_type") or "").lower()
+        name         = item.get("name") or item.get("label") or ""
         item_country = item.get("country") or ""
 
         # Country validation: skip entries whose country doesn't match
         if country and country.lower() not in item_country.lower():
             continue
 
-        if dtype in ("hotel", "landmark"):
-            name_tokens = _normalize(name)
-            if hotel_tokens and hotel_tokens & name_tokens:
-                if dtype == "hotel" and hotel_entry is None:
-                    hotel_entry = item
-                elif dtype == "landmark" and landmark_entry is None:
-                    landmark_entry = item
+        if dtype == "hotel" and hotel_entry is None and hotel_tokens:
+            if hotel_tokens & _normalize(name):
+                hotel_entry = item
+        elif dtype == "city" and city_entry is None:
+            city_entry = item
 
-    chosen = hotel_entry or landmark_entry
+    # Prefer exact hotel-type dest; fall back to city for the alternatives path
+    chosen = hotel_entry or city_entry
     if chosen is None:
         return None
 
     dtype = (chosen.get("dest_type") or "").lower()
+    kind  = "hotel" if dtype == "hotel" else "city"
     return {
         "dest_id":     chosen["dest_id"],
-        "search_type": dtype if dtype in ("hotel", "landmark") else "landmark",
-        "name":        chosen.get("name") or chosen.get("label") or hotel_name,
+        "search_type": "hotel" if kind == "hotel" else "city",
+        "name":        chosen.get("name") or chosen.get("label") or (hotel_name or city),
         "match_name":  hotel_name,
         "country":     chosen.get("country") or "",
-        "kind":        "specific",
+        "kind":        kind,
         "raw":         chosen,
     }
 
@@ -151,7 +153,7 @@ def list_properties(ref, chk_in, chk_out):
         "children_qty":              len(C.HOTEL_CHILDREN_AGES),
         "children_age":              ",".join(map(str, C.HOTEL_CHILDREN_AGES)),
         "price_filter_currencycode": "EUR",
-        "order_by":                  "distance" if ref["kind"] == "specific" else "price",
+        "order_by":                  "price" if ref["kind"] == "city" else "distance",
         "languagecode":              "en-us",
         "units":                     "metric",
     }
@@ -325,6 +327,71 @@ def _pick_weekend_block(start, end, destination):
     return None
 
 
+# ── Window explicitness ──────────────────────────────────────────────────────
+
+def _is_explicit_short_window(window):
+    """True iff the window string contains an explicit date range of at most 7 nights."""
+    dates = _extract_date_range(window)
+    if not dates:
+        return False
+    return (date.fromisoformat(dates[1]) - date.fromisoformat(dates[0])).days <= 7
+
+
+# ── Alternatives listing (city-wide best-value) ───────────────────────────────
+
+def _price_alternatives(ref, chk_in, chk_out, ceiling):
+    """Return up to 3 HotelRate dicts from a city-wide price-sorted search.
+
+    Keeps only property_cards with review_score >= 8.0 and ppn <= ceiling.
+    Returns [] if nothing qualifies (caller raises → LLM fallback).
+    """
+    cards = list_properties(ref, chk_in, chk_out)
+    chk_in_d  = date.fromisoformat(chk_in)
+    chk_out_d = date.fromisoformat(chk_out)
+    nights = (chk_out_d - chk_in_d).days
+    if nights <= 0:
+        return []
+
+    results = []
+    for card in cards:
+        score = card.get("review_score")
+        if score is None or float(score) < 8.0:
+            continue
+        breakdown = card.get("composite_price_breakdown") or {}
+        ppn_block = breakdown.get("gross_amount_per_night") or {}
+        ppn = ppn_block.get("value")
+        if ppn is None or float(ppn) > ceiling:
+            continue
+        total_raw = card.get("min_total_price")
+        if total_raw is None:
+            total_raw = (breakdown.get("gross_amount") or {}).get("value")
+        if total_raw is None:
+            continue
+        name = card.get("hotel_name") or ""
+        booking_url = "https://www.booking.com/searchresults.html?" + urlencode({
+            "ss": name, "checkin": chk_in, "checkout": chk_out,
+            "group_adults":   C.HOTEL_ADULTS,
+            "group_children": len(C.HOTEL_CHILDREN_AGES),
+            "age":            ",".join(map(str, C.HOTEL_CHILDREN_AGES)),
+        })
+        results.append({
+            "name":                name,
+            "checkin":             chk_in,
+            "checkout":            chk_out,
+            "nights":              nights,
+            "price_per_night_eur": round(float(ppn), 2),
+            "total_eur":           round(float(total_raw), 2),
+            "booking_url":         booking_url,
+            "source":              "Booking.com (apidojo)",
+            "currency":            "EUR",
+            "review_score":        score,
+            "stars":               card.get("class"),
+        })
+        if len(results) >= 3:
+            break
+    return results
+
+
 # ── Verdict logic ─────────────────────────────────────────────────────────────
 
 def _decide_verdict(g, est, ceiling):
@@ -338,8 +405,8 @@ def _decide_verdict(g, est, ceiling):
 
 # ── Stage-3 result builder (no LLM) ──────────────────────────────────────────
 
-def _to_stage3(rate, verdict, confidence, ref, today):
-    """Build a Stage-3 result dict from a HotelRate. No LLM call."""
+def _to_stage3(rate, verdict, confidence, ref, today, mode="verified"):
+    """Build a Stage-3 result dict from a single HotelRate (verified path). No LLM call."""
     chk_in  = rate["checkin"]
     chk_out = rate["checkout"]
     try:
@@ -385,7 +452,7 @@ def _to_stage3(rate, verdict, confidence, ref, today):
         )
     elif verdict == "correct":
         summary = (
-            f"Found {hotel_name}{stars_str} for {dates_str}: €{ppn}/night "
+            f"Verified {hotel_name}{stars_str} for {dates_str}: €{ppn}/night "
             f"(€{tot} total, {nts} nights){score_str}. "
             f"Price differs from Stage-1 estimate but remains under the ceiling."
         )
@@ -421,10 +488,76 @@ def _to_stage3(rate, verdict, confidence, ref, today):
     }
 
 
+# ── Alternatives Stage-3 builder ─────────────────────────────────────────────
+
+def _to_stage3_alternatives(rates, ref, today):
+    """Build a Stage-3 result for the alternatives path (city-wide best-value options).
+
+    verdict=correct, confidence=medium. Never seeds baselines downstream.
+    """
+    rate0 = rates[0]
+    chk_in  = rate0["checkin"]
+    chk_out = rate0["checkout"]
+    try:
+        ci = date.fromisoformat(chk_in)
+        co = date.fromisoformat(chk_out)
+        dates_str = f"{ci.strftime('%b %-d')}-{co.strftime('%-d, %Y')}"
+    except (ValueError, AttributeError):
+        try:
+            ci = date.fromisoformat(chk_in)
+            co = date.fromisoformat(chk_out)
+            dates_str = f"{ci.strftime('%b %d')}-{co.strftime('%d, %Y')}"
+        except Exception:
+            dates_str = f"{chk_in} to {chk_out}"
+
+    named_hotel = ref.get("match_name") or ""
+    city_name   = ref.get("name") or named_hotel
+    src = f"Booking.com (apidojo) live {today}"
+
+    options = []
+    for r in rates:
+        opt = {
+            "dates":               dates_str,
+            "nights":              r["nights"],
+            "price_per_night_eur": r["price_per_night_eur"],
+            "total_eur":           r["total_eur"],
+            "source":              src,
+            "name":                r["name"],
+        }
+        if r.get("booking_url"):
+            opt["booking_url"] = r["booking_url"]
+        options.append(opt)
+
+    intro = f"Couldn't confirm {named_hotel} live; " if named_hotel else ""
+    hotel_list = "; ".join(
+        f"{r['name']} €{r['price_per_night_eur']}/night" for r in rates
+    )
+    summary = f"{intro}best-value family stays in {city_name} for {dates_str}: {hotel_list}."
+
+    return {
+        "destination":       city_name,
+        "verdict":           "correct",
+        "options":           options,
+        "how_to_book":       "Search the listed properties on Booking.com for the dates above.",
+        "grounding":         (
+            f"Booking.com (apidojo) city search {chk_in}-{chk_out}, "
+            f"order_by=price, review_score>=8.0, price<=ceiling. "
+            f"{len(rates)} option(s) returned."
+        ),
+        "assistant_summary": summary,
+        "confidence":        "medium",
+    }
+
+
 # ── Public entry point ────────────────────────────────────────────────────────
 
 def ground_api(diamond, mem_text, today):
-    """Stage-3 grounding via Booking.com (apidojo). Falls back to _ground_llm on any failure."""
+    """Stage-3 grounding via Booking.com (apidojo). Falls back to _ground_llm on any failure.
+
+    kind=="hotel" → verified path (single exact property, confidence high).
+    kind=="city"  → alternatives path (city best-value list, confidence medium).
+    Any failure → LLM fallback.
+    """
     try:
         if not C.RAPIDAPI_KEY:
             raise ValueError("RAPIDAPI_KEY not set")
@@ -435,20 +568,28 @@ def ground_api(diamond, mem_text, today):
 
         ref = resolve_hotel(diamond)
         if not ref:
-            raise ValueError(f"No specific hotel in diamond: {destination}")
+            raise ValueError(f"Could not resolve hotel for: {destination}")
 
         dates = _parse_window(diamond.get("window", ""), destination)
         if not dates:
             raise ValueError(f"Could not parse window: {diamond.get('window')}")
 
         chk_in, chk_out = dates
-        rate = price(ref, chk_in, chk_out)
-        if not rate:
-            raise ValueError(f"No match in Booking.com results for {destination} {chk_in}–{chk_out}")
 
-        verdict, _ = _decide_verdict(rate["price_per_night_eur"], est, ceiling)
-        # Live Booking.com data → always high confidence; may seed baselines downstream
-        return _to_stage3(rate, verdict, "high", ref, today)
+        if ref["kind"] == "hotel":
+            # Verified path: hotel-type dest → single property
+            rate = price(ref, chk_in, chk_out)
+            if not rate:
+                raise ValueError(f"Brand sanity failed for {destination} {chk_in}-{chk_out}")
+            verdict, _ = _decide_verdict(rate["price_per_night_eur"], est, ceiling)
+            confidence = "high" if _is_explicit_short_window(diamond.get("window", "")) else "medium"
+            return _to_stage3(rate, verdict, confidence, ref, today)
+        else:
+            # Alternatives path: city-wide best-value options
+            rates = _price_alternatives(ref, chk_in, chk_out, ceiling)
+            if not rates:
+                raise ValueError(f"No qualifying alternatives in {destination} {chk_in}-{chk_out}")
+            return _to_stage3_alternatives(rates, ref, today)
 
     except (requests.RequestException, ValueError, KeyError) as exc:
         print(f"  [providers] Booking.com grounding failed ({exc}), falling back to LLM")

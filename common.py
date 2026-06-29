@@ -63,7 +63,7 @@ def _anthropic(messages, model, max_tokens, want_search):
 
 
 def _gemini(messages, model, max_tokens, want_search, response_schema=None):
-    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-3.5-flash")
+    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-flash-latest")
     text = "\n\n".join(m["content"] for m in messages)
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{gmodel}:generateContent"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}

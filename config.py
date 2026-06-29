@@ -88,8 +88,8 @@ MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable
 # Used when LLM_PROVIDER=gemini. Add a new entry here whenever a new model role
 # is added; never hard-code Gemini model names anywhere else.
 GEMINI_MODEL_MAP = {
-    "claude-haiku-4-5-20251001": "gemini-3.5-flash",
-    "claude-sonnet-4-6":         "gemini-3.1-pro-preview",
+    "claude-haiku-4-5-20251001": "gemini-flash-latest",
+    "claude-sonnet-4-6":         "gemini-pro-latest",
 }
 
 # Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.

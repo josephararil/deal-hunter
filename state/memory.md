@@ -1,11 +1,17 @@
 # Diamond Finder Memory — updated 2026-06-29
 
-## Price Baselines (0 entries)
+## Price Baselines (1 entries)
 
-_No baselines recorded yet._
+### Lucky Bansko Aparthotel SPA & Relax|2026-09
+**Realistic:** ~€96.21/night &nbsp; **Updated:** 2026-06-29
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-06-29_
 
-## Outcome Ledger (4 entries)
+## Outcome Ledger (7 entries)
 
+- ❌ 2026-06-29 | Santé SPA Hotel | September 14-21, 2026 | skeptic_kill claimed=€105 — September is actually a high-demand transition period for Bulgarian spa tourism, meaning local…
+- ❌ 2026-06-29 | Hotel Rila Borovets | September 7-14, 2026 | skeptic_kill claimed=€95 — Mountain lifts are frequently reduced to weekend-only operations by mid-September, severely…
+- ✅ 2026-06-29 | Lucky Bansko Aparthotel SPA & Relax | September 10-17, 2026 | confirm claimed=€85 actual=€96.21 — Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46…
 - ❌ 2026-06-28 | Hot Springs Medical and SPA, Banya, Bulgaria | Sep 15-20, 2026 | skeptic_kill — High absolute baseline price masquerading as a seasonal deal; local dining and extras will inflate…
 - ❌ 2026-06-28 | Arte Spa & Park Hotel, Velingrad, Bulgaria | Aug 15-19, 2026 | skeptic_kill — Peak-season price anchoring disguising a completely standard, unexceptional absolute rate for the…
 - ❌ 2026-06-28 | Alexandra Beach Thassos Spa Resort, Potos, Thassos, Greece | Sep 8-15, 2026 | skeptic_kill — Ferry wait times, boarding logistics, and island driving will push total travel time past 5 hours,…

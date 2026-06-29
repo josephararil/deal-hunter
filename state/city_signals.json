@@ -1,4 +1,29 @@
 {
   "generated": "2026-06-29",
-  "signals": []
+  "signals": [
+    {
+      "city": "Lucky Bansko Aparthotel SPA & Relax",
+      "window": "September 10-17, 2026",
+      "reason": "Bansko enters a shoulder season in September, dropping premium rates while keeping full family infrastructure active (indoor pools, kids' clubs). As a Tier 1 local drive from Plovdiv (< 2 hours), this avoids flight friction. The property is specifically optimized for 4-year-olds with specialized kids' areas, high safety ratings, and year-round spa facilities that remain fully operational.",
+      "type": "anomaly",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "city": "Santé SPA Hotel",
+      "window": "September 14-21, 2026",
+      "reason": "Velingrad is the 'Spa Capital of the Balkans' and less than 1.5 hours from Plovdiv. September provides a price trough before the autumn wellness peak. This 5-star property maintains high-utility thermal pools and kids' infrastructure, offering a luxury experience at off-peak rates compared to the summer holiday surge.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "city": "Hotel Rila Borovets",
+      "window": "September 7-14, 2026",
+      "reason": "Borovets in September drops to shoulder-season rates. Hotel Rila has a massive indoor heated pool, specialized kids' play area, and mountain lifts operating for easy hikes with a 4-year-old. Drive from Plovdiv is under 2 hours, presenting virtually zero travel friction.",
+      "type": "reminder",
+      "confidence": "high",
+      "hunt": false
+    }
+  ]
 }

@@ -285,11 +285,20 @@ def _ground_llm(diamond, mem_text, today):
 
 
 # ── GROUNDING SEAM ──────────────────────────────────────────────────────────
-# ground_deal is the active Layer-3 grounding function. Currently uses the LLM
-# concierge. To switch to Apify when credits renew (2026-07-26):
-#   from verify_apify import apify_ground
-#   ground_deal = apify_ground
-ground_deal = _ground_llm
+# ground_deal is the active Layer-3 grounding function. Defaults to the Xotelo
+# API provider; falls back to _ground_llm on any import or runtime failure.
+# Set HOTEL_PROVIDER="" to force LLM-only grounding.
+
+def _resolve_ground_deal():
+    if (C.HOTEL_PROVIDER or "").strip().lower() == "xotelo":
+        try:
+            from providers import ground_api
+            return ground_api          # ground_api falls back to _ground_llm at runtime
+        except Exception as e:
+            print(f"  [providers] import failed, using LLM grounding: {e}")
+    return _ground_llm
+
+ground_deal = _resolve_ground_deal()
 
 
 # --- main ---

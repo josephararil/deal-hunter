@@ -1,5 +1,7 @@
 ﻿"""Configuration for the diamond-finder pipeline. Edit freely."""
 
+import os
+
 # ── City list ───────────────────────────────────────────────────────────────
 # Cities the diamond finder uses as a search anchor. The LLM receives these as
 # the preferred destinations but can extend to nearby or thematically related
@@ -144,6 +146,20 @@ def get_price_ceiling(destination):
         if country.lower() in dest_lower:
             return ceiling
     return DEFAULT_PRICE_CEILING_EUR
+
+
+# ── Hotel grounding ─────────────────────────────────────────────────────────
+HOTEL_PROVIDER      = os.environ.get("HOTEL_PROVIDER", "xotelo").strip().lower()
+XOTELO_BASE_URL     = os.environ.get("XOTELO_BASE_URL", "https://data.xotelo.com/api")  # free, key-less
+HOTEL_ADULTS        = 2
+HOTEL_ROOMS         = 1
+HOTEL_CHILDREN_AGES = [4]
+HOTEL_CURRENCY      = "EUR"   # ALWAYS request EUR from /rates — Xotelo defaults to USD
+HOTEL_HTTP_TIMEOUT  = 20
+HOTEL_MAPPING = {
+    # Optional override/cache for known or ambiguous hotels (skips /search):
+    # "kempinski grand arena": {"key": "g304100-d556553", "name": "Kempinski Hotel Grand Arena Bansko"},
+}
 
 
 # ── LLM prompts ─────────────────────────────────────────────────────────────

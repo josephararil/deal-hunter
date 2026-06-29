@@ -163,12 +163,21 @@ Both providers return the same Stage-3 result schema.
 `common.llm(messages, model, max_tokens, want_search, provider=None)` — single entry point.
 
 - `LLM_PROVIDER=anthropic` (default): Messages API; `want_search` → `web_search` tool.
-- `LLM_PROVIDER=gemini`: Interactions API (`/v1beta/interactions`); `want_search` →
-  `{"type": "google_search"}` tool. Degrades gracefully if Gemini rejects the search
-  tool (retries without it).
+- `LLM_PROVIDER=gemini`: `generateContent` API. When `want_search=True`, search and
+  reasoning are **split across two calls** (`_gemini` / `_gemini_search` in `common.py`):
+  1. **Search** runs on `GEMINI_SEARCH_MODEL` (config; default `gemini-3.1-flash-lite`)
+     with the `{"google_search": {}}` tool. This is the only Gemini tier that survives
+     Google's grounding gateway — flagship models (`flash-latest`/`pro-latest`) time out
+     ~99% of the time when `google_search` is attached.
+  2. **Reasoning** runs on the mapped flagship model with **no tools** (and the
+     `responseSchema`, if any). The grounded text from step 1 is injected into the prompt
+     as a `### LIVE SEARCH RESULTS` block. If the search call fails for any reason it
+     returns `""` and reasoning proceeds knowledge-only — graceful degradation.
+  This split also keeps `responseSchema` off the search call (the two features conflict).
 - Per-stage model roles are in `config.py` as `MODEL_FIND`, `MODEL_SKEPTIC`, `MODEL_VERIFY`.
-  Gemini equivalents are mapped in `GEMINI_MODEL_MAP`. Add new roles there, never as
-  literals in pipeline code.
+  Gemini equivalents are mapped in `GEMINI_MODEL_MAP`; the search model is
+  `GEMINI_SEARCH_MODEL`. Three Gemini models total — search (lite), Find (`flash-latest`),
+  Skeptic+Verify (`pro-latest`). Add new roles there, never as literals in pipeline code.
 - Optional per-stage provider overrides: `PROVIDER_FIND / PROVIDER_SKEPTIC / PROVIDER_VERIFY`
   (all default to `None` = use global `LLM_PROVIDER`).
 - `response_schema` (Gemini only): JSON Schema passed as `response_format` to constrain
@@ -214,8 +223,9 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
   deals that don't appear in search results, and can hallucinate if search is weak. The
   three-stage gate and self-improving memory exist to compensate.
 - **Gemini + search:** `google_search` quality and behaviour differ from Anthropic's
-  `web_search`. If Gemini rejects the tool the call retries without search — Stage 1 still
-  runs, just from prior knowledge rather than live data.
+  `web_search`, and grounding runs on a separate lite model (`GEMINI_SEARCH_MODEL`) because
+  flagship models time out on Google's grounding gateway. If the search call fails, the
+  flagship reasoning step still runs — just from prior knowledge rather than live data.
 - **30-day TTL:** a great deal that persists for more than a month will be suppressed after
   the first email. Acceptable given the "rare, act-now" framing.
 - **Family-only scope.** Destinations that require arduous travel or are poor fits for a

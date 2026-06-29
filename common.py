@@ -62,62 +62,77 @@ def _anthropic(messages, model, max_tokens, want_search):
                    if b.get("type") == "text").strip()
 
 
+def _gemini_parts(r):
+    parts = []
+    for part in (r.json().get("candidates") or [{}])[0].get("content", {}).get("parts", []):
+        if "text" in part:
+            parts.append(part["text"])
+    return "".join(parts).strip()
+
+
+def _gemini_search(prompt_text, max_tokens):
+    """Run live web-search grounding on GEMINI_SEARCH_MODEL (the lite tier, the only
+    one that survives Google's grounding gateway) and return a grounded text block.
+    Returns "" on any failure — the caller then reasons knowledge-only."""
+    smodel = C.GEMINI_SEARCH_MODEL
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{smodel}:generateContent"
+    headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
+    body = {
+        "contents": [{"role": "user", "parts": [{"text":
+            "Search the web for current, concrete facts relevant to the task below: "
+            "real prices, dates, availability, named hotels/destinations, and sources. "
+            "Return a concise list of findings. Do not write final analysis or JSON.\n\n"
+            "TASK:\n" + prompt_text}]}],
+        "generationConfig": {"maxOutputTokens": max_tokens},
+        "tools": [{"google_search": {}}],
+    }
+    print(f"  [gemini] Search via {smodel} (google_search)")
+    try:
+        r = _post_with_retry(url, headers=headers, json_body=body)
+    except requests.exceptions.RequestException as exc:
+        print(f"  [gemini] search {type(exc).__name__}; reasoning knowledge-only")
+        return ""
+    if not r.ok:
+        print(f"  [gemini] search HTTP {r.status_code}; reasoning knowledge-only")
+        return ""
+    out = _gemini_parts(r)
+    print(f"  [gemini] Search returned {len(out)} chars of grounding")
+    return out
+
+
 def _gemini(messages, model, max_tokens, want_search, response_schema=None):
     gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-flash-latest")
     text = "\n\n".join(m["content"] for m in messages)
+
+    # Search and reasoning are split: grounding runs on the lite search model (above),
+    # then the flagship reasoning model runs tools-free with the grounding injected as
+    # context. Flagship + google_search times out on Google's grounding gateway, and
+    # this also keeps responseSchema off the search call (they conflict).
+    if want_search:
+        grounding = _gemini_search(text, max_tokens)
+        if grounding:
+            text = ("### LIVE SEARCH RESULTS (web search performed just now)\n"
+                    + grounding + "\n\n" + text)
+
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{gmodel}:generateContent"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
+    print(f"  [gemini] Reasoning via {gmodel} (schema={response_schema is not None})")
 
-    # --- CHEEKY PRINT 1: Track target model and initial feature flags ---
-    print(f"  [gemini] Calling {gmodel} (search={want_search}, schema={response_schema is not None})")
+    body = {
+        "contents": [{"role": "user", "parts": [{"text": text}]}],
+        "generationConfig": {"maxOutputTokens": max_tokens},
+    }
+    if response_schema is not None:
+        body["generationConfig"]["responseMimeType"] = "application/json"
+        body["generationConfig"]["responseSchema"] = response_schema
 
-    def _body(with_search):
-        b = {
-            "contents": [{"role": "user", "parts": [{"text": text}]}],
-            "generationConfig": {"maxOutputTokens": max_tokens},
-        }
-        if with_search:
-            b["tools"] = [{"google_search": {}}]
-        if response_schema is not None:
-            b["generationConfig"]["responseMimeType"] = "application/json"
-            b["generationConfig"]["responseSchema"] = response_schema
-        return b
-
-    def _parse(r):
-        parts = []
-        for part in (r.json().get("candidates") or [{}])[0].get("content", {}).get("parts", []):
-            if "text" in part:
-                parts.append(part["text"])
-        res = "".join(parts).strip()
-        # --- CHEEKY PRINT 3: Track length of the final parsed text response ---
-        print(f"  [gemini] Parsed response length: {len(res)} chars")
-        return res
-
-    try:
-        r = _post_with_retry(url, headers=headers, json_body=_body(want_search))
-        if want_search and r.status_code in (400, 422):
-            print(f"  [gemini] HTTP {r.status_code} with search; retrying knowledge-only")
-            r = _post_with_retry(url, headers=headers, json_body=_body(False))
-        elif want_search and not r.ok:
-            print(f"  [gemini error] HTTP {r.status_code} with search; retrying knowledge-only")
-            r2 = _post_with_retry(url, headers=headers, json_body=_body(False))
-            if r2.ok:
-                r = r2
-    except requests.exceptions.RequestException as exc:
-        if not want_search:
-            raise
-        print(f"  [gemini] {type(exc).__name__} with search; retrying knowledge-only")
-        r = _post_with_retry(url, headers=headers, json_body=_body(False))
-
+    r = _post_with_retry(url, headers=headers, json_body=body)
     if not r.ok:
         print(f"  [gemini error] HTTP {r.status_code}: {r.text[:1000]}")
-    
-    # --- CHEEKY PRINT 2: Confirm final success status code ---
-    if r.ok:
-        print(f"  [gemini] Success HTTP {r.status_code}")
-
     r.raise_for_status()
-    return _parse(r)
+    res = _gemini_parts(r)
+    print(f"  [gemini] Parsed response length: {len(res)} chars")
+    return res
 
 
 # ------------------------------ Email ------------------------------

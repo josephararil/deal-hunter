@@ -87,10 +87,23 @@ MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable
 # Maps Anthropic model names (canonical keys) to Gemini equivalents.
 # Used when LLM_PROVIDER=gemini. Add a new entry here whenever a new model role
 # is added; never hard-code Gemini model names anywhere else.
+#
+# On Gemini, search and reasoning are split across THREE models (see common._gemini):
+#   1. GEMINI_SEARCH_MODEL below — does the live google_search grounding only.
+#   2. gemini-flash-latest        — Stage 1 Find: parses grounding, scores candidates.
+#   3. gemini-pro-latest          — Stage 2/3 Skeptic + Verify: filters and verifies.
+# Only model #1 ever carries the google_search tool; #2 and #3 run tools-free.
 GEMINI_MODEL_MAP = {
-    "claude-haiku-4-5-20251001": "gemini-flash-latest",
-    "claude-sonnet-4-6":         "gemini-pro-latest",
+    "claude-haiku-4-5-20251001": "gemini-flash-latest",   # Stage 1 Find reasoning
+    "claude-sonnet-4-6":         "gemini-pro-latest",      # Stage 2/3 Skeptic + Verify reasoning
 }
+
+# Model that performs the live web-search grounding (google_search tool).
+# Flagship models (flash-latest / pro-latest) time out ~99% of the time when
+# google_search is attached — Google's grounding gateway is capacity-starved for
+# them. The lite tier survives it reliably. Change this freely; it is the only
+# place the search model is named.
+GEMINI_SEARCH_MODEL = "gemini-3.1-flash-lite"
 
 # Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.
 # Set to "anthropic" or "gemini" to run a specific stage on a different provider.

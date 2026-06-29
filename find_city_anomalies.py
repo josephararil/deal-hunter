@@ -313,16 +313,19 @@ def main():
 
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
-    raw1 = X.llm(
-        messages=[{"role": "user", "content": C.FIND_PROMPT.format(
-            today=today, cities=C.cities_prompt_text(), memory=mem_text
-        )}],
-        model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
-        response_schema=C.STAGE1_RESPONSE_SCHEMA,
-        provider=C.PROVIDER_FIND,
-    )
-    parsed1 = X.parse_json_block(raw1) or {}
-    candidates = parsed1.get("candidates", [])
+    try:
+        raw1 = X.llm(
+            messages=[{"role": "user", "content": C.FIND_PROMPT.format(
+                today=today, cities=C.cities_prompt_text(), memory=mem_text
+            )}],
+            model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+            response_schema=C.STAGE1_RESPONSE_SCHEMA,
+            provider=C.PROVIDER_FIND,
+        )
+        candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
+    except Exception as e:
+        print(f"Stage 1 failed: {e} — treating as 0 candidates (silent day)")
+        candidates = []
     print(f"Stage 1: {len(candidates)} candidate(s) returned")
     for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
         print(f"  {c.get('score', '?'):>3}/100  {c.get('destination', '?')}  [{c.get('type', '?')}]")
@@ -362,13 +365,17 @@ def main():
             candidates=json.dumps(stage2_candidates, ensure_ascii=False, indent=2),
             memory=mem_text,
         )
-        raw2 = X.llm(
-            messages=[{"role": "user", "content": skeptic}],
-            model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
-            response_schema=C.STAGE2_RESPONSE_SCHEMA,
-            provider=C.PROVIDER_SKEPTIC,
-        )
-        verdicts = X.parse_json_block(raw2) or []
+        try:
+            raw2 = X.llm(
+                messages=[{"role": "user", "content": skeptic}],
+                model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+                response_schema=C.STAGE2_RESPONSE_SCHEMA,
+                provider=C.PROVIDER_SKEPTIC,
+            )
+            verdicts = X.parse_json_block(raw2) or []
+        except Exception as e:
+            print(f"Stage 2 failed: {e} — treating as 0 diamonds (silent day)")
+            verdicts = []
         if not isinstance(verdicts, list):
             verdicts = []
         for v in verdicts:
@@ -405,7 +412,11 @@ def main():
     if diamonds:
         print(f"Stage 3: verifying {len(diamonds)} diamond(s)...")
         for diamond in diamonds:
-            result = ground_deal(diamond, mem_text, today)
+            try:
+                result = ground_deal(diamond, mem_text, today)
+            except Exception as e:
+                print(f"  Stage 3 failed for {diamond.get('destination', '?')}: {e} — treating as kill")
+                result = {}
             if not result:
                 result = {}
             verdict3 = result.get("verdict", "kill")

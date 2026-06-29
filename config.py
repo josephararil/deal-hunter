@@ -8,8 +8,8 @@ import os
 # places when a confirmed opportunity exists (e.g. a cruise from a regional port).
 #
 # Values are (min_nights, max_nights). The diamond finder uses only the city
-# names (CITIES.keys()); the night-range values are kept for reference (and
-# will be used by the Apify grounding layer when it is wired in).
+# names (CITIES.keys()); the night-range values are used by _pick_weekend_block
+# in providers.py to respect per-city minimum stay requirements.
 CITIES = {
     # --- Bulgaria, by car (<3h) ---
     "Asenovgrad, Bulgaria": (1, 3),   "Banya, Bulgaria": (2, 4),

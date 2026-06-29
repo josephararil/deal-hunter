@@ -16,7 +16,8 @@ lines, it's probably wrong for this repo. One genuine find a year justifies the 
 ## Active product: the Diamond Finder
 
 `find_city_anomalies.py` is the only script that runs automatically (daily via `daily.yml`).
-It is self-contained: no Apify, no baseline data, no external crawlers.
+It is self-contained: no baseline data; Stage-3 grounding uses Booking.com (apidojo)
+live rates, falling back to LLM concierge on any failure.
 
 ```
 find_city_anomalies.py
@@ -39,17 +40,17 @@ find_city_anomalies.py
   │    Checks relative discount AND absolute-value floor (see SKEPTIC_PROMPT Example 5).
   │    Most candidates should die here. Silence is correct.
   │
-  ├─ Stage 3 (ground_deal seam, want_search=True, model=MODEL_VERIFY) — one call per Stage-2 survivor
-  │    Concierge/verifier. Web-searches real prices at SPECIFIC bookable date windows
-  │    (not month-wide minimums), corrects or kills hallucinations.
+  ├─ Stage 3 (ground_deal seam) — one call per Stage-2 survivor
+  │    Primary: `providers.ground_api()` — Booking.com (apidojo) live rates, no LLM call.
+  │    Fallback: `_ground_llm` (want_search=True, model=MODEL_VERIFY) — LLM concierge.
   │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
   │    assistant_summary, confidence. Merges verified fields onto surviving diamonds.
   │    Additional email guards: a confirm/correct is blocked from email (logged only) if
   │    confidence=low, OR grounded option dates are out of candidate window, OR grounded
   │    price_per_night_eur > country ceiling. Blocked entries appear in city_signals.md
   │    with a 🔒 "Email blocked: <reason>" note.
-  │    Grounding is swappable: currently uses LLM concierge; Apify slots in here
-  │    behind the same ground_deal signature (see verify_apify.py; credits renew 2026-07-26).
+  │    Grounding is swappable: `HOTEL_PROVIDER=""` forces LLM-only. Behind the same
+  │    `ground_deal(diamond, mem_text, today)` signature.
   │
   ├─ Memory write — state/memory.json + state/memory.md
   │    Every run (including silent days): record_baseline from verified prices,
@@ -79,8 +80,7 @@ find_city_anomalies.py
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
 | `find_city_anomalies.py` | The diamond finder — runs daily, emails on exceptional finds |
-| `providers.py` | Xotelo/RapidAPI Stage-3 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `heatmap()` |
-| `verify_apify.py` | Layer-3 Apify grounding stub (NOT YET WIRED — credits renew 2026-07-26) |
+| `providers.py` | Booking.com (apidojo) Stage-3 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
@@ -88,28 +88,42 @@ find_city_anomalies.py
 | `state/memory.json` | Price baselines + outcome ledger (grows every run, pruned at 200 entries / 180 days) |
 | `state/memory.md` | Human-readable digest of memory.json |
 
-## Apify grounding seam (future Phase 2)
+## Hotel grounding seam (Booking.com / apidojo)
 
-`verify_apify.py` holds the NOT-yet-wired Layer-3 Apify grounding implementation.
-Apify free credits renew **2026-07-26**. Do not call it before then.
+The active Stage-3 grounding implementation lives in `providers.py`.
+`ground_api(diamond, mem_text, today)` fetches live nightly rates from the Booking.com
+RapidAPI (apidojo host), fuzzy-matches the named hotel in the result cards, and returns a
+Stage-3 result dict. It falls back to `_ground_llm` (LLM concierge + web search) on any
+failure (no API key, HTTP error, hotel not found in listing, unparseable window).
 
-The attach point in `find_city_anomalies.py` is the module-level seam:
+**Resolution strategy:**
+
+1. **`HOTEL_MAPPING`** (in `config.py`): checked first; bypasses `/locations/auto-complete`
+   for known/ambiguous properties. Add entries here for hotels whose name is ambiguous.
+
+2. **`/locations/auto-complete`**: for hotel/landmark queries, picks the first matching
+   landmark or hotel entry (token-set fuzzy match). For queries that only resolve to a city,
+   falls back to `search_type=city`.
+
+3. **`/properties/v2/list`**: fetches property cards with `order_by=distance` for specific
+   hotel/landmark results (closest match first) or `order_by=price` for city-wide searches.
+   Reads `composite_price_breakdown.gross_amount_per_night.value` as EUR per-night.
+
+4. **Fuzzy matching**: token-set subset match after stripping noise words (hotel, resort,
+   spa…). Returns `None` — triggering the LLM fallback — if no property card name matches.
+
+The grounding seam in `find_city_anomalies.py`:
 
 ```python
-# current
-ground_deal = _ground_llm
+# resolved at import time; returns ground_api (apidojo) or _ground_llm
+ground_deal = _resolve_ground_deal()
 
-# to switch to Apify after 2026-07-26:
-from verify_apify import apify_ground
-ground_deal = apify_ground
+# to force LLM-only: set HOTEL_PROVIDER="" (repo variable or env)
+# HOTEL_PROVIDER="" python find_city_anomalies.py
 ```
 
 `ground_deal(diamond, mem_text, today)` is called once per Stage-2 survivor.
-Both implementations return the same Stage-3 result schema so the rest of the
-pipeline is unchanged. `verify_apify.apify_ground()` documents the TODO steps
-for parsing the LLM-generated `window` string into concrete Apify date calls.
-
-Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret store).
+Both providers return the same Stage-3 result schema.
 
 ## Critical invariants — do not break these
 
@@ -140,7 +154,7 @@ Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret sto
 - **Silence is the intended outcome most days.** Don't treat low email volume as a bug.
   Only investigate if the prompts demonstrably fail to surface known real opportunities.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger
-  Apify crawls. The field exists for schema compatibility only.
+  hotel crawls. The field exists for schema compatibility only.
 - **Memory is written every run**, including silent days. `memory.py` functions must
   not be called with None memory dict; always `M.load()` first.
 
@@ -174,8 +188,9 @@ Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret sto
 | `SMTP_PASS` | secret | Email delivery |
 | `EMAIL_TO` | secret | Recipient (defaults to SMTP_USER) |
 | `EMAIL_FROM` | secret | Sender (defaults to SMTP_USER) |
-| `RAPIDAPI_KEY` | secret | Xotelo hotel grounding via RapidAPI (`providers.py`) |
-| `APIFY_TOKEN` | secret | Apify grounding — not used until 2026-07-26 |
+| `RAPIDAPI_KEY` | secret | Booking.com (apidojo) hotel grounding via RapidAPI (`providers.py`) |
+| `BOOKING_RAPIDAPI_HOST` | repo variable | RapidAPI host; default `apidojo-booking-v1.p.rapidapi.com` |
+| `HOTEL_PROVIDER` | repo variable | `"apidojo"` (default) or `""` to force LLM-only grounding |
 
 ## Running locally
 
@@ -208,8 +223,6 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
 
 ## Out of scope (do not start without an explicit request)
 
-- **Apify/hotel crawling** — `verify_apify.py` has the stub; credits renew 2026-07-26.
-  Requires wiring `ground_deal = apify_ground` and implementing the TODO in `apify_ground()`.
 - **Flight data integration** — surface a hotel only when a cheap flight exists in-window.
 - **Package operators** — scrape Bulgarian-market charter operators for unsold allocations.
 

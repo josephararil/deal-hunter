@@ -1,7 +1,8 @@
 name: daily
 
 # Daily diamond finder: three-stage LLM gate, emails immediately on genuine finds.
-# No Apify. Apify grounding stub lives in verify_apify.py; credits renew 2026-07-26.
+# Stage-3 grounding: Booking.com (apidojo) via RAPIDAPI_KEY; falls back to LLM concierge.
+# Set HOTEL_PROVIDER="" (repo variable) to force LLM-only grounding.
 
 on:
   schedule:
@@ -30,6 +31,8 @@ jobs:
       SMTP_PASS:         ${{ secrets.SMTP_PASS }}
       EMAIL_TO:          ${{ secrets.EMAIL_TO }}
       EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
+      RAPIDAPI_KEY:      ${{ secrets.RAPIDAPI_KEY }}
+      HOTEL_PROVIDER:    ${{ vars.HOTEL_PROVIDER }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

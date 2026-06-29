@@ -1,5 +1,5 @@
 """
-find_city_anomalies.py  —  Diamond Finder (daily, LLM-only, no Apify)
+find_city_anomalies.py  —  Diamond Finder (daily; apidojo grounding with LLM fallback)
 
 Three-stage gate:
   Stage 1 (find):    one llm() call with web search. Asks for travel-arbitrage

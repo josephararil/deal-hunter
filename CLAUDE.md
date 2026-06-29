@@ -79,6 +79,7 @@ find_city_anomalies.py
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
 | `find_city_anomalies.py` | The diamond finder — runs daily, emails on exceptional finds |
+| `providers.py` | Xotelo/RapidAPI Stage-3 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `heatmap()` |
 | `verify_apify.py` | Layer-3 Apify grounding stub (NOT YET WIRED — credits renew 2026-07-26) |
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
@@ -173,6 +174,7 @@ Required secret: `APIFY_TOKEN` in GitHub repo secrets (already in the secret sto
 | `SMTP_PASS` | secret | Email delivery |
 | `EMAIL_TO` | secret | Recipient (defaults to SMTP_USER) |
 | `EMAIL_FROM` | secret | Sender (defaults to SMTP_USER) |
+| `RAPIDAPI_KEY` | secret | Xotelo hotel grounding via RapidAPI (`providers.py`) |
 | `APIFY_TOKEN` | secret | Apify grounding — not used until 2026-07-26 |
 
 ## Running locally

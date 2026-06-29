@@ -16,7 +16,11 @@ import config as C
 
 def _get(path, params):
     """GET XOTELO_BASE_URL+path; return the result payload or raise."""
-    resp = requests.get(C.XOTELO_BASE_URL + path, params=params, timeout=C.HOTEL_HTTP_TIMEOUT)
+    headers = (
+        {"X-RapidAPI-Key": C.RAPIDAPI_KEY, "X-RapidAPI-Host": C.XOTELO_RAPIDAPI_HOST}
+        if C.RAPIDAPI_KEY else {}
+    )
+    resp = requests.get(C.XOTELO_BASE_URL + path, params=params, headers=headers, timeout=C.HOTEL_HTTP_TIMEOUT)
     resp.raise_for_status()
     body = resp.json()
     if body.get("error"):
@@ -43,26 +47,22 @@ def resolve_hotel(destination):
     result = _get("/search", {"query": destination, "location_type": "accommodation"})
     if not result:
         return None
-    # result is typically a list of matches; take the first accommodation match
-    items = result if isinstance(result, list) else result.get("items") or []
+    # result is a dict; items are under result["list"]
+    items = result.get("list") or []
+    preferred = None
+    fallback = None
     for item in items:
-        if item.get("type", "").lower() in ("accommodation", "hotel", "property", ""):
-            return {
-                "key": item.get("hotel_key") or item.get("key"),
-                "name": item.get("name", ""),
-                "location_key": item.get("location_key"),
-                "raw": item,
-            }
-    # Fall back to the very first result if type is absent
-    if items:
-        first = items[0]
-        return {
-            "key": first.get("hotel_key") or first.get("key"),
-            "name": first.get("name", ""),
-            "location_key": first.get("location_key"),
-            "raw": first,
-        }
-    return None
+        key = item.get("key", "")
+        if not _HOTEL_KEY_RE.match(key):
+            continue
+        ref = {"key": key, "name": item.get("name", ""), "url": item.get("url"), "raw": item}
+        accom = (item.get("accommodation_type") or "").lower()
+        if any(t in accom for t in ("hotel", "resort", "inn")):
+            preferred = ref
+            break
+        if fallback is None:
+            fallback = ref
+    return preferred or fallback
 
 
 # ── Rates ─────────────────────────────────────────────────────────────────────
@@ -86,18 +86,14 @@ def price(hotel_key, chk_in, chk_out):
     if not result:
         return None
 
-    # Validate currency
-    resp_currency = (result.get("currency") or "").upper()
-    if resp_currency and resp_currency != "EUR":
-        return None  # never mislabel a non-EUR total
-
-    # result.rates is a list of OTA offers; pick the lowest total
+    # response has no "currency" field — trust the currency=EUR request param
     rates = result.get("rates") or []
     if not rates:
         return None
 
-    best = min(rates, key=lambda r: float(r.get("price") or r.get("total") or float("inf")))
-    total = float(best.get("price") or best.get("total") or 0)
+    # "rate" is the price for the WHOLE STAY
+    best = min(rates, key=lambda r: float(r.get("rate") or float("inf")))
+    total = float(best.get("rate") or 0)
     if total <= 0:
         return None
 
@@ -107,8 +103,8 @@ def price(hotel_key, chk_in, chk_out):
     if nights <= 0:
         return None
 
-    booking_url = best.get("url") or best.get("deal_url") or best.get("booking_url") or None
-    ota_name    = best.get("name") or best.get("ota") or "OTA"
+    booking_url = None  # rates have no url in the Xotelo schema
+    ota_name    = best.get("name") or "OTA"
 
     return {
         "name":                hotel_key,
@@ -126,34 +122,50 @@ def price(hotel_key, chk_in, chk_out):
 # ── Heatmap (best-effort) ─────────────────────────────────────────────────────
 
 def heatmap(hotel_key, window):
-    """Return list of DateBlock dicts; [] on any error or unexpected shape."""
-    # Derive a rough chk_out from window (any date-like string)
-    dates = _extract_date_range(window)
-    chk_out = dates[1] if dates else None
-    if not chk_out:
-        return []
-    try:
-        result = _get("/heatmap", {"hotel_key": hotel_key, "chk_out": chk_out})
-        if not result or not isinstance(result, (list, dict)):
+    """Return sorted list of cheap ISO check-in date strings within the candidate window; [] on error.
+
+    Calls /heatmap and reads result["heatmap"]["cheap_price_days"] (ISO date strings; no prices).
+    Filters to dates that fall inside the parsed candidate window.
+    """
+    # Parse the candidate window to derive the call's chk_out and the filter bounds
+    raw_dates = _extract_date_range(window)
+    if raw_dates:
+        win_start = date.fromisoformat(raw_dates[0])
+        win_end   = date.fromisoformat(raw_dates[1])
+    else:
+        m = re.search(r"([A-Za-z]+)\s+(\d{4})", window)
+        if not m:
             return []
-        items = result if isinstance(result, list) else result.get("days") or []
-        blocks = []
-        for item in items:
-            ci = item.get("checkin") or item.get("date")
-            price_val = item.get("price") or item.get("price_per_night")
-            if ci and price_val:
-                blocks.append({
-                    "checkin":             ci,
-                    "checkout":            item.get("checkout", ci),
-                    "nights":              item.get("nights", 1),
-                    "price_per_night_eur": float(price_val),
-                })
-        return blocks
+        mon = _MONTH_MAP.get(m.group(1)[:3].lower())
+        yr  = int(m.group(2))
+        if not mon:
+            return []
+        win_start = date(yr, mon, 1)
+        nxt = date(yr + (mon // 12), mon % 12 + 1, 1) if mon < 12 else date(yr + 1, 1, 1)
+        win_end = nxt - timedelta(days=1)
+
+    try:
+        result = _get("/heatmap", {"hotel_key": hotel_key, "chk_out": str(win_end)})
+        if not result or not isinstance(result, dict):
+            return []
+        cheap_days = result.get("heatmap", {}).get("cheap_price_days") or []
+        in_window = []
+        for d_str in cheap_days:
+            try:
+                d_val = date.fromisoformat(d_str)
+                if win_start <= d_val <= win_end:
+                    in_window.append(d_str)
+            except (ValueError, TypeError):
+                pass
+        return sorted(in_window)
     except Exception:
         return []
 
 
 # ── Window parsing ────────────────────────────────────────────────────────────
+
+# Matches Xotelo property keys: "g<digits>-d<digits>"
+_HOTEL_KEY_RE = re.compile(r"^g\d+-d\d+$")
 
 # Matches "Sep 10-14, 2026" or "10-14 Sep 2026" styles
 _EXPLICIT_RE = re.compile(
@@ -338,6 +350,9 @@ def _to_stage3(rate, verdict, confidence, ref, today):
 def ground_api(diamond, mem_text, today):
     """Stage-3 grounding via Xotelo. Falls back to _ground_llm on any failure."""
     try:
+        if not C.RAPIDAPI_KEY:
+            raise ValueError("RAPIDAPI_KEY not set")
+
         destination = diamond.get("destination", "")
         est         = diamond.get("est_price_eur") or 0
         ceiling     = C.get_price_ceiling(destination)
@@ -346,19 +361,36 @@ def ground_api(diamond, mem_text, today):
         if not ref or not ref.get("key"):
             raise ValueError(f"Could not resolve hotel for: {destination}")
 
-        dates = _parse_window(diamond.get("window", ""), destination)
+        window_text = diamond.get("window", "")
+        dates = None
+        confidence = "medium"
 
-        # Optionally refine dates via heatmap when window was month-wide
+        # Prefer explicit short-range dates (≤7 nights) → high confidence
+        raw_dates = _extract_date_range(window_text)
+        if raw_dates:
+            ci_d = date.fromisoformat(raw_dates[0])
+            co_d = date.fromisoformat(raw_dates[1])
+            if (co_d - ci_d).days <= 7:
+                dates = raw_dates
+                confidence = "high"
+
+        # For month-wide windows: use heatmap cheap days → medium confidence
         if not dates:
-            hm = heatmap(ref["key"], diamond.get("window", ""))
-            if hm:
-                # Pick the cheapest in-window block
-                best_block = min(hm, key=lambda b: b["price_per_night_eur"])
-                ci = best_block["checkin"]
-                co = best_block.get("checkout") or str(
-                    date.fromisoformat(ci) + timedelta(days=max(2, best_block.get("nights", 2)))
-                )
-                dates = (ci, co)
+            cheap_days = heatmap(ref["key"], window_text)
+            if cheap_days:
+                min_nights_city = 2
+                dest_lower = destination.lower()
+                for city_key, (mn, _mx) in C.CITIES.items():
+                    if city_key.lower().split(",")[0] in dest_lower:
+                        min_nights_city = mn
+                        break
+                chk_in_str  = cheap_days[0]  # earliest cheap day
+                chk_out_str = str(date.fromisoformat(chk_in_str) + timedelta(days=min_nights_city))
+                dates = (chk_in_str, chk_out_str)
+
+        # Final fallback: weekend-guess from _parse_window → medium confidence
+        if not dates:
+            dates = _parse_window(window_text, destination)
 
         if not dates:
             raise ValueError(f"Could not parse window: {diamond.get('window')}")
@@ -368,8 +400,10 @@ def ground_api(diamond, mem_text, today):
         if not rate:
             raise ValueError(f"No EUR rates returned for {ref['key']} {chk_in}–{chk_out}")
 
-        verdict, confidence = _decide_verdict(rate["price_per_night_eur"], est, ceiling)
-        return _to_stage3(rate, verdict, confidence, ref, today)
+        verdict, _ = _decide_verdict(rate["price_per_night_eur"], est, ceiling)
+        # Over-ceiling kills are certain; for confirm/correct use date-derived confidence
+        final_confidence = "high" if verdict == "kill" else confidence
+        return _to_stage3(rate, verdict, final_confidence, ref, today)
 
     except (requests.RequestException, ValueError, KeyError) as exc:
         print(f"  [providers] Xotelo grounding failed ({exc}), falling back to LLM")

@@ -149,8 +149,10 @@ def get_price_ceiling(destination):
 
 
 # ── Hotel grounding ─────────────────────────────────────────────────────────
-HOTEL_PROVIDER      = os.environ.get("HOTEL_PROVIDER", "xotelo").strip().lower()
-XOTELO_BASE_URL     = os.environ.get("XOTELO_BASE_URL", "https://data.xotelo.com/api")  # free, key-less
+HOTEL_PROVIDER       = os.environ.get("HOTEL_PROVIDER", "xotelo").strip().lower()
+RAPIDAPI_KEY         = os.environ.get("RAPIDAPI_KEY", "")
+XOTELO_RAPIDAPI_HOST = os.environ.get("XOTELO_RAPIDAPI_HOST", "xotelo-hotel-prices.p.rapidapi.com")
+XOTELO_BASE_URL      = os.environ.get("XOTELO_BASE_URL", f"https://{XOTELO_RAPIDAPI_HOST}/api")
 HOTEL_ADULTS        = 2
 HOTEL_ROOMS         = 1
 HOTEL_CHILDREN_AGES = [4]

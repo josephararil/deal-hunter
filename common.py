@@ -74,9 +74,8 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None):
             "generationConfig": {"maxOutputTokens": max_tokens},
         }
         if with_search:
-            # google_search and responseSchema cannot coexist — rely on parse_json_block
             b["tools"] = [{"google_search": {}}]
-        elif response_schema is not None:
+        if response_schema is not None:
             b["generationConfig"]["responseMimeType"] = "application/json"
             b["generationConfig"]["responseSchema"] = response_schema
         return b

@@ -229,12 +229,18 @@ Return JSON only. Do not include markdown formatting or wrappers like ```json. O
 
 Field notes:
 - est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). Used for price gating downstream.
+- hotel_name: the specific hotel or resort property (e.g., "Kempinski Hotel Grand Arena"). Use "" for city-level, cruise, or flight deals with no single named property.
+- city: the city where the deal is located (e.g., "Bansko"). Required.
+- country: the country (e.g., "Bulgaria"). Required.
 
 JSON Schema:
 {{
   "candidates": [
     {{
       "destination": "City, resort name, or cruise line/route",
+      "hotel_name": "Specific property name, or empty string for city-level/cruise/flight deals",
+      "city": "Bansko",
+      "country": "Bulgaria",
       "score": 82,
       "type": "hotel",
       "window": "Specific exact dates or tight window (e.g., Jan 10-17)",
@@ -405,6 +411,9 @@ STAGE1_RESPONSE_SCHEMA = {
                 "type": "object",
                 "properties": {
                     "destination":   {"type": "string"},
+                    "hotel_name":    {"type": "string"},
+                    "city":          {"type": "string"},
+                    "country":       {"type": "string"},
                     "score":         {"type": "integer"},
                     "type":          {"type": "string"},
                     "window":        {"type": "string"},
@@ -412,7 +421,7 @@ STAGE1_RESPONSE_SCHEMA = {
                     "reason":        {"type": "string"},
                     "confidence":    {"type": "string"},
                 },
-                "required": ["destination", "score", "type", "window", "est_price_eur", "reason", "confidence"],
+                "required": ["destination", "city", "country", "score", "type", "window", "est_price_eur", "reason", "confidence"],
             },
         },
     },

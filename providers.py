@@ -46,69 +46,94 @@ def _normalize(s):
     return set(s.split())
 
 
+def _match_score(hotel_name, card_name):
+    """Token-overlap ratio: |target ∩ card| / |target|. Returns 0.0 if target is empty."""
+    target = _normalize(hotel_name)
+    card = _normalize(card_name)
+    if not target:
+        return 0.0
+    return len(target & card) / len(target)
+
+
+def _longest_token(hotel_name):
+    """Return the longest token from the normalized hotel name (the brand token)."""
+    tokens = _normalize(hotel_name)
+    return max(tokens, key=len) if tokens else ""
+
+
 # ── Hotel resolution ──────────────────────────────────────────────────────────
 
-def resolve_hotel(destination):
-    """Return {dest_id, search_type, name, country, kind, raw} or None."""
-    dest_lower = destination.lower()
+def resolve_hotel(diamond):
+    """Return {dest_id, search_type, name, match_name, country, kind, raw} or None.
 
-    # Check HOTEL_MAPPING first (case-insensitive substring match on alias)
-    for alias, ref in C.HOTEL_MAPPING.items():
-        if alias.lower() in dest_lower or dest_lower in alias.lower():
+    Reads hotel_name, city, country from the Stage-1 diamond dict.
+    Returns None if hotel_name is empty (city-level/cruise/flight → LLM fallback).
+    Prefers dest_type=="hotel" entries over landmark when both are present.
+    """
+    hotel_name = (diamond.get("hotel_name") or "").strip()
+    city       = (diamond.get("city")       or "").strip()
+    country    = (diamond.get("country")    or "").strip()
+
+    # City-level / cruise / flight deal → no specific hotel → LLM fallback
+    if not hotel_name:
+        return None
+
+    # HOTEL_MAPPING override first (case-insensitive substring match on hotel_name + city)
+    lookup = f"{hotel_name} {city}".lower().strip()
+    for alias, ref_data in C.HOTEL_MAPPING.items():
+        if alias.lower() in lookup or lookup in alias.lower():
             return {
-                "dest_id":     ref["dest_id"],
-                "search_type": ref["search_type"],
-                "name":        ref.get("name", alias),
-                "country":     ref.get("country", ""),
+                "dest_id":     ref_data["dest_id"],
+                "search_type": ref_data["search_type"],
+                "name":        ref_data.get("name", alias),
+                "match_name":  hotel_name,
+                "country":     ref_data.get("country", ""),
                 "kind":        "specific",
-                "raw":         ref,
+                "raw":         ref_data,
             }
 
-    # Country hint for validation: "Bansko, Bulgaria" → "Bulgaria"
-    parts = [p.strip() for p in destination.split(",")]
-    country_hint = parts[-1] if len(parts) > 1 else None
-    # Candidate hotel portion (before the first comma) for name matching
-    hotel_part = parts[0]
-
-    data = _get("/locations/auto-complete", {"languagecode": "en-us", "text": destination})
+    data = _get("/locations/auto-complete", {
+        "languagecode": "en-us",
+        "text": f"{hotel_name} {city}".strip(),
+    })
     if not isinstance(data, list) or not data:
         return None
 
-    candidate_tokens = _normalize(hotel_part)
-    city_fallback = None
+    hotel_tokens = _normalize(hotel_name)
+    hotel_entry = None
+    landmark_entry = None
 
     for item in data:
         dtype = (item.get("dest_type") or "").lower()
         name = item.get("name") or item.get("label") or ""
-        country = item.get("country") or ""
+        item_country = item.get("country") or ""
 
-        # Country validation: skip entries whose country doesn't match the hint
-        if country_hint and country_hint.lower() not in country.lower():
+        # Country validation: skip entries whose country doesn't match
+        if country and country.lower() not in item_country.lower():
             continue
 
         if dtype in ("hotel", "landmark"):
             name_tokens = _normalize(name)
-            if candidate_tokens and candidate_tokens.issubset(name_tokens):
-                return {
-                    "dest_id":     item["dest_id"],
-                    "search_type": dtype,
-                    "name":        name,
-                    "country":     country,
-                    "kind":        "specific",
-                    "raw":         item,
-                }
+            if hotel_tokens and hotel_tokens & name_tokens:
+                if dtype == "hotel" and hotel_entry is None:
+                    hotel_entry = item
+                elif dtype == "landmark" and landmark_entry is None:
+                    landmark_entry = item
 
-        elif dtype == "city" and city_fallback is None:
-            city_fallback = {
-                "dest_id":     item["dest_id"],
-                "search_type": "city",
-                "name":        name,
-                "country":     country,
-                "kind":        "city",
-                "raw":         item,
-            }
+    chosen = hotel_entry or landmark_entry
+    if chosen is None:
+        return None
 
-    return city_fallback
+    dtype = (chosen.get("dest_type") or "").lower()
+    return {
+        "dest_id":     chosen["dest_id"],
+        "search_type": dtype if dtype in ("hotel", "landmark") else "landmark",
+        "name":        chosen.get("name") or chosen.get("label") or hotel_name,
+        "match_name":  hotel_name,
+        "country":     chosen.get("country") or "",
+        "kind":        "specific",
+        "raw":         chosen,
+    }
 
 
 # ── Property listing ──────────────────────────────────────────────────────────
@@ -150,16 +175,29 @@ def price(ref, chk_in, chk_out):
     if not cards:
         return None
 
-    target_tokens = _normalize(ref["name"])
-    matched = None
-    for card in cards:
-        card_tokens = _normalize(card.get("hotel_name", ""))
-        if target_tokens and target_tokens.issubset(card_tokens):
-            matched = card
-            break
+    match_name = ref.get("match_name") or ref.get("name", "")
+    brand_token = _longest_token(match_name)
 
-    if matched is None:
-        return None
+    if ref.get("search_type") == "hotel":
+        # Single-property listing — take the first card; sanity-check the brand token.
+        card = cards[0]
+        if brand_token and brand_token not in _normalize(card.get("hotel_name", "")):
+            return None
+        matched = card
+    else:
+        # Landmark/city listing — pick the best-scoring card by token overlap.
+        best_score = 0.0
+        matched = None
+        for card in cards:
+            score = _match_score(match_name, card.get("hotel_name", ""))
+            if score > best_score:
+                best_score = score
+                matched = card
+
+        if matched is None or best_score < 0.6:
+            return None
+        if brand_token and brand_token not in _normalize(matched.get("hotel_name", "")):
+            return None
 
     breakdown = matched.get("composite_price_breakdown") or {}
     ppn_block = breakdown.get("gross_amount_per_night") or {}
@@ -395,9 +433,9 @@ def ground_api(diamond, mem_text, today):
         est         = diamond.get("est_price_eur") or 0
         ceiling     = C.get_price_ceiling(destination)
 
-        ref = resolve_hotel(destination)
+        ref = resolve_hotel(diamond)
         if not ref:
-            raise ValueError(f"Could not resolve destination: {destination}")
+            raise ValueError(f"No specific hotel in diamond: {destination}")
 
         dates = _parse_window(diamond.get("window", ""), destination)
         if not dates:

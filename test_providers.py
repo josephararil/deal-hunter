@@ -43,10 +43,20 @@ try:
 
     # ── Canned API data ───────────────────────────────────────────────────────
 
-    # /locations/auto-complete: list with both a city and a matching landmark
+    # /locations/auto-complete: city + matching landmark
     _AC_WITH_LANDMARK = [
         {"dest_id": "city-1001", "dest_type": "city",     "name": "Bansko",              "country": "Bulgaria"},
         {"dest_id": "lmk-2001",  "dest_type": "landmark", "name": "Regnum Hotel Bansko",  "country": "Bulgaria"},
+    ]
+    # /locations/auto-complete: both hotel-type and landmark entries for Regnum
+    _AC_HOTEL_AND_LANDMARK = [
+        {"dest_id": "htl-5001", "dest_type": "hotel",    "name": "Regnum Hotel Bansko", "country": "Bulgaria"},
+        {"dest_id": "lmk-2001", "dest_type": "landmark", "name": "Regnum Hotel Bansko", "country": "Bulgaria"},
+    ]
+    # /locations/auto-complete: Kempinski as landmark (label differs from property card name)
+    _AC_KEMPINSKI = [
+        {"dest_id": "lmk-3001", "dest_type": "landmark",
+         "name": "Hotel Kempinski Grand Arena Bansko", "country": "Bulgaria"},
     ]
     # /locations/auto-complete: city only, no hotel/landmark entry
     _AC_CITY_ONLY = [
@@ -77,6 +87,21 @@ try:
             },
         ]
     }
+    # /properties/v2/list: Kempinski property card (name matches Stage-1 hotel_name exactly)
+    _PROPS_KEMPINSKI = {
+        "result": [
+            {
+                "type": "property_card",
+                "hotel_name": "Kempinski Hotel Grand Arena",
+                "class": 5, "review_score": 9.1,
+                "composite_price_breakdown": {
+                    "gross_amount_per_night": {"value": 220.0, "currency": "EUR"},
+                    "gross_amount":           {"value": 440.0, "currency": "EUR"},
+                },
+                "min_total_price": 440.0,
+            },
+        ]
+    }
     # /properties/v2/list: Kempinski only — Regnum is absent
     _PROPS_NO_REGNUM = {
         "result": [
@@ -97,6 +122,16 @@ try:
         if path == "/locations/auto-complete":
             return _AC_WITH_LANDMARK
         return _PROPS
+
+    def _get_hotel_and_landmark(path, params):
+        if path == "/locations/auto-complete":
+            return _AC_HOTEL_AND_LANDMARK
+        return _PROPS
+
+    def _get_kempinski(path, params):
+        if path == "/locations/auto-complete":
+            return _AC_KEMPINSKI
+        return _PROPS_KEMPINSKI
 
     def _get_city_only(path, params):
         if path == "/locations/auto-complete":
@@ -146,28 +181,26 @@ try:
 
     print("\n=== test_providers.py ===\n")
 
-    # 1. resolve_hotel picks a landmark/hotel result for a hotel-name query
+    # 1. resolve_hotel picks a landmark entry for a hotel-name query
     P._get = _get_with_landmark
     C.HOTEL_MAPPING = {}
-    ref = P.resolve_hotel("Regnum Hotel, Bulgaria")
+    ref = P.resolve_hotel({"hotel_name": "Regnum Hotel", "city": "Bansko", "country": "Bulgaria"})
     chk("resolve_hotel ->landmark for hotel-name query",
         ref is not None
         and ref.get("search_type") in ("hotel", "landmark")
-        and "Regnum" in ref.get("name", ""),
+        and "Regnum" in ref.get("name", "")
+        and ref.get("match_name") == "Regnum Hotel",
         f"got: {ref}")
 
-    # 2. resolve_hotel falls back to city when no hotel/landmark matches
+    # 2. resolve_hotel returns None for empty hotel_name (city-level deal → LLM fallback)
     P._get = _get_city_only
-    ref_city = P.resolve_hotel("Bansko, Bulgaria")
-    chk("resolve_hotel ->city fallback for city-name query",
-        ref_city is not None
-        and ref_city.get("search_type") == "city"
-        and ref_city.get("kind") == "city",
-        f"got: {ref_city}")
+    ref_none = P.resolve_hotel({"hotel_name": "", "city": "Bansko", "country": "Bulgaria"})
+    chk("resolve_hotel ->None for empty hotel_name (city-level -> LLM fallback)",
+        ref_none is None, f"expected None, got {ref_none}")
 
-    # 3. resolve_hotel rejects entries whose country doesn't match the hint
-    P._get = _get_with_landmark   # data has Bulgaria; query hints Greece
-    ref_mm = P.resolve_hotel("Regnum Hotel, Greece")
+    # 3. resolve_hotel rejects entries whose country doesn't match
+    P._get = _get_with_landmark   # data has Bulgaria; diamond says Greece
+    ref_mm = P.resolve_hotel({"hotel_name": "Regnum Hotel", "city": "Bansko", "country": "Greece"})
     chk("resolve_hotel ->rejects country mismatch",
         ref_mm is None, f"expected None, got {ref_mm}")
 
@@ -175,7 +208,7 @@ try:
     _get_calls: list = []
     P._get = lambda path, params: _get_calls.append(path) or _get_with_landmark(path, params)
     C.HOTEL_MAPPING = {"regnum bansko": {"dest_id": "99999", "search_type": "city", "name": "Regnum Custom"}}
-    ref_map = P.resolve_hotel("regnum bansko")
+    ref_map = P.resolve_hotel({"hotel_name": "Regnum Bansko", "city": "Bansko", "country": "Bulgaria"})
     P._get = _get_with_landmark
     C.HOTEL_MAPPING = {}
     chk("HOTEL_MAPPING short-circuits auto-complete",
@@ -184,9 +217,22 @@ try:
         and len(_get_calls) == 0,
         f"dest_id={ref_map and ref_map.get('dest_id')!r}, _get_calls={_get_calls}")
 
-    # 5. price() fuzzy-matches hotel name and reads gross_amount_per_night.value as EUR/night
-    P._get = _get_with_landmark
-    ref_pp = {"dest_id": "lmk-2001", "search_type": "landmark", "name": "Regnum Hotel", "kind": "specific"}
+    # 5. resolve_hotel prefers dest_type=="hotel" over landmark when both are present
+    P._get = _get_hotel_and_landmark
+    ref_htl = P.resolve_hotel({"hotel_name": "Regnum Hotel", "city": "Bansko", "country": "Bulgaria"})
+    chk("resolve_hotel ->dest_type==hotel preferred over landmark",
+        ref_htl is not None
+        and ref_htl.get("search_type") == "hotel"
+        and ref_htl.get("dest_id") == "htl-5001",
+        f"got: {ref_htl}")
+
+    P._get = _get_with_landmark   # restore for subsequent calls
+
+    # 6. price() fuzzy-matches hotel name and reads gross_amount_per_night.value as EUR/night
+    ref_pp = {
+        "dest_id": "lmk-2001", "search_type": "landmark", "kind": "specific",
+        "name": "Regnum Hotel Bansko", "match_name": "Regnum Hotel",
+    }
     rate = P.price(ref_pp, "2026-08-08", "2026-08-10")
     chk("price() ->fuzzy-match; reads gross_amount_per_night.value",
         rate is not None
@@ -195,15 +241,33 @@ try:
         and rate["source"] == "Booking.com (apidojo)",
         f"got: {rate}")
 
-    # 6. price() returns None when the named hotel is absent from the listing
+    # 7. price() returns None when the named hotel is absent from the listing
     P._get = _get_no_regnum   # listing has Kempinski only
     rate_none = P.price(ref_pp, "2026-08-08", "2026-08-10")
     chk("price() ->None when named hotel absent from listing",
         rate_none is None, f"got: {rate_none}")
 
-    # 7–9. _decide_verdict: confirm / correct / over-ceiling kill
-    P._get = _get_with_landmark   # restore for subsequent calls
+    # 8. Kempinski regression: landmark label differs from property card name — must still MATCH.
+    #    Old issubset logic failed: target had "bansko" (from label), card did not → no match.
+    #    New overlap scoring against match_name (Stage-1 hotel_name) fixes this.
+    P._get = _get_kempinski
+    ref_kemp = {
+        "dest_id": "lmk-3001", "search_type": "landmark", "kind": "specific",
+        "name": "Hotel Kempinski Grand Arena Bansko",  # landmark label from auto-complete
+        "match_name": "Kempinski Hotel Grand Arena",   # Stage-1 hotel_name → used for scoring
+    }
+    rate_kemp = P.price(ref_kemp, "2026-08-08", "2026-08-10")
+    chk("price() ->Kempinski regression: overlap match succeeds despite label mismatch",
+        rate_kemp is not None
+        and rate_kemp["price_per_night_eur"] == 220.0
+        and rate_kemp["hotel_name_on_card"] if False else (
+            rate_kemp is not None and rate_kemp["price_per_night_eur"] == 220.0
+        ),
+        f"got: {rate_kemp}")
 
+    P._get = _get_with_landmark   # restore
+
+    # 9–11. _decide_verdict: confirm / correct / over-ceiling kill
     v, conf = P._decide_verdict(80.0, 85.0, 100)
     chk("_decide_verdict ->confirm (g <= est*1.15)",
         v == "confirm" and conf == "high", f"got ({v!r}, {conf!r})")
@@ -216,8 +280,9 @@ try:
     chk("_decide_verdict ->kill (over ceiling)",
         v == "kill" and conf == "high", f"got ({v!r}, {conf!r})")
 
-    # 10–11. _to_stage3 output passes _dates_in_window; options[].dates has a 4-digit year
-    ref_s3 = {"name": "Regnum Hotel", "dest_id": "lmk-2001", "search_type": "landmark", "kind": "specific"}
+    # 12–13. _to_stage3 output: options[].dates has a 4-digit year; passes _dates_in_window
+    ref_s3 = {"name": "Regnum Hotel", "match_name": "Regnum Hotel",
+               "dest_id": "lmk-2001", "search_type": "landmark", "kind": "specific"}
     rate_s3 = {
         "name": "Regnum Hotel Bansko", "checkin": "2026-08-08", "checkout": "2026-08-10",
         "nights": 2, "price_per_night_eur": 85.0, "total_eur": 170.0,
@@ -231,9 +296,17 @@ try:
     chk("_to_stage3 ->options[0].dates passes _dates_in_window",
         fa._dates_in_window(opt_dates, "Aug 2026"), f"dates={opt_dates!r} vs 'Aug 2026'")
 
-    _diamond = {"destination": "Regnum Hotel, Bulgaria", "est_price_eur": 85, "window": "Aug 2026"}
+    # Diamond used for ground_api integration tests below
+    _diamond = {
+        "destination": "Regnum Hotel, Bulgaria",
+        "hotel_name":  "Regnum Hotel",
+        "city":        "Bansko",
+        "country":     "Bulgaria",
+        "est_price_eur": 85,
+        "window": "Aug 2026",
+    }
 
-    # 12. Fallback to _ground_llm when RAPIDAPI_KEY is empty
+    # 14. Fallback to _ground_llm when RAPIDAPI_KEY is empty
     fa._ground_llm = _stub_llm
     _stub_llm.calls = 0
     C.RAPIDAPI_KEY = ""
@@ -245,7 +318,7 @@ try:
         _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
         f"calls={_stub_llm.calls}, result={result!r}")
 
-    # 13. Fallback when resolve_hotel returns None (empty AC list)
+    # 15. Fallback when resolve_hotel returns None (empty AC list)
     fa._ground_llm = _stub_llm
     _stub_llm.calls = 0
     P._get = _get_empty_ac
@@ -256,7 +329,7 @@ try:
         _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
         f"calls={_stub_llm.calls}")
 
-    # 14. Fallback when named hotel is absent from listing (price() returns None)
+    # 16. Fallback when named hotel is absent from listing (price() returns None)
     fa._ground_llm = _stub_llm
     _stub_llm.calls = 0
     P._get = _get_no_regnum   # AC resolves Regnum landmark, but props list has no Regnum
@@ -267,7 +340,7 @@ try:
         _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
         f"calls={_stub_llm.calls}")
 
-    # 15. Fallback on HTTP error from _get
+    # 17. Fallback on HTTP error from _get
     fa._ground_llm = _stub_llm
     _stub_llm.calls = 0
     P._get = _get_http_error
@@ -278,8 +351,26 @@ try:
         _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
         f"calls={_stub_llm.calls}")
 
+    # 18. Fallback for city-level diamond (hotel_name empty → resolve_hotel None)
+    _city_diamond = {
+        "destination": "Bansko weekend getaway",
+        "hotel_name":  "",
+        "city":        "Bansko",
+        "country":     "Bulgaria",
+        "est_price_eur": 70,
+        "window": "Sep 2026",
+    }
+    fa._ground_llm = _stub_llm
+    _stub_llm.calls = 0
+    P._get = _get_with_landmark
+    result = P.ground_api(_city_diamond, "memory", "2026-06-29")
+    fa._ground_llm = _real_ground_llm
+    chk("ground_api ->LLM fallback for city-level diamond (empty hotel_name)",
+        _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
+        f"calls={_stub_llm.calls}")
+
     # ── Summary ───────────────────────────────────────────────────────────────
-    total = 15
+    total = 18
     passed = total - len(_failed)
     print(f"\n{passed}/{total} tests passed.")
     if _failed:

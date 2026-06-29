@@ -2,26 +2,25 @@
 
 ## Current product: the Diamond Finder
 
-The active system is `find_city_anomalies.py` — a daily LLM-only script that emails
+The active system is `find_city_anomalies.py` — a daily script that emails
 immediately when it finds something genuinely exceptional. It runs on GitHub Actions, costs
-nothing beyond API tokens, and has no Apify dependency.
+nothing beyond API tokens and RapidAPI calls.
 
 ### Why LLM-only (no scraping)?
 
-The original design (v1) did cross-sectional outlier detection over Apify hotel data: flag a
+The original design (v1) did cross-sectional outlier detection over scraped hotel data: flag a
 hotel far below its same-class peers in the same crawl. That catches a "crazy manager" but is
 blind to a *whole city* dropping — when everything drops together the median drops with it, so
 the detector goes quiet exactly when the deals are best.
 
 The v2 design added a seasonal baseline (city|class|month medians) and an LLM planner at the
-front to steer the expensive crawl. This worked but introduced complexity: Apify costs, a
+front to steer the expensive crawl. This worked but introduced complexity: scraping costs, a
 slow baseline warm-up period, and a weekly digest cadence that missed short-window deals.
 
-The current (v3) design cuts Apify entirely. LLM + live web search can detect market shocks,
-post-event collapses, flight sales, and currency moves faster and cheaper than periodic
-scraping — and the two-stage gate is the spam protection. The trade-off is that the LLM can
-miss deals not surfaced in search results, and can occasionally hallucinate. The hostile
-skeptic stage exists to catch this.
+The current (v3) design uses LLM + live web search to detect market shocks, post-event
+collapses, flight sales, and currency moves. Stage-3 grounding now uses Booking.com live
+rates (apidojo RapidAPI) instead of a second LLM call, giving factual price verification
+without scraping infrastructure. The LLM fallback fires when the API is unavailable.
 
 ### The two-stage gate
 
@@ -72,19 +71,18 @@ The original scope was hotels only. The diamond finder hunts across:
 The anchor city list (`config.CITIES`) guides the search but the Stage 1 prompt explicitly
 allows nearby or thematically related destinations when a confirmed opportunity exists.
 
-## Apify / hotel-crawl pipeline (retired)
+## Scraping pipeline (retired)
 
 The original scraping pipeline (`hunt.py`, `baseline_sampler.py`, `patterns.json`) has been
-retired and the `_dormant/` directory removed. It was preserved as a design archive while the
-v3 LLM-only approach was being established, but is no longer in the repository.
+retired and is no longer in the repository.
 
-Apify capability for Layer-3 grounding now lives in `verify_apify.py` as a not-yet-wired
-stub. Free credits renew **2026-07-26**. The attach point is the `ground_deal` seam in
-`find_city_anomalies.py` — see CLAUDE.md "Apify grounding seam" section for wiring details.
+Stage-3 grounding now uses Booking.com live rates via the apidojo RapidAPI — a lightweight
+API call per Stage-2 survivor rather than a full scrape. See CLAUDE.md "Hotel grounding seam"
+section for the implementation details and fallback behaviour.
 
-Restore full Apify crawling only if the LLM-only approach demonstrably fails and you are
-prepared to take on Apify costs, a slow cold-start period, and the operational complexity of
-a scraping pipeline. That is a deliberate product decision, not a configuration change.
+Restore full scraping only if the current approach demonstrably fails and you are prepared to
+take on scraping costs and the operational complexity of a crawling pipeline. That is a
+deliberate product decision, not a configuration change.
 
 ## What's parked (do not start without an explicit request)
 

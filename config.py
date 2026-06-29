@@ -1,13 +1,15 @@
 ﻿"""Configuration for the diamond-finder pipeline. Edit freely."""
 
+import os
+
 # ── City list ───────────────────────────────────────────────────────────────
 # Cities the diamond finder uses as a search anchor. The LLM receives these as
 # the preferred destinations but can extend to nearby or thematically related
 # places when a confirmed opportunity exists (e.g. a cruise from a regional port).
 #
 # Values are (min_nights, max_nights). The diamond finder uses only the city
-# names (CITIES.keys()); the night-range values are kept for reference (and
-# will be used by the Apify grounding layer when it is wired in).
+# names (CITIES.keys()); the night-range values are used by _pick_weekend_block
+# in providers.py to respect per-city minimum stay requirements.
 CITIES = {
     # --- Bulgaria, by car (<3h) ---
     "Asenovgrad, Bulgaria": (1, 3),   "Banya, Bulgaria": (2, 4),
@@ -86,8 +88,8 @@ MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable
 # Used when LLM_PROVIDER=gemini. Add a new entry here whenever a new model role
 # is added; never hard-code Gemini model names anywhere else.
 GEMINI_MODEL_MAP = {
-    "claude-haiku-4-5-20251001": "gemini-3.5-flash",
-    "claude-sonnet-4-6":         "gemini-3.1-pro-preview",
+    "claude-haiku-4-5-20251001": "gemini-flash-latest",
+    "claude-sonnet-4-6":         "gemini-pro-latest",
 }
 
 # Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.
@@ -144,6 +146,22 @@ def get_price_ceiling(destination):
         if country.lower() in dest_lower:
             return ceiling
     return DEFAULT_PRICE_CEILING_EUR
+
+
+# ── Hotel grounding ─────────────────────────────────────────────────────────
+HOTEL_PROVIDER        = os.environ.get("HOTEL_PROVIDER", "apidojo").strip().lower()
+RAPIDAPI_KEY          = os.environ.get("RAPIDAPI_KEY", "")
+BOOKING_RAPIDAPI_HOST = os.environ.get("BOOKING_RAPIDAPI_HOST", "apidojo-booking-v1.p.rapidapi.com")
+BOOKING_BASE_URL      = os.environ.get("BOOKING_BASE_URL", f"https://{BOOKING_RAPIDAPI_HOST}")
+HOTEL_ADULTS        = 2
+HOTEL_ROOMS         = 1
+HOTEL_CHILDREN_AGES = [4]
+HOTEL_CURRENCY      = "EUR"
+HOTEL_HTTP_TIMEOUT  = 20
+HOTEL_MAPPING = {
+    # Optional override for known/ambiguous destinations (skips /locations/auto-complete):
+    # "kempinski grand arena": {"dest_id": "-835297", "search_type": "city", "name": "Kempinski Hotel Grand Arena Bansko"},
+}
 
 
 # ── LLM prompts ─────────────────────────────────────────────────────────────
@@ -211,12 +229,18 @@ Return JSON only. Do not include markdown formatting or wrappers like ```json. O
 
 Field notes:
 - est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). Used for price gating downstream.
+- hotel_name: the specific hotel or resort property (e.g., "Kempinski Hotel Grand Arena"). Use "" for city-level, cruise, or flight deals with no single named property.
+- city: the city where the deal is located (e.g., "Bansko"). Required.
+- country: the country (e.g., "Bulgaria"). Required.
 
 JSON Schema:
 {{
   "candidates": [
     {{
       "destination": "City, resort name, or cruise line/route",
+      "hotel_name": "Specific property name, or empty string for city-level/cruise/flight deals",
+      "city": "Bansko",
+      "country": "Bulgaria",
       "score": 82,
       "type": "hotel",
       "window": "Specific exact dates or tight window (e.g., Jan 10-17)",
@@ -387,6 +411,9 @@ STAGE1_RESPONSE_SCHEMA = {
                 "type": "object",
                 "properties": {
                     "destination":   {"type": "string"},
+                    "hotel_name":    {"type": "string"},
+                    "city":          {"type": "string"},
+                    "country":       {"type": "string"},
                     "score":         {"type": "integer"},
                     "type":          {"type": "string"},
                     "window":        {"type": "string"},
@@ -394,7 +421,7 @@ STAGE1_RESPONSE_SCHEMA = {
                     "reason":        {"type": "string"},
                     "confidence":    {"type": "string"},
                 },
-                "required": ["destination", "score", "type", "window", "est_price_eur", "reason", "confidence"],
+                "required": ["destination", "city", "country", "score", "type", "window", "est_price_eur", "reason", "confidence"],
             },
         },
     },

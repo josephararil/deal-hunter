@@ -1,45 +1,31 @@
 # Deal Hunter
 
-Finds great-value hotel trips from cities reachable from Plovdiv — not just lone underpriced
-hotels, but whole cities that are unusually cheap right now. Three small pipelines, an
-**LLM sandwich**: Claude steers the search at the front, deterministic math does the heavy
-filtering in the middle, Claude does the final harsh judgment at the end. Runs on free
-GitHub Actions. Emails a weekly digest.
+Finds genuinely exceptional hotel travel windows for a family of 3 (2 adults + child aged 4)
+based near Plovdiv, Bulgaria. One script, three LLM stages, live Booking.com rate verification.
+Runs daily on free GitHub Actions. Emails immediately when something is found; silent otherwise.
 
-## The three pipelines
+## How it works
 
 ```
-baseline_sampler.py   (daily, cheap, no LLM)
-   └─ light price sample per city → rolling median per city|class|month → state/baselines.json
-        This is the seasonal memory: "what does a 5-star in Burgas normally cost in July?"
-
-find_city_anomalies.py   (daily, cheap — Pipeline A, "where should I look?")
-   └─ ONE Claude call + web search, given today's date + pattern priors + baselines
-   └─ outputs ranked city signals → state/city_signals.{json,md}
-        Two kinds: 🔥 anomaly (something unusual is happening now) and 📌 reminder
-        (a recurring good window is open). Useful on its own — tells you where to look
-        even if you never run the heavy crawl.
-
-hunt.py   (daily, only on flagged cities — Pipeline B, "find the actual rooms")
-   └─ deep-crawls the cities Pipeline A flagged for hunting
-   └─ TWO detectors: cross-sectional outlier (crazy manager) + below-seasonal-norm
-      (market-wide drop & absolute bargains)
-   └─ ONE harsh Claude call vets the shortlist, told why the city was flagged
-   └─ accumulates → weekly email digest
+find_city_anomalies.py   (daily, three-stage LLM gate)
+   │
+   ├─ Stage 1 — find (web search)
+   │     Scores hotel/resort/flight/cruise candidates 0–100.
+   │     est_price_eur per candidate → ceiling gate (Bulgaria/Turkey €100; rest €130).
+   │
+   ├─ Stage 2 — skeptic (no search, hostile reviewer)
+   │     Forwards only score ≥ 80 AND under-ceiling candidates.
+   │     Default outcome is silence. Most candidates die here.
+   │
+   └─ Stage 3 — verify (Booking.com live rates → LLM fallback)
+         providers.ground_api() fetches live nightly rates from Booking.com (apidojo RapidAPI).
+         Fuzzy-matches the named hotel; falls back to LLM concierge + web search on any failure.
+         verdict: confirm | correct | kill.
+         confirm/correct → email (if confidence ≥ medium, grounded price ≤ ceiling, dates in window).
+         kill → silence.
 ```
 
-The auto-trigger means B only spends money on cities A flagged — usually none to a few a day,
-not all 34.
-
-## What it catches now (vs the first version)
-
-The earlier design only caught the "crazy manager" — one hotel far below its neighbours. It
-went silent exactly when a *whole city* dropped (Antalya after New Year, Milan after fashion
-week), because if everything drops together, nothing is a relative outlier. This version adds:
-- **Market-wide drops**, via the seasonal baseline (a Hilton at €50 in a city whose 5-star
-  norm is €160 gets flagged even if the Hyatt next door is €55).
-- **Absolute bargains**, ranked by EUR saved so luxury-for-cheap rises to the top.
-- **City reminders**, so even with the heavy crawl off, you learn *where* to go look manually.
+State files (`state/`) are committed back by CI after each run — no external database.
 
 ## Setup
 
@@ -50,67 +36,60 @@ week), because if everything drops together, nothing is a relative outlier. This
 
    | Secret | What |
    |---|---|
-   | `APIFY_TOKEN` | apify.com → API tokens |
    | `ANTHROPIC_API_KEY` | console.anthropic.com — required if `LLM_PROVIDER=anthropic` |
    | `GEMINI_API_KEY` | aistudio.google.com/apikey — required if `LLM_PROVIDER=gemini` |
+   | `RAPIDAPI_KEY` | RapidAPI key for Booking.com (apidojo) hotel grounding |
    | `SMTP_HOST` / `SMTP_PORT` | e.g. `smtp.gmail.com` / `587` |
    | `SMTP_USER` / `SMTP_PASS` | sending address + app password (Gmail: 2FA → App Password) |
    | `EMAIL_TO` / `EMAIL_FROM` | recipient / sender (both default to `SMTP_USER`) |
 
    **Variables** (plain text, *Variables* tab in the same page):
 
-   | Variable | Values | Default |
+   | Variable | Default | Effect |
    |---|---|---|
-   | `LLM_PROVIDER` | `anthropic` or `gemini` | `anthropic` |
+   | `LLM_PROVIDER` | `anthropic` | `anthropic` or `gemini` |
+   | `HOTEL_PROVIDER` | `apidojo` | Set to `""` to force LLM-only Stage-3 (no Booking.com calls) |
+   | `BOOKING_RAPIDAPI_HOST` | `apidojo-booking-v1.p.rapidapi.com` | Override the RapidAPI host |
 
-3. Enable Actions. Test:
-   - **daily** workflow → *Run workflow* → tick `force_digest` to email immediately.
-   - **signals-only** workflow → zero-cost check: runs the planner only, no hotel crawl or email. Tick `skip_baseline` to make it a near-free single LLM call.
-   - **manual-hunt** workflow → enter cities (e.g. `Antalya, Turkey`) to crawl on demand.
+3. Enable Actions. Test via *Actions → daily → Run workflow*.
 
-> **Web search:** with `LLM_PROVIDER=anthropic` Pipeline A uses the Anthropic `web_search`
-> tool — enable it in the console if needed. With `LLM_PROVIDER=gemini` it uses
-> `google_search`; if Gemini rejects the tool the planner falls back to patterns + baselines
-> rather than failing.
+> **LLM web search:** with `LLM_PROVIDER=anthropic`, Stage 1 and the LLM fallback use the
+> Anthropic `web_search` tool — enable it in the console if needed. With `LLM_PROVIDER=gemini`
+> it uses `google_search`; if Gemini rejects the tool, the call retries without search.
 
-## The one fiddly step: map the Apify actor fields
+## Running locally
 
-Each Booking actor names fields differently. Run your chosen actor once by hand and confirm
-the input keys in `common.scrape()` and the output keys in `common.normalize()`
-(`price`, `reviewScore`, `reviewsCount`, `stars`, `mealPlan`…). Rename to match. That's the
-only integration work; everything downstream is source-agnostic.
+```bash
+pip install -r requirements.txt
+export ANTHROPIC_API_KEY=...  LLM_PROVIDER=anthropic  RAPIDAPI_KEY=...
+# or: export GEMINI_API_KEY=...  LLM_PROVIDER=gemini  RAPIDAPI_KEY=...
+python find_city_anomalies.py   # writes state/; emails if diamonds found + SMTP vars set
+```
 
-## Cold start
+To skip Booking.com calls (LLM-only Stage 3):
+```bash
+HOTEL_PROVIDER="" python find_city_anomalies.py
+```
 
-For the first few weeks `baselines.json` is sparse, so the market-drop detector leans on
-Pipeline A's reasoning (pattern priors + live search) rather than measured norms. As the
-baseline fills, market-drop detection gets sharper and more data-driven. Expect a louder,
-less precise first month — that's expected and was a deliberate choice.
+To run offline unit tests for the grounding provider:
+```bash
+python test_providers.py           # apidojo: monkey-patched, no network
+HOTEL_PROVIDER="" python test_stub.py  # full pipeline: LLM-only, stub llm()
+```
 
 ## Tuning (config.py)
 
 | Knob | Default | Effect |
 |---|---|---|
-| `OUTLIER_Z` | −3.5 | Crazy-manager strictness (more negative = stricter) |
-| `MARKET_DROP_PCT` | 0.25 | How far below seasonal norm counts as a market drop |
-| `MIN_EUR_BELOW` | 40 | Min absolute EUR/night saving to qualify |
-| `LLM_CONFIDENCE` | 0.7 | Final-filter strictness |
-| `MAX_DIGEST_ITEMS` | 12 | Weekly email length cap |
-| `DIGEST_WEEKDAY` | 6 (Sun) | Day the digest sends |
-| `MIN_REVIEW_SCORE` | 8.0 | Hard floor — don't lower |
+| `STAGE1_MIN_SCORE` | 80 | Minimum score to forward to Stage 2. Raise to reduce email frequency. |
+| `MAX_EMAILS_PER_RUN` | 3 | Cap on diamonds per email. |
+| `SIGNAL_TTL_DAYS` | 30 | Anti-spam TTL per destination+window pair. |
+| `PRICE_CEILING_EUR` | BG/TR: €100, rest: €130 | Hard per-night ceiling; over-ceiling deals are never emailed. |
 
 ## Cost
 
-The LLM is cheap (a couple of calls a day — Claude or Gemini, both free-tier-friendly at this
-volume). **Apify dominates** (pay-per-result + residential proxy). The architecture already
-controls it: the baseline sampler uses light crawls, and the deep crawl only fires on flagged
-cities. Set an Apify spend limit in the console as a backstop.
-The seasonal dates in `hunt.checkin_anchors()` and `patterns.json` need a yearly refresh.
+LLM calls are cheap at this volume (a few per day, Claude Haiku/Sonnet or Gemini).
+Booking.com rate lookups via RapidAPI are one call per Stage-2 survivor (rare — typically
+0–1 per day). The LLM fallback fires on any API failure.
 
-## patterns.json
-
-Seeded with recurring price-window priors for your cities plus a few extras (Paris August,
-Dubai summer, etc.). These are **priors, not facts** — the planner confirms or rejects them
-with live search and baseline data. Prune and add freely.
-
-See `docs/PLAN.md` for design rationale and the Phase-2 roadmap.
+See `CLAUDE.md` for full design rationale, pipeline invariants, and grounding seam details.

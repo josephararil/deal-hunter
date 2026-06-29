@@ -14,8 +14,8 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 STATE_DIR = "state"
 
 _RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_RETRIES = 3
-_RETRY_DELAYS = [2, 4]  # seconds between attempts 1→2 and 2→3
+_MAX_RETRIES = 4
+_RETRY_DELAYS = [2, 4, 8]  # seconds between attempts
 
 
 def _post_with_retry(url, headers, json_body, timeout=180):
@@ -63,35 +63,54 @@ def _anthropic(messages, model, max_tokens, want_search):
 
 
 def _gemini(messages, model, max_tokens, want_search, response_schema=None):
-    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-3.5-flash")
+    gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-flash-latest")
     text = "\n\n".join(m["content"] for m in messages)
-    body = {"model": gmodel, "input": text}
-    if want_search:
-        body["tools"] = [{"type": "google_search"}]
-    if response_schema is not None:
-        body["response_format"] = {
-            "type": "text",
-            "mime_type": "application/json",
-            "schema": response_schema,
-        }
-    url = "https://generativelanguage.googleapis.com/v1beta/interactions"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{gmodel}:generateContent"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
-    r = _post_with_retry(url, headers=headers, json_body=body)
-    if r.status_code in (400, 422) and want_search:
-        # Gemini rejected google_search; retry without it so Stage 1 still returns
-        # signals from reasoning alone rather than crashing.
-        body.pop("tools", None)
-        r = _post_with_retry(url, headers=headers, json_body=body)
+
+    def _body(with_search):
+        b = {
+            "contents": [{"role": "user", "parts": [{"text": text}]}],
+            "generationConfig": {"maxOutputTokens": max_tokens},
+        }
+        if with_search:
+            # google_search and responseSchema cannot coexist — rely on parse_json_block
+            b["tools"] = [{"google_search": {}}]
+        elif response_schema is not None:
+            b["generationConfig"]["responseMimeType"] = "application/json"
+            b["generationConfig"]["responseSchema"] = response_schema
+        return b
+
+    def _parse(r):
+        parts = []
+        for part in (r.json().get("candidates") or [{}])[0].get("content", {}).get("parts", []):
+            if "text" in part:
+                parts.append(part["text"])
+        return "".join(parts).strip()
+
+    try:
+        r = _post_with_retry(url, headers=headers, json_body=_body(want_search))
+        if want_search and r.status_code in (400, 422):
+            # Gemini rejected google_search tool; retry knowledge-only
+            print(f"  [gemini] HTTP {r.status_code} with search; retrying knowledge-only")
+            r = _post_with_retry(url, headers=headers, json_body=_body(False))
+        elif want_search and not r.ok:
+            # 5xx after all retries; one knowledge-only attempt before giving up
+            print(f"  [gemini error] HTTP {r.status_code} with search; retrying knowledge-only")
+            r2 = _post_with_retry(url, headers=headers, json_body=_body(False))
+            if r2.ok:
+                r = r2
+    except requests.exceptions.RequestException as exc:
+        if not want_search:
+            raise
+        # Timeout/network failure on the search call; retry without search once
+        print(f"  [gemini] {type(exc).__name__} with search; retrying knowledge-only")
+        r = _post_with_retry(url, headers=headers, json_body=_body(False))
+
     if not r.ok:
         print(f"  [gemini error] HTTP {r.status_code}: {r.text[:1000]}")
     r.raise_for_status()
-    parts = []
-    for step in r.json().get("steps", []):
-        if step.get("type") == "model_output":
-            for block in step.get("content", []):
-                if block.get("type") == "text":
-                    parts.append(block.get("text", ""))
-    return "".join(parts).strip()
+    return _parse(r)
 
 
 # ------------------------------ Email ------------------------------

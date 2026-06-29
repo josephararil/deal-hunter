@@ -68,15 +68,17 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{gmodel}:generateContent"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
 
+    # --- CHEEKY PRINT 1: Track target model and initial feature flags ---
+    print(f"  [gemini] Calling {gmodel} (search={want_search}, schema={response_schema is not None})")
+
     def _body(with_search):
         b = {
             "contents": [{"role": "user", "parts": [{"text": text}]}],
             "generationConfig": {"maxOutputTokens": max_tokens},
         }
         if with_search:
-            # google_search and responseSchema cannot coexist — rely on parse_json_block
             b["tools"] = [{"google_search": {}}]
-        elif response_schema is not None:
+        if response_schema is not None:
             b["generationConfig"]["responseMimeType"] = "application/json"
             b["generationConfig"]["responseSchema"] = response_schema
         return b
@@ -86,16 +88,17 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None):
         for part in (r.json().get("candidates") or [{}])[0].get("content", {}).get("parts", []):
             if "text" in part:
                 parts.append(part["text"])
-        return "".join(parts).strip()
+        res = "".join(parts).strip()
+        # --- CHEEKY PRINT 3: Track length of the final parsed text response ---
+        print(f"  [gemini] Parsed response length: {len(res)} chars")
+        return res
 
     try:
         r = _post_with_retry(url, headers=headers, json_body=_body(want_search))
         if want_search and r.status_code in (400, 422):
-            # Gemini rejected google_search tool; retry knowledge-only
             print(f"  [gemini] HTTP {r.status_code} with search; retrying knowledge-only")
             r = _post_with_retry(url, headers=headers, json_body=_body(False))
         elif want_search and not r.ok:
-            # 5xx after all retries; one knowledge-only attempt before giving up
             print(f"  [gemini error] HTTP {r.status_code} with search; retrying knowledge-only")
             r2 = _post_with_retry(url, headers=headers, json_body=_body(False))
             if r2.ok:
@@ -103,12 +106,16 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None):
     except requests.exceptions.RequestException as exc:
         if not want_search:
             raise
-        # Timeout/network failure on the search call; retry without search once
         print(f"  [gemini] {type(exc).__name__} with search; retrying knowledge-only")
         r = _post_with_retry(url, headers=headers, json_body=_body(False))
 
     if not r.ok:
         print(f"  [gemini error] HTTP {r.status_code}: {r.text[:1000]}")
+    
+    # --- CHEEKY PRINT 2: Confirm final success status code ---
+    if r.ok:
+        print(f"  [gemini] Success HTTP {r.status_code}")
+
     r.raise_for_status()
     return _parse(r)
 

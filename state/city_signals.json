@@ -1,37 +1,4 @@
 {
-  "generated": "2026-06-28",
-  "signals": [
-    {
-      "city": "Kempinski Hotel Grand Arena, Bansko, Bulgaria",
-      "window": "Sep 10-14, 2026",
-      "reason": "Elite 5-star mountain luxury spa resort drops to low-season troughs, with live rates starting from $127 to $156 per night compared to winter peaks exceeding $350. Located just a 2-hour-15-minute drive from Plovdiv (Tier 1), it provides exceptional family utility including a supervised Kids Club free of charge for children aged 3 to 12, an outdoor kids pool, and multiple heated indoor/outdoor pools.",
-      "type": "anomaly",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Hot Springs Medical and SPA, Banya, Bulgaria",
-      "window": "Sep 15-20, 2026",
-      "reason": "Luxury 4-star superior spa hotel in Banya (2-hour drive from Plovdiv). Late summer/early autumn rates fall to $168-$185 per night. Key kid amenity is the 'Kids Republic' (completely free of charge for hotel guests), featuring custom-designed play areas for toddlers and kids aged 4-12, a dedicated cinema, theater, sports party activities, and a massive outdoor playground alongside heated mineral pools.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Arte Spa & Park Hotel, Velingrad, Bulgaria",
-      "window": "Aug 15-19, 2026",
-      "reason": "An elite 5-star spa resort located just 1.5 hours' drive from Plovdiv (Tier 1). The Summer 2026 Package provides all-day professional children's animation, and children up to 12 stay free. Live rates start around $159 per night compared to holiday peaks of over $260. Fully open indoor and outdoor warm mineral pools are ideal for a 4-year-old.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Alexandra Beach Thassos Spa Resort, Potos, Thassos, Greece",
-      "window": "Sep 8-15, 2026",
-      "reason": "A premium beachfront resort in Greece accessible via a low-friction 3.5-hour drive and a fun 40-minute ferry from Plovdiv (Tier 2 but low hassle). The shoulder-season Culinary Delight package drops rates to $180 per night (saving 20%) and includes a 30% discount on Half Board upgrades, alongside free daily kids' snacks (normally 10 EUR/day) and a kids' pool/playground, perfect for a 4-year-old.",
-      "type": "reminder",
-      "confidence": "high",
-      "hunt": false
-    }
-  ]
+  "generated": "2026-06-29",
+  "signals": []
 }

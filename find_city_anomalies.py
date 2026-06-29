@@ -20,6 +20,10 @@ Emails immediately when diamonds survive all three stages. Silence is the normal
 """
 
 import json, datetime as dt
+try:
+    from dotenv import load_dotenv; load_dotenv()
+except ImportError:
+    pass
 import config as C
 import common as X
 import memory as M

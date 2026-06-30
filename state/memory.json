@@ -134,6 +134,28 @@
       "actual_price": 104.57,
       "source": "Booking.com (apidojo) live 2026-06-30",
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate."
+    },
+    {
+      "date": "2026-06-30",
+      "destination": "Bansko, Bulgaria",
+      "window": "Sep 10-13, 2026",
+      "type": "hotel",
+      "claimed_price": 104.0,
+      "verdict": "over_ceiling",
+      "actual_price": null,
+      "source": "est_price_eur 104.0 > ceiling 100",
+      "note": "Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with breakfast and dinner (half-board) and free stay for a child under 12. Outstanding Tier 1 value with…"
+    },
+    {
+      "date": "2026-06-30",
+      "destination": "Bansko, Bulgaria",
+      "window": "Jul 24-27, 2026",
+      "type": "hotel",
+      "claimed_price": 83.0,
+      "verdict": "kill",
+      "actual_price": 128.01,
+      "source": "Booking.com (apidojo) live 2026-06-30",
+      "note": "Grounded price for Premier Luxury Mountain Resort (Jul 24-27, 2026) is €128.01/night, which exceeds the country ceiling. Not emailing."
     }
   ]
 }

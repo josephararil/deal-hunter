@@ -2,35 +2,30 @@
   "generated": "2026-06-30",
   "signals": [
     {
-      "city": "Bansko, Lucky Bansko Aparthotel SPA & Relax",
-      "window": "September 10-17, 2026",
-      "reason": "Maintains a high 9.1 rating with premium 5-star infrastructure including indoor BIO pools (33°C) and a dedicated children's pool, which are essential for a 4-year-old. Price remains highly competitive (~€96/night) for the quality provided compared to peak-season rates. Direct drive from Plovdiv is under 2 hours, minimizing transit friction.",
-      "type": "anomaly",
-      "confidence": "high",
-      "hunt": false
-    },
-    {
-      "city": "Velingrad, Park Hotel and SPA Vella Hills",
-      "window": "September 12-19, 2026",
-      "reason": "Velingrad is a premier spa destination within 1.5 hours of Plovdiv. This property offers high-end spa facilities and outdoor/indoor pools ideal for family relaxation. September pricing is significantly softer than summer peaks, providing excellent value for a high-utility, low-transit family getaway.",
+      "deal_id": 1,
+      "city": "Bansko, Bulgaria",
+      "window": "Jul 24-27, 2026",
+      "reason": "Live leads confirm a 'Stay More | Pay Less' rate from €83/night for summer weekends. Under 2.5 hours drive from Plovdiv (Tier 1), eliminating toddler transit fatigue. Includes outdoor pools, animation, and family-friendly mountain trails active in late July.",
       "type": "reminder",
       "confidence": "high",
       "hunt": false
     },
     {
-      "city": "Hisarya, Sana Spa Hotel",
-      "window": "September 15-22, 2026",
-      "reason": "Located under a 1-hour drive from Plovdiv, eliminating transit fatigue for a 4-year-old. Offers exceptional mineral-rich indoor heated pools, an active kids' play corner, and direct access to Hisarya's expansive, stroller-friendly public parks. September rates drop below €100/night, making it a highly competitive local wellness option.",
+      "deal_id": 2,
+      "city": "Bansko, Bulgaria",
+      "window": "Sep 10-13, 2026",
+      "reason": "Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with breakfast and dinner (half-board) and free stay for a child under 12. Outstanding Tier 1 value with highly rated indoor pools and kids' club active in September.",
       "type": "reminder",
       "confidence": "high",
       "hunt": false
     },
     {
-      "city": "Paphos, Aliathon Aegean",
-      "window": "September 14-21, 2026",
-      "reason": "A highly rated family resort easily accessible via low-cost flights from Sofia to Paphos or Larnaca. September yields perfect Mediterranean weather (28°C sea temperatures) and active splash pools/kids clubs. Accommodation rates fall by over 45% compared to the July-August peak, providing premium resort utility at a budget price point.",
+      "deal_id": 3,
+      "city": "Antalya, Turkey",
+      "window": "Sep 12-17, 2026",
+      "reason": "Leverages the massive seasonal drop in Turkish ultra-all-inclusive rates starting early September. Sofia (SOF) to Antalya (AYT) flights are at a low-season baseline (~€70 round trip). Highly rated resort with heated kids' pools and active indoor playgrounds, offsetting the Tier 2 transit hassle.",
       "type": "reminder",
-      "confidence": "high",
+      "confidence": "medium",
       "hunt": false
     }
   ]

@@ -358,7 +358,7 @@ Target Demographics & Logistics:
 - Transit Limits: Departure strictly from Plovdiv Airport (PDV), Sofia Airport (SOF), or a reasonable drive from Plovdiv.
 - Currency: EUR.
 
-Input Candidates (scored >= {min_score}/100 in preliminary filtering):
+Input Candidates (scored >= {min_score}/100 in preliminary filtering; each has a numeric deal_id you must echo back):
 {candidates}
 
 ---
@@ -422,17 +422,19 @@ You must ruthlessly KILL a candidate if it triggers any of the following:
 ---
 
 ### OUTPUT FORMAT
-Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON array containing one object per input candidate, maintaining the exact input order. Copy each candidate's `destination` value verbatim, character-for-character — it is the key used to match your verdict back to the deal, so do not rephrase, reorder words, or normalize it.
+Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON array containing one object per input candidate, maintaining the exact input order. Echo each candidate's `deal_id` back unchanged — it is the integer key used to match your verdict to the deal. Also copy the `destination` string verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
 
 JSON Schema:
 [
   {{
+    "deal_id": 1,
     "destination": "Exact string from input",
     "verdict": "kill",
     "why": "One direct sentence highlighting the specific logistical flaw or why the price drop doesn't justify the loss in seasonal utility.",
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
   }},
   {{
+    "deal_id": 2,
     "destination": "Exact string from input",
     "verdict": "keep",
     "why": "One direct sentence quantifying the massive value play (e.g., premium amenities/infrastructure unlocked at entry-level pricing).",
@@ -528,12 +530,13 @@ STAGE2_RESPONSE_SCHEMA = {
     "items": {
         "type": "object",
         "properties": {
+            "deal_id":     {"type": "integer"},
             "destination": {"type": "string"},
             "verdict":     {"type": "string", "enum": ["keep", "kill"]},
             "why":         {"type": "string"},
             "red_flags":   {"type": "string"},
         },
-        "required": ["destination", "verdict", "why", "red_flags"],
+        "required": ["deal_id", "destination", "verdict", "why", "red_flags"],
     },
 }
 

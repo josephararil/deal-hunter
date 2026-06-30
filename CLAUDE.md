@@ -151,6 +151,14 @@ Both providers return the same Stage-3 result schema.
 - **`est_price_eur`** is a structured numeric field emitted by Stage 1 for each candidate.
   It is the source of truth for ceiling gating and `claimed_price` in memory. Never
   use `_extract_price()` from prose for this purpose.
+- **`deal_id` is a run-local correlation key, not a persistent id.** `find_city_anomalies.py`
+  assigns it (1-based) Python-side right after Stage 1 parses — never trusting the LLM to
+  mint it. Stage 2 echoes it back so verdicts merge onto Stage-1 candidates by id, not by
+  fragile destination-string matching (`_match_candidate`, with a destination fallback).
+  It only correlates within one run — candidate #1 today ≠ #1 tomorrow — so it must NEVER
+  key `signals_seen.json` or `memory.json`; those stay keyed by `destination|window`/season
+  to survive across runs. It appears in `city_signals.json` (regenerated each run) for
+  traceability only.
 - **Silence is the intended outcome most days.** Don't treat low email volume as a bug.
   Only investigate if the prompts demonstrably fail to surface known real opportunities.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger

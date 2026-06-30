@@ -29,6 +29,18 @@ import common as X
 import memory as M
 
 
+# --- run-log helpers ---
+
+def _section(title):
+    """Print a section banner so the CI run log reads as clear, scannable stages."""
+    print(f"\n{'=' * 66}\n  {title}\n{'=' * 66}")
+
+
+def _eur(v):
+    """Format an optional EUR price for the log; '€?' when unknown."""
+    return f"€{v}" if v is not None else "€?"
+
+
 # --- stage correlation helper ---
 
 def _match_candidate(verdict, candidates):
@@ -324,14 +336,17 @@ ground_deal = _resolve_ground_deal()
 
 def main():
     today = X.today_iso()
-    print(f"=== Diamond Finder — {today} | provider: {X.PROVIDER} | find: {C.MODEL_FIND} | skeptic: {C.MODEL_SKEPTIC} | verify: {C.MODEL_VERIFY} ===")
+    _section(f"DIAMOND FINDER · {today} · provider={X.PROVIDER}")
+    print(f"  models:  find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}")
+    print(f"  gate:    score>={C.STAGE1_MIN_SCORE} · ceilings={C.PRICE_CEILING_EUR} default €{C.DEFAULT_PRICE_CEILING_EUR} · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
 
     # Load memory once; inject into all three stage prompts
     mem = M.load()
     mem_text = M.summarize_for_prompt(mem)
+    print(f"  memory:  {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) loaded")
 
     # Stage 1: find candidates with web search
-    print("Stage 1: calling LLM with web search...")
+    _section("STAGE 1 · FIND — live search + scoring")
     try:
         # The Anthropic Find model searches inline (web_search tool); the Gemini Find
         # model has no tool — its leads come via SEARCH_RESULTS_PREAMBLE — so the
@@ -350,7 +365,7 @@ def main():
         )
         candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
     except Exception as e:
-        print(f"Stage 1 failed: {e} — treating as 0 candidates (silent day)")
+        print(f"  [FAIL] Stage 1 LLM/parse error: {type(e).__name__}: {e} — treating as 0 candidates (silent day)")
         candidates = []
     candidates = [c for c in candidates if isinstance(c, dict)]
     # Assign a run-local deal_id (1-based) Python-side so downstream stages correlate
@@ -359,13 +374,23 @@ def main():
     # destination+window so they survive across runs.
     for i, c in enumerate(candidates, 1):
         c["deal_id"] = i
-    print(f"Stage 1: {len(candidates)} candidate(s) returned")
-    for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
-        print(f"  {c.get('score', '?'):>3}/100  {c.get('destination', '?')}  [{c.get('type', '?')}]")
 
-    high_score = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
-    # Ceiling gate: candidates priced above their country ceiling are logged + recorded,
-    # but never forwarded to Stage 2/3. If est_price_eur is missing, let through.
+    if not candidates:
+        print("  0 candidates returned — genuine quiet day, OR a truncation/parse miss "
+              "(check for a [gemini] WARNING above)")
+    else:
+        print(f"  {len(candidates)} candidate(s) returned (high->low score):")
+        for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
+            hotel = c.get("hotel_name") or ""
+            print(f"    #{c.get('deal_id')} score={str(c.get('score', '?')):>3}  "
+                  f"{_eur(c.get('est_price_eur')):>5}  {str(c.get('window', '?')):<16}  "
+                  f"{c.get('destination', '?')} [{c.get('type', '?')}]"
+                  + (f" — {hotel}" if hotel else ""))
+
+    # Stage 1 gate: score threshold, then price ceiling. Below-threshold and over-ceiling
+    # candidates are dropped here (over-ceiling ones are still recorded in memory below).
+    below_threshold  = [c for c in candidates if c.get("score", 0) < C.STAGE1_MIN_SCORE]
+    high_score       = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
     stage2_candidates, over_ceiling = [], []
     for c in high_score:
         est = c.get("est_price_eur")
@@ -374,8 +399,17 @@ def main():
             over_ceiling.append(c)
         else:
             stage2_candidates.append(c)
-    print(f"Stage 1 gate (>= {C.STAGE1_MIN_SCORE}): {len(high_score)} above threshold, "
-          f"{len(over_ceiling)} over-ceiling, {len(stage2_candidates)} forwarded to skeptic")
+
+    if candidates:
+        print(f"  gate (score >= {C.STAGE1_MIN_SCORE} AND est_price <= country ceiling):")
+        for c in below_threshold:
+            print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — score {c.get('score', '?')} < {C.STAGE1_MIN_SCORE}")
+        for c in over_ceiling:
+            ceiling = C.get_price_ceiling(c.get("destination", ""))
+            print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — {_eur(c.get('est_price_eur'))} > €{ceiling} ceiling (recorded as over_ceiling)")
+        for c in stage2_candidates:
+            print(f"    [PASS ] #{c.get('deal_id')} {c.get('destination', '?')} -> skeptic")
+        print(f"  -> {len(stage2_candidates)} forwarded · {len(below_threshold)} below-threshold · {len(over_ceiling)} over-ceiling")
 
     # Record over-ceiling candidates in memory now (before Stage 2)
     for c in over_ceiling:
@@ -389,9 +423,12 @@ def main():
         )
 
     # Stage 2: skeptic review, no search
+    _section("STAGE 2 · SKEPTIC — hostile review")
     diamonds = []
-    if stage2_candidates:
-        print("Stage 2: calling skeptic LLM...")
+    if not stage2_candidates:
+        print("  nothing to review — no candidate cleared the Stage 1 gate")
+    else:
+        print(f"  reviewing {len(stage2_candidates)} candidate(s)…")
         skeptic = C.SKEPTIC_PROMPT.format(
             today=today,
             min_score=C.STAGE1_MIN_SCORE,
@@ -407,57 +444,82 @@ def main():
             )
             verdicts = X.parse_json_block(raw2) or []
         except Exception as e:
-            print(f"Stage 2 failed: {e} — treating as 0 diamonds (silent day)")
+            print(f"  [FAIL] Stage 2 LLM/parse error: {type(e).__name__}: {e} — treating as 0 diamonds (silent day)")
             verdicts = []
         if not isinstance(verdicts, list):
             verdicts = []
+        n_kill = 0
         for v in verdicts:
-            verdict = v.get("verdict", "?") if isinstance(v, dict) else "?"
-            dest = v.get("destination", "?") if isinstance(v, dict) else "?"
-            print(f"  {verdict.upper():>4}  {dest}")
-            if isinstance(v, dict) and verdict == "keep":
-                orig = _match_candidate(v, stage2_candidates)
-                if orig:
-                    diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
-        # Record skeptic kills in memory so future runs learn from them
-        for v in verdicts:
-            if not isinstance(v, dict) or v.get("verdict") != "kill":
+            if not isinstance(v, dict):
                 continue
-            orig = _match_candidate(v, stage2_candidates)
-            if orig:
-                M.record_outcome(
-                    mem, orig.get("destination", ""), orig.get("window", ""), orig.get("type", ""),
-                    claimed_price=orig.get("est_price_eur"),
-                    verdict="skeptic_kill",
-                    source=v.get("why", ""),
-                    note=M._clip(v.get("red_flags") or "", 200),
-                )
-    print(f"Stage 2: {len(diamonds)} diamond(s)")
+            verdict = v.get("verdict", "?")
+            orig    = _match_candidate(v, stage2_candidates)
+            dest    = (orig or v).get("destination", "?")
+            why     = M._clip(v.get("why", ""), 160)
+            if verdict == "keep":
+                if not orig:
+                    print(f"    [WARN ] keep verdict matched no candidate "
+                          f"(deal_id={v.get('deal_id')!r}, dest={v.get('destination')!r}) — dropped")
+                    continue
+                diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
+                print(f"    [KEEP ] #{orig.get('deal_id')} {dest} — {why}")
+                flags = M._clip(v.get("red_flags") or "", 140)
+                if flags:
+                    print(f"             flags: {flags}")
+            elif verdict == "kill":
+                n_kill += 1
+                print(f"    [KILL ] {dest} — {why}")
+                if orig:
+                    # Record kills so future runs learn from them.
+                    M.record_outcome(
+                        mem, orig.get("destination", ""), orig.get("window", ""), orig.get("type", ""),
+                        claimed_price=orig.get("est_price_eur"),
+                        verdict="skeptic_kill",
+                        source=v.get("why", ""),
+                        note=M._clip(v.get("red_flags") or "", 200),
+                    )
+            else:
+                print(f"    [?????] {dest} — unrecognized verdict {verdict!r}")
+        print(f"  -> kept {len(diamonds)} · killed {n_kill}")
 
     # Stage 3: verify each Stage-2 survivor with a focused web-search call.
     # One ground_deal() call per deal (rare — almost always 0-2 per run).
     # Merges verified fields onto the diamond dict; drops verdict=="kill".
+    _section("STAGE 3 · VERIFY — live grounding")
     verified_diamonds = []
     stage3_results = []
-    if diamonds:
-        print(f"Stage 3: verifying {len(diamonds)} diamond(s)...")
+    if not diamonds:
+        print("  nothing to verify — no diamond survived the skeptic")
+    else:
+        provider_label = ("Booking.com apidojo (LLM fallback)"
+                          if (C.HOTEL_PROVIDER or "").strip().lower() == "apidojo"
+                          else "LLM concierge")
+        print(f"  verifying {len(diamonds)} survivor(s) via {provider_label}…")
         for diamond in diamonds:
+            dest3 = diamond.get("destination", "?")
             try:
                 result = ground_deal(diamond, mem_text, today)
             except Exception as e:
-                print(f"  Stage 3 failed for {diamond.get('destination', '?')}: {e} — treating as kill")
+                print(f"    [FAIL ] {dest3}: grounding raised {type(e).__name__}: {e} — treating as kill")
                 result = {}
             if not result:
                 result = {}
             verdict3 = result.get("verdict", "kill")
-            dest3 = diamond.get("destination", "?")
-            print(f"  Stage 3 {verdict3.upper():>7}  {dest3}")
+            conf3    = result.get("confidence", "low")
+            options3 = result.get("options") or []
+            summary3 = M._clip(result.get("assistant_summary") or result.get("grounding") or "", 200)
+
+            print(f"    [{verdict3.upper():<7}] {dest3}  (confidence={conf3})")
+            if options3:
+                o = options3[0]
+                print(f"             grounded: {_eur(o.get('price_per_night_eur'))}/night · "
+                      f"{o.get('dates', '?')} · {_eur(o.get('total_eur'))} total")
+            if summary3:
+                print(f"             {summary3}")
 
             # Email guards: confidence must be medium/high, dates must be in window,
             # and grounded price must be under the country ceiling.
             if verdict3 in ("confirm", "correct"):
-                conf3 = result.get("confidence", "low")
-                options3 = result.get("options") or []
                 first_dates = options3[0].get("dates", "") if options3 else ""
                 grounded_price = options3[0].get("price_per_night_eur") if options3 else None
                 ceiling = C.get_price_ceiling(diamond.get("destination", ""))
@@ -465,13 +527,14 @@ def main():
                 if conf3 == "low":
                     block_reason = "low confidence"
                 elif not _dates_in_window(first_dates, diamond.get("window", "")):
-                    block_reason = f"dates out of window ({first_dates!r} vs window {diamond.get('window', '')!r})"
+                    block_reason = f"dates out of window ({first_dates!r} vs candidate window {diamond.get('window', '')!r})"
                 elif grounded_price is not None and grounded_price > ceiling:
-                    block_reason = f"grounded €{grounded_price} > ceiling €{ceiling}"
+                    block_reason = f"grounded €{grounded_price} > €{ceiling} ceiling"
                 if block_reason:
                     result["_block_reason"] = block_reason
-                    print(f"  Stage 3 email blocked: {block_reason}")
+                    print(f"             [BLOCK] not emailed: {block_reason}")
                 else:
+                    print(f"             [EMAIL-ELIGIBLE]")
                     verified_diamonds.append({**diamond, **{
                         "verdict": verdict3,
                         "options": result.get("options", []),
@@ -481,7 +544,7 @@ def main():
                         "confidence": result.get("confidence", "low"),
                     }})
             stage3_results.append(result)
-    print(f"Stage 3: {len(verified_diamonds)} diamond(s) verified (email-eligible)")
+        print(f"  -> {len(verified_diamonds)} email-eligible diamond(s)")
 
     # Record outcomes and baselines in memory — every run, including silent days.
     # diamonds and stage3_results are parallel lists (same order, same length).
@@ -517,7 +580,8 @@ def main():
 
     M.prune(mem)
     M.save(mem)
-    print(f"Memory updated: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s)")
+    _section("MEMORY + OUTPUTS")
+    print(f"  memory written: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) (pruned)")
 
     # Write city_signals.json — hunt=False always; field kept for schema compatibility
     # "anomaly" only for deals that survived all three stages (not just Stage-2)
@@ -538,8 +602,11 @@ def main():
 
     # Write markdown every run regardless of email outcome
     write_md(today, candidates, diamonds, stage3_results, over_ceiling=over_ceiling)
+    n_anom = sum(1 for s in signals if s["type"] == "anomaly")
+    print(f"  wrote state/city_signals.json ({len(signals)} signal(s), {n_anom} anomaly) + city_signals.md")
 
     # Anti-spam check + email — uses verified_diamonds (Stage-3 survivors only)
+    _section("EMAIL — anti-spam gate + send")
     seen_state = load_seen()
     seen_state = prune_seen(seen_state)
 
@@ -547,11 +614,15 @@ def main():
         d for d in verified_diamonds
         if not is_already_seen(seen_state, d["destination"], d["window"])
     ]
-    print(f"New (not seen within {C.SIGNAL_TTL_DAYS}d TTL): {len(new_diamonds)}")
+    suppressed = len(verified_diamonds) - len(new_diamonds)
+    emailed = 0
 
     if new_diamonds:
         to_email = new_diamonds[:C.MAX_EMAILS_PER_RUN]
+        capped = len(new_diamonds) - len(to_email)
         month_count = monthly_email_count(seen_state)
+        print(f"  {len(verified_diamonds)} eligible · {suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL "
+              f"· {capped} over MAX_EMAILS_PER_RUN · sending {len(to_email)}")
         subject = f"Diamond Find: {len(to_email)} exceptional travel window(s) — {today}"
         html = build_email_html(to_email, month_count)
         text = build_email_text(to_email)
@@ -560,13 +631,20 @@ def main():
             for d in to_email:
                 mark_seen(seen_state, d["destination"], d["window"])
             increment_monthly(seen_state)
-            print(f"Emailed {len(to_email)} diamond(s)")
+            emailed = len(to_email)
+            print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email)}")
         except Exception as e:
-            print(f"Email failed: {e}")
+            print(f"  [FAIL] email send error: {type(e).__name__}: {e} (state not marked seen)")
+    elif verified_diamonds:
+        print(f"  {len(verified_diamonds)} eligible but all suppressed by {C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
     else:
-        print("No new diamonds to email — silence is correct")
+        print("  no email — silence is correct")
 
     X.save_json("signals_seen.json", seen_state)
+
+    _section("RUN COMPLETE")
+    print(f"  {len(candidates)} found -> {len(stage2_candidates)} to skeptic -> {len(diamonds)} kept "
+          f"-> {len(verified_diamonds)} eligible -> {emailed} emailed")
 
 
 if __name__ == "__main__":

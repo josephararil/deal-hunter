@@ -32,7 +32,7 @@ find_city_anomalies.py
   │
   ├─ Ceiling gate — candidates with est_price_eur > country ceiling are over_ceiling:
   │    logged in city_signals.md (🔒 marker) and memory (verdict=over_ceiling), but
-  │    NEVER forwarded to Stage 2/3 or emailed. Bulgaria/Turkey ceiling €100; rest €130.
+  │    NEVER forwarded to Stage 2/3 or emailed. Bulgaria €110, Turkey €100; rest €130.
   │    If est_price_eur is missing, candidate passes through (don't block on unknown price).
   │
   ├─ Stage 2 (llm, want_search=False, model=MODEL_SKEPTIC) — candidates >= STAGE1_MIN_SCORE AND under ceiling
@@ -136,15 +136,29 @@ Both providers return the same Stage-3 result schema.
   `{"baselines": {}, "ledger": []}`.
 - **`STAGE1_MIN_SCORE = 80`** is the Stage 2 gate. Raise to make email rarer. Lower
   cautiously — it lets more through the hostile skeptic.
+- **Two scoring pathways to 80+ (FIND_PROMPT + SKEPTIC_PROMPT must stay in sync).**
+  (1) a steep, real discount with retained family utility (any destination); (2) a
+  *high-excitement* destination (vibrant city / standout island-beach) at strong absolute
+  value — a clear "grab it" for that place — even without a dramatic discount. Pathway 2
+  is high-excitement ONLY: an ordinary price for an exciting place is still a kill, and
+  low-excitement local towns get no such pass (they also still require a short 2-3 night
+  window). Note: the €130 default ceiling still gates the priciest Western capitals, so
+  pathway 2 mostly surfaces shoulder-season islands, Athens, Istanbul, Budapest, etc.
+- **Gemini token budgets carry thinking-token headroom.** `maxOutputTokens` caps hidden
+  thinking + visible output combined; if it runs out mid-answer the JSON truncates
+  (`finishReason=MAX_TOKENS`) and parses to nothing — indistinguishable from a quiet day.
+  `common._gemini` warns on any non-STOP finishReason; `MAX_TOKENS_FIND/SKEPTIC/VERIFY`
+  are set well above observed thinking usage (~3-4k). If you see the warning, raise them.
 - **Stage 3 only removes candidates, never adds them.** A Stage-3 kill means the deal
   was hallucinated or unremarkable after live verification — it never triggers email.
 - **Stage 3 `verdict: correct`** means the deal exists but the price was wrong; the
   corrected figures are emailed IF the grounded price passes the ceiling, confidence is
   medium/high, and dates are in window. `verdict: kill` means the reality doesn't justify
   email. Do not treat `correct` as a kill — it can still email.
-- **Price ceilings are hard gates.** `PRICE_CEILING_EUR` in config.py. A Stage-1 candidate
-  over its ceiling is never forwarded to Stage 2/3. A Stage-3 confirm/correct with grounded
-  price over the ceiling is logged but not emailed. Never bypass these.
+- **Price ceilings are hard gates.** `PRICE_CEILING_EUR` in config.py (Bulgaria €110,
+  Turkey €100; `DEFAULT_PRICE_CEILING_EUR` €130). A Stage-1 candidate over its ceiling is
+  never forwarded to Stage 2/3. A Stage-3 confirm/correct with grounded price over the
+  ceiling is logged but not emailed. Never bypass these.
 - **Baselines are only written** when Stage-3 confidence is "high" AND the grounded option
   dates fall within the candidate window (rough season_key match). Low-confidence or
   out-of-window verifications produce unreliable data — do not store them as baselines.

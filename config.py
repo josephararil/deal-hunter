@@ -112,17 +112,23 @@ PROVIDER_SKEPTIC = None
 PROVIDER_VERIFY  = None
 
 # ── LLM token budgets ────────────────────────────────────────────────────────
-# Stage 1 (find) needs more room: it receives web-search grounding text and must
-# reason across many candidate types before outputting a scored JSON list.
-MAX_TOKENS_FIND    = 8000
+# IMPORTANT (Gemini thinking models): maxOutputTokens caps thinking tokens AND the
+# visible answer combined. A heavy reasoning pass can burn several thousand hidden
+# thinking tokens, and if the budget runs out mid-answer the JSON is truncated
+# (finishReason=MAX_TOKENS) — which parses to nothing and looks like a quiet day.
+# common._gemini now warns on that, but these budgets are set with generous headroom
+# above observed thinking usage (~3-4k) so it shouldn't happen in practice.
 
-# Stage 2 (skeptic) is a compact verdict-only call: keep/kill + one sentence per candidate.
-# Must be large enough to absorb thinking-model overhead (gemini-3.5-flash uses ~2k tokens
-# for internal reasoning before writing output — 2000 was not enough).
-MAX_TOKENS_SKEPTIC = 8000
+# Stage 1 (find): most output-heavy — multiple full candidate objects with long
+# reason fields, on top of the thinking pass over the grounded leads.
+MAX_TOKENS_FIND    = 16000
 
-# Stage 3 (verify) does focused web search per surviving deal + structured output.
-MAX_TOKENS_VERIFY = 8000
+# Stage 2 (skeptic): one verdict line per candidate, but the flagship still thinks
+# hard before writing. Headroom for a large input batch + thinking.
+MAX_TOKENS_SKEPTIC = 12000
+
+# Stage 3 (verify): structured grounding output + thinking.
+MAX_TOKENS_VERIFY = 12000
 
 # ── Web search ───────────────────────────────────────────────────────────────
 # Maximum number of individual web-search tool uses allowed in a single Stage 1
@@ -147,7 +153,7 @@ SIGNAL_TTL_DAYS = 30
 # ── Price ceilings ───────────────────────────────────────────────────────────
 # A candidate priced above its country ceiling is, by definition, not a diamond
 # regardless of star rating or framed discount. It is logged but NEVER emailed.
-PRICE_CEILING_EUR = {"Bulgaria": 100, "Turkey": 100}
+PRICE_CEILING_EUR = {"Bulgaria": 110, "Turkey": 100}
 DEFAULT_PRICE_CEILING_EUR = 130  # rest of Europe (~+30%)
 
 
@@ -285,7 +291,7 @@ Your scoring dictates the pipeline routing. A score of 80 or above means the dea
 
 2. Tier 2: High-Friction Transit (Flights from Sofia Airport [SOF] OR Drives > 3 hours)
    - Baseline: High transit friction for a 4-year-old. 
-   - Evaluation: Standard discounts or normal cheap flights from SOF must be scored **below 80**. To cross the **80+ email threshold**, a Sofia transit option must offer a staggering price drop on a premium experience (e.g., a 5-star Antalya resort collapsing to €100/night with active indoor kid facilities).
+   - Evaluation: Standard discounts or normal cheap flights from SOF must be scored **below 80**. To cross the **80+ email threshold**, a Sofia transit option must either offer a staggering price drop on a premium experience (e.g., a 5-star Antalya resort collapsing to €100/night with active indoor kid facilities), OR be a high-excitement destination at strong absolute value (see DESTINATION EXCITEMENT below).
 
 Target destinations, grouped by transit tier (aligns with the scoring hierarchy above):
 {cities}
@@ -297,6 +303,7 @@ A deal's value is not just the nightly price — it is whether the *stay length*
 - **High-excitement destinations** (vibrant cities and standout beach/island spots — e.g. Paris, Rome, Istanbul, Vienna, Barcelona, Athens, Malta, the Greek islands): a long stay (5-7+ nights) is itself part of the value. A week here at a great price is a top-tier diamond — score it high and recommend the longer window.
 - **Low-excitement destinations** (quiet local spa/mountain towns — e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski): the magic is a SHORT, punchy break (2-3 nights). These exhaust their appeal fast for an active family. A 7-night stay here is NOT a diamond no matter how cheap the nightly rate — recommend a 2-3 night window and do not inflate the score for a long stay.
 - When you set `window`, pick the length that is genuinely optimal for that destination, not the longest the price allows. Use your own judgement on where a destination falls; the examples above are anchors, not an exhaustive list.
+- **Excitement can substitute for discount depth — high-excitement destinations ONLY.** A vibrant city or standout island/beach spot can clear the 80+ email bar on STRONG ABSOLUTE VALUE alone — a genuinely good price for that special place — even without a steep drop from a peak. The test: would a savvy traveller say *"that's a great price for Rome / Malta / the islands — grab it"*? If yes, and the logistics are manageable for a 4-year-old, score it 80+. A merely average price for an exciting place is NOT enough — it must be a clear win. Low-excitement towns get no such pass: they still need BOTH a steep, real discount AND a short 2-3 night window to reach 80+.
 
 ---
 
@@ -399,9 +406,10 @@ Input Candidates (scored >= {min_score}/100 in preliminary filtering; each has a
 
 ### EVALUATION PROTOCOL
 
-You must KEEP a candidate if it represents a High-Utility Value Play. This is defined as either:
-- A predictable or seasonal price drop where the price plummets dramatically (e.g., peak €400 down to off-peak €100), but the core utility remains high for a family. 
+You must KEEP a candidate if it represents a High-Utility Value Play. This is defined as any of:
+- A predictable or seasonal price drop where the price plummets dramatically (e.g., peak €400 down to off-peak €100), but the core utility remains high for a family.
 - A rare, verifiable, time-sensitive opportunity where the price drop is massive and the logistics are manageable for a family with a 4-year-old.
+- A high-excitement destination (a vibrant city or standout island/beach spot) at a genuinely strong absolute price for that place — a clear "grab it" for what it is — even without a dramatic discount, provided the logistics are manageable for a 4-year-old. This pathway is for genuinely exciting places ONLY: an ordinary or merely-average price for an exciting place is still a KILL (exciting ≠ automatically worth it), and low-excitement local towns get no such pass.
 
 You must ruthlessly KILL a candidate if it triggers any of the following:
 
@@ -415,6 +423,7 @@ You must ruthlessly KILL a candidate if it triggers any of the following:
 4. The Absolute-Value Floor:
    - Beyond any framed relative discount, ask: *"Is this price genuinely exceptional in absolute terms for what it is, to someone who knows the regional market?"*
    - A normal or high rate for an ordinary property in a cheap region (e.g., ~€165/night for a 4-star spa hotel in a Bulgarian spa town such as Velingrad or Hisarya) is a KILL, regardless of any claimed discount or peak-price anchoring.
+   - This floor targets ordinary properties in cheap regions dressed up with discount framing. It does NOT veto a high-excitement destination judged under the excitement-value KEEP above — there, judge whether the price is a clear win for that specific place. But a merely normal price for an exciting place is still a KILL.
    - The deal must be cheap in absolute terms for its category and geography, not just relatively cheap compared to a cherry-picked peak price.
 5. The Stay-Length Mismatch:
    - A long stay (5+ nights) in a low-excitement local town (e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family with a 4-year-old would run out of things to do. The right trip there is 2-3 nights; a week is not a diamond regardless of nightly price. KILL it unless the candidate's window is already a short 2-4 night break. (A long stay is only a diamond in a high-excitement city or standout beach/island spot.)

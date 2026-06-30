@@ -37,14 +37,17 @@ def _post_with_retry(url, headers, json_body, timeout=180):
             time.sleep(delay)
 
 
-def llm(messages, model, max_tokens=2000, want_search=False, response_schema=None, provider=None):
+def llm(messages, model, max_tokens=2000, want_search=False, response_schema=None,
+        provider=None, search_prompt=None):
     """Single entry point for all LLM calls. Returns plain text.
     messages is a list of {"role", "content"} dicts with string content.
     response_schema: Gemini only — JSON Schema dict added as response_format.
+    search_prompt: Gemini only — a dedicated prompt for the split-out search step
+      (see _gemini). None falls back to wrapping the stage text in a generic directive.
     provider overrides the global LLM_PROVIDER for this call; None uses the global."""
     p = (provider or PROVIDER).strip().lower()
     if p == "gemini":
-        return _gemini(messages, model, max_tokens, want_search, response_schema)
+        return _gemini(messages, model, max_tokens, want_search, response_schema, search_prompt)
     return _anthropic(messages, model, max_tokens, want_search)
 
 
@@ -70,19 +73,16 @@ def _gemini_parts(r):
     return "".join(parts).strip()
 
 
-def _gemini_search(prompt_text, max_tokens):
+def _gemini_search(search_text, max_tokens):
     """Run live web-search grounding on GEMINI_SEARCH_MODEL (the lite tier, the only
-    one that survives Google's grounding gateway) and return a grounded text block.
-    Returns "" on any failure — the caller then reasons knowledge-only."""
+    one that survives Google's grounding gateway). Sends search_text verbatim with the
+    google_search tool and returns the grounded text. Returns "" on any failure —
+    the caller then reasons knowledge-only."""
     smodel = C.GEMINI_SEARCH_MODEL
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{smodel}:generateContent"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}
     body = {
-        "contents": [{"role": "user", "parts": [{"text":
-            "Search the web for current, concrete facts relevant to the task below: "
-            "real prices, dates, availability, named hotels/destinations, and sources. "
-            "Return a concise list of findings. Do not write final analysis or JSON.\n\n"
-            "TASK:\n" + prompt_text}]}],
+        "contents": [{"role": "user", "parts": [{"text": search_text}]}],
         "generationConfig": {"maxOutputTokens": max_tokens},
         "tools": [{"google_search": {}}],
     }
@@ -100,7 +100,7 @@ def _gemini_search(prompt_text, max_tokens):
     return out
 
 
-def _gemini(messages, model, max_tokens, want_search, response_schema=None):
+def _gemini(messages, model, max_tokens, want_search, response_schema=None, search_prompt=None):
     gmodel = C.GEMINI_MODEL_MAP.get(model, "gemini-flash-latest")
     text = "\n\n".join(m["content"] for m in messages)
 
@@ -108,11 +108,22 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None):
     # then the flagship reasoning model runs tools-free with the grounding injected as
     # context. Flagship + google_search times out on Google's grounding gateway, and
     # this also keeps responseSchema off the search call (they conflict).
+    # The search step uses a dedicated lead-generation prompt when the caller supplies
+    # one (Stage 1 Find); otherwise it wraps the stage text in a generic search
+    # directive (Stage 3 Verify). The grounded leads are framed for the reasoner by
+    # SEARCH_RESULTS_PREAMBLE (.replace, so leads containing braces are safe).
     if want_search:
-        grounding = _gemini_search(text, max_tokens)
+        if search_prompt is not None:
+            search_text = search_prompt
+        else:
+            search_text = (
+                "Search the web for current, concrete facts relevant to the task below: "
+                "real prices, dates, availability, named hotels/destinations, and sources. "
+                "Return a thorough list of findings. Do not write final analysis or JSON.\n\n"
+                "TASK:\n" + text)
+        grounding = _gemini_search(search_text, max_tokens)
         if grounding:
-            text = ("### LIVE SEARCH RESULTS (web search performed just now)\n"
-                    + grounding + "\n\n" + text)
+            text = C.SEARCH_RESULTS_PREAMBLE.replace("{leads}", grounding) + text
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{gmodel}:generateContent"
     headers = {"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"}

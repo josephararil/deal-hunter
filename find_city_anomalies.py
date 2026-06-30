@@ -325,6 +325,7 @@ def main():
             model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,
             provider=C.PROVIDER_FIND,
+            search_prompt=C.SEARCH_PROMPT.format(today=today, cities=C.cities_prompt_text()),
         )
         candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
     except Exception as e:

@@ -178,11 +178,72 @@ HOTEL_MAPPING = {
 
 
 # ── LLM prompts ─────────────────────────────────────────────────────────────
-# Placeholders filled at runtime by find_city_anomalies.py:
-#   FIND_PROMPT    → {today}, {cities}, {memory}
-#   SKEPTIC_PROMPT → {today}, {min_score}, {candidates}, {memory}
-#   VERIFY_PROMPT  → {today}, {candidate}, {memory}
+# Placeholders filled at runtime by find_city_anomalies.py / common.py:
+#   SEARCH_PROMPT          → {today}, {cities}   (Gemini search step — lead generation)
+#   SEARCH_RESULTS_PREAMBLE→ {leads}             (Gemini reasoning step — injected ahead of FIND/VERIFY)
+#   FIND_PROMPT            → {today}, {cities}, {memory}
+#   SKEPTIC_PROMPT         → {today}, {min_score}, {candidates}, {memory}
+#   VERIFY_PROMPT          → {today}, {candidate}, {memory}
 # Use {{...}} for literal braces in the JSON schema examples (Python .format() escaping).
+
+# ── Gemini search/reasoning split (see common._gemini) ───────────────────────
+# On Gemini, want_search calls run in two steps. SEARCH_PROMPT drives step 1 (lead
+# generation on the lite model with google_search); SEARCH_RESULTS_PREAMBLE frames
+# step 1's output for step 2 (the flagship reasoner, which has no live search tool).
+# These are Gemini-only. On Anthropic the flagship searches inline via FIND_PROMPT.
+
+# Step 1 — optimize for FRESH, VARIED LEADS, not accuracy. Better 99 useless leads and
+# 1 gem than the same five evergreen hotels every day. The downstream skeptic + live
+# price grounding cut hard, so cast a wide net here and prize novelty over caution.
+SEARCH_PROMPT = """Today is {today}. You are a sharp travel scout running live web searches for a family of 3 (2 adults + a 4-year-old) based in Plovdiv, Bulgaria. Currency is EUR.
+
+Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
+
+### WHAT MAKES A GOOD LEAD
+- It is happening NOW or was announced recently: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough.
+- It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, concrete dates.
+- It is hard to know WITHOUT searching today. We do NOT need evergreen facts ("Bansko is cheap off-season", "Antalya has all-inclusive resorts") — the analyst already knows those. Surprise us with something live.
+- Variety beats repetition. Spread leads across different destinations, categories, and seasons rather than five versions of the same hotel. Assume yesterday you already reported the obvious ones; find different ones today.
+
+### WHO IT'S FOR (so leads stay relevant — note fit, but do NOT filter hard here)
+- A family with a 4-year-old: comfort, manageable logistics, child-friendly amenities.
+- Reachable from Plovdiv: drive <= 3h, or fly from Plovdiv (PDV) or Sofia (SOF).
+
+### WHERE TO LOOK (sweep across all of these)
+- Premium off-season troughs: 4-5 star family resorts dropping hard between seasons with indoor/kids facilities still open.
+- Flight error fares / flash sales from PDV or SOF.
+- Last-minute package dumps: unsold flight+hotel bundles.
+- Regional cruises departing Istanbul, Athens (Piraeus), or Thessaloniki.
+- New openings, reopenings, or launch promotions.
+- Event- or shoulder-season windows where prices trough.
+
+Anchor destinations (a starting point, NOT a cage — chase a great lead anywhere reachable):
+{cities}
+
+### DOs AND DON'Ts
+- DO report, for each lead: destination + named property, the price and exact dates, the live hook (why it is timely right now), and the source domain — verbatim.
+- DO surface 8-15 distinct leads. Quantity and variety matter at this step; the analyst will cut ruthlessly later.
+- DO include a lead even if you are unsure it is a great deal. Leads, not verdicts.
+- DON'T return generic seasonal advice or a destination with no specific live hook.
+- DON'T score, rank, analyse, or output JSON. Just a clean, scannable bulleted list of findings."""
+
+# Step 2 — frames step 1's leads for the flagship reasoner. The leads are a fresh
+# SEED, not a fence: the reasoner must also draw on its own knowledge, and must not
+# fall back to an empty answer just because the leads are thin. Applied via .replace
+# (not .format) so leads containing braces can't break it.
+SEARCH_RESULTS_PREAMBLE = """### LIVE SEARCH RESULTS (a web search was run for you moments ago)
+A separate scout already ran live web searches on your behalf and gathered the leads below. You do NOT have a live search tool in this step, so wherever the task text says "search the web" or "use the web search tool", read it as: draw on these leads plus your own knowledge.
+
+Treat these leads as a valuable fresh signal from the live internet — data you would not otherwise have. Fold the interesting ones into your reasoning. But they are a SEED, not a boundary: you are NOT limited to them. Also reason from your own knowledge of seasonal patterns, regional pricing, and arbitrage to propose strong candidates of your own. If the leads are thin or empty, do NOT give up and do NOT return an empty answer for that reason — reason your best from what you know. Every price is verified against live hotel data downstream, so put forward your best-reasoned candidates with honest est_price_eur estimates.
+
+LEADS:
+{leads}
+
+--- END OF LIVE SEARCH RESULTS ---
+
+Now complete the task below, using these leads as fresh input alongside your own reasoning:
+
+"""
 
 FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to perform live web searches to find 3-5 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
 
@@ -218,6 +279,14 @@ Your scoring dictates the pipeline routing. A score of 80 or above means the dea
 
 Target destinations, grouped by transit tier (aligns with the scoring hierarchy above):
 {cities}
+
+---
+
+### DESTINATION EXCITEMENT & OPTIMAL STAY LENGTH
+A deal's value is not just the nightly price — it is whether the *stay length* fits the destination. Match the recommended `window` to how much a family with a 4-year-old can genuinely enjoy there before boredom sets in:
+- **High-excitement destinations** (vibrant cities and standout beach/island spots — e.g. Paris, Rome, Istanbul, Vienna, Barcelona, Athens, Malta, the Greek islands): a long stay (5-7+ nights) is itself part of the value. A week here at a great price is a top-tier diamond — score it high and recommend the longer window.
+- **Low-excitement destinations** (quiet local spa/mountain towns — e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski): the magic is a SHORT, punchy break (2-3 nights). These exhaust their appeal fast for an active family. A 7-night stay here is NOT a diamond no matter how cheap the nightly rate — recommend a 2-3 night window and do not inflate the score for a long stay.
+- When you set `window`, pick the length that is genuinely optimal for that destination, not the longest the price allows. Use your own judgement on where a destination falls; the examples above are anchors, not an exhaustive list.
 
 ---
 
@@ -336,6 +405,8 @@ You must ruthlessly KILL a candidate if it triggers any of the following:
    - Beyond any framed relative discount, ask: *"Is this price genuinely exceptional in absolute terms for what it is, to someone who knows the regional market?"*
    - A normal or high rate for an ordinary property in a cheap region (e.g., ~€165/night for a 4-star spa hotel in a Bulgarian spa town such as Velingrad or Hisarya) is a KILL, regardless of any claimed discount or peak-price anchoring.
    - The deal must be cheap in absolute terms for its category and geography, not just relatively cheap compared to a cherry-picked peak price.
+5. The Stay-Length Mismatch:
+   - A long stay (5+ nights) in a low-excitement local town (e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family with a 4-year-old would run out of things to do. The right trip there is 2-3 nights; a week is not a diamond regardless of nightly price. KILL it unless the candidate's window is already a short 2-4 night break. (A long stay is only a diamond in a high-excitement city or standout beach/island spot.)
 
 ---
 
@@ -389,7 +460,7 @@ Return a single JSON object only. No markdown fences, no extra commentary outsid
 
 {{
   "destination": "exact destination string from the candidate input",
-  "verdict": "confirm",
+  "verdict": "confirm|correct|kill",
   "options": [
     {{
       "dates": "Aug 8-10, 2026",

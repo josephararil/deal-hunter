@@ -168,12 +168,20 @@ Both providers return the same Stage-3 result schema.
   1. **Search** runs on `GEMINI_SEARCH_MODEL` (config; default `gemini-3.1-flash-lite`)
      with the `{"google_search": {}}` tool. This is the only Gemini tier that survives
      Google's grounding gateway — flagship models (`flash-latest`/`pro-latest`) time out
-     ~99% of the time when `google_search` is attached.
+     ~99% of the time when `google_search` is attached. The search step optimizes for
+     **fresh, varied leads, not accuracy**: Stage 1 passes a dedicated `SEARCH_PROMPT`
+     (lead-generation brief) via the `search_prompt` arg; other stages fall back to
+     wrapping the stage text in a generic search directive.
   2. **Reasoning** runs on the mapped flagship model with **no tools** (and the
-     `responseSchema`, if any). The grounded text from step 1 is injected into the prompt
-     as a `### LIVE SEARCH RESULTS` block. If the search call fails for any reason it
-     returns `""` and reasoning proceeds knowledge-only — graceful degradation.
+     `responseSchema`, if any). The grounded leads from step 1 are framed by
+     `SEARCH_RESULTS_PREAMBLE` (injected via `.replace`, so leads with braces are safe)
+     and prepended to the stage prompt. The preamble treats the leads as a **seed, not a
+     fence** — the reasoner also draws on its own knowledge and must not return an empty
+     answer just because leads are thin. If the search call fails it returns `""` and
+     reasoning proceeds knowledge-only — graceful degradation.
   This split also keeps `responseSchema` off the search call (the two features conflict).
+  `SEARCH_PROMPT` / `SEARCH_RESULTS_PREAMBLE` are Gemini-only; on Anthropic the flagship
+  searches inline via `FIND_PROMPT`.
 - Per-stage model roles are in `config.py` as `MODEL_FIND`, `MODEL_SKEPTIC`, `MODEL_VERIFY`.
   Gemini equivalents are mapped in `GEMINI_MODEL_MAP`; the search model is
   `GEMINI_SEARCH_MODEL`. Three Gemini models total — search (lite), Find (`flash-latest`),

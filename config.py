@@ -195,7 +195,7 @@ HOTEL_MAPPING = {
 # Step 1 — optimize for FRESH, VARIED LEADS, not accuracy. Better 99 useless leads and
 # 1 gem than the same five evergreen hotels every day. The downstream skeptic + live
 # price grounding cut hard, so cast a wide net here and prize novelty over caution.
-SEARCH_PROMPT = """Today is {today}. You are a sharp travel scout running live web searches for a family of 3 (2 adults + a 4-year-old) based in Plovdiv, Bulgaria. Currency is EUR.
+SEARCH_PROMPT = """Today is {today}. You are a sharp travel scout running live web searches for a family of 3 (2 adults + a 4-year-old) based in Plovdiv, Bulgaria. Our home currency is EUR.
 
 Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
 
@@ -222,9 +222,11 @@ Anchor destinations (a starting point, NOT a cage — chase a great lead anywher
 
 ### DOs AND DON'Ts
 - DO report, for each lead: destination + named property, the price and exact dates, the live hook (why it is timely right now), and the source domain — verbatim.
+- DO surface deals priced in LOCAL currency too (BGN, TRY, RSD…), not only EUR — Turkish-lira and Bulgarian-lev listings often hide the deepest regional value. Report the original price and note its currency.
 - DO surface 8-15 distinct leads. Quantity and variety matter at this step; the analyst will cut ruthlessly later.
 - DO include a lead even if you are unsure it is a great deal. Leads, not verdicts.
 - DON'T return generic seasonal advice or a destination with no specific live hook.
+- DON'T add any introduction or closing remarks. Start directly with the first lead.
 - DON'T score, rank, analyse, or output JSON. Just a clean, scannable bulleted list of findings."""
 
 # Step 2 — frames step 1's leads for the flagship reasoner. The leads are a fresh
@@ -250,8 +252,8 @@ Now complete the task below, using these leads as fresh input alongside your own
 # to use it. On Gemini the Find model has NO tool — SEARCH_RESULTS_PREAMBLE owns its
 # framing — so {search_directive} is left empty there. This keeps FIND_PROMPT free of
 # instructions that are false for whichever model is actually running it.
-SEARCH_DIRECTIVE_ANTHROPIC = """- YOU HAVE A LIVE WEB SEARCH TOOL — USE IT. Every candidate must be backed by real pricing found on the live web within the last 48 hours.
-- If you cannot find live, verifiable data for a target city, omit it rather than guessing a price."""
+SEARCH_DIRECTIVE_ANTHROPIC = """- YOU HAVE A LIVE WEB SEARCH TOOL — USE IT. Ground every candidate in real, currently-available offers found on the live web within the last 48 hours.
+- Don't surface a destination you have no live signal for. (Estimating the est_price_eur figure itself is fine — inventing a deal that isn't there is not.)"""
 
 FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to find 3-5 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
 
@@ -310,6 +312,7 @@ Hunt for opportunities across these specific categories:
 ### SEARCH & VERIFICATION RULES
 {search_directive}
 - Never fabricate hotel names or flight availability. When you are estimating a price rather than citing one you found, put your best figure in est_price_eur — the downstream stages verify every price against live data.
+- Prices may be quoted in local currency: convert to EUR for est_price_eur. BGN is pegged at ~1.96 to the EUR; TRY and RSD float, so use a sensible current rate (this is only an estimate — Stage 3 grounds the real figure).
 - Check child-safety/amenities: Ensure any off-season resort has an operating indoor heated pool, kids' area, or relevant infrastructure active *during* the specified travel window.
 
 ---
@@ -370,27 +373,27 @@ Input Candidates (scored >= {min_score}/100 in preliminary filtering):
 #### EXAMPLE 1: ANATOMY OF A "KEEP" (Off-Season High Utility)
 - **Candidate:** Antalya, Turkey. 5-Star All-Inclusive Resort, mid-January after the NYE peak but before the spring break.
 - **Price:** €100/night (Down from €400/night peak/NYE).
-- **Analysis:** This matches predictable, standard historical low-season pricing for January. However, it is a KEEP. The weather is too cold for the beach, but the resort offers indoor heated pools, operating kids' clubs, and unlimited premium dining. The utility drop is only 20% and requires additional logistics/flights, but the price drop is 75%. This is an exceptional utility-to-price play for a 4-year-old.
+- **Analysis:** KEEP. This matches predictable, standard historical low-season pricing for January. However, it is a KEEP. The weather is too cold for the beach, but the resort offers indoor heated pools, operating kids' clubs, and unlimited premium dining. The utility drop is only 20% and requires additional logistics/flights, but the price drop is 75%. This is an exceptional utility-to-price play for a 4-year-old.
 
 #### EXAMPLE 2: ANATOMY OF A "KEEP" (Drive-Distance Luxury Play)
 - **Candidate:** Bansko or Velingrad, Bulgaria. Luxury Spa Hotel, late October (Inter-season).
 - **Price:** €80/night (Down from €250/night peak ski/winter season).
-- **Analysis:** This is a KEEP. While there is no skiing in October, the indoor thermal pools, children's play areas, and massive price drop unlock a premium weekend getaway with zero flight logistics.
+- **Analysis:** KEEP. While there is no skiing in October, the indoor thermal pools, children's play areas, and massive price drop unlock a premium weekend getaway with zero flight logistics.
 
 #### EXAMPLE 3: ANATOMY OF A "KILL" (The Low-Season Trap)
 - **Candidate:** Sunny Beach, Bulgaria. 4-Star Beachfront Hotel, October.
 - **Price:** €40/night (Down from €150/night July peak).
-- **Analysis:** This is a KILL. While incredibly cheap, the utility drops to near zero: outdoor pools are freezing, kids' entertainment is completely closed, and the town is a ghost town. The price drop does not compensate for the complete loss of family utility.
+- **Analysis:** KILL. While incredibly cheap, the utility drops to near zero: outdoor pools are freezing, kids' entertainment is completely closed, and the town is a ghost town. The price drop does not compensate for the complete loss of family utility.
 
 #### EXAMPLE 4: ANATOMY OF A "KILL" (The Toddler Tax)
 - **Candidate:** 7-Night Mediterranean Cruise (Athens to Venice/Ravenna) on Norwegian Pearl.
 - **Price:** $449/person ($64/night) due to a last-minute cancellation sale.
-- **Analysis:** This is a KILL. It is clearly an outstanding deal on paper. However, the open-jaw itinerary (Athens to Ravenna) creates a logistical and financial nightmare for a family with a 4-year-old, as flights from and back to Bulgaria will wipe out any cruise savings and then some.
+- **Analysis:** KILL. It is clearly an outstanding deal on paper. However, the open-jaw itinerary (Athens to Ravenna) creates a logistical and financial nightmare for a family with a 4-year-old, as flights from and back to Bulgaria will wipe out any cruise savings and then some.
 
 #### EXAMPLE 5: ANATOMY OF A "KILL" (The Absolute-Value Trap)
 - **Candidate:** Arte Spa & Park, Velingrad, Bulgaria. 4-star thermal spa resort.
 - **Price:** €165/night (framed as "35% off peak" from €255/night).
-- **Analysis:** This is a KILL. €165/night is a normal-to-high absolute price for a spa hotel in a Bulgarian spa town. Velingrad has many excellent thermal spa hotels at €60–120/night. The "discount from peak" framing is irrelevant — in absolute terms, €165/night for this market buys nothing exceptional. The family could stay at a comparable Velingrad spa property for €80–100/night. When the absolute price is unremarkable to anyone who knows the regional market, the relative discount is a fiction. Kill it.
+- **Analysis:** KILL. €165/night is a normal-to-high absolute price for a spa hotel in a Bulgarian spa town. Velingrad has many excellent thermal spa hotels at €60–120/night. The "discount from peak" framing is irrelevant — in absolute terms, €165/night for this market buys nothing exceptional. The family could stay at a comparable Velingrad spa property for €80–100/night. When the absolute price is unremarkable to anyone who knows the regional market, the relative discount is a fiction. Kill it.
 
 ---
 
@@ -419,7 +422,7 @@ You must ruthlessly KILL a candidate if it triggers any of the following:
 ---
 
 ### OUTPUT FORMAT
-Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON array containing one object per input candidate, maintaining the exact input order. 
+Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON array containing one object per input candidate, maintaining the exact input order. Copy each candidate's `destination` value verbatim, character-for-character — it is the key used to match your verdict back to the deal, so do not rephrase, reorder words, or normalize it.
 
 JSON Schema:
 [
@@ -460,7 +463,7 @@ Prior price memory (corrections and baselines from past runs):
 ### RULES
 - Search for specific date windows — not a monthly minimum. A €72/night rate valid only for a single midweek Tuesday is not a family deal.
 - If live search returned no useful price data (tool unavailable or search results empty), set confidence=low. Do NOT fabricate prices, dates, or booking URLs in that case.
-- Never invent booking URLs. Include real URLs you actually found; set booking_url to null if you did not find one.
+- Never invent booking URLs. Include real URLs you actually found; if you did not find one, omit booking_url (or set it to null).
 - If no live search was available (search tool absent or rejected), clearly flag this in assistant_summary and set confidence=low.
 
 ### OUTPUT
@@ -475,7 +478,7 @@ Return a single JSON object only. No markdown fences, no extra commentary outsid
       "nights": 2,
       "price_per_night_eur": 79,
       "total_eur": 158,
-      "booking_url": "https://www.booking.com/hotel/...",
+      "booking_url": "https://www.booking.com/hotel/...  (omit or null if none found)",
       "source": "booking.com live search {today}"
     }}
   ],

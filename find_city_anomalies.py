@@ -29,6 +29,21 @@ import common as X
 import memory as M
 
 
+# --- stage correlation helper ---
+
+def _match_candidate(verdict, candidates):
+    """Find the Stage-1 candidate a Stage-2 verdict refers to.
+    Primary key: the run-local deal_id (Python-assigned, robust). Falls back to an
+    exact destination-string match if deal_id is absent or unrecognised."""
+    vid = verdict.get("deal_id")
+    if vid is not None:
+        match = next((c for c in candidates if str(c.get("deal_id")) == str(vid)), None)
+        if match:
+            return match
+    dest = verdict.get("destination", "")
+    return next((c for c in candidates if c.get("destination") == dest), None)
+
+
 # --- anti-spam state helpers ---
 
 def load_seen():
@@ -318,18 +333,32 @@ def main():
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
     try:
+        # The Anthropic Find model searches inline (web_search tool); the Gemini Find
+        # model has no tool — its leads come via SEARCH_RESULTS_PREAMBLE — so the
+        # tool-use directive is Anthropic-only. Keeps FIND_PROMPT honest per provider.
+        find_directive = (C.SEARCH_DIRECTIVE_ANTHROPIC
+                          if X.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
         raw1 = X.llm(
             messages=[{"role": "user", "content": C.FIND_PROMPT.format(
-                today=today, cities=C.cities_prompt_text(), memory=mem_text
+                today=today, cities=C.cities_prompt_text(), memory=mem_text,
+                search_directive=find_directive
             )}],
             model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,
             provider=C.PROVIDER_FIND,
+            search_prompt=C.SEARCH_PROMPT.format(today=today, cities=C.cities_prompt_text()),
         )
         candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
     except Exception as e:
         print(f"Stage 1 failed: {e} — treating as 0 candidates (silent day)")
         candidates = []
+    candidates = [c for c in candidates if isinstance(c, dict)]
+    # Assign a run-local deal_id (1-based) Python-side so downstream stages correlate
+    # candidates by a stable integer key instead of fragile destination-string matching.
+    # Run-local ONLY: not a persistent id — signals_seen/memory stay keyed by
+    # destination+window so they survive across runs.
+    for i, c in enumerate(candidates, 1):
+        c["deal_id"] = i
     print(f"Stage 1: {len(candidates)} candidate(s) returned")
     for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
         print(f"  {c.get('score', '?'):>3}/100  {c.get('destination', '?')}  [{c.get('type', '?')}]")
@@ -387,20 +416,17 @@ def main():
             dest = v.get("destination", "?") if isinstance(v, dict) else "?"
             print(f"  {verdict.upper():>4}  {dest}")
             if isinstance(v, dict) and verdict == "keep":
-                orig = next(
-                    (c for c in stage2_candidates if c.get("destination") == v.get("destination")), {}
-                )
+                orig = _match_candidate(v, stage2_candidates)
                 if orig:
                     diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
         # Record skeptic kills in memory so future runs learn from them
         for v in verdicts:
             if not isinstance(v, dict) or v.get("verdict") != "kill":
                 continue
-            dest = v.get("destination", "")
-            orig = next((c for c in stage2_candidates if c.get("destination") == dest), None)
+            orig = _match_candidate(v, stage2_candidates)
             if orig:
                 M.record_outcome(
-                    mem, dest, orig.get("window", ""), orig.get("type", ""),
+                    mem, orig.get("destination", ""), orig.get("window", ""), orig.get("type", ""),
                     claimed_price=orig.get("est_price_eur"),
                     verdict="skeptic_kill",
                     source=v.get("why", ""),
@@ -495,13 +521,14 @@ def main():
 
     # Write city_signals.json — hunt=False always; field kept for schema compatibility
     # "anomaly" only for deals that survived all three stages (not just Stage-2)
-    verified_dests = {d["destination"] for d in verified_diamonds}
+    verified_ids = {d.get("deal_id") for d in verified_diamonds}
     signals = [
         {
+            "deal_id": c.get("deal_id"),
             "city": c.get("destination", ""),
             "window": c.get("window", ""),
             "reason": c.get("reason", ""),
-            "type": "anomaly" if c.get("destination") in verified_dests else "reminder",
+            "type": "anomaly" if c.get("deal_id") in verified_ids else "reminder",
             "confidence": c.get("confidence", "low"),
             "hunt": False,
         }

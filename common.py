@@ -71,12 +71,14 @@ def _anthropic(messages, model, max_tokens, want_search):
                    if b.get("type") == "text").strip()
 
 
-def _gemini_parts(r):
-    parts = []
-    for part in (r.json().get("candidates") or [{}])[0].get("content", {}).get("parts", []):
-        if "text" in part:
-            parts.append(part["text"])
-    return "".join(parts).strip()
+def _gemini_extract(r):
+    """Return (text, finish_reason) from a Gemini generateContent response.
+    finish_reason != "STOP" (e.g. "MAX_TOKENS") signals the output was cut off —
+    on thinking models, hidden reasoning tokens can exhaust maxOutputTokens before
+    the visible answer completes, which would otherwise look like an empty result."""
+    cand = (r.json().get("candidates") or [{}])[0]
+    parts = [p["text"] for p in cand.get("content", {}).get("parts", []) if "text" in p]
+    return "".join(parts).strip(), cand.get("finishReason")
 
 
 def _gemini_search(search_text, max_tokens):
@@ -101,7 +103,9 @@ def _gemini_search(search_text, max_tokens):
     if not r.ok:
         print(f"  [gemini] search HTTP {r.status_code}; reasoning knowledge-only")
         return ""
-    out = _gemini_parts(r)
+    out, finish = _gemini_extract(r)
+    if finish and finish != "STOP":
+        print(f"  [gemini] WARNING: search finishReason={finish} — grounding may be truncated")
     print(f"  [gemini] Search returned {len(out)} chars of grounding")
     return out
 
@@ -147,7 +151,10 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None, sear
     if not r.ok:
         print(f"  [gemini error] HTTP {r.status_code}: {r.text[:1000]}")
     r.raise_for_status()
-    res = _gemini_parts(r)
+    res, finish = _gemini_extract(r)
+    if finish and finish != "STOP":
+        print(f"  [gemini] WARNING: reasoning finishReason={finish} — output likely truncated "
+              f"(raise max_tokens for this stage); a partial/empty parse will look like a quiet day")
     print(f"  [gemini] Parsed response length: {len(res)} chars")
     return res
 

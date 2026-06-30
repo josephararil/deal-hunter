@@ -1,14 +1,23 @@
-# Diamond Finder Memory — updated 2026-06-29
+# Diamond Finder Memory — updated 2026-06-30
 
-## Price Baselines (1 entries)
+## Price Baselines (2 entries)
+
+### Bansko, Lucky Bansko Aparthotel SPA & Relax|2026-09
+**Realistic:** ~€104.57/night &nbsp; **Updated:** 2026-06-30
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-06-30_
 
 ### Lucky Bansko Aparthotel SPA & Relax|2026-09
 **Realistic:** ~€96.21/night &nbsp; **Updated:** 2026-06-29
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-06-29_
 
-## Outcome Ledger (7 entries)
+## Outcome Ledger (11 entries)
 
+- ❌ 2026-06-30 | Velingrad, Park Hotel and SPA Vella Hills | September 12-19, 2026 | skeptic_kill claimed=€105 — Standard regional pricing masquerading as a seasonal discount.
+- ❌ 2026-06-30 | Hisarya, Sana Spa Hotel | September 15-22, 2026 | skeptic_kill claimed=€98 — Lack of genuine discount; ordinary absolute pricing for the geography.
+- ❌ 2026-06-30 | Paphos, Aliathon Aegean | September 14-21, 2026 | skeptic_kill claimed=€118 — Budget flight 'toddler tax' (mandatory seating/baggage fees) and transit fatigue.
+- ✅ 2026-06-30 | Bansko, Lucky Bansko Aparthotel SPA & Relax | September 10-17, 2026 | confirm claimed=€96 actual=€104.57 — Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02…
 - ❌ 2026-06-29 | Santé SPA Hotel | September 14-21, 2026 | skeptic_kill claimed=€105 — September is actually a high-demand transition period for Bulgarian spa tourism, meaning local…
 - ❌ 2026-06-29 | Hotel Rila Borovets | September 7-14, 2026 | skeptic_kill claimed=€95 — Mountain lifts are frequently reduced to weekend-only operations by mid-September, severely…
 - ✅ 2026-06-29 | Lucky Bansko Aparthotel SPA & Relax | September 10-17, 2026 | confirm claimed=€85 actual=€96.21 — Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46…

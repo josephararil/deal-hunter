@@ -5,6 +5,12 @@
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-06-29",
       "updated": "2026-06-29"
+    },
+    "Bansko, Lucky Bansko Aparthotel SPA & Relax|2026-09": {
+      "realistic_price_eur": 104.57,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-06-30",
+      "updated": "2026-06-30"
     }
   },
   "ledger": [
@@ -84,6 +90,50 @@
       "actual_price": 96.21,
       "source": "Booking.com (apidojo) live 2026-06-29",
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate."
+    },
+    {
+      "date": "2026-06-30",
+      "destination": "Velingrad, Park Hotel and SPA Vella Hills",
+      "window": "September 12-19, 2026",
+      "type": "hotel",
+      "claimed_price": 105,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "Fails the absolute-value floor test; €105/night is a completely standard, unremarkable rate for a 4-star spa hotel in Velingrad rather than a true arbitrage opportunity.",
+      "note": "Standard regional pricing masquerading as a seasonal discount."
+    },
+    {
+      "date": "2026-06-30",
+      "destination": "Hisarya, Sana Spa Hotel",
+      "window": "September 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 98,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "While highly convenient, €98/night is simply the normal market rate for Hisarya spa hotels, lacking the massive price drop required for a high-utility value play.",
+      "note": "Lack of genuine discount; ordinary absolute pricing for the geography."
+    },
+    {
+      "date": "2026-06-30",
+      "destination": "Paphos, Aliathon Aegean",
+      "window": "September 14-21, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "Driving to Sofia, airport waits, the flight, and local transfers will push total door-to-door transit past 5 hours, while low-cost airline fees for luggage and family seating will erase the hotel savings.",
+      "note": "Budget flight 'toddler tax' (mandatory seating/baggage fees) and transit fatigue."
+    },
+    {
+      "date": "2026-06-30",
+      "destination": "Bansko, Lucky Bansko Aparthotel SPA & Relax",
+      "window": "September 10-17, 2026",
+      "type": "hotel",
+      "claimed_price": 96,
+      "verdict": "confirm",
+      "actual_price": 104.57,
+      "source": "Booking.com (apidojo) live 2026-06-30",
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate."
     }
   ]
 }

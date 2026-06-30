@@ -37,6 +37,12 @@ def _post_with_retry(url, headers, json_body, timeout=180):
             time.sleep(delay)
 
 
+def resolved_provider(provider=None):
+    """The provider that will actually handle a call: the explicit arg if given,
+    else the global LLM_PROVIDER. Lets callers tailor prompts per provider."""
+    return (provider or PROVIDER).strip().lower()
+
+
 def llm(messages, model, max_tokens=2000, want_search=False, response_schema=None,
         provider=None, search_prompt=None):
     """Single entry point for all LLM calls. Returns plain text.

@@ -318,9 +318,15 @@ def main():
     # Stage 1: find candidates with web search
     print("Stage 1: calling LLM with web search...")
     try:
+        # The Anthropic Find model searches inline (web_search tool); the Gemini Find
+        # model has no tool — its leads come via SEARCH_RESULTS_PREAMBLE — so the
+        # tool-use directive is Anthropic-only. Keeps FIND_PROMPT honest per provider.
+        find_directive = (C.SEARCH_DIRECTIVE_ANTHROPIC
+                          if X.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
         raw1 = X.llm(
             messages=[{"role": "user", "content": C.FIND_PROMPT.format(
-                today=today, cities=C.cities_prompt_text(), memory=mem_text
+                today=today, cities=C.cities_prompt_text(), memory=mem_text,
+                search_directive=find_directive
             )}],
             model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,

@@ -181,7 +181,7 @@ HOTEL_MAPPING = {
 # Placeholders filled at runtime by find_city_anomalies.py / common.py:
 #   SEARCH_PROMPT          → {today}, {cities}   (Gemini search step — lead generation)
 #   SEARCH_RESULTS_PREAMBLE→ {leads}             (Gemini reasoning step — injected ahead of FIND/VERIFY)
-#   FIND_PROMPT            → {today}, {cities}, {memory}
+#   FIND_PROMPT            → {today}, {cities}, {memory}, {search_directive}
 #   SKEPTIC_PROMPT         → {today}, {min_score}, {candidates}, {memory}
 #   VERIFY_PROMPT          → {today}, {candidate}, {memory}
 # Use {{...}} for literal braces in the JSON schema examples (Python .format() escaping).
@@ -245,7 +245,15 @@ Now complete the task below, using these leads as fresh input alongside your own
 
 """
 
-FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to perform live web searches to find 3-5 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
+# Filled into FIND_PROMPT's {search_directive} per provider (find_city_anomalies.py).
+# The Anthropic Find model has a live web_search tool, so it gets a forceful directive
+# to use it. On Gemini the Find model has NO tool — SEARCH_RESULTS_PREAMBLE owns its
+# framing — so {search_directive} is left empty there. This keeps FIND_PROMPT free of
+# instructions that are false for whichever model is actually running it.
+SEARCH_DIRECTIVE_ANTHROPIC = """- YOU HAVE A LIVE WEB SEARCH TOOL — USE IT. Every candidate must be backed by real pricing found on the live web within the last 48 hours.
+- If you cannot find live, verifiable data for a target city, omit it rather than guessing a price."""
+
+FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to find 3-5 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
 
 Your objective is to find high-utility value plays where a premium experience or location drops dramatically in price while maintaining high utility and comfort for a 4-year-old.
 
@@ -291,7 +299,7 @@ A deal's value is not just the nightly price — it is whether the *stay length*
 ---
 
 ### HUNTING CATEGORIES
-Perform active web searches across these specific categories:
+Hunt for opportunities across these specific categories:
 - Premium Off-Season Troughs: 4 to 5-star family resorts with massive predictable price drops post-holidays or between seasons where indoor/kids infrastructure remains fully open.
 - Regional Cruises: Family-friendly itineraries departing from Istanbul, Athens (Piraeus), or Thessaloniki.
 - Flight Error/Sale Fares: Confirmed active low fares from SOF or PDV.
@@ -300,8 +308,8 @@ Perform active web searches across these specific categories:
 ---
 
 ### SEARCH & VERIFICATION RULES
-- YOU MUST USE THE WEB SEARCH TOOL. Every candidate must be backed by real pricing found on the live web within the last 48 hours.
-- Never invent prices, hotel names, or flight availability. If you cannot find live, verifiable data for a target city, emit an empty list for that city.
+{search_directive}
+- Never fabricate hotel names or flight availability. When you are estimating a price rather than citing one you found, put your best figure in est_price_eur — the downstream stages verify every price against live data.
 - Check child-safety/amenities: Ensure any off-season resort has an operating indoor heated pool, kids' area, or relevant infrastructure active *during* the specified travel window.
 
 ---

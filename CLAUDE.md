@@ -181,7 +181,11 @@ Both providers return the same Stage-3 result schema.
      reasoning proceeds knowledge-only — graceful degradation.
   This split also keeps `responseSchema` off the search call (the two features conflict).
   `SEARCH_PROMPT` / `SEARCH_RESULTS_PREAMBLE` are Gemini-only; on Anthropic the flagship
-  searches inline via `FIND_PROMPT`.
+  searches inline via `FIND_PROMPT`. `FIND_PROMPT`'s `{search_directive}` slot keeps it
+  honest per provider: Anthropic gets `SEARCH_DIRECTIVE_ANTHROPIC` (forceful "use your
+  web_search tool"); Gemini gets `""` (the preamble owns its framing), so no model ever
+  reads a tool instruction that is false for it. Filled in `find_city_anomalies.py` via
+  `common.resolved_provider(C.PROVIDER_FIND)`.
 - Per-stage model roles are in `config.py` as `MODEL_FIND`, `MODEL_SKEPTIC`, `MODEL_VERIFY`.
   Gemini equivalents are mapped in `GEMINI_MODEL_MAP`; the search model is
   `GEMINI_SEARCH_MODEL`. Three Gemini models total — search (lite), Find (`flash-latest`),

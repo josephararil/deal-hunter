@@ -273,11 +273,11 @@ HOTEL_MAPPING = {
 # price grounding cut hard, so cast a wide net here and prize novelty over caution.
 SEARCH_PROMPT = """Today is {today}. You are a sharp travel scout running live web searches for a family of 3 (2 adults + a 4-year-old) based in Plovdiv, Bulgaria. Our home currency is EUR.
 
-Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
+Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING travel from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
 
 ### WHAT MAKES A GOOD LEAD
-- It is happening NOW or was announced recently: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough.
-- It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, concrete dates.
+- It is happening NOW or was announced recently, for travel STILL AHEAD of us: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough. Ignore sales and dates that have already passed.
+- It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, and concrete dates that fall in the future relative to {today}.
 - It is hard to know WITHOUT searching today. We do NOT need evergreen facts ("Bansko is cheap off-season", "Antalya has all-inclusive resorts") — the analyst already knows those. Surprise us with something live.
 - Variety beats repetition. Spread leads across different destinations, categories, and seasons rather than five versions of the same hotel. Assume yesterday you already reported the obvious ones; find different ones today.
 
@@ -298,12 +298,18 @@ Anchor destinations (a starting point, NOT a cage — chase a great lead anywher
 
 ### DOs AND DON'Ts
 - DO report, for each lead: destination + named property, the price and exact dates, the live hook (why it is timely right now), and the source domain — verbatim.
-- DO surface deals priced in LOCAL currency too (BGN, TRY, RSD…), not only EUR — Turkish-lira and Bulgarian-lev listings often hide the deepest regional value. Report the original price and note its currency.
+- DO surface deals priced in LOCAL currency too (BGN, TRY, RSD…), not only EUR — Turkish-lira and Bulgarian-lev listings often hide the deepest regional value. Report the original price AND a rough EUR equivalent, so the tool-less downstream analyst doesn't have to guess an exchange rate.
 - DO surface 8-15 distinct leads. Quantity and variety matter at this step; the analyst will cut ruthlessly later.
 - DO include a lead even if you are unsure it is a great deal. Leads, not verdicts.
 - DON'T return generic seasonal advice or a destination with no specific live hook.
 - DON'T add any introduction or closing remarks. Start directly with the first lead.
-- DON'T score, rank, analyse, or output JSON. Just a clean, scannable bulleted list of findings."""
+- DON'T score, rank, analyse, or output JSON or markdown tables. Just a clean, scannable bulleted list of findings, one lead per block in exactly this shape:
+
+* **Destination / Property:** <name>
+* **Dates:** <specific future dates>
+* **Price:** <original price> (~€<EUR estimate>)
+* **Hook:** <why it is timely today>
+* **Source:** <domain>"""
 
 # Step 2 — frames step 1's leads for the flagship reasoner. The leads are a fresh
 # SEED, not a fence: the reasoner must also draw on its own knowledge, and must not
@@ -398,7 +404,8 @@ Hunt for opportunities across these specific categories:
 Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON object matching the schema below.
 
 Field notes:
-- est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). Used for price gating downstream.
+- est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). A rough estimate is fine; live prices are verified downstream.
+- type: exactly one of "hotel", "cruise", "flight", or "package". (Downstream logic keys on "hotel".)
 - hotel_name: the specific hotel or resort property (e.g., "Kempinski Hotel Grand Arena"). Use "" for city-level, cruise, or flight deals with no single named property.
 - city: the city where the deal is located (e.g., "Bansko"). Required.
 - country: the country (e.g., "Bulgaria"). Required.
@@ -441,13 +448,12 @@ You return a single desirability `score` from 0-100 for each candidate. You do N
   → final_score >= {good_threshold}  becomes a GOOD find (emailed, "worth knowing")
   → below that  is dropped (logged only)
 
-- `price_adjustment` is applied deterministically by the pipeline, NOT by you. It rewards a
-  nightly HOTEL price below the region's par and penalises one above it. You may still reflect
-  a SEVERE price discrepancy (a rate dramatically below or above the regional norm) in your
-  score, but the pipeline already does this — avoid double-counting. Otherwise score as if the
-  nightly hotel price were simply fair for the category.
-- `transit_adjustment` gives a small automatic nudge for drive-vs-fly. You may still reflect
-  SEVERE logistics (open-jaw itineraries, >4h door-to-door with a 4-year-old) in your score,
+- `price_adjustment` is applied deterministically by the pipeline - it rewards a
+  nightly HOTEL price below the region's par and penalises one above it. Your score may still reflect
+  a SEVERE price discrepancy (a rate dramatically below or above the regional norm) but keep in mind the 
+  pipeline already does it, so try to avoid double-counting. Treat the price as an input to your reasoning, not a scoring lever.
+- `transit_adjustment` gives a small automatic nudge for drive-vs-fly. You should still reflect
+  SEVERE logistics (open-jaw itineraries, >4h drive with a 4-year-old vs nice flight out of PDV airport or a <3h drive) in your score,
   but don't double-count ordinary "it's a flight away".
 
 ### WHAT YOUR SCORE MEASURES: VALUE DELIVERED, NOT LUXURY OR PRESTIGE
@@ -455,12 +461,14 @@ Your score is the VALUE this delivers to THIS family — the numerator of value-
 pipeline divides by the nightly hotel price, so you must NOT reward a find for being expensive,
 famous, or prestigious. A modest local place that delivers a genuinely great, low-friction
 family break can — and often SHOULD — score higher than a glamorous far-flung one. A €150
-weekend in a nearby spa town can be far better value than a €400 weekend in Rome; score the
-value delivered, not the postcard.
+weekend in a nearby spa town can be far better value than a €400 weekend in Rome, but a €150 weekend
+in Rome is better than a €150 weekend in a nearby spa town. Score the ultimate
+value delivered for the price, not the postcard.  
 
 A high score means high NET family utility:
 - How much genuine enjoyment/benefit does a family with a 4-year-old actually get here? (A
   4-year-old does not care about world-class museums — open pools, space, ease and fun do.)
+- PLUS how luxurious or comfortable the stay is for the adults (quiet, spacious, good food, spa, etc.).
 - MINUS logistics friction — a large deduction, not a footnote. A destination with no direct
   Plovdiv flight means flying via Sofia with a toddler: transfers, lost travel days, and
   FLIGHT COST that the hotel price does NOT include. Flights are out of scope for the pipeline,
@@ -474,7 +482,7 @@ A high score means high NET family utility:
   worthwhile are open in-window.
 - Real, in-window utility: indoor/heated pools and kids' facilities actually OPEN during these
   dates; comfortable and fun for a 4-year-old.
-- The stay length fits (a short 2-3 night break for a quiet town; longer only where there is
+- The stay length fits (a short 1-2 night break for a quiet town; longer only where there is
   genuinely a week of family value to extract).
 - A far-flight destination reaches this band ONLY if the family value is high enough to survive
   the flight cost and hassle — otherwise it belongs lower.
@@ -510,7 +518,7 @@ Input Candidates (each has a numeric deal_id you must echo back):
 ---
 
 ### OUTPUT FORMAT
-Return JSON only. No markdown fences. Output a single JSON array with one object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key matching your score to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
+Return JSON only. No markdown fences. The root of your response MUST be a bare JSON array (starting with `[`) — do NOT wrap it in an object like {{"results": [...]}}. One object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key matching your score to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
 
 JSON Schema:
 [

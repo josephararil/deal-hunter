@@ -147,49 +147,94 @@ STAGE1_MIN_SCORE = 80
 MAX_EMAILS_PER_RUN = 3
 
 # Days before the same destination+window pair can trigger another email.
-# Prevents daily spam about a deal that persists for weeks.
-SIGNAL_TTL_DAYS = 30
+# Prevents daily spam about a deal that persists for weeks, while still resurfacing a
+# still-live deal after a fortnight so a good window isn't forgotten.
+SIGNAL_TTL_DAYS = 14
 
-# ── Price ceilings ───────────────────────────────────────────────────────────
-# A candidate priced above its country ceiling is, by definition, not a diamond
-# regardless of star rating or framed discount. It is logged but NEVER emailed.
-PRICE_CEILING_EUR = {"Bulgaria": 110, "Turkey": 100}
-DEFAULT_PRICE_CEILING_EUR = 130  # rest of Europe (~+30%)
+# ── Deterministic scoring model ──────────────────────────────────────────────
+# The final tier is NOT decided by the LLM. The skeptic (Stage 3) returns a 0-100
+# desirability score for each grounded candidate, judging quality/utility/fit and
+# deliberately IGNORING the raw nightly price. The pipeline then applies deterministic
+# modifiers — a price adjustment against the regional "par" price, and a small
+# drive-vs-fly nudge — to produce the final score, from which the tier is derived.
+# This keeps price handling precise and consistent (not left to LLM whim) while
+# preserving every candidate's score in memory and the run log for tuning.
+#
+#   final = clamp(0, 100, llm_score + price_adj + transit_adj)
+#   price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT * (1 - grounded_ppn / par))
+#     → below par: bonus (capped, so a cheap dump can't auto-diamond a weak place);
+#     → above par: penalty (UNCAPPED, so an overpriced deal sinks to skip on its own —
+#       this is why no hard price ceiling is needed).
+#   transit_adj = +TRANSIT_TIER1_BONUS (drivable Tier-1) | TRANSIT_TIER2_BONUS (fly Tier-2)
+
+# Per-night "par" price: the point where the price modifier is neutral. Below it earns a
+# bonus, above it a penalty. It is a reference, NOT a wall — a standout property can still
+# be a diamond above par if its desirability score is high enough. Tune freely.
+DIAMOND_PAR_EUR = {"Bulgaria": 80, "Turkey": 85}
+DEFAULT_DIAMOND_PAR_EUR = 110  # rest of Europe
+
+PRICE_SCORE_WEIGHT = 50   # strength of the price modifier
+PRICE_BONUS_CAP    = 15   # max score bonus for a below-par price (penalty is uncapped)
+TRANSIT_TIER1_BONUS = 3   # drivable / direct-PDV destinations
+TRANSIT_TIER2_BONUS = -3  # fly-from-SOF or long-drive destinations
+
+# Final-score tier thresholds. (Illustrative "> 80 = diamond" from tuning talk lives here —
+# raise/lower freely.)
+DIAMOND_SCORE_THRESHOLD = 85
+GOOD_SCORE_THRESHOLD    = 68
 
 
-def get_price_ceiling(destination):
-    """Return the applicable per-night price ceiling (EUR) for a destination string.
-    Matches country names as substrings; falls back to DEFAULT_PRICE_CEILING_EUR."""
+def get_diamond_par(destination):
+    """Return the per-night 'par' price (EUR) for a destination — the neutral point of the
+    price modifier. Substring-matches country names; falls back to the default."""
     dest_lower = (destination or "").lower()
-    for country, ceiling in PRICE_CEILING_EUR.items():
+    for country, par in DIAMOND_PAR_EUR.items():
         if country.lower() in dest_lower:
-            return ceiling
-    return DEFAULT_PRICE_CEILING_EUR
+            return par
+    return DEFAULT_DIAMOND_PAR_EUR
 
 
-# ── Diamond tier bands ───────────────────────────────────────────────────────
-# The skeptic judges the GROUNDED (live) per-night price, not the Stage-1 estimate,
-# and assigns an absolute tier — diamond / good / skip — instead of a relative
-# keep/kill. These per-night bars give the skeptic a fixed anchor so it stops
-# grading on the day's batch (the best candidate of a weak day is NOT automatically
-# a diamond). A grounded price at or below the diamond bar is diamond-tier on price
-# alone; between the diamond bar and the country ceiling (PRICE_CEILING_EUR) it is at
-# best a "good" find; above the ceiling it never reaches grounding or the skeptic.
-# High-excitement destinations can still rate diamond within the good band on a
-# clear-grab basis (see SKEPTIC_PROMPT). Tune these freely — they are the single
-# place the excellence bar is defined.
-DIAMOND_CEILING_EUR = {"Bulgaria": 65, "Turkey": 70}
-DEFAULT_DIAMOND_CEILING_EUR = 95  # rest of Europe
+def _tier1_city_tokens():
+    """Lowercased city names in the Tier-1 (drivable / direct-PDV) transit group."""
+    tokens = set()
+    for _region, cities in CITY_TIER_GROUPS[0][1]:
+        for c in cities:
+            tokens.add(c.lower())
+    return tokens
 
 
-def get_diamond_ceiling(destination):
-    """Return the per-night price (EUR) at/below which a grounded deal is diamond-tier
-    on price alone. Substring-matches country names; falls back to the default."""
-    dest_lower = (destination or "").lower()
-    for country, bar in DIAMOND_CEILING_EUR.items():
-        if country.lower() in dest_lower:
-            return bar
-    return DEFAULT_DIAMOND_CEILING_EUR
+_TIER1_TOKENS = _tier1_city_tokens()
+
+
+def transit_tier(destination):
+    """1 if the destination is a Tier-1 (drivable / direct-PDV) place, else 2.
+    Unknown/extended destinations default to 2 (assume a flight is involved)."""
+    d = (destination or "").lower()
+    return 1 if any(tok in d for tok in _TIER1_TOKENS) else 2
+
+
+def compute_final_score(llm_score, grounded_ppn, destination):
+    """Apply the deterministic modifiers to an LLM desirability score.
+    Returns (final_score, price_adj, transit_adj) — all rounded ints."""
+    base = llm_score if isinstance(llm_score, (int, float)) else 0
+    par = get_diamond_par(destination)
+    if grounded_ppn and par:
+        raw = PRICE_SCORE_WEIGHT * (1 - grounded_ppn / par)
+        price_adj = min(PRICE_BONUS_CAP, raw)   # bonus capped, penalty uncapped
+    else:
+        price_adj = 0
+    transit_adj = TRANSIT_TIER1_BONUS if transit_tier(destination) == 1 else TRANSIT_TIER2_BONUS
+    final = max(0, min(100, base + price_adj + transit_adj))
+    return round(final), round(price_adj), transit_adj
+
+
+def tier_for_score(final_score):
+    """Map a final score to a tier: 'diamond' | 'good' | 'skip'."""
+    if final_score >= DIAMOND_SCORE_THRESHOLD:
+        return "diamond"
+    if final_score >= GOOD_SCORE_THRESHOLD:
+        return "good"
+    return "skip"
 
 
 # ── Hotel grounding ─────────────────────────────────────────────────────────
@@ -379,7 +424,7 @@ JSON Schema:
 If no verifiable deals meet these criteria today, return `{{"candidates": []}}`."""
 
 
-SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst. Your job is to grade travel finds for a young family and assign each an honest quality TIER. The prices you see have ALREADY been verified against live Booking.com data — you are judging reality, not a salesman's estimate.
+SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst scoring travel finds for a young family. The prices you see have ALREADY been verified against live Booking.com data — this is reality, not a salesman's estimate.
 
 Today is {today}.
 Target Demographics & Logistics:
@@ -388,84 +433,75 @@ Target Demographics & Logistics:
 - Transit Limits: Departure strictly from Plovdiv Airport (PDV), Sofia Airport (SOF), or a reasonable drive from Plovdiv.
 - Currency: EUR.
 
-Each input candidate carries LIVE grounded figures plus two absolute price bars for its country:
-- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable price (source of truth — judge THIS, ignore the original estimate).
-- `diamond_bar_eur` — at or below this per-night price the deal is diamond-tier on price alone.
-- `ceiling_eur` — the acceptability ceiling; anything above it was already dropped upstream, so every candidate here is at worst a "good"-priced option that still needs to earn its tier on utility.
-- `grounding_summary` — the live verification note (often includes star rating and review score).
+### HOW YOUR SCORE IS USED (read carefully — it changes how you should score)
+You return a single desirability `score` from 0-100 for each candidate. You do NOT decide keep/kill or any tier. Here is exactly what the pipeline does with your score:
+
+  final_score = your_score + price_adjustment + transit_adjustment
+  → final_score >= {diamond_threshold}  becomes a DIAMOND (emailed, "grab it")
+  → final_score >= {good_threshold}  becomes a GOOD find (emailed, "worth knowing")
+  → below that  is dropped (logged only)
+
+- `price_adjustment` is applied deterministically by the pipeline, NOT by you. It rewards a
+  price below the region's par and penalises one above it. **So do NOT price-judge in your
+  score** — do not mark a find down for being expensive or up for being cheap; the pipeline
+  does that precisely. Score as if the price were simply fair for the category.
+- `transit_adjustment` gives a small automatic nudge for drive-vs-fly. You may still reflect
+  SEVERE logistics (open-jaw itineraries, >4h door-to-door with a 4-year-old) in your score,
+  but don't double-count ordinary "it's a flight away".
+
+Therefore your score should capture **pure desirability and utility, holding price neutral**:
+how good is this place/experience for THIS family, right now, in this window?
+
+### WHAT DRIVES A HIGH SCORE (85-100)
+- A genuinely special place or experience: a standout property, or a high-excitement destination (vibrant city / standout island or beach — Rome, Athens, Istanbul, Vienna, Barcelona, Malta, the Greek islands…).
+- Real, in-window family utility: indoor/heated pools and kids' facilities actually OPEN during these dates; comfortable for a 4-year-old.
+- The stay length fits the place (a short 2-3 night break for a quiet spa town; a longer stay for a city/island worth exploring).
+
+### WHAT DRIVES A LOW SCORE (deductions — these are UTILITY problems, not price)
+1. Low-Season Utility Trap: amenities that make the place worth it are CLOSED in-window (outdoor-only pools in winter, shut kids' clubs, a dead resort town). Score low.
+2. Toddler Tax / Logistics: open-jaw or multi-leg itineraries, >4h door-to-door, steep terrain, zero child infrastructure. Score low.
+3. Ordinary-place penalty: an unremarkable property in an unremarkable town, with nothing special about the experience, is a middling-to-low score no matter what it costs — the price modifier can lift a cheap one into "good", but a dull place should not start high.
+4. Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do — score low unless the window is already a short 2-4 night break.
+
+### CALIBRATION EXAMPLES (score is desirability, price held neutral)
+- Antalya 5-star all-inclusive, mid-Jan, indoor pools + kids' club + dining all OPEN: **~90**. Special experience, high in-window utility. (The pipeline will add a big bonus if the live price is well under par.)
+- Athens well-rated family stay, shoulder season, 4 nights: **~88**. High-excitement city, right stay length, easy SOF flight.
+- Hisarya 4-star spa, comfortable short 3-night local break, nothing special about it: **~72**. Fine, pleasant, low friction — but an ordinary place, so a middling score. (At a low live price the pipeline lifts it into "good"; at a high one it sinks to a drop.)
+- Sunny Beach 4-star beachfront in OCTOBER, outdoor pools freezing, entertainment shut: **~30**. Utility collapses in-window regardless of how cheap it is.
+- 7-night Athens→Ravenna open-jaw cruise: **~25**. Logistics nightmare for a 4-year-old; the itinerary itself is the problem.
+
+---
+
+Each input candidate carries LIVE grounded figures for context:
+- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable price. Shown for context only — do NOT let it move your score (the pipeline handles price).
+- `diamond_par_eur` — the region's neutral price point, shown so you understand what the pipeline will reward/penalise. Not for you to apply.
+- `grounding_summary` — the live verification note (often includes star rating and review score — DO use quality signals like stars/reviews).
 
 Input Candidates (each has a numeric deal_id you must echo back):
 {candidates}
 
 ---
 
-### PRIOR VERIFIED PRICES (from past pipeline runs — use for absolute-value calibration)
+### PRIOR OUTCOMES (from past runs — scores and notes for calibration)
 {memory}
 
 ---
 
-### THE THREE TIERS
-
-**diamond** — a genuine "drop everything and book it" find. Either:
-  (a) grounded_price_per_night_eur <= diamond_bar_eur AND family utility is high (open indoor/kids facilities in-window, manageable logistics, right stay length); OR
-  (b) a HIGH-EXCITEMENT destination (a vibrant city or standout island/beach spot — Rome, Athens, Istanbul, Vienna, Barcelona, Malta, the Greek islands, etc.) where the grounded all-in price is a clear "grab it" for that special place, even if it sits between the diamond bar and the ceiling. The test: would a savvy traveller say *"that's a superb price for THERE — book it now"*?
-  Diamonds are rare. Most days have none.
-
-**good** — a solid, above-average find worth telling the user about, but not a jaw-dropper. Real utility, honest price, no dealbreaker — e.g. a comfortable family stay priced sensibly between the diamond bar and the ceiling. The user is happy to see it in a digest but no one needs to sprint.
-
-**skip** — not worth surfacing. Assign skip if the candidate triggers ANY trap below, OR is simply unremarkable for what it is.
-
-### TRAPS THAT FORCE `skip`
-
-1. The "False Value" Low-Season Trap: a low price where the utility drop matches or exceeds the price drop (a waterpark resort with the waterpark closed; a beach holiday in a freezing/monsoon month with zero indoor amenities).
-2. The "Toddler Tax" & Logistics Flaw: >4h door-to-door transit from Plovdiv, or budget flights whose unavoidable extras (cabin bags, family seat selection) erase the savings; steep terrain or zero child infrastructure.
-3. Hidden Cost Creep: cheap flights paired with predatory local rates, or a cheap hotel where dining/transit costs erase the savings.
-4. The Absolute-Value Floor: is the grounded price genuinely good in absolute terms for what it is, to someone who knows the regional market? A normal or high rate for an ordinary property in a cheap region is a skip regardless of any framed discount. This floor does NOT veto a high-excitement destination judged under diamond (b).
-5. The Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do. The right trip there is 2-3 nights. Unless the window is already a short 2-4 night break, force it down (skip, or good at most if the price is strong for a short stay).
-
----
-
-### CONCRETE EXAMPLES FOR CALIBRATION
-
-#### EXAMPLE 1 → diamond (off-season high utility)
-Antalya, Turkey, 5-star all-inclusive, mid-January, grounded €68/night (diamond_bar €70). At/under the bar, indoor heated pools + kids' club + unlimited dining all open. Massive utility-to-price. **diamond.**
-
-#### EXAMPLE 2 → diamond (high-excitement, pathway b)
-Athens, Greece, well-rated family apartment, shoulder-season, grounded €95/night (diamond_bar €95, ceiling €130). Right at the bar for a world-class city a short SOF flight away, 4 nights. A savvy traveller grabs it. **diamond.**
-
-#### EXAMPLE 3 → good (real, but not exceptional)
-Hisarya, Bulgaria, 4-star spa hotel, grounded €104/night, 3 nights (€311 total). diamond_bar €65, ceiling €110. It is under the ceiling and a comfortable short local break — genuinely fine — but €104/night is an ordinary-to-full price for a minor Bulgarian spa town, not a steal. Worth a mention, not a sprint. **good.** (Had this grounded at ~€60/night it would be a diamond; at €165/night it would be a skip.)
-
-#### EXAMPLE 4 → skip (the low-season trap)
-Sunny Beach, Bulgaria, 4-star beachfront, October, grounded €40/night. Cheap, but outdoor pools freezing, kids' entertainment shut, town dead. Utility ≈ zero. **skip.**
-
-#### EXAMPLE 5 → skip (the toddler tax)
-7-night Athens→Ravenna cruise, $64/night on a cancellation sale. Outstanding on paper, but the open-jaw itinerary means flights to/from Bulgaria wipe out the savings for a family with a 4-year-old. **skip.**
-
----
-
 ### OUTPUT FORMAT
-Return JSON only. No markdown fences. Output a single JSON array with one object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key that matches your verdict to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
+Return JSON only. No markdown fences. Output a single JSON array with one object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key matching your score to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
 
 JSON Schema:
 [
   {{
     "deal_id": 1,
     "destination": "Exact string from input",
-    "tier": "skip",
-    "why": "One direct sentence: why it is unremarkable for what it is, or which trap it triggers.",
+    "score": 72,
+    "why": "One direct sentence on the desirability/utility that justifies the score (NOT the price).",
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
-  }},
-  {{
-    "deal_id": 2,
-    "destination": "Exact string from input",
-    "tier": "diamond",
-    "why": "One direct sentence quantifying the value against the grounded price and the bar (e.g., premium amenities unlocked at €68/night, under the €70 diamond bar).",
-    "red_flags": "What to double-check immediately (e.g., confirm indoor pool heating or kids' club off-season hours)."
   }}
 ]
 
-Grade honestly and independently — do not force a diamond just because it is the best of a weak day, and do not withhold a genuine one. An all-`skip` batch is a perfectly normal outcome."""
+Score honestly and independently on desirability — the pipeline turns your scores into the final verdict, and every score is recorded, so an accurate 72 is more useful than a nudged 85."""
 
 
 VERIFY_PROMPT = """Today is {today}. You are a Personal Travel Concierge with live web-search access. One travel deal has survived a two-stage expert filter. Your job is to ground it in reality: find real prices at specific bookable dates, a real booking path, and produce an honest assistant-style summary.
@@ -555,11 +591,11 @@ STAGE2_RESPONSE_SCHEMA = {
         "properties": {
             "deal_id":     {"type": "integer"},
             "destination": {"type": "string"},
-            "tier":        {"type": "string", "enum": ["diamond", "good", "skip"]},
+            "score":       {"type": "integer"},
             "why":         {"type": "string"},
             "red_flags":   {"type": "string"},
         },
-        "required": ["deal_id", "destination", "tier", "why", "red_flags"],
+        "required": ["deal_id", "destination", "score", "why", "red_flags"],
     },
 }
 

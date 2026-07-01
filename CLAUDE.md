@@ -26,42 +26,45 @@ find_city_anomalies.py
   │    Baselines (realistic prices from past verifications) + outcome ledger
   │    (past corrections and kills). Injected as {memory} into all three stage prompts.
   │
-  ├─ Stage 1 (llm, want_search=True, model=MODEL_FIND)
+  ├─ Stage 1 · FIND (llm, want_search=True, model=MODEL_FIND)
   │    Score candidates 0–100. Each candidate includes est_price_eur (structured number —
   │    NOT extracted from prose). Anchored to CITIES but can extend to nearby destinations.
   │
-  ├─ Ceiling gate — candidates with est_price_eur > country ceiling are over_ceiling:
-  │    logged in city_signals.md (🔒 marker) and memory (verdict=over_ceiling), but
-  │    NEVER forwarded to grounding/skeptic or emailed. Bulgaria €110, Turkey €100; rest €130.
-  │    If est_price_eur is missing, candidate passes through (don't block on unknown price).
+  ├─ Gate — FIND score >= STAGE1_MIN_SCORE (triage only). NO price filter: there is no hard
+  │    price ceiling anywhere in the pipeline; price is handled by the deterministic scorer.
   │
-  ├─ Stage 2 · GROUND (ground_deal seam) — one call per gate survivor (BEFORE the skeptic)
+  ├─ Stage 2 · GROUND (ground_deal seam) — one call per gate survivor (BEFORE scoring)
   │    Primary: `providers.ground_api()` — Booking.com (apidojo) live rates, no LLM call.
   │    Fallback: `_ground_llm` (want_search=True, model=MODEL_VERIFY) — LLM concierge.
   │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
   │    assistant_summary, confidence. A kill drops the candidate here. A confirm/correct
-  │    merges the REAL price onto the candidate and forwards it to the skeptic — UNLESS a
-  │    guard blocks it (confidence=low, grounded dates out of candidate window, or grounded
-  │    price > country ceiling); blocked entries are logged in city_signals.md with a 🔒
-  │    "Email blocked" note and never reach the skeptic. This ordering is the whole point:
-  │    the skeptic judges the live price, not the Stage-1 estimate.
-  │    Grounding is swappable: `HOTEL_PROVIDER=""` forces LLM-only. Behind the same
+  │    merges the REAL price onto the candidate and forwards it to the scorer — UNLESS a
+  │    DATA-QUALITY guard blocks it (confidence=low or grounded dates out of window; NOT
+  │    price). Blocked entries are logged in city_signals.md and never reach the scorer.
+  │    Grounding is swappable: `HOTEL_PROVIDER=""` forces LLM-only. Same
   │    `ground_deal(diamond, mem_text, today)` signature.
   │
-  ├─ Stage 3 · SKEPTIC (llm, want_search=False, model=MODEL_SKEPTIC) — one call over all grounded survivors
-  │    Judges each GROUNDED price against absolute per-country bands (DIAMOND_CEILING_EUR /
-  │    PRICE_CEILING_EUR) and assigns a tier: diamond | good | skip. diamond+good are
-  │    email-eligible; skip is logged only. The bands anchor the judgment so "best of a
-  │    weak day" is not automatically a diamond. Echoes deal_id back for merge.
+  ├─ Stage 3 · SCORE (llm scorer + deterministic modifiers, model=MODEL_SKEPTIC)
+  │    The LLM returns a 0–100 DESIRABILITY score per grounded candidate (price held
+  │    neutral — it is told the pipeline handles price). The pipeline then applies
+  │    deterministic modifiers (config.compute_final_score):
+  │      final = clamp(0,100, llm_score + price_adj + transit_adj)
+  │      price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*(1 - grounded_ppn/par))
+  │                  (bonus capped, penalty UNCAPPED — overpriced deals sink on their own)
+  │      transit_adj = ±TRANSIT_TIER1_BONUS (drivable Tier-1 vs fly Tier-2)
+  │    tier = diamond (final>=DIAMOND_SCORE_THRESHOLD) | good (>=GOOD_SCORE_THRESHOLD) | skip.
+  │    The LLM never vetoes or tiers — a low final score is dropped by default, but every
+  │    score is recorded. Same €85 can be a diamond for a standout (high llm_score) and a
+  │    skip for an ordinary place.
   │
   ├─ Memory write — state/memory.json + state/memory.md
-  │    Every run (including silent days): record_outcome per gate survivor (grounding kill →
-  │    kill; grounded-but-skip → skeptic_kill; grounded diamond/good → confirm|correct;
-  │    over_ceiling recorded at the gate). record_baseline for every grounded confirm/correct
-  │    that is high-confidence + in-window (even skips — the price is real). prune() + save().
+  │    Every run: record_outcome per gate survivor with llm_score + final_score and a verdict
+  │    of its tier (diamond/good/skip), or "kill" (grounding kill) / "blocked" (guard).
+  │    record_baseline for every grounded confirm/correct that is high-confidence + in-window
+  │    (even skips — the price is real). prune() + save().
   │
   ├─ Anti-spam gate — state/signals_seen.json
-  │    Keyed by destination+window, 30-day TTL. Prevents repeat emails.
+  │    Keyed by destination+window, SIGNAL_TTL_DAYS TTL. Prevents repeat emails.
   │    Only diamond/good picks reach this gate.
   │
   ├─ Email (common.send_email) — a short digest whenever any diamond/good pick is new
@@ -71,8 +74,8 @@ find_city_anomalies.py
   │    Conscience note in the email if monthly count >= 8.
   │
   └─ Always writes
-       state/city_signals.json  — all Stage 1 candidates (hunt: false always)
-       state/city_signals.md    — human-readable log with grounding + tier outcomes
+       state/city_signals.json  — all Stage 1 candidates + full score breakdown (hunt: false)
+       state/city_signals.md    — human-readable log with grounding + score/tier breakdown
        state/signals_seen.json  — updated TTL state
        state/memory.json        — baselines + outcome ledger (updated every run)
        state/memory.md          — human-readable memory digest
@@ -140,52 +143,52 @@ ground_deal = _resolve_ground_deal()
   `signals_seen.json`, `memory.json`, `memory.md` are committed after each run.
   They are real state, not scratch. Seed values: `{}` / `{"seen":{}, "monthly_count":{}}` /
   `{"baselines": {}, "ledger": []}`.
-- **Grounding runs BEFORE the skeptic.** Stage 2 grounds live prices; Stage 3 (skeptic)
-  judges those live prices. This is the core design decision — the skeptic must never
-  grade a Stage-1 *estimate*. If you touch the pipeline order, preserve this.
-- **`STAGE1_MIN_SCORE = 80`** is the gate into grounding. Raise to ground/email rarer.
-  Lower cautiously — it forwards more candidates to live grounding (API cost) and the skeptic.
-- **Tier bands anchor the skeptic (config `DIAMOND_CEILING_EUR` / `DEFAULT_DIAMOND_CEILING_EUR`).**
-  The skeptic returns diamond | good | skip by comparing the GROUNDED per-night price to the
-  diamond bar (Bulgaria €65, Turkey €70; default €95) and the acceptability ceiling. These
-  are the single place the excellence bar lives — tune them, don't scatter thresholds into
-  pipeline code. diamond+good email; skip is logged only.
-- **Two diamond pathways (FIND_PROMPT scoring + SKEPTIC_PROMPT tiering must stay in sync).**
-  (1) a grounded price at/below the diamond bar with retained family utility (any destination);
-  (2) a *high-excitement* destination (vibrant city / standout island-beach) at strong absolute
-  value — a clear "grab it" for that place — even between the diamond bar and the ceiling.
-  Pathway 2 is high-excitement ONLY: an ordinary price for an exciting place is at best "good",
-  and low-excitement local towns get no such pass (they also still require a short 2-3 night
-  window). The €130 default ceiling still gates the priciest Western capitals.
+- **Grounding runs BEFORE scoring.** Stage 2 grounds live prices; Stage 3 scores those live
+  prices. Core design decision — the scorer must never grade a Stage-1 *estimate*. Preserve
+  this if you touch the pipeline order.
+- **The final tier is deterministic, NOT the LLM's call.** The Stage-3 LLM returns only a
+  0–100 desirability `score` (price held neutral — the prompt tells it so). The pipeline
+  computes `final = llm_score + price_adj + transit_adj` (`config.compute_final_score`) and
+  derives the tier via `tier_for_score`. Do not let the LLM emit a tier or a veto — that was
+  deliberately removed so scores stay comparable and every one is recorded for tuning.
+- **The scoring knobs live in config, nowhere else** (`DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR`,
+  `PRICE_SCORE_WEIGHT`, `PRICE_BONUS_CAP`, `TRANSIT_TIER1_BONUS`/`TIER2`, `DIAMOND_SCORE_THRESHOLD`,
+  `GOOD_SCORE_THRESHOLD`). `par` is a reference, NOT a wall: a standout property (high llm_score)
+  can be a diamond above par; an ordinary one cannot. The price bonus is capped; the penalty is
+  UNCAPPED, which is *why there is no hard price ceiling* — overpriced deals sink to skip on their own.
+- **`STAGE1_MIN_SCORE = 80`** is the gate into grounding — pure triage on FIND's estimate to
+  bound grounding cost. NO price filter at the gate.
+- **FIND scoring is triage; the scorer is authoritative.** FIND's score only decides who gets
+  grounded. The Stage-3 scorer re-scores from the real price + full context; its score (plus
+  modifiers) is what tiers the deal.
 - **Gemini token budgets carry thinking-token headroom.** `maxOutputTokens` caps hidden
   thinking + visible output combined; if it runs out mid-answer the JSON truncates
   (`finishReason=MAX_TOKENS`) and parses to nothing — indistinguishable from a quiet day.
   `common._gemini` warns on any non-STOP finishReason; `MAX_TOKENS_FIND/SKEPTIC/VERIFY`
   are set well above observed thinking usage (~3-4k). If you see the warning, raise them.
-- **Grounding (Stage 2) only removes candidates, never adds them.** A grounding kill means
-  the deal was hallucinated or over-ceiling after live verification — it never reaches the
-  skeptic or email. `verdict: correct` (price was wrong) still forwards the corrected figures
-  to the skeptic; do not treat `correct` as a kill.
-- **The skeptic (Stage 3) grades desirability, not existence.** It sees only grounded,
-  guard-passed candidates and returns diamond/good/skip. `skip` is logged as `skeptic_kill`
-  in the ledger. It cannot resurrect a grounding-killed or over-ceiling deal.
-- **Price ceilings are hard gates.** `PRICE_CEILING_EUR` in config.py (Bulgaria €110,
-  Turkey €100; `DEFAULT_PRICE_CEILING_EUR` €130). A Stage-1 candidate over its ceiling is
-  never grounded. A grounded confirm/correct over the ceiling is blocked before the skeptic.
-  Never bypass these.
+- **Grounding (Stage 2) only removes candidates, never adds them.** A grounding kill means the
+  deal was hallucinated — it never reaches the scorer or email. `verdict: correct` (price was
+  wrong) still forwards the corrected figures to the scorer; do not treat `correct` as a kill.
+  Grounding no longer kills on price (no ceiling) — only data-quality guards (low confidence,
+  dates out of window) block a grounded candidate from scoring.
+- **Every scored candidate's breakdown is recorded** (`llm_score`, `final_score`, tier) in the
+  ledger, `city_signals.json`, and the run log — deliberately, so a deal that scored 69 at €86
+  and 74 at €79 keeps its history rather than being lost to a veto. Ledger verdicts:
+  diamond/good/skip (scored), `kill` (grounding kill), `blocked` (guard).
 - **Baselines are only written** when grounding confidence is "high" AND the grounded option
   dates fall within the candidate window (rough season_key match) — recorded for every such
-  grounded confirm/correct regardless of the skeptic tier (even a skip: the price is real).
+  grounded confirm/correct regardless of the tier (even a skip: the price is real).
   Low-confidence or out-of-window verifications produce unreliable data — never stored.
 - **The email's price comparison uses the PRIOR-run baseline snapshot** (`prior_baselines`,
   captured right after `M.load()`), not the live `mem` — otherwise a deal is compared against
   the very price this run just recorded for it ("about the usual" for everything).
 - **`est_price_eur`** is a structured numeric field emitted by Stage 1 for each candidate.
-  It is the source of truth for ceiling gating and `claimed_price` in memory. Never
-  use `_extract_price()` from prose for this purpose.
+  It is FIND's estimate — used only for `claimed_price` in memory and the grounding
+  confirm/correct comparison (never for tiering; the grounded price drives the score). Never
+  use `_extract_price()` from prose for it.
 - **`deal_id` is a run-local correlation key, not a persistent id.** `find_city_anomalies.py`
   assigns it (1-based) Python-side right after Stage 1 parses — never trusting the LLM to
-  mint it. The skeptic echoes it back so tiers merge onto grounded candidates by id, not by
+  mint it. The scorer echoes it back so scores merge onto grounded candidates by id, not by
   fragile destination-string matching (`_match_candidate`, with a destination fallback).
   It only correlates within one run — candidate #1 today ≠ #1 tomorrow — so it must NEVER
   key `signals_seen.json` or `memory.json`; those stay keyed by `destination|window`/season

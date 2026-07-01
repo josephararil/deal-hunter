@@ -120,16 +120,23 @@ def record_baseline(memory, destination, season, realistic_price_eur, note="", s
 
 
 def record_outcome(memory, destination, window, type_, claimed_price, verdict,
-                   actual_price=None, source="", note=""):
-    """Append one pipeline outcome to the rolling ledger."""
+                   actual_price=None, source="", note="", llm_score=None, final_score=None):
+    """Append one pipeline outcome to the rolling ledger.
+
+    llm_score  = the scorer's raw desirability score (0-100), pre-modifiers.
+    final_score = the pipeline's final score after deterministic price/transit modifiers.
+    Both are kept so a candidate's score history survives across runs (e.g. the same hotel
+    scoring 69 at €86 and 74 at €79) instead of being lost to a binary keep/kill."""
     memory["ledger"].append({
         "date":          dt.date.today().isoformat(),
         "destination":   destination,
         "window":        window,
         "type":          type_,
         "claimed_price": claimed_price,
-        "verdict":       verdict,   # confirm | correct | kill | hallucinated | skeptic_kill
+        "verdict":       verdict,   # diamond | good | skip | kill | blocked | correct
         "actual_price":  actual_price,
+        "llm_score":     llm_score,
+        "final_score":   final_score,
         "source":        source,
         "note":          note,
     })
@@ -175,30 +182,35 @@ def summarize_for_prompt(memory, cities=None):
             lines.append("Known realistic prices (from past verifications):")
             lines.extend(relevant)
 
-    # --- Recent corrections and kills only (confirmations don't add signal) ---
+    # --- Recent outcomes that carry calibration signal (skip its confirms/diamonds — a
+    # diamond needs no warning; the misses, corrections and mediocre scores teach the most).
     ledger = memory.get("ledger", [])
     recent_bad = sorted(
-        [e for e in ledger if e.get("verdict") in ("correct", "kill", "hallucinated", "skeptic_kill")],
+        [e for e in ledger if e.get("verdict") in
+         ("correct", "kill", "hallucinated", "skeptic_kill", "skip", "blocked", "good")],
         key=lambda e: e.get("date", ""),
         reverse=True,
     )[:MAX_PROMPT_OUTCOMES]
     if recent_bad:
         if lines:
             lines.append("")
-        lines.append("Recent corrections/kills (past hallucinations — avoid repeating these):")
+        lines.append("Recent outcomes (scores + corrections from past runs — calibrate to these):")
         for e in recent_bad:
             dest    = e.get("destination", "?")
             win     = e.get("window", "?")
             verdict = e.get("verdict", "?")
-            claimed = e.get("claimed_price")
             actual  = e.get("actual_price")
+            final   = e.get("final_score")
+            llm     = e.get("llm_score")
             note    = e.get("note", "").strip()
 
-            parts = [f"  {dest} ({win}): verdict={verdict}"]
-            if claimed:
-                parts.append(f"claimed €{claimed}")
+            parts = [f"  {dest} ({win}): {verdict}"]
+            if llm is not None and final is not None:
+                parts.append(f"score {llm}->{final}")
+            elif final is not None:
+                parts.append(f"final {final}")
             if actual:
-                parts.append(f"actual €{actual}")
+                parts.append(f"€{actual}/night")
             if note:
                 parts.append(_clip(note, 120))
             lines.append(", ".join(parts))
@@ -237,6 +249,8 @@ def _write_md(memory):
     lines.append("")
     if ledger:
         recent = sorted(ledger, key=lambda e: e.get("date", ""), reverse=True)
+        _icons = {"diamond": "💎", "good": "👍", "skip": "·", "confirm": "✅",
+                  "correct": "🔧", "kill": "❌", "blocked": "🔒"}
         for e in recent[:50]:
             date    = e.get("date", "?")
             dest    = e.get("destination", "?")
@@ -244,16 +258,23 @@ def _write_md(memory):
             verdict = e.get("verdict", "?")
             claimed = e.get("claimed_price")
             actual  = e.get("actual_price")
+            llm     = e.get("llm_score")
+            final   = e.get("final_score")
             note    = e.get("note", "").strip()
 
-            icon = "✅" if verdict == "confirm" else "🔧" if verdict == "correct" else "❌"
+            icon = _icons.get(verdict, "•")
             price_str = ""
             if claimed:
                 price_str += f" claimed=€{claimed}"
             if actual:
                 price_str += f" actual=€{actual}"
+            score_str = ""
+            if llm is not None and final is not None:
+                score_str = f" score={llm}->{final}"
+            elif final is not None:
+                score_str = f" final={final}"
             suffix = f" — {_clip(note, 100)}" if note else ""
-            lines.append(f"- {icon} {date} | {dest} | {win} | {verdict}{price_str}{suffix}")
+            lines.append(f"- {icon} {date} | {dest} | {win} | {verdict}{score_str}{price_str}{suffix}")
         if len(ledger) > 50:
             lines.append(f"_... and {len(ledger) - 50} earlier entries_")
     else:

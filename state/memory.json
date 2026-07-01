@@ -17,6 +17,18 @@
       "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.",
       "source": "Booking.com (apidojo) live 2026-07-01",
       "updated": "2026-07-01"
+    },
+    "Bansko, Bulgaria|2026-09": {
+      "realistic_price_eur": 104,
+      "note": "I have verified the Lucky Bansko Aparthotel SPA & Relax pricing for your dates of September 10-13, 2026. The rate is confirmed at approximately 104 EUR per night (312 EUR total), which perfectly…",
+      "source": "Lucky Bansko official website booking portal",
+      "updated": "2026-07-01"
+    },
+    "Rome, Italy|2026-09": {
+      "realistic_price_eur": 85,
+      "note": "I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…",
+      "source": "hu openair official booking engine check 2026-07-01",
+      "updated": "2026-07-01"
     }
   },
   "ledger": [
@@ -206,6 +218,58 @@
       "actual_price": 103.67,
       "source": "Booking.com (apidojo) live 2026-07-01",
       "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling."
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Hisarya, Bulgaria",
+      "window": "17 July 2026 - 20 July 2026",
+      "type": "hotel",
+      "claimed_price": 104,
+      "verdict": "kill",
+      "actual_price": 104,
+      "llm_score": null,
+      "final_score": null,
+      "source": "Hotel Hissar official site / maintenance notice",
+      "note": "While the Hissar Spa Hotel is available for your requested dates at approximately €104/night, I must advise against this booking. The hotel has officially announced that its indoor pools, children's…"
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Bansko, Bulgaria",
+      "window": "10 September 2026 - 13 September 2026",
+      "type": "hotel",
+      "claimed_price": 105,
+      "verdict": "good",
+      "actual_price": 104,
+      "llm_score": 80,
+      "final_score": 68,
+      "source": "Lucky Bansko official website booking portal",
+      "note": "A highly convenient 2.5h drive for a perfectly sized 3-night weekend with excellent 5-star indoor kids' facilities, providing high family utility despite the seasonal outdoor closures."
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Thassos, Greece",
+      "window": "6 September 2026 - 11 September 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "kill",
+      "actual_price": 365,
+      "llm_score": null,
+      "final_score": null,
+      "source": "KAYAK / Booking.com live pricing 2026-07-01",
+      "note": "I searched for availability at Makryammos Bungalows for September 6–11, 2026, and found that the current market rates are approximately €365 per night, significantly higher than the estimated €135.…"
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Rome, Italy",
+      "window": "15 September 2026 - 20 September 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "skip",
+      "actual_price": 85,
+      "llm_score": 58,
+      "final_score": 66,
+      "source": "hu openair official booking engine check 2026-07-01",
+      "note": "While the bungalow and pools offer a good toddler refuge, the exhausting logistics of driving to Sofia, flying, and navigating a major historic city severely dilute the net family value."
     }
   ]
 }

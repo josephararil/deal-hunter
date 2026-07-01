@@ -80,7 +80,7 @@ def cities_prompt_text():
 # ── LLM models ──────────────────────────────────────────────────────────────
 # Per-stage model roles. Values are canonical Anthropic model names; Gemini
 # equivalents are looked up in GEMINI_MODEL_MAP below.
-MODEL_FIND    = "claude-haiku-4-5-20251001"  # Stage 1: fast + web-search capable
+MODEL_FIND    = "claude-sonnet-4-6"  # Stage 1: fast + web-search capable
 MODEL_SKEPTIC = "claude-sonnet-4-6"          # Stage 2: stronger reasoning
 MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable
 

@@ -64,14 +64,21 @@ find_city_anomalies.py
   │    (even skips — the price is real). prune() + save().
   │
   ├─ Anti-spam gate — state/signals_seen.json
-  │    Keyed by destination+window, SIGNAL_TTL_DAYS TTL. Prevents repeat emails.
-  │    Only diamond/good picks reach this gate.
+  │    Keyed by destination+window+TIER, SIGNAL_TTL_DAYS TTL. EVERY scored candidate
+  │    (diamond/good/skip) passes through this gate — a candidate is "new" if that
+  │    destination+window has not been emailed at that tier within the TTL, so a TIER
+  │    CHANGE (e.g. skip→good when the price drops) re-notifies while same-tier repeats
+  │    stay quiet.
   │
-  ├─ Email (common.send_email) — a short digest whenever any diamond/good pick is new
-  │    One email per run, max MAX_EMAILS_PER_RUN picks (diamonds sorted first). Each item
-  │    shows its tier badge, live all-in price, a "typically ~€X/night" comparison from
-  │    PRIOR baselines, a child-price caveat for hotels, and the booking link.
-  │    Conscience note in the email if monthly count >= 8.
+  ├─ Email (common.send_email) — an honest daily digest of EVERY scored candidate
+  │    One email per run, fired whenever ≥1 scored candidate is new/tier-changed (any tier,
+  │    incl. skip). Items grouped diamond→good→skip; each shows its tier badge, score
+  │    breakdown (llm · price · transit = final), live all-in price, a "typically ~€X/night"
+  │    comparison from PRIOR baselines, a child-price caveat for hotels, and the booking link.
+  │    MAX_EMAILS_PER_RUN caps only the actionable diamond/good picks; skips are context and
+  │    always shown in full. A "seen & dropped" footer lists that run's grounding kills /
+  │    guard blocks (destination + reason) so the digest reflects everything the pipeline
+  │    looked at. Conscience note if monthly count >= 8.
   │
   └─ Always writes
        state/city_signals.json  — all Stage 1 candidates + full score breakdown (hunt: false)
@@ -88,12 +95,12 @@ find_city_anomalies.py
 | `config.py` | City list + diamond-finder knobs; per-stage model roles (`MODEL_FIND/SKEPTIC/VERIFY`); per-stage provider overrides; prompts |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
-| `find_city_anomalies.py` | The diamond finder — runs daily, emails a tiered diamond/good digest |
+| `find_city_anomalies.py` | The diamond finder — runs daily, emails a digest of every scored candidate (diamond/good/skip) + a dropped footer |
 | `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
-| `state/signals_seen.json` | Anti-spam TTL memory: `destination\|window → date_emailed`, monthly count |
+| `state/signals_seen.json` | Anti-spam TTL memory: `destination\|window\|tier → date_emailed`, monthly count |
 | `state/memory.json` | Price baselines + outcome ledger (grows every run, pruned at 200 entries / 180 days) |
 | `state/memory.md` | Human-readable digest of memory.json |
 
@@ -173,10 +180,25 @@ ground_deal = _resolve_ground_deal()
   `common._gemini` warns on any non-STOP finishReason; `MAX_TOKENS_FIND/SKEPTIC/VERIFY`
   are set well above observed thinking usage (~3-4k). If you see the warning, raise them.
 - **Grounding (Stage 2) only removes candidates, never adds them.** A grounding kill means the
-  deal was hallucinated — it never reaches the scorer or email. `verdict: correct` (price was
-  wrong) still forwards the corrected figures to the scorer; do not treat `correct` as a kill.
-  Grounding no longer kills on price (no ceiling) — only data-quality guards (low confidence,
-  dates out of window) block a grounded candidate from scoring.
+  deal is NOT REAL (hallucinated property, no availability in-window, no supporting evidence) —
+  it never reaches the scorer or email. `verdict: correct` (price was wrong) still forwards the
+  corrected figures to the scorer; do not treat `correct` as a kill. Grounding no longer kills
+  on price (no ceiling) — only data-quality guards (low confidence, dates out of window) block a
+  grounded candidate from scoring.
+- **Grounding stays in its lane — price & bookability, NOT desirability.** A quality / seasonal /
+  amenity concern (a pool closed for maintenance, a dead resort off-season, mediocre reviews)
+  must NOT be a grounding kill — that is the scorer's job, and killing there hides the candidate
+  from the digest entirely and duplicates the scorer. `VERIFY_PROMPT` instructs grounding to
+  NOTE such concerns in `grounding`/`assistant_summary` (so the scorer weighs them) but still
+  return confirm/correct with the real price. The apidojo path (`_decide_verdict`) already never
+  kills on anything but non-resolution; keep the LLM fallback aligned with it.
+- **Windows are parsed by `providers._extract_date_range`, which must track FIND's window
+  format.** FIND emits full dates both sides ("17 July 2026 - 20 July 2026"); the parser handles
+  that plus "DD Month - DD Month YYYY", "Month DD YYYY - …", and the short "Sep 10-14, 2026" /
+  "10-14 Sep 2026" forms, and returns None on a backwards range. A format the parser misses makes
+  apidojo silently fail and every candidate fall to the (costlier, less price-accurate) LLM
+  fallback — so if you change FIND's `window` wording, extend the parser and its regression tests
+  (`test_providers.py`) in the same change.
 - **Every scored candidate's breakdown is recorded** (`llm_score`, `final_score`, tier) in the
   ledger, `city_signals.json`, and the run log — deliberately, so a deal that scored 69 at €86
   and 74 at €79 keeps its history rather than being lost to a veto. Ledger verdicts:
@@ -197,14 +219,19 @@ ground_deal = _resolve_ground_deal()
   mint it. The scorer echoes it back so scores merge onto grounded candidates by id, not by
   fragile destination-string matching (`_match_candidate`, with a destination fallback).
   It only correlates within one run — candidate #1 today ≠ #1 tomorrow — so it must NEVER
-  key `signals_seen.json` or `memory.json`; those stay keyed by `destination|window`/season
-  to survive across runs. It appears in `city_signals.json` (regenerated each run) for
-  traceability only.
-- **The email is an honest tiered digest, not a rare "diamond-only" alarm.** It fires on
-  any new diamond OR good pick, so near-daily email is expected and fine — the value is that
-  each item is graded honestly (💎 vs 👍) with the live price, a baseline comparison, and
-  caveats, so the user judges in seconds. A true diamond stays rare; good finds are common.
-  A day with only skips (or nothing found) still sends nothing.
+  key `signals_seen.json` or `memory.json`; those stay keyed by `destination|window`(`|tier`
+  for signals_seen) / season to survive across runs. It appears in `city_signals.json`
+  (regenerated each run) for traceability only.
+- **The email is an honest digest of EVERY scored candidate, not a diamond/good-only alarm.**
+  It shows diamonds, good finds AND skips — each with its full score breakdown — so the user
+  builds a mental model of what the pipeline sees and why, and can human-override a
+  low-scored deal (e.g. a Rome skip that's useful if they were going anyway). It fires
+  whenever ≥1 scored candidate is new or has changed tier since the last email (any tier).
+  Anti-spam TTL is keyed `destination|window|tier`, so a recurring same-window skip stays
+  quiet but a skip→good upgrade re-notifies. Only diamond/good picks are capped by
+  MAX_EMAILS_PER_RUN; skips are always shown. Grounding kills / guard blocks appear in a
+  compact "seen & dropped" footer (no email is sent purely for a kill). A day with nothing
+  new (or nothing found) still sends nothing.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger
   hotel crawls. The field exists for schema compatibility only.
 - **Memory is written every run**, including silent days. `memory.py` functions must

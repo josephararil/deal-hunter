@@ -247,10 +247,20 @@ def price(ref, chk_in, chk_out):
 
 # ── Window parsing ────────────────────────────────────────────────────────────
 
-# Matches "Sep 10-14, 2026" or "10-14 Sep 2026" styles
+# Matches "Sep 10-14, 2026" or "10-14 Sep 2026" styles (one month token, a day range)
 _EXPLICIT_RE = re.compile(
     r"(?:(\d{1,2})\s*[-–]\s*(\d{1,2})\s+([A-Za-z]+)[\s,]+(\d{4}))"
     r"|(?:([A-Za-z]+)\s+(\d{1,2})\s*[-–]\s*(\d{1,2})[\s,]+(\d{4}))"
+)
+# Full date on BOTH sides, month spelled out each time: "17 July 2026 - 20 July 2026", or
+# with the year only on the right: "17 July - 20 July 2026". FIND emits this shape, and it
+# MUST be tried before _EXPLICIT_RE — whose leading \d{1,2} otherwise latches onto the last
+# two digits of the left-hand year ("...20[26] - 20 July 2026" → checkin 26th, checkout 20th).
+_LONG_RANGE_DAY_FIRST = re.compile(
+    r"(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}))?\s*[-–]\s*(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})"
+)
+_LONG_RANGE_MONTH_FIRST = re.compile(
+    r"([A-Za-z]+)\s+(\d{1,2})(?:\s+(\d{4}))?\s*[-–]\s*([A-Za-z]+)\s+(\d{1,2})\s+(\d{4})"
 )
 _MONTH_MAP = {
     "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
@@ -258,21 +268,45 @@ _MONTH_MAP = {
 }
 
 
+def _mk_date(yr, mon_name, day):
+    """Build a date from parts, or None if month name / day is invalid."""
+    mon = _MONTH_MAP.get((mon_name or "")[:3].lower())
+    if not mon:
+        return None
+    try:
+        return date(int(yr), mon, int(day))
+    except (ValueError, TypeError):
+        return None
+
+
 def _extract_date_range(window):
-    """Try to parse any date range from window; return (chk_in_str, chk_out_str) or None."""
-    m = _EXPLICIT_RE.search(window)
+    """Try to parse any date range from window; return (chk_in_str, chk_out_str) or None.
+
+    Returns None unless check-out is strictly after check-in, so a malformed or backwards
+    window falls through cleanly instead of shipping a bad range to apidojo.
+    """
+    d_in = d_out = None
+
+    m = _LONG_RANGE_DAY_FIRST.search(window)
     if m:
+        day1, mon1, yr1, day2, mon2, yr2 = m.groups()
+        d_in  = _mk_date(yr1 or yr2, mon1, day1)
+        d_out = _mk_date(yr2, mon2, day2)
+    elif (m := _LONG_RANGE_MONTH_FIRST.search(window)):
+        mon1, day1, yr1, mon2, day2, yr2 = m.groups()
+        d_in  = _mk_date(yr1 or yr2, mon1, day1)
+        d_out = _mk_date(yr2, mon2, day2)
+    elif (m := _EXPLICIT_RE.search(window)):
         groups = m.groups()
         if groups[4]:  # "Sep 10-14, 2026"
-            mon_s = groups[4]; d1 = int(groups[5]); d2 = int(groups[6]); yr = int(groups[7])
+            mon_s = groups[4]; d1 = groups[5]; d2 = groups[6]; yr = groups[7]
         else:          # "10-14 Sep 2026"
-            mon_s = groups[2]; d1 = int(groups[0]); d2 = int(groups[1]); yr = int(groups[3])
-        mon = _MONTH_MAP.get(mon_s[:3].lower())
-        if mon:
-            try:
-                return (str(date(yr, mon, d1)), str(date(yr, mon, d2)))
-            except ValueError:
-                pass
+            mon_s = groups[2]; d1 = groups[0]; d2 = groups[1]; yr = groups[3]
+        d_in  = _mk_date(yr, mon_s, d1)
+        d_out = _mk_date(yr, mon_s, d2)
+
+    if d_in and d_out and d_out > d_in:
+        return (str(d_in), str(d_out))
     return None
 
 

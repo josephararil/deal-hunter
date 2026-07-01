@@ -405,8 +405,47 @@ try:
         _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
         f"calls={_stub_llm.calls}")
 
+    # ── 23–27. _extract_date_range: window-format regressions ────────────────
+    # The bug: FIND emits "17 July 2026 - 20 July 2026" (full date both sides). The old
+    # regex latched onto the last two digits of the left-hand year → checkin AFTER checkout,
+    # apidojo returned nothing, and every candidate fell through to the LLM. Guard against it.
+    chk("_extract_date_range: full date both sides -> forward range",
+        P._extract_date_range("17 July 2026 - 20 July 2026") == ("2026-07-17", "2026-07-20"),
+        f"got {P._extract_date_range('17 July 2026 - 20 July 2026')}")
+
+    chk("_extract_date_range: year only on right side",
+        P._extract_date_range("17 July - 20 July 2026") == ("2026-07-17", "2026-07-20"),
+        f"got {P._extract_date_range('17 July - 20 July 2026')}")
+
+    chk("_extract_date_range: month-first full date both sides",
+        P._extract_date_range("July 17 2026 - July 20 2026") == ("2026-07-17", "2026-07-20"),
+        f"got {P._extract_date_range('July 17 2026 - July 20 2026')}")
+
+    chk("_extract_date_range: short forms still parse",
+        P._extract_date_range("Sep 10-14, 2026") == ("2026-09-10", "2026-09-14")
+        and P._extract_date_range("10-14 Sep 2026") == ("2026-09-10", "2026-09-14"),
+        f"got {P._extract_date_range('Sep 10-14, 2026')} / {P._extract_date_range('10-14 Sep 2026')}")
+
+    chk("_extract_date_range: backwards window -> None",
+        P._extract_date_range("20 July 2026 - 17 July 2026") is None,
+        f"got {P._extract_date_range('20 July 2026 - 17 July 2026')}")
+
+    # ── 28. ground_api: full-date window resolves via apidojo, NOT the LLM ────
+    #    The payoff of the parse fix — the exact window shape that used to force fallback.
+    fa._ground_llm = _stub_llm; _stub_llm.calls = 0
+    P._get = _make_get(_AC_KEMPINSKI, _PROPS_KEMPINSKI_UNDER)
+    _kemp_longwin = {**_kemp_diamond, "window": "8 August 2026 - 10 August 2026"}
+    result = P.ground_api(_kemp_longwin, "memory", "2026-06-29")
+    fa._ground_llm = _real_ground_llm
+    chk("ground_api: full-date window grounds via apidojo (no LLM fallback), verdict=confirm",
+        _stub_llm.calls == 0
+        and result.get("verdict") == "confirm"
+        and (result.get("options") or [{}])[0].get("price_per_night_eur") == 85.0,
+        f"llm_calls={_stub_llm.calls}, verdict={result.get('verdict')!r}, "
+        f"opt0={ (result.get('options') or [{}])[0] }")
+
     # ── Summary ───────────────────────────────────────────────────────────────
-    total = 22
+    total = 28
     passed = total - len(_failed)
     print(f"\n{passed}/{total} tests passed.")
     if _failed:

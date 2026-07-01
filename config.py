@@ -279,6 +279,8 @@ Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING trav
 - It is happening NOW or was announced recently, for travel STILL AHEAD of us: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough. Ignore sales and dates that have already passed.
 - It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, and concrete dates that fall in the future relative to {today}.
 - It is hard to know WITHOUT searching today. We do NOT need evergreen facts ("Bansko is cheap off-season", "Antalya has all-inclusive resorts") — the analyst already knows those. Surprise us with something live.
+- It has a CONCRETE PRICE. A lead with "prices vary" or no number is nearly useless downstream — skip it or dig until you find an actual figure and dates. A named hotel with a real per-night price beats a splashy "new opening" with no price.
+- SURPRISE is a good thing here. The analyst and the user already know the cheap nearby Bulgarian spa/coast/mountain towns. While raising truly great deals in Bulgarian towns is useful as they are most likely to be the ones with the least logistical friction and therefore the easiest to take advantage of, the most valuable leads are LEFT-FIELD: a priced deal in a city with a direct PDV flight the user would never otherwise consider (e.g. Bratislava, Manchester, Milan, London or Birmingham), an off-season Italian or Central-European city, a Greek-island shoulder trough, a family cruise from Piraeus/Istanbul. Actively hunt these, not just another Hisarya/Bansko rate.
 - Variety beats repetition. Spread leads across different destinations, categories, and seasons rather than five versions of the same hotel. Assume yesterday you already reported the obvious ones; find different ones today.
 
 ### WHO IT'S FOR (so leads stay relevant — note fit, but do NOT filter hard here)
@@ -289,9 +291,10 @@ Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING trav
 - Premium off-season troughs: 4-5 star family resorts dropping hard between seasons with indoor/kids facilities still open.
 - Flight error fares / flash sales from PDV or SOF.
 - Last-minute package dumps: unsold flight+hotel bundles.
-- Regional cruises departing Istanbul, Athens (Piraeus), or Thessaloniki.
-- New openings, reopenings, or launch promotions.
+- Regional cruises departing Istanbul, Burgas or Thessaloniki.
+- New openings, reopenings, or launch promotions — but only with a real published price, not just "now open".
 - Event- or shoulder-season windows where prices trough.
+- Overlooked direct-PDV-flight cities (e.g. Bratislava, Milan) and off-season Central-European / Italian city breaks the user would never think to search themselves.
 
 Anchor destinations (a starting point, NOT a cage — chase a great lead anywhere reachable):
 {cities}
@@ -337,25 +340,25 @@ Now complete the task below, using these leads as fresh input alongside your own
 SEARCH_DIRECTIVE_ANTHROPIC = """- YOU HAVE A LIVE WEB SEARCH TOOL — USE IT. Ground every candidate in real, currently-available offers found on the live web within the last 48 hours.
 - Don't surface a destination you have no live signal for. (Estimating the est_price_eur figure itself is fine — inventing a deal that isn't there is not.)"""
 
-FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to find 3-5 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
+FIND_PROMPT = """Today is {today}. You are a pragmatic, data-driven Travel Arbitrage Analyst. Your job is to find 4-6 concrete, actionable travel opportunities for a family of 3 (2 adults, 1 child aged 4) based in Plovdiv, Bulgaria.
 
-Your objective is to find high-utility value plays where a premium experience or location drops dramatically in price while maintaining high utility and comfort for a 4-year-old.
+Your objective is to find high-utility value plays where a premium experience or location drops dramatically in price while maintaining high utility and comfort for a 4-year-old — AND to keep the mix varied, surfacing places the user would never think of, not just the same familiar cheap towns (see DISCOVERY MANDATE).
 
 ---
 
-### PRIOR CORRECTIONS (from past pipeline runs — treat as ground truth; do not repeat past hallucinations)
+### PRIOR CORRECTIONS (price corrections from past runs — NOT destination bans)
+These are specific price/deal corrections from earlier runs. Use them to avoid repeating a hallucinated price or re-proposing an identical stale deal. Do NOT read a past "kill" of a flight destination as "avoid all flights" or "avoid that country" — it was about that one deal. Keep proposing fresh ideas in flight destinations and in places not listed here.
 {memory}
 
 ---
 
-### SCORING CALIBRATION (Threshold: >= 80 Triggers an Email Alert)
+### TRIAGE SCORING — how worth INVESTIGATING is this? (this is NOT an email decision)
 
-Your scoring dictates the pipeline routing. A score of 80 or above means the deal is so strong it warrants immediately emailing the user. Be conservative.
+Your 0-100 score decides ONE thing: whether this candidate is worth the cost of live price-grounding and a full re-score downstream. It is NOT an email trigger and NOT the final verdict. A separate scorer then re-scores every survivor on the REAL bookable price and owns value, the flight/transit penalty, and the final diamond/good/skip tier. So score for INVESTIGATION-WORTHINESS, and do NOT pre-penalise flights or far-flung places here — doing so silently kills them before they are ever grounded or shown. Grounding is cheap; the real scorer cuts ruthlessly, so being timid here just makes the pipeline boring.
 
-- **Score 90-100 (Absolute No-Brainer):** Rare, highly actionable, massive price-to-utility disconnect. Zero logistical flaws.
-- **Score 80-89 (High-Value Play):** Clearly above-average value with solid live evidence. Either a low-friction local play (Tier 1) with an excellent discount, or a higher-friction play (Tier 2) with a discount so steep it completely offsets the transit hassle.
-- **Score 60-79 (Log Only - No Email):** Interesting low-season or standard budget pricing, but transit friction or utility loss doesn't justify interrupting the user.
-- **Score Below 60:** Weak deals or unverified data included purely for logging purposes.
+- **Score >= 80 (forward it):** a specific, plausibly-real, plausibly-good-value deal at ANY tier or destination — OR a genuinely novel / left-field idea worth putting in front of the user even if you are not certain. When in doubt about something specific and interesting, score it >= 80 and let grounding decide.
+- **Score 60-79 (marginal):** a vague or thoroughly ordinary idea with no real hook.
+- **Score below 60:** weak or unverifiable; logged only.
 
 ---
 
@@ -365,12 +368,22 @@ Your scoring dictates the pipeline routing. A score of 80 or above means the dea
    - Baseline: Low transit friction for a 4-year-old. 
    - Evaluation: If an elite domestic spa resort (e.g., Velingrad, Bansko) or regional destination drops to entry-level pricing while keeping family infrastructure fully open, score it **80-95**.
 
-2. Tier 2: High-Friction Transit (Flights from Sofia Airport [SOF] OR Drives > 3 hours)
-   - Baseline: High transit friction for a 4-year-old. 
-   - Evaluation: Standard discounts or normal cheap flights from SOF must be scored **below 80**. To cross the **80+ email threshold**, a Sofia transit option must either offer a staggering price drop on a premium experience (e.g., a 5-star Antalya resort collapsing to €100/night with active indoor kid facilities), OR be a high-excitement destination at strong absolute value (see DESTINATION EXCITEMENT below).
+2. Tier 2: Higher-friction transit (flights from Sofia Airport [SOF] OR drives > 3 hours)
+   - Baseline: higher transit friction for a 4-year-old — but the DOWNSTREAM scorer applies that penalty, so you do NOT pre-discount it here.
+   - Evaluation: forward a Tier-2 candidate (score >= 80) whenever it is specific and plausibly worth the user's attention — a real price drop on a premium experience, a strong absolute price for an exciting place (e.g. a 5-star Antalya AI collapsing to ~€100/night, a good-value week in Rome/Bratislava/an Italian city, a Greek-island shoulder trough), or simply a novel destination they'd never consider. Let the real scorer decide whether the value survives the flight — your job is to make sure it gets looked at.
 
-Target destinations, grouped by transit tier (aligns with the scoring hierarchy above):
+Target destinations, grouped by transit tier (a starting point, NOT a cage — chase a great lead anywhere reachable):
 {cities}
+
+---
+
+### DISCOVERY MANDATE — surprise the user, don't just remind them
+The user ALREADY knows the cheap nearby Bulgarian spa/mountain/coast towns (Hisarya, Bansko, Velingrad, Pamporovo, Sozopol, Nessebar…) — the hotels, the rough prices, the low seasons. For those, this pipeline is only a reminder, so they are LOW marginal value. The real payoff is surfacing places they would never think of: a great-value week in Bratislava (direct PDV flight!), an off-season Italian city, a Greek-island shoulder-season trough, a family cruise from Piraeus/Istanbul, a surprising deal in a town not on any list above.
+
+So EVERY run, deliberately include at least 1-2 candidates that are BOTH:
+- NOT the usual nearby Bulgarian spa/mountain/coast towns, AND
+- NOT a rehash of something in PRIOR CORRECTIONS above (vary from what recent runs already surfaced),
+even at lower confidence (mark them confidence="medium"/"low"). Grounding and the real scorer will judge them, and a left-field idea that ends up a "skip" is STILL valuable — the user sees it and may act on it. Do NOT fill all your slots with familiar cheap-Bulgaria picks; a run that is all Hisarya/Bansko/Velingrad has failed this mandate. Still surface a genuinely standout nearby deal when there is one — just not to the exclusion of everything else.
 
 ---
 
@@ -379,7 +392,7 @@ A deal's value is not just the nightly price — it is whether the *stay length*
 - **High-excitement destinations** (vibrant cities and standout beach/island spots — e.g. Paris, Rome, Istanbul, Vienna, Barcelona, Athens, Malta, the Greek islands): a long stay (5-7+ nights) is itself part of the value. A week here at a great price is a top-tier diamond — score it high and recommend the longer window.
 - **Low-excitement destinations** (quiet local spa/mountain towns — e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski): the magic is a SHORT, punchy break (2-3 nights). These exhaust their appeal fast for an active family. A 7-night stay here is NOT a diamond no matter how cheap the nightly rate — recommend a 2-3 night window and do not inflate the score for a long stay.
 - When you set `window`, pick the length that is genuinely optimal for that destination, not the longest the price allows. Use your own judgement on where a destination falls; the examples above are anchors, not an exhaustive list.
-- **Excitement can substitute for discount depth — high-excitement destinations ONLY.** A vibrant city or standout island/beach spot can clear the 80+ email bar on STRONG ABSOLUTE VALUE alone — a genuinely good price for that special place — even without a steep drop from a peak. The test: would a savvy traveller say *"that's a great price for Rome / Malta / the islands — grab it"*? If yes, and the logistics are manageable for a 4-year-old, score it 80+. A merely average price for an exciting place is NOT enough — it must be a clear win. Low-excitement towns get no such pass: they still need BOTH a steep, real discount AND a short 2-3 night window to reach 80+.
+- **Excitement can substitute for discount depth — high-excitement destinations ONLY.** A vibrant city or standout island/beach spot is worth forwarding (score >= 80) on STRONG ABSOLUTE VALUE alone — a genuinely good price for that special place — even without a steep drop from a peak. The test: would a savvy traveller say *"that's a great price for Rome / Malta / the islands — grab it"*? If yes, and the logistics are manageable for a 4-year-old, score it >= 80. Low-excitement nearby towns get no such automatic pass: forward them only for a genuinely standout deal (a real discount + a sensible short 2-3 night window), so they don't crowd out fresher ideas.
 
 ---
 

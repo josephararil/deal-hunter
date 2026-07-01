@@ -32,41 +32,47 @@ find_city_anomalies.py
   │
   ├─ Ceiling gate — candidates with est_price_eur > country ceiling are over_ceiling:
   │    logged in city_signals.md (🔒 marker) and memory (verdict=over_ceiling), but
-  │    NEVER forwarded to Stage 2/3 or emailed. Bulgaria €110, Turkey €100; rest €130.
+  │    NEVER forwarded to grounding/skeptic or emailed. Bulgaria €110, Turkey €100; rest €130.
   │    If est_price_eur is missing, candidate passes through (don't block on unknown price).
   │
-  ├─ Stage 2 (llm, want_search=False, model=MODEL_SKEPTIC) — candidates >= STAGE1_MIN_SCORE AND under ceiling
-  │    Hostile skeptic reviewer. Returns keep/kill + why + red_flags.
-  │    Checks relative discount AND absolute-value floor (see SKEPTIC_PROMPT Example 5).
-  │    Most candidates should die here. Silence is correct.
-  │
-  ├─ Stage 3 (ground_deal seam) — one call per Stage-2 survivor
+  ├─ Stage 2 · GROUND (ground_deal seam) — one call per gate survivor (BEFORE the skeptic)
   │    Primary: `providers.ground_api()` — Booking.com (apidojo) live rates, no LLM call.
   │    Fallback: `_ground_llm` (want_search=True, model=MODEL_VERIFY) — LLM concierge.
   │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
-  │    assistant_summary, confidence. Merges verified fields onto surviving diamonds.
-  │    Additional email guards: a confirm/correct is blocked from email (logged only) if
-  │    confidence=low, OR grounded option dates are out of candidate window, OR grounded
-  │    price_per_night_eur > country ceiling. Blocked entries appear in city_signals.md
-  │    with a 🔒 "Email blocked: <reason>" note.
+  │    assistant_summary, confidence. A kill drops the candidate here. A confirm/correct
+  │    merges the REAL price onto the candidate and forwards it to the skeptic — UNLESS a
+  │    guard blocks it (confidence=low, grounded dates out of candidate window, or grounded
+  │    price > country ceiling); blocked entries are logged in city_signals.md with a 🔒
+  │    "Email blocked" note and never reach the skeptic. This ordering is the whole point:
+  │    the skeptic judges the live price, not the Stage-1 estimate.
   │    Grounding is swappable: `HOTEL_PROVIDER=""` forces LLM-only. Behind the same
   │    `ground_deal(diamond, mem_text, today)` signature.
   │
+  ├─ Stage 3 · SKEPTIC (llm, want_search=False, model=MODEL_SKEPTIC) — one call over all grounded survivors
+  │    Judges each GROUNDED price against absolute per-country bands (DIAMOND_CEILING_EUR /
+  │    PRICE_CEILING_EUR) and assigns a tier: diamond | good | skip. diamond+good are
+  │    email-eligible; skip is logged only. The bands anchor the judgment so "best of a
+  │    weak day" is not automatically a diamond. Echoes deal_id back for merge.
+  │
   ├─ Memory write — state/memory.json + state/memory.md
-  │    Every run (including silent days): record_baseline from verified prices,
-  │    record_outcome for all Stage-3 candidates. Then prune() and save().
+  │    Every run (including silent days): record_outcome per gate survivor (grounding kill →
+  │    kill; grounded-but-skip → skeptic_kill; grounded diamond/good → confirm|correct;
+  │    over_ceiling recorded at the gate). record_baseline for every grounded confirm/correct
+  │    that is high-confidence + in-window (even skips — the price is real). prune() + save().
   │
   ├─ Anti-spam gate — state/signals_seen.json
   │    Keyed by destination+window, 30-day TTL. Prevents repeat emails.
-  │    Only Stage-3 survivors (confirm/correct) reach this gate.
+  │    Only diamond/good picks reach this gate.
   │
-  ├─ Email (common.send_email) — only if new diamonds survive all three stages
-  │    One email per run, max MAX_EMAILS_PER_RUN diamonds.
-  │    Conscience note in the email if monthly count >= 3.
+  ├─ Email (common.send_email) — a short digest whenever any diamond/good pick is new
+  │    One email per run, max MAX_EMAILS_PER_RUN picks (diamonds sorted first). Each item
+  │    shows its tier badge, live all-in price, a "typically ~€X/night" comparison from
+  │    PRIOR baselines, a child-price caveat for hotels, and the booking link.
+  │    Conscience note in the email if monthly count >= 8.
   │
   └─ Always writes
        state/city_signals.json  — all Stage 1 candidates (hunt: false always)
-       state/city_signals.md    — human-readable log with Stage 3 outcomes; useful even on silent days
+       state/city_signals.md    — human-readable log with grounding + tier outcomes
        state/signals_seen.json  — updated TTL state
        state/memory.json        — baselines + outcome ledger (updated every run)
        state/memory.md          — human-readable memory digest
@@ -79,8 +85,8 @@ find_city_anomalies.py
 | `config.py` | City list + diamond-finder knobs; per-stage model roles (`MODEL_FIND/SKEPTIC/VERIFY`); per-stage provider overrides; prompts |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
-| `find_city_anomalies.py` | The diamond finder — runs daily, emails on exceptional finds |
-| `providers.py` | Booking.com (apidojo) Stage-3 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
+| `find_city_anomalies.py` | The diamond finder — runs daily, emails a tiered diamond/good digest |
+| `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
@@ -90,7 +96,7 @@ find_city_anomalies.py
 
 ## Hotel grounding seam (Booking.com / apidojo)
 
-The active Stage-3 grounding implementation lives in `providers.py`.
+The active Stage-2 grounding implementation lives in `providers.py`.
 `ground_api(diamond, mem_text, today)` fetches live nightly rates from the Booking.com
 RapidAPI (apidojo host), fuzzy-matches the named hotel in the result cards, and returns a
 Stage-3 result dict. It falls back to `_ground_llm` (LLM concierge + web search) on any
@@ -122,8 +128,8 @@ ground_deal = _resolve_ground_deal()
 # HOTEL_PROVIDER="" python find_city_anomalies.py
 ```
 
-`ground_deal(diamond, mem_text, today)` is called once per Stage-2 survivor.
-Both providers return the same Stage-3 result schema.
+`ground_deal(diamond, mem_text, today)` is called once per Stage-1 gate survivor
+(before the skeptic). Both providers return the same grounding result schema.
 
 ## Critical invariants — do not break these
 
@@ -134,47 +140,62 @@ Both providers return the same Stage-3 result schema.
   `signals_seen.json`, `memory.json`, `memory.md` are committed after each run.
   They are real state, not scratch. Seed values: `{}` / `{"seen":{}, "monthly_count":{}}` /
   `{"baselines": {}, "ledger": []}`.
-- **`STAGE1_MIN_SCORE = 80`** is the Stage 2 gate. Raise to make email rarer. Lower
-  cautiously — it lets more through the hostile skeptic.
-- **Two scoring pathways to 80+ (FIND_PROMPT + SKEPTIC_PROMPT must stay in sync).**
-  (1) a steep, real discount with retained family utility (any destination); (2) a
-  *high-excitement* destination (vibrant city / standout island-beach) at strong absolute
-  value — a clear "grab it" for that place — even without a dramatic discount. Pathway 2
-  is high-excitement ONLY: an ordinary price for an exciting place is still a kill, and
-  low-excitement local towns get no such pass (they also still require a short 2-3 night
-  window). Note: the €130 default ceiling still gates the priciest Western capitals, so
-  pathway 2 mostly surfaces shoulder-season islands, Athens, Istanbul, Budapest, etc.
+- **Grounding runs BEFORE the skeptic.** Stage 2 grounds live prices; Stage 3 (skeptic)
+  judges those live prices. This is the core design decision — the skeptic must never
+  grade a Stage-1 *estimate*. If you touch the pipeline order, preserve this.
+- **`STAGE1_MIN_SCORE = 80`** is the gate into grounding. Raise to ground/email rarer.
+  Lower cautiously — it forwards more candidates to live grounding (API cost) and the skeptic.
+- **Tier bands anchor the skeptic (config `DIAMOND_CEILING_EUR` / `DEFAULT_DIAMOND_CEILING_EUR`).**
+  The skeptic returns diamond | good | skip by comparing the GROUNDED per-night price to the
+  diamond bar (Bulgaria €65, Turkey €70; default €95) and the acceptability ceiling. These
+  are the single place the excellence bar lives — tune them, don't scatter thresholds into
+  pipeline code. diamond+good email; skip is logged only.
+- **Two diamond pathways (FIND_PROMPT scoring + SKEPTIC_PROMPT tiering must stay in sync).**
+  (1) a grounded price at/below the diamond bar with retained family utility (any destination);
+  (2) a *high-excitement* destination (vibrant city / standout island-beach) at strong absolute
+  value — a clear "grab it" for that place — even between the diamond bar and the ceiling.
+  Pathway 2 is high-excitement ONLY: an ordinary price for an exciting place is at best "good",
+  and low-excitement local towns get no such pass (they also still require a short 2-3 night
+  window). The €130 default ceiling still gates the priciest Western capitals.
 - **Gemini token budgets carry thinking-token headroom.** `maxOutputTokens` caps hidden
   thinking + visible output combined; if it runs out mid-answer the JSON truncates
   (`finishReason=MAX_TOKENS`) and parses to nothing — indistinguishable from a quiet day.
   `common._gemini` warns on any non-STOP finishReason; `MAX_TOKENS_FIND/SKEPTIC/VERIFY`
   are set well above observed thinking usage (~3-4k). If you see the warning, raise them.
-- **Stage 3 only removes candidates, never adds them.** A Stage-3 kill means the deal
-  was hallucinated or unremarkable after live verification — it never triggers email.
-- **Stage 3 `verdict: correct`** means the deal exists but the price was wrong; the
-  corrected figures are emailed IF the grounded price passes the ceiling, confidence is
-  medium/high, and dates are in window. `verdict: kill` means the reality doesn't justify
-  email. Do not treat `correct` as a kill — it can still email.
+- **Grounding (Stage 2) only removes candidates, never adds them.** A grounding kill means
+  the deal was hallucinated or over-ceiling after live verification — it never reaches the
+  skeptic or email. `verdict: correct` (price was wrong) still forwards the corrected figures
+  to the skeptic; do not treat `correct` as a kill.
+- **The skeptic (Stage 3) grades desirability, not existence.** It sees only grounded,
+  guard-passed candidates and returns diamond/good/skip. `skip` is logged as `skeptic_kill`
+  in the ledger. It cannot resurrect a grounding-killed or over-ceiling deal.
 - **Price ceilings are hard gates.** `PRICE_CEILING_EUR` in config.py (Bulgaria €110,
   Turkey €100; `DEFAULT_PRICE_CEILING_EUR` €130). A Stage-1 candidate over its ceiling is
-  never forwarded to Stage 2/3. A Stage-3 confirm/correct with grounded price over the
-  ceiling is logged but not emailed. Never bypass these.
-- **Baselines are only written** when Stage-3 confidence is "high" AND the grounded option
-  dates fall within the candidate window (rough season_key match). Low-confidence or
-  out-of-window verifications produce unreliable data — do not store them as baselines.
+  never grounded. A grounded confirm/correct over the ceiling is blocked before the skeptic.
+  Never bypass these.
+- **Baselines are only written** when grounding confidence is "high" AND the grounded option
+  dates fall within the candidate window (rough season_key match) — recorded for every such
+  grounded confirm/correct regardless of the skeptic tier (even a skip: the price is real).
+  Low-confidence or out-of-window verifications produce unreliable data — never stored.
+- **The email's price comparison uses the PRIOR-run baseline snapshot** (`prior_baselines`,
+  captured right after `M.load()`), not the live `mem` — otherwise a deal is compared against
+  the very price this run just recorded for it ("about the usual" for everything).
 - **`est_price_eur`** is a structured numeric field emitted by Stage 1 for each candidate.
   It is the source of truth for ceiling gating and `claimed_price` in memory. Never
   use `_extract_price()` from prose for this purpose.
 - **`deal_id` is a run-local correlation key, not a persistent id.** `find_city_anomalies.py`
   assigns it (1-based) Python-side right after Stage 1 parses — never trusting the LLM to
-  mint it. Stage 2 echoes it back so verdicts merge onto Stage-1 candidates by id, not by
+  mint it. The skeptic echoes it back so tiers merge onto grounded candidates by id, not by
   fragile destination-string matching (`_match_candidate`, with a destination fallback).
   It only correlates within one run — candidate #1 today ≠ #1 tomorrow — so it must NEVER
   key `signals_seen.json` or `memory.json`; those stay keyed by `destination|window`/season
   to survive across runs. It appears in `city_signals.json` (regenerated each run) for
   traceability only.
-- **Silence is the intended outcome most days.** Don't treat low email volume as a bug.
-  Only investigate if the prompts demonstrably fail to surface known real opportunities.
+- **The email is an honest tiered digest, not a rare "diamond-only" alarm.** It fires on
+  any new diamond OR good pick, so near-daily email is expected and fine — the value is that
+  each item is graded honestly (💎 vs 👍) with the live price, a baseline comparison, and
+  caveats, so the user judges in seconds. A true diamond stays rare; good finds are common.
+  A day with only skips (or nothing found) still sends nothing.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger
   hotel crawls. The field exists for schema compatibility only.
 - **Memory is written every run**, including silent days. `memory.py` functions must

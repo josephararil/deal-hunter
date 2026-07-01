@@ -167,6 +167,31 @@ def get_price_ceiling(destination):
     return DEFAULT_PRICE_CEILING_EUR
 
 
+# ── Diamond tier bands ───────────────────────────────────────────────────────
+# The skeptic judges the GROUNDED (live) per-night price, not the Stage-1 estimate,
+# and assigns an absolute tier — diamond / good / skip — instead of a relative
+# keep/kill. These per-night bars give the skeptic a fixed anchor so it stops
+# grading on the day's batch (the best candidate of a weak day is NOT automatically
+# a diamond). A grounded price at or below the diamond bar is diamond-tier on price
+# alone; between the diamond bar and the country ceiling (PRICE_CEILING_EUR) it is at
+# best a "good" find; above the ceiling it never reaches grounding or the skeptic.
+# High-excitement destinations can still rate diamond within the good band on a
+# clear-grab basis (see SKEPTIC_PROMPT). Tune these freely — they are the single
+# place the excellence bar is defined.
+DIAMOND_CEILING_EUR = {"Bulgaria": 65, "Turkey": 70}
+DEFAULT_DIAMOND_CEILING_EUR = 95  # rest of Europe
+
+
+def get_diamond_ceiling(destination):
+    """Return the per-night price (EUR) at/below which a grounded deal is diamond-tier
+    on price alone. Substring-matches country names; falls back to the default."""
+    dest_lower = (destination or "").lower()
+    for country, bar in DIAMOND_CEILING_EUR.items():
+        if country.lower() in dest_lower:
+            return bar
+    return DEFAULT_DIAMOND_CEILING_EUR
+
+
 # ── Hotel grounding ─────────────────────────────────────────────────────────
 HOTEL_PROVIDER        = os.environ.get("HOTEL_PROVIDER", "apidojo").strip().lower()
 RAPIDAPI_KEY          = os.environ.get("RAPIDAPI_KEY", "")
@@ -354,18 +379,22 @@ JSON Schema:
 If no verifiable deals meet these criteria today, return `{{"candidates": []}}`."""
 
 
-SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst. Your job is to filter daily travel alerts and identify high-value plays/arbitrage opportunities for a young family. 
-
-Your objective is to maintain a strict 5-10% acceptance rate (roughly 2-3 kept candidates per month out of 100+ inputs). You achieve this not by hunting for pricing glitches, but by ruthlessly eliminating options that lack massive, undeniable value or fail basic family logistics.
+SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst. Your job is to grade travel finds for a young family and assign each an honest quality TIER. The prices you see have ALREADY been verified against live Booking.com data — you are judging reality, not a salesman's estimate.
 
 Today is {today}.
 Target Demographics & Logistics:
-- Party: Family of 3 (2 adults, 1 child aged 4). 
+- Party: Family of 3 (2 adults, 1 child aged 4).
 - Location Base: Plovdiv, Bulgaria.
 - Transit Limits: Departure strictly from Plovdiv Airport (PDV), Sofia Airport (SOF), or a reasonable drive from Plovdiv.
 - Currency: EUR.
 
-Input Candidates (scored >= {min_score}/100 in preliminary filtering; each has a numeric deal_id you must echo back):
+Each input candidate carries LIVE grounded figures plus two absolute price bars for its country:
+- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable price (source of truth — judge THIS, ignore the original estimate).
+- `diamond_bar_eur` — at or below this per-night price the deal is diamond-tier on price alone.
+- `ceiling_eur` — the acceptability ceiling; anything above it was already dropped upstream, so every candidate here is at worst a "good"-priced option that still needs to earn its tier on utility.
+- `grounding_summary` — the live verification note (often includes star rating and review score).
+
+Input Candidates (each has a numeric deal_id you must echo back):
 {candidates}
 
 ---
@@ -375,83 +404,68 @@ Input Candidates (scored >= {min_score}/100 in preliminary filtering; each has a
 
 ---
 
-### CONCRETE EXAMPLES FOR CALIBRATION
+### THE THREE TIERS
 
-#### EXAMPLE 1: ANATOMY OF A "KEEP" (Off-Season High Utility)
-- **Candidate:** Antalya, Turkey. 5-Star All-Inclusive Resort, mid-January after the NYE peak but before the spring break.
-- **Price:** €100/night (Down from €400/night peak/NYE).
-- **Analysis:** KEEP. This matches predictable, standard historical low-season pricing for January. However, it is a KEEP. The weather is too cold for the beach, but the resort offers indoor heated pools, operating kids' clubs, and unlimited premium dining. The utility drop is only 20% and requires additional logistics/flights, but the price drop is 75%. This is an exceptional utility-to-price play for a 4-year-old.
+**diamond** — a genuine "drop everything and book it" find. Either:
+  (a) grounded_price_per_night_eur <= diamond_bar_eur AND family utility is high (open indoor/kids facilities in-window, manageable logistics, right stay length); OR
+  (b) a HIGH-EXCITEMENT destination (a vibrant city or standout island/beach spot — Rome, Athens, Istanbul, Vienna, Barcelona, Malta, the Greek islands, etc.) where the grounded all-in price is a clear "grab it" for that special place, even if it sits between the diamond bar and the ceiling. The test: would a savvy traveller say *"that's a superb price for THERE — book it now"*?
+  Diamonds are rare. Most days have none.
 
-#### EXAMPLE 2: ANATOMY OF A "KEEP" (Drive-Distance Luxury Play)
-- **Candidate:** Bansko or Velingrad, Bulgaria. Luxury Spa Hotel, late October (Inter-season).
-- **Price:** €80/night (Down from €250/night peak ski/winter season).
-- **Analysis:** KEEP. While there is no skiing in October, the indoor thermal pools, children's play areas, and massive price drop unlock a premium weekend getaway with zero flight logistics.
+**good** — a solid, above-average find worth telling the user about, but not a jaw-dropper. Real utility, honest price, no dealbreaker — e.g. a comfortable family stay priced sensibly between the diamond bar and the ceiling. The user is happy to see it in a digest but no one needs to sprint.
 
-#### EXAMPLE 3: ANATOMY OF A "KILL" (The Low-Season Trap)
-- **Candidate:** Sunny Beach, Bulgaria. 4-Star Beachfront Hotel, October.
-- **Price:** €40/night (Down from €150/night July peak).
-- **Analysis:** KILL. While incredibly cheap, the utility drops to near zero: outdoor pools are freezing, kids' entertainment is completely closed, and the town is a ghost town. The price drop does not compensate for the complete loss of family utility.
+**skip** — not worth surfacing. Assign skip if the candidate triggers ANY trap below, OR is simply unremarkable for what it is.
 
-#### EXAMPLE 4: ANATOMY OF A "KILL" (The Toddler Tax)
-- **Candidate:** 7-Night Mediterranean Cruise (Athens to Venice/Ravenna) on Norwegian Pearl.
-- **Price:** $449/person ($64/night) due to a last-minute cancellation sale.
-- **Analysis:** KILL. It is clearly an outstanding deal on paper. However, the open-jaw itinerary (Athens to Ravenna) creates a logistical and financial nightmare for a family with a 4-year-old, as flights from and back to Bulgaria will wipe out any cruise savings and then some.
+### TRAPS THAT FORCE `skip`
 
-#### EXAMPLE 5: ANATOMY OF A "KILL" (The Absolute-Value Trap)
-- **Candidate:** Arte Spa & Park, Velingrad, Bulgaria. 4-star thermal spa resort.
-- **Price:** €165/night (framed as "35% off peak" from €255/night).
-- **Analysis:** KILL. €165/night is a normal-to-high absolute price for a spa hotel in a Bulgarian spa town. Velingrad has many excellent thermal spa hotels at €60–120/night. The "discount from peak" framing is irrelevant — in absolute terms, €165/night for this market buys nothing exceptional. The family could stay at a comparable Velingrad spa property for €80–100/night. When the absolute price is unremarkable to anyone who knows the regional market, the relative discount is a fiction. Kill it.
+1. The "False Value" Low-Season Trap: a low price where the utility drop matches or exceeds the price drop (a waterpark resort with the waterpark closed; a beach holiday in a freezing/monsoon month with zero indoor amenities).
+2. The "Toddler Tax" & Logistics Flaw: >4h door-to-door transit from Plovdiv, or budget flights whose unavoidable extras (cabin bags, family seat selection) erase the savings; steep terrain or zero child infrastructure.
+3. Hidden Cost Creep: cheap flights paired with predatory local rates, or a cheap hotel where dining/transit costs erase the savings.
+4. The Absolute-Value Floor: is the grounded price genuinely good in absolute terms for what it is, to someone who knows the regional market? A normal or high rate for an ordinary property in a cheap region is a skip regardless of any framed discount. This floor does NOT veto a high-excitement destination judged under diamond (b).
+5. The Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do. The right trip there is 2-3 nights. Unless the window is already a short 2-4 night break, force it down (skip, or good at most if the price is strong for a short stay).
 
 ---
 
-### EVALUATION PROTOCOL
+### CONCRETE EXAMPLES FOR CALIBRATION
 
-You must KEEP a candidate if it represents a High-Utility Value Play. This is defined as any of:
-- A predictable or seasonal price drop where the price plummets dramatically (e.g., peak €400 down to off-peak €100), but the core utility remains high for a family.
-- A rare, verifiable, time-sensitive opportunity where the price drop is massive and the logistics are manageable for a family with a 4-year-old.
-- A high-excitement destination (a vibrant city or standout island/beach spot) at a genuinely strong absolute price for that place — a clear "grab it" for what it is — even without a dramatic discount, provided the logistics are manageable for a 4-year-old. This pathway is for genuinely exciting places ONLY: an ordinary or merely-average price for an exciting place is still a KILL (exciting ≠ automatically worth it), and low-excitement local towns get no such pass.
+#### EXAMPLE 1 → diamond (off-season high utility)
+Antalya, Turkey, 5-star all-inclusive, mid-January, grounded €68/night (diamond_bar €70). At/under the bar, indoor heated pools + kids' club + unlimited dining all open. Massive utility-to-price. **diamond.**
 
-You must ruthlessly KILL a candidate if it triggers any of the following:
+#### EXAMPLE 2 → diamond (high-excitement, pathway b)
+Athens, Greece, well-rated family apartment, shoulder-season, grounded €95/night (diamond_bar €95, ceiling €130). Right at the bar for a world-class city a short SOF flight away, 4 nights. A savvy traveller grabs it. **diamond.**
 
-1. The "False Value" Low-Season Trap:
-   - A low price where the drop in utility matches or exceeds the drop in price. (e.g., a cheap waterpark resort when the waterparks are closed, or an outdoor beach holiday during a freezing/monsoon month with zero indoor amenities).
-2. The "Toddler Tax" & Logistics Flaw:
-   - Destinations requiring >4 hours total transit time (door-to-door from Plovdiv) or budget flights where unavoidable extras (cabin bags, family seat selection) kill any savings.
-   - Places with steep topography, zero child-friendly infrastructure, or heavy logistical friction.
-3. Hidden Cost Creep:
-   - Cheap flights paired with predatory local accommodation rates, or a cheap hotel in a region where basic dining and transit costs erase the savings.
-4. The Absolute-Value Floor:
-   - Beyond any framed relative discount, ask: *"Is this price genuinely exceptional in absolute terms for what it is, to someone who knows the regional market?"*
-   - A normal or high rate for an ordinary property in a cheap region (e.g., ~€165/night for a 4-star spa hotel in a Bulgarian spa town such as Velingrad or Hisarya) is a KILL, regardless of any claimed discount or peak-price anchoring.
-   - This floor targets ordinary properties in cheap regions dressed up with discount framing. It does NOT veto a high-excitement destination judged under the excitement-value KEEP above — there, judge whether the price is a clear win for that specific place. But a merely normal price for an exciting place is still a KILL.
-   - The deal must be cheap in absolute terms for its category and geography, not just relatively cheap compared to a cherry-picked peak price.
-5. The Stay-Length Mismatch:
-   - A long stay (5+ nights) in a low-excitement local town (e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family with a 4-year-old would run out of things to do. The right trip there is 2-3 nights; a week is not a diamond regardless of nightly price. KILL it unless the candidate's window is already a short 2-4 night break. (A long stay is only a diamond in a high-excitement city or standout beach/island spot.)
+#### EXAMPLE 3 → good (real, but not exceptional)
+Hisarya, Bulgaria, 4-star spa hotel, grounded €104/night, 3 nights (€311 total). diamond_bar €65, ceiling €110. It is under the ceiling and a comfortable short local break — genuinely fine — but €104/night is an ordinary-to-full price for a minor Bulgarian spa town, not a steal. Worth a mention, not a sprint. **good.** (Had this grounded at ~€60/night it would be a diamond; at €165/night it would be a skip.)
+
+#### EXAMPLE 4 → skip (the low-season trap)
+Sunny Beach, Bulgaria, 4-star beachfront, October, grounded €40/night. Cheap, but outdoor pools freezing, kids' entertainment shut, town dead. Utility ≈ zero. **skip.**
+
+#### EXAMPLE 5 → skip (the toddler tax)
+7-night Athens→Ravenna cruise, $64/night on a cancellation sale. Outstanding on paper, but the open-jaw itinerary means flights to/from Bulgaria wipe out the savings for a family with a 4-year-old. **skip.**
 
 ---
 
 ### OUTPUT FORMAT
-Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON array containing one object per input candidate, maintaining the exact input order. Echo each candidate's `deal_id` back unchanged — it is the integer key used to match your verdict to the deal. Also copy the `destination` string verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
+Return JSON only. No markdown fences. Output a single JSON array with one object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key that matches your verdict to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
 
 JSON Schema:
 [
   {{
     "deal_id": 1,
     "destination": "Exact string from input",
-    "verdict": "kill",
-    "why": "One direct sentence highlighting the specific logistical flaw or why the price drop doesn't justify the loss in seasonal utility.",
+    "tier": "skip",
+    "why": "One direct sentence: why it is unremarkable for what it is, or which trap it triggers.",
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
   }},
   {{
     "deal_id": 2,
     "destination": "Exact string from input",
-    "verdict": "keep",
-    "why": "One direct sentence quantifying the massive value play (e.g., premium amenities/infrastructure unlocked at entry-level pricing).",
-    "red_flags": "What must be double-checked immediately (e.g., confirm indoor pool heating or kids club off-season hours)."
+    "tier": "diamond",
+    "why": "One direct sentence quantifying the value against the grounded price and the bar (e.g., premium amenities unlocked at €68/night, under the €70 diamond bar).",
+    "red_flags": "What to double-check immediately (e.g., confirm indoor pool heating or kids' club off-season hours)."
   }}
 ]
 
-Remember: An empty or all-kill batch for today's run is the standard statistical outcome. Keep only the highest utility-to-price plays."""
+Grade honestly and independently — do not force a diamond just because it is the best of a weak day, and do not withhold a genuine one. An all-`skip` batch is a perfectly normal outcome."""
 
 
 VERIFY_PROMPT = """Today is {today}. You are a Personal Travel Concierge with live web-search access. One travel deal has survived a two-stage expert filter. Your job is to ground it in reality: find real prices at specific bookable dates, a real booking path, and produce an honest assistant-style summary.
@@ -541,11 +555,11 @@ STAGE2_RESPONSE_SCHEMA = {
         "properties": {
             "deal_id":     {"type": "integer"},
             "destination": {"type": "string"},
-            "verdict":     {"type": "string", "enum": ["keep", "kill"]},
+            "tier":        {"type": "string", "enum": ["diamond", "good", "skip"]},
             "why":         {"type": "string"},
             "red_flags":   {"type": "string"},
         },
-        "required": ["deal_id", "destination", "verdict", "why", "red_flags"],
+        "required": ["deal_id", "destination", "tier", "why", "red_flags"],
     },
 }
 

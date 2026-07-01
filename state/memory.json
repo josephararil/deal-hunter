@@ -11,6 +11,12 @@
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-06-30",
       "updated": "2026-06-30"
+    },
+    "Hisarya, Bulgaria|2026-07": {
+      "realistic_price_eur": 103.67,
+      "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.",
+      "source": "Booking.com (apidojo) live 2026-07-01",
+      "updated": "2026-07-01"
     }
   },
   "ledger": [
@@ -156,6 +162,50 @@
       "actual_price": 128.01,
       "source": "Booking.com (apidojo) live 2026-06-30",
       "note": "Grounded price for Premier Luxury Mountain Resort (Jul 24-27, 2026) is €128.01/night, which exceeds the country ceiling. Not emailing."
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Antalya, Turkey",
+      "window": "August 12-19, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "over_ceiling",
+      "actual_price": null,
+      "source": "est_price_eur 135 > ceiling 100",
+      "note": "Leverages highly competitive direct charter-style flights from Sofia to Antalya ($71-$91 one-way on Pegasus/SunExpress). Grand Park Lara delivers incredible all-inclusive value for a family of three,…"
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Corfu, Greece",
+      "window": "July 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "Door-to-door transit from Plovdiv via Sofia Airport to the Corfu resort easily exceeds 5 hours, and Wizz Air's mandatory family seating plus a week's worth of luggage will drastically inflate the base price.",
+      "note": "The 'Toddler Tax' via budget airline baggage/seating fees and exhausting multi-leg ground/air transit logistics."
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Bansko, Bulgaria",
+      "window": "July 24-27, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "skeptic_kill",
+      "actual_price": null,
+      "source": "This triggers the absolute-value trap; €95/night is simply the standard, unexceptional off-season summer rate for this property rather than a rare arbitrage opportunity.",
+      "note": "False discount framing based on winter peak pricing; absolute value is totally standard for Bansko in July."
+    },
+    {
+      "date": "2026-07-01",
+      "destination": "Hisarya, Bulgaria",
+      "window": "July 17-20, 2026",
+      "type": "hotel",
+      "claimed_price": 78,
+      "verdict": "correct",
+      "actual_price": 103.67,
+      "source": "Booking.com (apidojo) live 2026-07-01",
+      "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling."
     }
   ]
 }

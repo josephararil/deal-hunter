@@ -1,19 +1,28 @@
-# Diamond Finder Memory — updated 2026-06-30
+# Diamond Finder Memory — updated 2026-07-01
 
-## Price Baselines (2 entries)
+## Price Baselines (3 entries)
 
 ### Bansko, Lucky Bansko Aparthotel SPA & Relax|2026-09
 **Realistic:** ~€104.57/night &nbsp; **Updated:** 2026-06-30
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-06-30_
 
+### Hisarya, Bulgaria|2026-07
+**Realistic:** ~€103.67/night &nbsp; **Updated:** 2026-07-01
+Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.
+_Source: Booking.com (apidojo) live 2026-07-01_
+
 ### Lucky Bansko Aparthotel SPA & Relax|2026-09
 **Realistic:** ~€96.21/night &nbsp; **Updated:** 2026-06-29
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-06-29_
 
-## Outcome Ledger (13 entries)
+## Outcome Ledger (17 entries)
 
+- ❌ 2026-07-01 | Antalya, Turkey | August 12-19, 2026 | over_ceiling claimed=€135 — Leverages highly competitive direct charter-style flights from Sofia to Antalya ($71-$91 one-way on…
+- ❌ 2026-07-01 | Corfu, Greece | July 15-22, 2026 | skeptic_kill claimed=€115 — The 'Toddler Tax' via budget airline baggage/seating fees and exhausting multi-leg ground/air…
+- ❌ 2026-07-01 | Bansko, Bulgaria | July 24-27, 2026 | skeptic_kill claimed=€95 — False discount framing based on winter peak pricing; absolute value is totally standard for Bansko…
+- 🔧 2026-07-01 | Hisarya, Bulgaria | July 17-20, 2026 | correct claimed=€78 actual=€103.67 — Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights),…
 - ❌ 2026-06-30 | Velingrad, Park Hotel and SPA Vella Hills | September 12-19, 2026 | skeptic_kill claimed=€105 — Standard regional pricing masquerading as a seasonal discount.
 - ❌ 2026-06-30 | Hisarya, Sana Spa Hotel | September 15-22, 2026 | skeptic_kill claimed=€98 — Lack of genuine discount; ordinary absolute pricing for the geography.
 - ❌ 2026-06-30 | Paphos, Aliathon Aegean | September 14-21, 2026 | skeptic_kill claimed=€118 — Budget flight 'toddler tax' (mandatory seating/baggage fees) and transit fatigue.

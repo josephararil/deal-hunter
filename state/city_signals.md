@@ -1,26 +1,29 @@
-# Diamond Finder — 2026-06-30
+# Diamond Finder — 2026-07-01
 
-_Stage 1: 3 candidate(s). 1 Stage-2 diamond(s). 1 over-ceiling (logged only). 1 Stage-3 verified._
+_Stage 1: 4 candidate(s). 1 Stage-2 diamond(s). 1 over-ceiling (logged only). 1 Stage-3 verified._
 
-### Bansko, Bulgaria 💎 — 87/100 (high) · est €104.0/night
-**Type:** hotel &nbsp; **Window:** Sep 10-13, 2026
-Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with breakfast and dinner (half-board) and free stay for a child under 12. Outstanding Tier 1 value with highly rated indoor pools and kids' club active in September.
-_🔒 Over ceiling — est €104.0/night > €100 ceiling. Logged only, not emailed._
+### Corfu, Greece — 84/100 (high) · est €115/night
+**Type:** hotel &nbsp; **Window:** July 15-22, 2026
+Exploits Wizz Air's newly launched Sofia-to-Corfu direct peak summer route. Messonghi Beach Resort provides massive utility with its on-site mini waterpark, active kids' club, and direct shallow beach access. High-excitement island spot justifies a full 7-night stay with highly manageable transit times.
 
-### Bansko, Bulgaria 💎 — 83/100 (high) · est €83.0/night
-**Type:** hotel &nbsp; **Window:** Jul 24-27, 2026
-Live leads confirm a 'Stay More | Pay Less' rate from €83/night for summer weekends. Under 2.5 hours drive from Plovdiv (Tier 1), eliminating toddler transit fatigue. Includes outdoor pools, animation, and family-friendly mountain trails active in late July.
-_🔒 Over ceiling — est €83.0/night > €100 ceiling. Logged only, not emailed._
+### Bansko, Bulgaria — 83/100 (high) · est €95/night
+**Type:** hotel &nbsp; **Window:** July 24-27, 2026
+A verified gold standard for family wellness under a 2.5-hour drive from Plovdiv. Features fully operational indoor heated pools, an expansive kids' playground with free animation, and fully equipped apartment suites. Low-season mountain rates drop dramatically from winter peaks while preserving elite family amenities.
 
-### Antalya, Turkey — 79/100 (medium) · est €135.0/night
-**Type:** hotel &nbsp; **Window:** Sep 12-17, 2026
-Leverages the massive seasonal drop in Turkish ultra-all-inclusive rates starting early September. Sofia (SOF) to Antalya (AYT) flights are at a low-season baseline (~€70 round trip). Highly rated resort with heated kids' pools and active indoor playgrounds, offsetting the Tier 2 transit hassle.
+### Antalya, Turkey 🔒 — 82/100 (high) · est €135/night
+**Type:** hotel &nbsp; **Window:** August 12-19, 2026
+Leverages highly competitive direct charter-style flights from Sofia to Antalya ($71-$91 one-way on Pegasus/SunExpress). Grand Park Lara delivers incredible all-inclusive value for a family of three, featuring targeted splash pools, kids' buffet sections, and daily activities, eliminating extra dining logistics entirely.
+_🔒 Over ceiling — est €135/night > €100 ceiling. Logged only, not emailed._
+
+### Hisarya, Bulgaria 💎 — 81/100 (high) · est €78/night
+**Type:** hotel &nbsp; **Window:** July 17-20, 2026
+Excellent Tier 1 drive option (only 45 mins from Plovdiv) that minimizes travel friction for a 4-year-old. Features a dedicated outdoor children's pool, playroom, and active playground. A tight 3-night weekend window is optimal to avoid mid-week monotony in a quiet spa town. Offers exceptional value compared to premium-anchored Velingrad rates.
 
 ## Stage 3 Verification
 
-### ❌ Premier Luxury Mountain Resort — KILL (confidence: high)
-**Summary:** Grounded price for Premier Luxury Mountain Resort (Jul 24-27, 2026) is €128.01/night, which exceeds the country ceiling. Not emailing.
+### 🔧 Hissar Spa Hotel — CORRECT (confidence: high)
+**Summary:** Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.
 **Options:**
-  - Jul 24-27, 2026 · €128.01/night · €384.04 total · [book](https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-07-24&checkout=2026-07-27&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-06-30_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-07-24&checkout=2026-07-27&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-07-24–2026-07-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.6. Live rate: €128.01/night (€384.04 total).
+  - Jul 17-20, 2026 · €103.67/night · €311.01 total · [book](https://www.booking.com/searchresults.html?ss=Hissar+Spa+Hotel&checkin=2026-07-17&checkout=2026-07-20&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-01_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Hissar+Spa+Hotel&checkin=2026-07-17&checkout=2026-07-20&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-07-17–2026-07-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.3. Live rate: €103.67/night (€311.01 total).

@@ -1,31 +1,40 @@
 {
-  "generated": "2026-06-30",
+  "generated": "2026-07-01",
   "signals": [
     {
       "deal_id": 1,
-      "city": "Bansko, Bulgaria",
-      "window": "Jul 24-27, 2026",
-      "reason": "Live leads confirm a 'Stay More | Pay Less' rate from €83/night for summer weekends. Under 2.5 hours drive from Plovdiv (Tier 1), eliminating toddler transit fatigue. Includes outdoor pools, animation, and family-friendly mountain trails active in late July.",
-      "type": "reminder",
+      "city": "Hisarya, Bulgaria",
+      "window": "July 17-20, 2026",
+      "reason": "Excellent Tier 1 drive option (only 45 mins from Plovdiv) that minimizes travel friction for a 4-year-old. Features a dedicated outdoor children's pool, playroom, and active playground. A tight 3-night weekend window is optimal to avoid mid-week monotony in a quiet spa town. Offers exceptional value compared to premium-anchored Velingrad rates.",
+      "type": "anomaly",
       "confidence": "high",
       "hunt": false
     },
     {
       "deal_id": 2,
-      "city": "Bansko, Bulgaria",
-      "window": "Sep 10-13, 2026",
-      "reason": "Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with breakfast and dinner (half-board) and free stay for a child under 12. Outstanding Tier 1 value with highly rated indoor pools and kids' club active in September.",
+      "city": "Corfu, Greece",
+      "window": "July 15-22, 2026",
+      "reason": "Exploits Wizz Air's newly launched Sofia-to-Corfu direct peak summer route. Messonghi Beach Resort provides massive utility with its on-site mini waterpark, active kids' club, and direct shallow beach access. High-excitement island spot justifies a full 7-night stay with highly manageable transit times.",
       "type": "reminder",
       "confidence": "high",
       "hunt": false
     },
     {
       "deal_id": 3,
-      "city": "Antalya, Turkey",
-      "window": "Sep 12-17, 2026",
-      "reason": "Leverages the massive seasonal drop in Turkish ultra-all-inclusive rates starting early September. Sofia (SOF) to Antalya (AYT) flights are at a low-season baseline (~€70 round trip). Highly rated resort with heated kids' pools and active indoor playgrounds, offsetting the Tier 2 transit hassle.",
+      "city": "Bansko, Bulgaria",
+      "window": "July 24-27, 2026",
+      "reason": "A verified gold standard for family wellness under a 2.5-hour drive from Plovdiv. Features fully operational indoor heated pools, an expansive kids' playground with free animation, and fully equipped apartment suites. Low-season mountain rates drop dramatically from winter peaks while preserving elite family amenities.",
       "type": "reminder",
-      "confidence": "medium",
+      "confidence": "high",
+      "hunt": false
+    },
+    {
+      "deal_id": 4,
+      "city": "Antalya, Turkey",
+      "window": "August 12-19, 2026",
+      "reason": "Leverages highly competitive direct charter-style flights from Sofia to Antalya ($71-$91 one-way on Pegasus/SunExpress). Grand Park Lara delivers incredible all-inclusive value for a family of three, featuring targeted splash pools, kids' buffet sections, and daily activities, eliminating extra dining logistics entirely.",
+      "type": "reminder",
+      "confidence": "high",
       "hunt": false
     }
   ]

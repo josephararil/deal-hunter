@@ -280,7 +280,7 @@ Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING trav
 - It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, and concrete dates that fall in the future relative to {today}.
 - It is hard to know WITHOUT searching today. We do NOT need evergreen facts ("Bansko is cheap off-season", "Antalya has all-inclusive resorts") — the analyst already knows those. Surprise us with something live.
 - It has a CONCRETE PRICE. A lead with "prices vary" or no number is nearly useless downstream — skip it or dig until you find an actual figure and dates. A named hotel with a real per-night price beats a splashy "new opening" with no price.
-- SURPRISE beats familiarity. The analyst and the user already know the cheap nearby Bulgarian spa/coast/mountain towns. The most valuable leads are LEFT-FIELD: a priced deal in a city with a direct PDV flight the user would never consider (e.g. Bratislava), an off-season Italian or Central-European city, a Greek-island shoulder trough, a family cruise from Piraeus/Istanbul. Actively hunt these, not just another Hisarya/Bansko rate.
+- SURPRISE is a good thing here. The analyst and the user already know the cheap nearby Bulgarian spa/coast/mountain towns. While raising truly great deals in Bulgarian towns is useful as they are most likely to be the ones with the least logistical friction and therefore the easiest to take advantage of, the most valuable leads are LEFT-FIELD: a priced deal in a city with a direct PDV flight the user would never otherwise consider (e.g. Bratislava, Manchester, Milan, London or Birmingham), an off-season Italian or Central-European city, a Greek-island shoulder trough, a family cruise from Piraeus/Istanbul. Actively hunt these, not just another Hisarya/Bansko rate.
 - Variety beats repetition. Spread leads across different destinations, categories, and seasons rather than five versions of the same hotel. Assume yesterday you already reported the obvious ones; find different ones today.
 
 ### WHO IT'S FOR (so leads stay relevant — note fit, but do NOT filter hard here)
@@ -291,7 +291,7 @@ Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING trav
 - Premium off-season troughs: 4-5 star family resorts dropping hard between seasons with indoor/kids facilities still open.
 - Flight error fares / flash sales from PDV or SOF.
 - Last-minute package dumps: unsold flight+hotel bundles.
-- Regional cruises departing Istanbul, Athens (Piraeus), or Thessaloniki.
+- Regional cruises departing Istanbul, Burgas or Thessaloniki.
 - New openings, reopenings, or launch promotions — but only with a real published price, not just "now open".
 - Event- or shoulder-season windows where prices trough.
 - Overlooked direct-PDV-flight cities (e.g. Bratislava, Milan) and off-season Central-European / Italian city breaks the user would never think to search themselves.

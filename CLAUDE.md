@@ -147,10 +147,16 @@ ground_deal = _resolve_ground_deal()
   prices. Core design decision — the scorer must never grade a Stage-1 *estimate*. Preserve
   this if you touch the pipeline order.
 - **The final tier is deterministic, NOT the LLM's call.** The Stage-3 LLM returns only a
-  0–100 desirability `score` (price held neutral — the prompt tells it so). The pipeline
+  0–100 `score` (nightly hotel price held neutral — the prompt tells it so). The pipeline
   computes `final = llm_score + price_adj + transit_adj` (`config.compute_final_score`) and
   derives the tier via `tier_for_score`. Do not let the LLM emit a tier or a veto — that was
   deliberately removed so scores stay comparable and every one is recorded for tuning.
+- **The LLM score is NET FAMILY VALUE DELIVERED, not luxury/prestige** (the numerator; the
+  price modifier is the denominator). A modest low-friction local break can outscore a
+  glamorous far-flung one. Attraction is one modest input for a 4-year-old. Because flights
+  are out of scope and NOT in the grounded hotel price, the scorer is the only stage that can
+  weigh flight cost/hassle — so a no-direct-PDV destination is penalised in the score itself,
+  not just by the small transit nudge. If you ever add flight data, revisit this.
 - **The scoring knobs live in config, nowhere else** (`DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR`,
   `PRICE_SCORE_WEIGHT`, `PRICE_BONUS_CAP`, `TRANSIT_TIER1_BONUS`/`TIER2`, `DIAMOND_SCORE_THRESHOLD`,
   `GOOD_SCORE_THRESHOLD`). `par` is a reference, NOT a wall: a standout property (high llm_score)

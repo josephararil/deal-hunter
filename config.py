@@ -442,38 +442,60 @@ You return a single desirability `score` from 0-100 for each candidate. You do N
   → below that  is dropped (logged only)
 
 - `price_adjustment` is applied deterministically by the pipeline, NOT by you. It rewards a
-  price below the region's par and penalises one above it. **So do NOT price-judge in your
-  score** — do not mark a find down for being expensive or up for being cheap; the pipeline
-  does that precisely. Score as if the price were simply fair for the category.
+  nightly HOTEL price below the region's par and penalises one above it. You may still reflect
+  a SEVERE price discrepancy (a rate dramatically below or above the regional norm) in your
+  score, but the pipeline already does this — avoid double-counting. Otherwise score as if the
+  nightly hotel price were simply fair for the category.
 - `transit_adjustment` gives a small automatic nudge for drive-vs-fly. You may still reflect
   SEVERE logistics (open-jaw itineraries, >4h door-to-door with a 4-year-old) in your score,
   but don't double-count ordinary "it's a flight away".
 
-Therefore your score should capture **pure desirability and utility, holding price neutral**:
-how good is this place/experience for THIS family, right now, in this window?
+### WHAT YOUR SCORE MEASURES: VALUE DELIVERED, NOT LUXURY OR PRESTIGE
+Your score is the VALUE this delivers to THIS family — the numerator of value-for-money. The
+pipeline divides by the nightly hotel price, so you must NOT reward a find for being expensive,
+famous, or prestigious. A modest local place that delivers a genuinely great, low-friction
+family break can — and often SHOULD — score higher than a glamorous far-flung one. A €150
+weekend in a nearby spa town can be far better value than a €400 weekend in Rome; score the
+value delivered, not the postcard.
+
+A high score means high NET family utility:
+- How much genuine enjoyment/benefit does a family with a 4-year-old actually get here? (A
+  4-year-old does not care about world-class museums — open pools, space, ease and fun do.)
+- MINUS logistics friction — a large deduction, not a footnote. A destination with no direct
+  Plovdiv flight means flying via Sofia with a toddler: transfers, lost travel days, and
+  FLIGHT COST that the hotel price does NOT include. Flights are out of scope for the pipeline,
+  so YOU are the only stage that can weigh their burden — do it heavily.
+- MINUS in-window utility loss (closed pools, dead resort town — see deductions).
+"Attraction"/excitement is ONE modest input for a 4-year-old, never the main factor.
 
 ### WHAT DRIVES A HIGH SCORE (85-100)
-- A genuinely special place or experience: a standout property, or a high-excitement destination (vibrant city / standout island or beach — Rome, Athens, Istanbul, Vienna, Barcelona, Malta, the Greek islands…).
-- Real, in-window family utility: indoor/heated pools and kids' facilities actually OPEN during these dates; comfortable for a 4-year-old.
-- The stay length fits the place (a short 2-3 night break for a quiet spa town; a longer stay for a city/island worth exploring).
+- High net family value delivered with LOW friction: the family genuinely enjoys it, getting
+  there is easy (ideally a short drive or direct PDV flight), and the amenities that make it
+  worthwhile are open in-window.
+- Real, in-window utility: indoor/heated pools and kids' facilities actually OPEN during these
+  dates; comfortable and fun for a 4-year-old.
+- The stay length fits (a short 2-3 night break for a quiet town; longer only where there is
+  genuinely a week of family value to extract).
+- A far-flight destination reaches this band ONLY if the family value is high enough to survive
+  the flight cost and hassle — otherwise it belongs lower.
 
-### WHAT DRIVES A LOW SCORE (deductions — these are UTILITY problems, not price)
-1. Low-Season Utility Trap: amenities that make the place worth it are CLOSED in-window (outdoor-only pools in winter, shut kids' clubs, a dead resort town). Score low.
-2. Toddler Tax / Logistics: open-jaw or multi-leg itineraries, >4h door-to-door, steep terrain, zero child infrastructure. Score low.
-3. Ordinary-place penalty: an unremarkable property in an unremarkable town, with nothing special about the experience, is a middling-to-low score no matter what it costs — the price modifier can lift a cheap one into "good", but a dull place should not start high.
+### WHAT DRIVES A LOW SCORE (net-value deductions — NOT the nightly hotel price)
+1. Low-Season Utility Trap: amenities that make the place worth it are CLOSED in-window (outdoor-only pools in winter, shut kids' clubs, a dead resort town).
+2. Toddler Tax / Logistics: >4h door-to-door, flying via Sofia with a 4-year-old, open-jaw or multi-leg itineraries, plus flight cost/hassle the hotel price does not cover. Weigh heavily.
+3. Prestige-without-value: a famous/luxury/exciting place whose real in-window benefit to a family with a 4-year-old is modest, or is eaten by travel friction. Do NOT score it high just because the destination is desirable in the abstract.
 4. Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do — score low unless the window is already a short 2-4 night break.
 
-### CALIBRATION EXAMPLES (score is desirability, price held neutral)
-- Antalya 5-star all-inclusive, mid-Jan, indoor pools + kids' club + dining all OPEN: **~90**. Special experience, high in-window utility. (The pipeline will add a big bonus if the live price is well under par.)
-- Athens well-rated family stay, shoulder season, 4 nights: **~88**. High-excitement city, right stay length, easy SOF flight.
-- Hisarya 4-star spa, comfortable short 3-night local break, nothing special about it: **~72**. Fine, pleasant, low friction — but an ordinary place, so a middling score. (At a low live price the pipeline lifts it into "good"; at a high one it sinks to a drop.)
+### CALIBRATION EXAMPLES (score = net family VALUE delivered; hold nightly hotel price neutral)
+- Nearby 4-star spa, easy <2h drive, pools + kids' area open, relaxed 3-night family weekend: **~82**. Modest place, but high net value — real family enjoyment, zero friction. (Low live price → pipeline lifts to diamond; high → it sinks. That's the pipeline's job, not yours.)
+- Antalya 5-star all-inclusive, mid-Jan, indoor pools + kids' club + dining all OPEN, one manageable flight: **~84**. High utility, but the flight burden keeps it off the very top.
+- Rome or Athens city trip via Sofia, 4 nights: **~58**. The city is exciting, but a 4-year-old gets modest benefit and the trip burns travel days + flight costs the hotel price ignores — net value is middling, so it only becomes a pick if the hotel is genuinely cheap.
 - Sunny Beach 4-star beachfront in OCTOBER, outdoor pools freezing, entertainment shut: **~30**. Utility collapses in-window regardless of how cheap it is.
-- 7-night Athens→Ravenna open-jaw cruise: **~25**. Logistics nightmare for a 4-year-old; the itinerary itself is the problem.
+- 7-night Athens→Ravenna open-jaw cruise: **~20**. Logistics nightmare for a 4-year-old; the itinerary itself is the problem.
 
 ---
 
 Each input candidate carries LIVE grounded figures for context:
-- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable price. Shown for context only — do NOT let it move your score (the pipeline handles price).
+- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable HOTEL price. Hold it neutral in your score (the pipeline handles it), except for a severe discrepancy as noted above. Note it does NOT include flights.
 - `diamond_par_eur` — the region's neutral price point, shown so you understand what the pipeline will reward/penalise. Not for you to apply.
 - `grounding_summary` — the live verification note (often includes star rating and review score — DO use quality signals like stars/reviews).
 
@@ -496,12 +518,12 @@ JSON Schema:
     "deal_id": 1,
     "destination": "Exact string from input",
     "score": 72,
-    "why": "One direct sentence on the desirability/utility that justifies the score (NOT the price).",
+    "why": "One direct sentence on the NET FAMILY VALUE (utility minus friction) that justifies the score — not the nightly hotel price.",
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
   }}
 ]
 
-Score honestly and independently on desirability — the pipeline turns your scores into the final verdict, and every score is recorded, so an accurate 72 is more useful than a nudged 85."""
+Score honestly and independently on net family value — the pipeline turns your scores into the final verdict, and every score is recorded, so an accurate 72 is more useful than a nudged 85."""
 
 
 VERIFY_PROMPT = """Today is {today}. You are a Personal Travel Concierge with live web-search access. One travel deal has survived a two-stage expert filter. Your job is to ground it in reality: find real prices at specific bookable dates, a real booking path, and produce an honest assistant-style summary.

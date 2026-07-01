@@ -17,8 +17,10 @@ Outputs every run:
   state/city_signals.md    — human-readable log including grounding + tier outcomes
   state/signals_seen.json  — anti-spam TTL state, committed by CI
 
-Emails a short digest when anything is tiered diamond or good. A day with only skips
-(or nothing found) sends nothing — the normal outcome.
+Emails an honest daily digest of every scored candidate (diamond/good/skip) whenever
+there is a new or tier-changed one, plus a "seen & dropped" footer of grounding kills.
+Anti-spam TTL (destination|window|tier) keeps repeats quiet; a day with nothing new
+(or nothing found) sends nothing.
 """
 
 import json, datetime as dt
@@ -44,7 +46,11 @@ def _eur(v):
 
 
 # Tier labels for the email/markdown (emoji ok in HTML/MD — never in console prints).
-TIER_LABEL = {"diamond": "💎 Diamond", "good": "👍 Good find"}
+TIER_LABEL = {"diamond": "💎 Diamond", "good": "👍 Good find", "skip": "· Skipped"}
+# Sort/priority rank for tiers in the digest (diamonds first, skips last).
+TIER_RANK = {"diamond": 0, "good": 1, "skip": 2}
+# Badge colour per tier.
+TIER_COLOR = {"diamond": "#0a7d2e", "good": "#8a6d00", "skip": "#777"}
 
 
 def _baseline_note(baselines, destination, window, grounded_ppn):
@@ -64,6 +70,32 @@ def _baseline_note(baselines, destination, window, grounded_ppn):
     if diff >= 5:
         return f"Typically ~€{base}/night here — this is {round(diff)}% over."
     return f"Typically ~€{base}/night here — about the usual rate."
+
+
+def _sgn_str(n):
+    """'+3' / '-15' / '?' — signed modifier for score breakdowns."""
+    if n is None:
+        return "?"
+    return f"+{n}" if n >= 0 else f"{n}"
+
+
+def _score_breakdown_text(d):
+    """'Score: 58 desirability +11 price -3 transit = 66/100 (skip)' or '' if unscored."""
+    final = d.get("final_score"); llm = d.get("llm_score")
+    if final is None or llm is None:
+        return ""
+    return (f"Score: {llm} desirability {_sgn_str(d.get('price_adj'))} price "
+            f"{_sgn_str(d.get('transit_adj'))} transit = {final}/100 ({d.get('tier', '?')})")
+
+
+def _score_breakdown_html(d):
+    txt = _score_breakdown_text(d)
+    if not txt:
+        return ""
+    # Bold the final number for scanability.
+    final = d.get("final_score")
+    txt = txt.replace(f"= {final}/100", f"= <b>{final}</b>/100")
+    return f"<div style='font-size:12px;color:#888;margin:4px 0'>{txt}</div>"
 
 
 # --- stage correlation helper ---
@@ -93,16 +125,20 @@ def prune_seen(state):
     return state
 
 
-def seen_key(destination, window):
-    return f"{destination}|{window}"
+def seen_key(destination, window, tier=""):
+    """Anti-spam key. Includes the tier so a tier CHANGE at the same destination+window
+    (e.g. a skip becoming a good when the price drops) re-notifies instead of being
+    suppressed — that upgrade is the whole point. Same destination+window+tier stays quiet
+    for SIGNAL_TTL_DAYS."""
+    return f"{destination}|{window}|{tier}"
 
 
-def is_already_seen(state, destination, window):
-    return seen_key(destination, window) in state.get("seen", {})
+def is_already_seen(state, destination, window, tier=""):
+    return seen_key(destination, window, tier) in state.get("seen", {})
 
 
-def mark_seen(state, destination, window):
-    state.setdefault("seen", {})[seen_key(destination, window)] = X.today_iso()
+def mark_seen(state, destination, window, tier=""):
+    state.setdefault("seen", {})[seen_key(destination, window, tier)] = X.today_iso()
 
 
 def this_month():
@@ -119,14 +155,14 @@ def increment_monthly(state):
 
 # --- email builders ---
 
-def build_email_html(diamonds, month_count, baselines):
+def build_email_html(items, dropped, month_count, baselines):
     rows = ""
-    for d in diamonds:
+    for d in items:
         type_label = d.get("type", "").replace("_", " ").title()
         summary = d.get("assistant_summary") or d.get("reason", "")
         tier = d.get("tier", "good")
         tier_badge = TIER_LABEL.get(tier, "👍 Good find")
-        badge_color = "#0a7d2e" if tier == "diamond" else "#8a6d00"
+        badge_color = TIER_COLOR.get(tier, "#8a6d00")
 
         # "typically ~€X/night — N% under" comparison from prior-run baselines, if any.
         base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
@@ -140,7 +176,7 @@ def build_email_html(diamonds, month_count, baselines):
         opts_html = ""
         options = d.get("options") or []
         if options:
-            items = ""
+            opt_items = ""
             for opt in options:
                 dates = opt.get("dates", "")
                 pn = opt.get("price_per_night_eur")
@@ -159,8 +195,8 @@ def build_email_html(diamonds, month_count, baselines):
                     book_part = f"<span style='color:#555'>{how}</span>"
                     src_note = ""
                 cells = " &nbsp;·&nbsp; ".join(p for p in [dates, price_str, book_part + src_note] if p)
-                items += f"<li style='margin:5px 0;font-size:14px'>{cells}</li>"
-            opts_html = f"<ul style='margin:6px 0 6px 20px;padding:0'>{items}</ul>"
+                opt_items += f"<li style='margin:5px 0;font-size:14px'>{cells}</li>"
+            opts_html = f"<ul style='margin:6px 0 6px 20px;padding:0'>{opt_items}</ul>"
         elif d.get("how_to_book"):
             opts_html = (
                 f"<div style='font-size:14px;color:#444;margin:6px 0'>"
@@ -183,6 +219,9 @@ def build_email_html(diamonds, month_count, baselines):
             f"<div style='font-size:13px;color:#c00;margin:4px 0'>Red flags: {d['red_flags']}</div>"
             if d.get("red_flags") else ""
         )
+        # Compact score breakdown so the reasoning behind the tier is visible — especially
+        # useful on a skip (you see exactly why it fell short and could still override it).
+        score_html = _score_breakdown_html(d)
 
         rows += (
             f"<tr><td style='padding:14px 0;border-bottom:1px solid #eee'>"
@@ -191,6 +230,7 @@ def build_email_html(diamonds, month_count, baselines):
             f"<div style='font-size:13px;color:#777;margin:3px 0'>"
             f"{type_label} &nbsp;·&nbsp; {d.get('window', '')}</div>"
             f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
+            f"{score_html}"
             f"{base_html}"
             f"{opts_html}"
             f"{child_caveat_html}"
@@ -199,12 +239,30 @@ def build_email_html(diamonds, month_count, baselines):
             f"</td></tr>"
         )
 
-    n_diamond = sum(1 for d in diamonds if d.get("tier") == "diamond")
-    n_good = len(diamonds) - n_diamond
+    n_diamond = sum(1 for d in items if d.get("tier") == "diamond")
+    n_good = sum(1 for d in items if d.get("tier") == "good")
+    n_skip = sum(1 for d in items if d.get("tier") == "skip")
     headline = " · ".join(p for p in [
         f"{n_diamond} diamond" if n_diamond else "",
         f"{n_good} good find(s)" if n_good else "",
-    ] if p) or f"{len(diamonds)} find(s)"
+        f"{n_skip} logged" if n_skip else "",
+    ] if p) or f"{len(items)} find(s)"
+
+    # "Seen & dropped" footer — candidates that reached grounding but were killed or
+    # blocked before scoring, so you can see what the pipeline looked at and rejected.
+    dropped_html = ""
+    if dropped:
+        drop_items = "".join(
+            f"<li style='margin:4px 0;font-size:13px;color:#777'>"
+            f"<b>{x['destination']}</b> ({x.get('window', '')}) — {x['kind']}: {x['reason']}</li>"
+            for x in dropped
+        )
+        dropped_html = (
+            f"<div style='margin-top:18px;padding-top:12px;border-top:1px solid #eee'>"
+            f"<div style='font-size:12px;font-weight:bold;color:#999;margin-bottom:4px'>"
+            f"Also seen &amp; dropped before scoring</div>"
+            f"<ul style='margin:0 0 0 18px;padding:0'>{drop_items}</ul></div>"
+        )
 
     conscience = ""
     if month_count >= 8:
@@ -218,25 +276,31 @@ def build_email_html(diamonds, month_count, baselines):
         f"<h2 style='margin-bottom:4px'>Diamond Finder</h2>"
         f"<p style='color:#555;margin:0 0 16px'>Today's digest — {headline}</p>"
         f"<table style='width:100%;border-collapse:collapse'>{rows}</table>"
+        f"{dropped_html}"
         f"{conscience}"
         f"<p style='color:#bbb;font-size:11px;margin-top:16px'>"
         f"Prices are live from Booking.com at send time. 💎 diamonds are rare grab-it finds; "
-        f"👍 good finds are solid but not urgent. Verify before booking.</p>"
+        f"👍 good finds are solid but not urgent; skipped items are shown so you see what the "
+        f"pipeline weighed and why. Verify before booking.</p>"
         f"</div>"
     )
 
 
-def build_email_text(diamonds, baselines):
+def build_email_text(items, dropped, baselines):
     parts = []
-    for d in diamonds:
+    _text_tier = {"diamond": "DIAMOND", "good": "GOOD FIND", "skip": "SKIPPED"}
+    for d in items:
         summary = d.get("assistant_summary") or d.get("reason", "")
         tier = d.get("tier", "good")
-        tier_label = "DIAMOND" if tier == "diamond" else "GOOD FIND"
+        tier_label = _text_tier.get(tier, "GOOD FIND")
         lines = [
             f"[{tier_label}] {d['destination']} ({d.get('type', '')})",
             f"Window: {d.get('window', '')}",
             summary,
         ]
+        score_note = _score_breakdown_text(d)
+        if score_note:
+            lines.append(score_note)
         base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
                                    d.get("grounded_price_per_night_eur"))
         if base_note:
@@ -269,7 +333,15 @@ def build_email_text(diamonds, baselines):
         if d.get("red_flags"):
             lines.append(f"Red flags: {d['red_flags']}")
         parts.append("\n".join(lines))
-    return "\n\n---\n\n".join(parts)
+    body = "\n\n---\n\n".join(parts)
+    if dropped:
+        drop_lines = ["Also seen & dropped before scoring:"]
+        drop_lines += [
+            f"  - {x['destination']} ({x.get('window', '')}) — {x['kind']}: {x['reason']}"
+            for x in dropped
+        ]
+        body += "\n\n===\n\n" + "\n".join(drop_lines)
+    return body
 
 
 # --- markdown log ---
@@ -567,8 +639,9 @@ def main():
     # full breakdown (llm · price_adj · transit_adj · final · tier) is recorded for every
     # candidate so no signal is lost and the LLM's judgment stays visible for tuning.
     _section("STAGE 3 · SCORE — desirability + deterministic modifiers")
-    picks = []     # diamond/good candidates — email-eligible
-    scores = {}    # deal_id -> {llm, price_adj, transit_adj, final, tier, why, red_flags}
+    scored_all = []  # every scored candidate (diamond/good/skip) — the full digest set
+    picks = []       # diamond/good subset — the actionable "act now" finds
+    scores = {}      # deal_id -> {llm, price_adj, transit_adj, final, tier, why, red_flags}
     if not grounded:
         print("  nothing to score — no candidate survived grounding")
     else:
@@ -645,13 +718,16 @@ def main():
             if wl:
                 print(f"             {wl}")
 
+            scored_item = {**c, "tier": tier, "final_score": final, "llm_score": llm_val,
+                           "price_adj": price_adj, "transit_adj": transit_adj,
+                           "why": why, "red_flags": red}
+            scored_all.append(scored_item)
             if tier in ("diamond", "good"):
-                picks.append({**c, "tier": tier, "final_score": final,
-                              "llm_score": llm_val, "why": why, "red_flags": red})
+                picks.append(scored_item)
 
         n_diamond = sum(1 for p in picks if p["tier"] == "diamond")
         n_good    = len(picks) - n_diamond
-        n_skip    = len(grounded) - len(picks)
+        n_skip    = len(scored_all) - len(picks)
         print(f"  -> {n_diamond} diamond · {n_good} good · {n_skip} skip")
 
     # Record outcomes + baselines for every gate survivor that reached grounding.
@@ -736,51 +812,81 @@ def main():
     n_anom = sum(1 for s in signals if s["type"] == "anomaly")
     print(f"  wrote state/city_signals.json ({len(signals)} signal(s), {n_anom} anomaly) + city_signals.md")
 
-    # Anti-spam check + email — uses picks (diamond/good), diamonds first.
+    # "Seen & dropped" footer: gate survivors that reached grounding but were killed
+    # (hallucination / no availability) or blocked (data-quality guard) before scoring.
+    # Shown so the digest reflects everything the pipeline looked at, not just survivors.
+    dropped = []
+    for c in gate_survivors:
+        did = c.get("deal_id")
+        if did in scores:
+            continue  # scored → shown in the digest body, not the footer
+        r3 = grounding_results.get(did) or {}
+        if r3.get("_block_reason"):
+            kind, reason = "blocked", r3["_block_reason"]
+        else:
+            kind = "killed"
+            reason = M._clip(r3.get("assistant_summary") or r3.get("grounding")
+                             or "no supporting evidence found", 160)
+        dropped.append({"destination": c.get("destination", "?"),
+                        "window": c.get("window", ""), "kind": kind, "reason": reason})
+
+    # Email — an honest daily digest of EVERY scored candidate (diamond/good/skip), so the
+    # reader can see what the pipeline weighed and why. Anti-spam TTL (keyed
+    # destination|window|tier) fires the digest on any genuinely new/changed scored item and
+    # stays silent when there is nothing new. Only the actionable diamond/good picks are
+    # capped by MAX_EMAILS_PER_RUN; skips are context and always shown in full.
     _section("EMAIL — anti-spam gate + send")
     seen_state = load_seen()
     seen_state = prune_seen(seen_state)
 
-    picks_sorted = sorted(picks, key=lambda p: 0 if p.get("tier") == "diamond" else 1)
-    new_picks = [
-        d for d in picks_sorted
-        if not is_already_seen(seen_state, d["destination"], d["window"])
-    ]
-    suppressed = len(picks) - len(new_picks)
+    scored_sorted = sorted(scored_all, key=lambda p: (TIER_RANK.get(p.get("tier"), 9),
+                                                      -(p.get("final_score") or 0)))
+    new_scored = [d for d in scored_sorted
+                  if not is_already_seen(seen_state, d["destination"], d["window"], d.get("tier", ""))]
+    suppressed = len(scored_all) - len(new_scored)
     emailed = 0
 
-    if new_picks:
-        to_email = new_picks[:C.MAX_EMAILS_PER_RUN]
-        capped = len(new_picks) - len(to_email)
+    if new_scored:
+        actionable = [d for d in new_scored if d.get("tier") in ("diamond", "good")]
+        skips      = [d for d in new_scored if d.get("tier") == "skip"]
+        shown_actionable = actionable[:C.MAX_EMAILS_PER_RUN]
+        capped = len(actionable) - len(shown_actionable)
+        to_email = sorted(shown_actionable + skips,
+                          key=lambda p: (TIER_RANK.get(p.get("tier"), 9), -(p.get("final_score") or 0)))
         month_count = monthly_email_count(seen_state)
         n_d = sum(1 for d in to_email if d.get("tier") == "diamond")
-        print(f"  {len(picks)} eligible ({n_d} diamond) · {suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL "
-              f"· {capped} over MAX_EMAILS_PER_RUN · sending {len(to_email)}")
+        n_g = sum(1 for d in to_email if d.get("tier") == "good")
+        n_s = sum(1 for d in to_email if d.get("tier") == "skip")
+        print(f"  {len(new_scored)} new/changed scored ({n_d} diamond · {n_g} good · {n_s} skip) · "
+              f"{suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL · {capped} good/diamond over cap · "
+              f"{len(dropped)} in dropped footer")
         if n_d:
-            subject = f"Diamond Finder: {n_d} diamond + {len(to_email) - n_d} good — {today}"
+            subject = f"Diamond Finder: {n_d} diamond + {len(to_email) - n_d} more — {today}"
+        elif n_g:
+            subject = f"Diamond Finder: {n_g} good find(s) + {n_s} logged — {today}"
         else:
-            subject = f"Diamond Finder: {len(to_email)} good travel find(s) — {today}"
-        html = build_email_html(to_email, month_count, prior_baselines)
-        text = build_email_text(to_email, prior_baselines)
+            subject = f"Diamond Finder: {n_s} logged travel find(s) — {today}"
+        html = build_email_html(to_email, dropped, month_count, prior_baselines)
+        text = build_email_text(to_email, dropped, prior_baselines)
         try:
             X.send_email(subject, html, text)
             for d in to_email:
-                mark_seen(seen_state, d["destination"], d["window"])
+                mark_seen(seen_state, d["destination"], d["window"], d.get("tier", ""))
             increment_monthly(seen_state)
             emailed = len(to_email)
             print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email)}")
         except Exception as e:
             print(f"  [FAIL] email send error: {type(e).__name__}: {e} (state not marked seen)")
-    elif picks:
-        print(f"  {len(picks)} eligible but all suppressed by {C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
+    elif scored_all:
+        print(f"  {len(scored_all)} scored but all suppressed by {C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
     else:
-        print("  no email — nothing tiered diamond/good today")
+        print("  no email — nothing reached scoring today")
 
     X.save_json("signals_seen.json", seen_state)
 
     _section("RUN COMPLETE")
     print(f"  {len(candidates)} found -> {len(gate_survivors)} to grounding -> {len(grounded)} grounded "
-          f"-> {len(picks)} picks -> {emailed} emailed")
+          f"-> {len(scored_all)} scored ({len(picks)} pick(s)) -> {emailed} emailed")
 
 
 if __name__ == "__main__":

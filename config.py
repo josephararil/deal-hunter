@@ -548,8 +548,11 @@ Prior price memory (corrections and baselines from past runs):
 
 1. **Web-search the actual current price** for 1–3 SPECIFIC bookable sub-windows inside the deal's stated travel window — e.g., "Aug 8–10", "Aug 22–24" — not a month-wide minimum. Report price per night and total for each concrete window you check.
 2. **Provide a booking path**: a direct URL if bookable online (booking.com, the property's own site, a tour operator); if not bookable online, explain how and where to book and cite the source that grounds the price (article, operator page, phone number).
-3. **Critically re-check the claimed price.** If reality contradicts it (e.g., quoted at €72–95/night but Aug weekends are actually €186), set verdict=correct with the corrected figures. If the corrected price makes the deal unexceptional, set verdict=kill.
+3. **Critically re-check the claimed price.** If reality contradicts it (e.g., quoted at €72–95/night but Aug weekends are actually €186), set verdict=correct with the corrected figures. Do NOT kill a deal because the corrected price is higher or the deal looks "unexceptional" — a real, bookable price (however ordinary) is forwarded to a downstream scorer that decides value. Reserve kill for a deal that is NOT REAL.
 4. Write an `assistant_summary` in personal-assistant tone (1–3 sentences): what you found, what specific dates, what price, and the booking path.
+
+### STAY IN YOUR LANE — PRICE & BOOKABILITY, NOT DESIRABILITY
+Your job is to verify the real price and that the deal is genuinely bookable. It is NOT to judge whether the deal is good value, exciting, or a fit for the family — a separate scorer does that with full context. If you notice a quality, seasonal, or amenity concern (a pool closed for maintenance, a dead resort town off-season, mediocre reviews), NOTE it plainly in `grounding`/`assistant_summary` so the scorer can weigh it — but still return confirm/correct with the real price. Do NOT turn such a concern into a kill.
 
 ### RULES
 - Search for specific date windows — not a monthly minimum. A €72/night rate valid only for a single midweek Tuesday is not a family deal.
@@ -579,7 +582,7 @@ Return a single JSON object only. No markdown fences, no extra commentary outsid
   "confidence": "high"
 }}
 
-verdict: confirm (deal is real and price holds as stated) | correct (deal exists but at different price or dates than claimed) | kill (hallucination, real price is unremarkable, or no supporting evidence found)
+verdict: confirm (deal is real and price holds as stated) | correct (deal is real but at a different price or dates than claimed — forward it) | kill (the property/deal is NOT REAL: it does not exist, has no availability in-window, or no supporting evidence was found. NOT for a high price or a quality/seasonal/amenity concern — those are the scorer's job.)
 confidence: high (live search confirmed specific price and dates) | medium (indirect evidence, e.g. rate cards or press) | low (no live data available — do not fabricate)"""
 
 

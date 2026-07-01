@@ -12,8 +12,10 @@ Coverage:
   - Regnum grounds at €112 and sinks to SKIP purely via the uncapped price penalty (no wall).
   - Arte Spa: grounding KILL (hallucination) → dropped before scoring.
   - Sofia: grounding low-confidence → data-quality guard blocks it before scoring.
-  - Deterministic tiers: final = llm + price_adj + transit_adj; diamond/good emailed, skip not.
+  - Deterministic tiers: final = llm + price_adj + transit_adj.
   - Scores recorded in memory (llm_score/final_score) for every scored candidate.
+  - Email digest shows EVERY scored candidate (diamond/good/skip) with its score breakdown,
+    plus a "seen & dropped" footer for grounding kills (Arte) and guard blocks (Sofia).
   - Email digest: tier badges, baseline comparison, child-price caveat.
 
 Run: python test_stub.py
@@ -145,12 +147,18 @@ try:
     assert "2 diamond" in _email["subject"], _email["subject"]
     print("Kempinski + Antalya emailed as diamonds [OK]")
 
-    # Regnum: grounded €112 sinks to SKIP via price penalty (no ceiling) — not emailed.
-    assert "Regnum" not in html, "Regnum (skip via penalty) leaked into email"
-    # Arte (grounding kill) and Sofia (low-confidence guard) not emailed.
-    assert "Arte" not in html and "Velingrad" not in html, "killed Arte leaked into email"
-    assert "Sofia" not in html, "guard-blocked Sofia leaked into email"
-    print("Regnum/Arte/Sofia correctly excluded from email [OK]")
+    # Regnum: grounded €112 sinks to SKIP via price penalty (no ceiling), but the digest now
+    # SHOWS skips (with their score breakdown) so the reader sees what the pipeline weighed.
+    assert "Regnum" in html, "Regnum (skip) should now appear in the digest body"
+    assert "· Skipped" in html, "skip badge missing"
+    assert "= <b>63</b>/100" in html, "Regnum score breakdown missing/incorrect"
+    print("Regnum skip shown in digest with score breakdown [OK]")
+
+    # Arte (grounding kill) and Sofia (guard block) appear in the 'seen & dropped' footer.
+    assert "seen &amp; dropped" in html.lower(), "dropped footer missing"
+    assert "Arte" in html and "killed" in html, "killed Arte missing from footer"
+    assert "Sofia" in html and "blocked" in html, "guard-blocked Sofia missing from footer"
+    print("Arte/Sofia shown in 'seen & dropped' footer [OK]")
 
     # Baseline comparison + child caveat present.
     assert "30% under" in html, f"Antalya baseline comparison wrong: {html[html.find('Antalya'):html.find('Antalya')+300]}"

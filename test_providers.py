@@ -100,9 +100,9 @@ try:
             "min_total_price": 160.0,
         }]
     }
-    # City-wide list (order_by=price): mixed review / price
-    # Bulgaria ceiling = 100. Qualifying: Platinum (review 8.5, ppn 70) + Mountain (8.3, ppn 85)
-    # Filtered: Budget (review 7.2 < 8.0) + Luxury (ppn 120 > 100)
+    # City-wide list (order_by=price): mixed review / price. No price cap anymore, so
+    # qualifying = review>=8.0: Platinum (8.5, 70), Mountain (8.3, 85), Luxury (9.0, 120).
+    # Filtered: Budget (review 7.2 < 8.0).
     _PROPS_CITY_BANSKO = {
         "result": [
             {"type": "property_card", "hotel_name": "Budget Stay", "review_score": 7.2, "class": 3,
@@ -119,13 +119,13 @@ try:
              "min_total_price": 240.0},
         ]
     }
-    # City-wide list — nothing qualifies
+    # City-wide list — nothing qualifies (both review < 8.0; there is no price cap now)
     _PROPS_CITY_NONE = {
         "result": [
             {"type": "property_card", "hotel_name": "Cheap Bad Hotel", "review_score": 6.5, "class": 2,
              "composite_price_breakdown": {"gross_amount_per_night": {"value": 30.0}},
              "min_total_price": 60.0},
-            {"type": "property_card", "hotel_name": "Pricey Luxury", "review_score": 9.5, "class": 5,
+            {"type": "property_card", "hotel_name": "Pricey Mediocre", "review_score": 7.8, "class": 5,
              "composite_price_breakdown": {"gross_amount_per_night": {"value": 200.0}},
              "min_total_price": 400.0},
         ]
@@ -266,18 +266,14 @@ try:
 
     P._get = _make_get(_AC_KEMPINSKI, _PROPS_KEMPINSKI_UNDER)
 
-    # ── 10–12. _decide_verdict: confirm / correct / ceiling-kill ─────────────
-    v, c = P._decide_verdict(80.0, 85.0, 100)
+    # ── 10–11. _decide_verdict: confirm / correct (no price ceiling — fully soft) ─
+    v, c = P._decide_verdict(80.0, 85.0)
     chk("_decide_verdict: confirm (g <= est*1.15)",
         v == "confirm" and c == "high", f"got ({v!r},{c!r})")
 
-    v, c = P._decide_verdict(100.0, 85.0, 130)
-    chk("_decide_verdict: correct (g > est*1.15, g <= ceiling)",
+    v, c = P._decide_verdict(120.0, 85.0)
+    chk("_decide_verdict: correct (g > est*1.15, never kills on price)",
         v == "correct" and c == "high", f"got ({v!r},{c!r})")
-
-    v, c = P._decide_verdict(110.0, 85.0, 100)
-    chk("_decide_verdict: kill (over ceiling)",
-        v == "kill" and c == "high", f"got ({v!r},{c!r})")
 
     # ── 13. _to_stage3 verified: dates has 4-digit year + passes _dates_in_window
     ref_s3 = {"name": "Kempinski Hotel Grand Arena", "match_name": "Kempinski Hotel Grand Arena",
@@ -295,21 +291,20 @@ try:
     chk("_to_stage3 verified: dates passes _dates_in_window",
         fa._dates_in_window(opt_dates, "Aug 2026"), f"dates={opt_dates!r} vs 'Aug 2026'")
 
-    # ── 14. _price_alternatives: filters review>=8.0 & ppn<=ceiling → 2 results
+    # ── 14. _price_alternatives: filters review>=8.0 only (no price cap) → 3 results
     P._get = _make_get(_AC_BANSKO_CITY_ONLY, _PROPS_CITY_BANSKO)
     ref_alts = {"dest_id": "city-1001", "search_type": "city", "kind": "city",
                 "name": "Bansko", "match_name": "Regnum Hotel"}
-    alts = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10", ceiling=100)
-    chk("_price_alternatives: 2 qualifying options (review>=8.0 & ppn<=100)",
-        len(alts) == 2
-        and alts[0]["hotel_name" if "hotel_name" in alts[0] else "name"] not in ("", None)
-        and all(r["price_per_night_eur"] <= 100 for r in alts)
+    alts = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10")
+    chk("_price_alternatives: 3 qualifying options (review>=8.0, no price cap)",
+        len(alts) == 3
+        and alts[0].get("name") not in ("", None)
         and all(float(r.get("review_score", 0)) >= 8.0 for r in alts),
         f"got {len(alts)} alts: {[(r.get('name'), r.get('price_per_night_eur')) for r in alts]}")
 
-    # ── 15. _price_alternatives: none qualify → empty list ───────────────────
+    # ── 15. _price_alternatives: none qualify (all review<8.0) → empty list ──
     P._get = _make_get(_AC_BANSKO_CITY_ONLY, _PROPS_CITY_NONE)
-    alts_none = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10", ceiling=100)
+    alts_none = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10")
     chk("_price_alternatives: none qualify -> []",
         alts_none == [], f"got: {alts_none}")
 
@@ -317,12 +312,12 @@ try:
 
     # ── 16. _to_stage3_alternatives: verdict=correct, confidence=medium, multi-options
     P._get = _make_get(_AC_BANSKO_CITY_ONLY, _PROPS_CITY_BANSKO)
-    alts2 = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10", ceiling=100)
+    alts2 = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10")
     alts_r = P._to_stage3_alternatives(alts2, ref_alts, "2026-06-29")
-    chk("_to_stage3_alternatives: verdict=correct, confidence=medium, 2 options",
+    chk("_to_stage3_alternatives: verdict=correct, confidence=medium, 3 options",
         alts_r.get("verdict") == "correct"
         and alts_r.get("confidence") == "medium"
-        and len(alts_r.get("options", [])) == 2
+        and len(alts_r.get("options", [])) == 3
         and "Couldn't confirm Regnum Hotel" in alts_r.get("assistant_summary", ""),
         f"got: verdict={alts_r.get('verdict')!r}, conf={alts_r.get('confidence')!r}, "
         f"n_opts={len(alts_r.get('options',[]))}, summary={alts_r.get('assistant_summary','')[:60]!r}")
@@ -366,15 +361,15 @@ try:
         _stub_llm.calls > 0 and result.get("assistant_summary") == "LLM fallback",
         f"calls={_stub_llm.calls}")
 
-    # ── 19. ground_api: kind=hotel, over ceiling → verdict=kill ─────────────
+    # ── 19. ground_api: kind=hotel, price well above estimate → verdict=correct ─
+    #    (no ceiling kill anymore — grounding returns the real price; the scorer handles it)
     fa._ground_llm = _stub_llm; _stub_llm.calls = 0
     P._get = _make_get(_AC_KEMPINSKI, _PROPS_KEMPINSKI_OVER)
     result = P.ground_api(_kemp_diamond, "memory", "2026-06-29")
     fa._ground_llm = _real_ground_llm
-    chk("ground_api: kind=hotel, ppn>ceiling -> verdict=kill (not LLM fallback)",
+    chk("ground_api: kind=hotel, ppn>>est -> verdict=correct (no ceiling kill, not LLM fallback)",
         _stub_llm.calls == 0
-        and result.get("verdict") == "kill"
-        and result.get("confidence") == "high",
+        and result.get("verdict") == "correct",
         f"llm_calls={_stub_llm.calls}, verdict={result.get('verdict')!r}, conf={result.get('confidence')!r}")
 
     # ── 20. ground_api: kind=city, alternatives → correct, medium ────────────

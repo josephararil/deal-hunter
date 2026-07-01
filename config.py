@@ -147,24 +147,94 @@ STAGE1_MIN_SCORE = 80
 MAX_EMAILS_PER_RUN = 3
 
 # Days before the same destination+window pair can trigger another email.
-# Prevents daily spam about a deal that persists for weeks.
-SIGNAL_TTL_DAYS = 30
+# Prevents daily spam about a deal that persists for weeks, while still resurfacing a
+# still-live deal after a fortnight so a good window isn't forgotten.
+SIGNAL_TTL_DAYS = 14
 
-# ── Price ceilings ───────────────────────────────────────────────────────────
-# A candidate priced above its country ceiling is, by definition, not a diamond
-# regardless of star rating or framed discount. It is logged but NEVER emailed.
-PRICE_CEILING_EUR = {"Bulgaria": 110, "Turkey": 100}
-DEFAULT_PRICE_CEILING_EUR = 130  # rest of Europe (~+30%)
+# ── Deterministic scoring model ──────────────────────────────────────────────
+# The final tier is NOT decided by the LLM. The skeptic (Stage 3) returns a 0-100
+# desirability score for each grounded candidate, judging quality/utility/fit and
+# deliberately IGNORING the raw nightly price. The pipeline then applies deterministic
+# modifiers — a price adjustment against the regional "par" price, and a small
+# drive-vs-fly nudge — to produce the final score, from which the tier is derived.
+# This keeps price handling precise and consistent (not left to LLM whim) while
+# preserving every candidate's score in memory and the run log for tuning.
+#
+#   final = clamp(0, 100, llm_score + price_adj + transit_adj)
+#   price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT * (1 - grounded_ppn / par))
+#     → below par: bonus (capped, so a cheap dump can't auto-diamond a weak place);
+#     → above par: penalty (UNCAPPED, so an overpriced deal sinks to skip on its own —
+#       this is why no hard price ceiling is needed).
+#   transit_adj = +TRANSIT_TIER1_BONUS (drivable Tier-1) | TRANSIT_TIER2_BONUS (fly Tier-2)
+
+# Per-night "par" price: the point where the price modifier is neutral. Below it earns a
+# bonus, above it a penalty. It is a reference, NOT a wall — a standout property can still
+# be a diamond above par if its desirability score is high enough. Tune freely.
+DIAMOND_PAR_EUR = {"Bulgaria": 80, "Turkey": 85}
+DEFAULT_DIAMOND_PAR_EUR = 110  # rest of Europe
+
+PRICE_SCORE_WEIGHT = 50   # strength of the price modifier
+PRICE_BONUS_CAP    = 15   # max score bonus for a below-par price (penalty is uncapped)
+TRANSIT_TIER1_BONUS = 3   # drivable / direct-PDV destinations
+TRANSIT_TIER2_BONUS = -3  # fly-from-SOF or long-drive destinations
+
+# Final-score tier thresholds. (Illustrative "> 80 = diamond" from tuning talk lives here —
+# raise/lower freely.)
+DIAMOND_SCORE_THRESHOLD = 85
+GOOD_SCORE_THRESHOLD    = 68
 
 
-def get_price_ceiling(destination):
-    """Return the applicable per-night price ceiling (EUR) for a destination string.
-    Matches country names as substrings; falls back to DEFAULT_PRICE_CEILING_EUR."""
+def get_diamond_par(destination):
+    """Return the per-night 'par' price (EUR) for a destination — the neutral point of the
+    price modifier. Substring-matches country names; falls back to the default."""
     dest_lower = (destination or "").lower()
-    for country, ceiling in PRICE_CEILING_EUR.items():
+    for country, par in DIAMOND_PAR_EUR.items():
         if country.lower() in dest_lower:
-            return ceiling
-    return DEFAULT_PRICE_CEILING_EUR
+            return par
+    return DEFAULT_DIAMOND_PAR_EUR
+
+
+def _tier1_city_tokens():
+    """Lowercased city names in the Tier-1 (drivable / direct-PDV) transit group."""
+    tokens = set()
+    for _region, cities in CITY_TIER_GROUPS[0][1]:
+        for c in cities:
+            tokens.add(c.lower())
+    return tokens
+
+
+_TIER1_TOKENS = _tier1_city_tokens()
+
+
+def transit_tier(destination):
+    """1 if the destination is a Tier-1 (drivable / direct-PDV) place, else 2.
+    Unknown/extended destinations default to 2 (assume a flight is involved)."""
+    d = (destination or "").lower()
+    return 1 if any(tok in d for tok in _TIER1_TOKENS) else 2
+
+
+def compute_final_score(llm_score, grounded_ppn, destination):
+    """Apply the deterministic modifiers to an LLM desirability score.
+    Returns (final_score, price_adj, transit_adj) — all rounded ints."""
+    base = llm_score if isinstance(llm_score, (int, float)) else 0
+    par = get_diamond_par(destination)
+    if grounded_ppn and par:
+        raw = PRICE_SCORE_WEIGHT * (1 - grounded_ppn / par)
+        price_adj = min(PRICE_BONUS_CAP, raw)   # bonus capped, penalty uncapped
+    else:
+        price_adj = 0
+    transit_adj = TRANSIT_TIER1_BONUS if transit_tier(destination) == 1 else TRANSIT_TIER2_BONUS
+    final = max(0, min(100, base + price_adj + transit_adj))
+    return round(final), round(price_adj), transit_adj
+
+
+def tier_for_score(final_score):
+    """Map a final score to a tier: 'diamond' | 'good' | 'skip'."""
+    if final_score >= DIAMOND_SCORE_THRESHOLD:
+        return "diamond"
+    if final_score >= GOOD_SCORE_THRESHOLD:
+        return "good"
+    return "skip"
 
 
 # ── Hotel grounding ─────────────────────────────────────────────────────────
@@ -203,11 +273,11 @@ HOTEL_MAPPING = {
 # price grounding cut hard, so cast a wide net here and prize novelty over caution.
 SEARCH_PROMPT = """Today is {today}. You are a sharp travel scout running live web searches for a family of 3 (2 adults + a 4-year-old) based in Plovdiv, Bulgaria. Our home currency is EUR.
 
-Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
+Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING travel from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
 
 ### WHAT MAKES A GOOD LEAD
-- It is happening NOW or was announced recently: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough.
-- It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, concrete dates.
+- It is happening NOW or was announced recently, for travel STILL AHEAD of us: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough. Ignore sales and dates that have already passed.
+- It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, and concrete dates that fall in the future relative to {today}.
 - It is hard to know WITHOUT searching today. We do NOT need evergreen facts ("Bansko is cheap off-season", "Antalya has all-inclusive resorts") — the analyst already knows those. Surprise us with something live.
 - Variety beats repetition. Spread leads across different destinations, categories, and seasons rather than five versions of the same hotel. Assume yesterday you already reported the obvious ones; find different ones today.
 
@@ -228,12 +298,18 @@ Anchor destinations (a starting point, NOT a cage — chase a great lead anywher
 
 ### DOs AND DON'Ts
 - DO report, for each lead: destination + named property, the price and exact dates, the live hook (why it is timely right now), and the source domain — verbatim.
-- DO surface deals priced in LOCAL currency too (BGN, TRY, RSD…), not only EUR — Turkish-lira and Bulgarian-lev listings often hide the deepest regional value. Report the original price and note its currency.
+- DO surface deals priced in LOCAL currency too (BGN, TRY, RSD…), not only EUR — Turkish-lira and Bulgarian-lev listings often hide the deepest regional value. Report the original price AND a rough EUR equivalent, so the tool-less downstream analyst doesn't have to guess an exchange rate.
 - DO surface 8-15 distinct leads. Quantity and variety matter at this step; the analyst will cut ruthlessly later.
 - DO include a lead even if you are unsure it is a great deal. Leads, not verdicts.
 - DON'T return generic seasonal advice or a destination with no specific live hook.
 - DON'T add any introduction or closing remarks. Start directly with the first lead.
-- DON'T score, rank, analyse, or output JSON. Just a clean, scannable bulleted list of findings."""
+- DON'T score, rank, analyse, or output JSON or markdown tables. Just a clean, scannable bulleted list of findings, one lead per block in exactly this shape:
+
+* **Destination / Property:** <name>
+* **Dates:** <specific future dates>
+* **Price:** <original price> (~€<EUR estimate>)
+* **Hook:** <why it is timely today>
+* **Source:** <domain>"""
 
 # Step 2 — frames step 1's leads for the flagship reasoner. The leads are a fresh
 # SEED, not a fence: the reasoner must also draw on its own knowledge, and must not
@@ -328,7 +404,8 @@ Hunt for opportunities across these specific categories:
 Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON object matching the schema below.
 
 Field notes:
-- est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). Used for price gating downstream.
+- est_price_eur: your best estimate of the typical per-night price in EUR for this deal at this window — a single number (not a range, not a string). A rough estimate is fine; live prices are verified downstream.
+- type: exactly one of "hotel", "cruise", "flight", or "package". (Downstream logic keys on "hotel".)
 - hotel_name: the specific hotel or resort property (e.g., "Kempinski Hotel Grand Arena"). Use "" for city-level, cruise, or flight deals with no single named property.
 - city: the city where the deal is located (e.g., "Bansko"). Required.
 - country: the country (e.g., "Bulgaria"). Required.
@@ -354,104 +431,107 @@ JSON Schema:
 If no verifiable deals meet these criteria today, return `{{"candidates": []}}`."""
 
 
-SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst. Your job is to filter daily travel alerts and identify high-value plays/arbitrage opportunities for a young family. 
-
-Your objective is to maintain a strict 5-10% acceptance rate (roughly 2-3 kept candidates per month out of 100+ inputs). You achieve this not by hunting for pricing glitches, but by ruthlessly eliminating options that lack massive, undeniable value or fail basic family logistics.
+SKEPTIC_PROMPT = """You are a pragmatic, high-utility Travel Value Analyst scoring travel finds for a young family. The prices you see have ALREADY been verified against live Booking.com data — this is reality, not a salesman's estimate.
 
 Today is {today}.
 Target Demographics & Logistics:
-- Party: Family of 3 (2 adults, 1 child aged 4). 
+- Party: Family of 3 (2 adults, 1 child aged 4).
 - Location Base: Plovdiv, Bulgaria.
 - Transit Limits: Departure strictly from Plovdiv Airport (PDV), Sofia Airport (SOF), or a reasonable drive from Plovdiv.
 - Currency: EUR.
 
-Input Candidates (scored >= {min_score}/100 in preliminary filtering; each has a numeric deal_id you must echo back):
+### HOW YOUR SCORE IS USED (read carefully — it changes how you should score)
+You return a single desirability `score` from 0-100 for each candidate. You do NOT decide keep/kill or any tier. Here is exactly what the pipeline does with your score:
+
+  final_score = your_score + price_adjustment + transit_adjustment
+  → final_score >= {diamond_threshold}  becomes a DIAMOND (emailed, "grab it")
+  → final_score >= {good_threshold}  becomes a GOOD find (emailed, "worth knowing")
+  → below that  is dropped (logged only)
+
+- `price_adjustment` is applied deterministically by the pipeline - it rewards a
+  nightly HOTEL price below the region's par and penalises one above it. Your score may still reflect
+  a SEVERE price discrepancy (a rate dramatically below or above the regional norm) but keep in mind the 
+  pipeline already does it, so try to avoid double-counting. Treat the price as an input to your reasoning, not a scoring lever.
+- `transit_adjustment` gives a small automatic nudge for drive-vs-fly. You should still reflect
+  SEVERE logistics (open-jaw itineraries, >4h drive with a 4-year-old vs nice flight out of PDV airport or a <3h drive) in your score,
+  but don't double-count ordinary "it's a flight away".
+
+### WHAT YOUR SCORE MEASURES: VALUE DELIVERED, NOT LUXURY OR PRESTIGE
+Your score is the VALUE this delivers to THIS family — the numerator of value-for-money. The
+pipeline divides by the nightly hotel price, so you must NOT reward a find for being expensive,
+famous, or prestigious. A modest local place that delivers a genuinely great, low-friction
+family break can — and often SHOULD — score higher than a glamorous far-flung one. A €150
+weekend in a nearby spa town can be far better value than a €400 weekend in Rome, but a €150 weekend
+in Rome is better than a €150 weekend in a nearby spa town. Score the ultimate
+value delivered for the price, not the postcard.  
+
+A high score means high NET family utility:
+- How much genuine enjoyment/benefit does a family with a 4-year-old actually get here? (A
+  4-year-old does not care about world-class museums — open pools, space, ease and fun do.)
+- PLUS how luxurious or comfortable the stay is for the adults (quiet, spacious, good food, spa, etc.).
+- MINUS logistics friction — a large deduction, not a footnote. A destination with no direct
+  Plovdiv flight means flying via Sofia with a toddler: transfers, lost travel days, and
+  FLIGHT COST that the hotel price does NOT include. Flights are out of scope for the pipeline,
+  so YOU are the only stage that can weigh their burden — do it heavily.
+- MINUS in-window utility loss (closed pools, dead resort town — see deductions).
+"Attraction"/excitement is ONE modest input for a 4-year-old, never the main factor.
+
+### WHAT DRIVES A HIGH SCORE (85-100)
+- High net family value delivered with LOW friction: the family genuinely enjoys it, getting
+  there is easy (ideally a short drive or direct PDV flight), and the amenities that make it
+  worthwhile are open in-window.
+- Real, in-window utility: indoor/heated pools and kids' facilities actually OPEN during these
+  dates; comfortable and fun for a 4-year-old.
+- The stay length fits (a short 1-2 night break for a quiet town; longer only where there is
+  genuinely a week of family value to extract).
+- A far-flight destination reaches this band ONLY if the family value is high enough to survive
+  the flight cost and hassle — otherwise it belongs lower.
+
+### WHAT DRIVES A LOW SCORE (net-value deductions — NOT the nightly hotel price)
+1. Low-Season Utility Trap: amenities that make the place worth it are CLOSED in-window (outdoor-only pools in winter, shut kids' clubs, a dead resort town).
+2. Toddler Tax / Logistics: >4h door-to-door, flying via Sofia with a 4-year-old, open-jaw or multi-leg itineraries, plus flight cost/hassle the hotel price does not cover. Weigh heavily.
+3. Prestige-without-value: a famous/luxury/exciting place whose real in-window benefit to a family with a 4-year-old is modest, or is eaten by travel friction. Do NOT score it high just because the destination is desirable in the abstract.
+4. Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do — score low unless the window is already a short 2-4 night break.
+
+### CALIBRATION EXAMPLES (score = net family VALUE delivered; hold nightly hotel price neutral)
+- Nearby 4-star spa, easy <2h drive, pools + kids' area open, relaxed 3-night family weekend: **~82**. Modest place, but high net value — real family enjoyment, zero friction. (Low live price → pipeline lifts to diamond; high → it sinks. That's the pipeline's job, not yours.)
+- Antalya 5-star all-inclusive, mid-Jan, indoor pools + kids' club + dining all OPEN, one manageable flight: **~84**. High utility, but the flight burden keeps it off the very top.
+- Rome or Athens city trip via Sofia, 4 nights: **~58**. The city is exciting, but a 4-year-old gets modest benefit and the trip burns travel days + flight costs the hotel price ignores — net value is middling, so it only becomes a pick if the hotel is genuinely cheap.
+- Sunny Beach 4-star beachfront in OCTOBER, outdoor pools freezing, entertainment shut: **~30**. Utility collapses in-window regardless of how cheap it is.
+- 7-night Athens→Ravenna open-jaw cruise: **~20**. Logistics nightmare for a 4-year-old; the itinerary itself is the problem.
+
+---
+
+Each input candidate carries LIVE grounded figures for context:
+- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable HOTEL price. Hold it neutral in your score (the pipeline handles it), except for a severe discrepancy as noted above. Note it does NOT include flights.
+- `diamond_par_eur` — the region's neutral price point, shown so you understand what the pipeline will reward/penalise. Not for you to apply.
+- `grounding_summary` — the live verification note (often includes star rating and review score — DO use quality signals like stars/reviews).
+
+Input Candidates (each has a numeric deal_id you must echo back):
 {candidates}
 
 ---
 
-### PRIOR VERIFIED PRICES (from past pipeline runs — use for absolute-value calibration)
+### PRIOR OUTCOMES (from past runs — scores and notes for calibration)
 {memory}
 
 ---
 
-### CONCRETE EXAMPLES FOR CALIBRATION
-
-#### EXAMPLE 1: ANATOMY OF A "KEEP" (Off-Season High Utility)
-- **Candidate:** Antalya, Turkey. 5-Star All-Inclusive Resort, mid-January after the NYE peak but before the spring break.
-- **Price:** €100/night (Down from €400/night peak/NYE).
-- **Analysis:** KEEP. This matches predictable, standard historical low-season pricing for January. However, it is a KEEP. The weather is too cold for the beach, but the resort offers indoor heated pools, operating kids' clubs, and unlimited premium dining. The utility drop is only 20% and requires additional logistics/flights, but the price drop is 75%. This is an exceptional utility-to-price play for a 4-year-old.
-
-#### EXAMPLE 2: ANATOMY OF A "KEEP" (Drive-Distance Luxury Play)
-- **Candidate:** Bansko or Velingrad, Bulgaria. Luxury Spa Hotel, late October (Inter-season).
-- **Price:** €80/night (Down from €250/night peak ski/winter season).
-- **Analysis:** KEEP. While there is no skiing in October, the indoor thermal pools, children's play areas, and massive price drop unlock a premium weekend getaway with zero flight logistics.
-
-#### EXAMPLE 3: ANATOMY OF A "KILL" (The Low-Season Trap)
-- **Candidate:** Sunny Beach, Bulgaria. 4-Star Beachfront Hotel, October.
-- **Price:** €40/night (Down from €150/night July peak).
-- **Analysis:** KILL. While incredibly cheap, the utility drops to near zero: outdoor pools are freezing, kids' entertainment is completely closed, and the town is a ghost town. The price drop does not compensate for the complete loss of family utility.
-
-#### EXAMPLE 4: ANATOMY OF A "KILL" (The Toddler Tax)
-- **Candidate:** 7-Night Mediterranean Cruise (Athens to Venice/Ravenna) on Norwegian Pearl.
-- **Price:** $449/person ($64/night) due to a last-minute cancellation sale.
-- **Analysis:** KILL. It is clearly an outstanding deal on paper. However, the open-jaw itinerary (Athens to Ravenna) creates a logistical and financial nightmare for a family with a 4-year-old, as flights from and back to Bulgaria will wipe out any cruise savings and then some.
-
-#### EXAMPLE 5: ANATOMY OF A "KILL" (The Absolute-Value Trap)
-- **Candidate:** Arte Spa & Park, Velingrad, Bulgaria. 4-star thermal spa resort.
-- **Price:** €165/night (framed as "35% off peak" from €255/night).
-- **Analysis:** KILL. €165/night is a normal-to-high absolute price for a spa hotel in a Bulgarian spa town. Velingrad has many excellent thermal spa hotels at €60–120/night. The "discount from peak" framing is irrelevant — in absolute terms, €165/night for this market buys nothing exceptional. The family could stay at a comparable Velingrad spa property for €80–100/night. When the absolute price is unremarkable to anyone who knows the regional market, the relative discount is a fiction. Kill it.
-
----
-
-### EVALUATION PROTOCOL
-
-You must KEEP a candidate if it represents a High-Utility Value Play. This is defined as any of:
-- A predictable or seasonal price drop where the price plummets dramatically (e.g., peak €400 down to off-peak €100), but the core utility remains high for a family.
-- A rare, verifiable, time-sensitive opportunity where the price drop is massive and the logistics are manageable for a family with a 4-year-old.
-- A high-excitement destination (a vibrant city or standout island/beach spot) at a genuinely strong absolute price for that place — a clear "grab it" for what it is — even without a dramatic discount, provided the logistics are manageable for a 4-year-old. This pathway is for genuinely exciting places ONLY: an ordinary or merely-average price for an exciting place is still a KILL (exciting ≠ automatically worth it), and low-excitement local towns get no such pass.
-
-You must ruthlessly KILL a candidate if it triggers any of the following:
-
-1. The "False Value" Low-Season Trap:
-   - A low price where the drop in utility matches or exceeds the drop in price. (e.g., a cheap waterpark resort when the waterparks are closed, or an outdoor beach holiday during a freezing/monsoon month with zero indoor amenities).
-2. The "Toddler Tax" & Logistics Flaw:
-   - Destinations requiring >4 hours total transit time (door-to-door from Plovdiv) or budget flights where unavoidable extras (cabin bags, family seat selection) kill any savings.
-   - Places with steep topography, zero child-friendly infrastructure, or heavy logistical friction.
-3. Hidden Cost Creep:
-   - Cheap flights paired with predatory local accommodation rates, or a cheap hotel in a region where basic dining and transit costs erase the savings.
-4. The Absolute-Value Floor:
-   - Beyond any framed relative discount, ask: *"Is this price genuinely exceptional in absolute terms for what it is, to someone who knows the regional market?"*
-   - A normal or high rate for an ordinary property in a cheap region (e.g., ~€165/night for a 4-star spa hotel in a Bulgarian spa town such as Velingrad or Hisarya) is a KILL, regardless of any claimed discount or peak-price anchoring.
-   - This floor targets ordinary properties in cheap regions dressed up with discount framing. It does NOT veto a high-excitement destination judged under the excitement-value KEEP above — there, judge whether the price is a clear win for that specific place. But a merely normal price for an exciting place is still a KILL.
-   - The deal must be cheap in absolute terms for its category and geography, not just relatively cheap compared to a cherry-picked peak price.
-5. The Stay-Length Mismatch:
-   - A long stay (5+ nights) in a low-excitement local town (e.g. Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family with a 4-year-old would run out of things to do. The right trip there is 2-3 nights; a week is not a diamond regardless of nightly price. KILL it unless the candidate's window is already a short 2-4 night break. (A long stay is only a diamond in a high-excitement city or standout beach/island spot.)
-
----
-
 ### OUTPUT FORMAT
-Return JSON only. Do not include markdown formatting or wrappers like ```json. Output a single JSON array containing one object per input candidate, maintaining the exact input order. Echo each candidate's `deal_id` back unchanged — it is the integer key used to match your verdict to the deal. Also copy the `destination` string verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
+Return JSON only. No markdown fences. The root of your response MUST be a bare JSON array (starting with `[`) — do NOT wrap it in an object like {{"results": [...]}}. One object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key matching your score to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
 
 JSON Schema:
 [
   {{
     "deal_id": 1,
     "destination": "Exact string from input",
-    "verdict": "kill",
-    "why": "One direct sentence highlighting the specific logistical flaw or why the price drop doesn't justify the loss in seasonal utility.",
+    "score": 72,
+    "why": "One direct sentence on the NET FAMILY VALUE (utility minus friction) that justifies the score — not the nightly hotel price.",
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
-  }},
-  {{
-    "deal_id": 2,
-    "destination": "Exact string from input",
-    "verdict": "keep",
-    "why": "One direct sentence quantifying the massive value play (e.g., premium amenities/infrastructure unlocked at entry-level pricing).",
-    "red_flags": "What must be double-checked immediately (e.g., confirm indoor pool heating or kids club off-season hours)."
   }}
 ]
 
-Remember: An empty or all-kill batch for today's run is the standard statistical outcome. Keep only the highest utility-to-price plays."""
+Score honestly and independently on net family value — the pipeline turns your scores into the final verdict, and every score is recorded, so an accurate 72 is more useful than a nudged 85."""
 
 
 VERIFY_PROMPT = """Today is {today}. You are a Personal Travel Concierge with live web-search access. One travel deal has survived a two-stage expert filter. Your job is to ground it in reality: find real prices at specific bookable dates, a real booking path, and produce an honest assistant-style summary.
@@ -541,11 +621,11 @@ STAGE2_RESPONSE_SCHEMA = {
         "properties": {
             "deal_id":     {"type": "integer"},
             "destination": {"type": "string"},
-            "verdict":     {"type": "string", "enum": ["keep", "kill"]},
+            "score":       {"type": "integer"},
             "why":         {"type": "string"},
             "red_flags":   {"type": "string"},
         },
-        "required": ["deal_id", "destination", "verdict", "why", "red_flags"],
+        "required": ["deal_id", "destination", "score", "why", "red_flags"],
     },
 }
 

@@ -339,11 +339,12 @@ def _is_explicit_short_window(window):
 
 # ── Alternatives listing (city-wide best-value) ───────────────────────────────
 
-def _price_alternatives(ref, chk_in, chk_out, ceiling):
+def _price_alternatives(ref, chk_in, chk_out):
     """Return up to 3 HotelRate dicts from a city-wide price-sorted search.
 
-    Keeps only property_cards with review_score >= 8.0 and ppn <= ceiling.
-    Returns [] if nothing qualifies (caller raises → LLM fallback).
+    Keeps only property_cards with review_score >= 8.0 (cheapest first — the listing is
+    already order_by=price). No price ceiling: the deterministic scorer downstream handles
+    price. Returns [] if nothing qualifies (caller raises → LLM fallback).
     """
     cards = list_properties(ref, chk_in, chk_out)
     chk_in_d  = date.fromisoformat(chk_in)
@@ -360,7 +361,7 @@ def _price_alternatives(ref, chk_in, chk_out, ceiling):
         breakdown = card.get("composite_price_breakdown") or {}
         ppn_block = breakdown.get("gross_amount_per_night") or {}
         ppn = ppn_block.get("value")
-        if ppn is None or float(ppn) > ceiling:
+        if ppn is None:
             continue
         total_raw = card.get("min_total_price")
         if total_raw is None:
@@ -394,11 +395,11 @@ def _price_alternatives(ref, chk_in, chk_out, ceiling):
 
 # ── Verdict logic ─────────────────────────────────────────────────────────────
 
-def _decide_verdict(g, est, ceiling):
-    """g = grounded €/night, est = est_price_eur, ceiling = country ceiling."""
-    if g > ceiling:
-        return "kill", "high"
-    if g <= est * 1.15:
+def _decide_verdict(g, est):
+    """g = grounded €/night, est = est_price_eur (Stage-1 estimate).
+    Grounding no longer kills on price — the deterministic scorer downstream handles
+    price entirely. confirm if the live price is close to the estimate, else correct."""
+    if est and g <= est * 1.15:
         return "confirm", "high"
     return "correct", "high"
 
@@ -454,7 +455,7 @@ def _to_stage3(rate, verdict, confidence, ref, today, mode="verified"):
         summary = (
             f"Verified {hotel_name}{stars_str} for {dates_str}: €{ppn}/night "
             f"(€{tot} total, {nts} nights){score_str}. "
-            f"Price differs from Stage-1 estimate but remains under the ceiling."
+            f"Price corrected from the Stage-1 estimate."
         )
     else:
         summary = (
@@ -541,7 +542,7 @@ def _to_stage3_alternatives(rates, ref, today):
         "how_to_book":       "Search the listed properties on Booking.com for the dates above.",
         "grounding":         (
             f"Booking.com (apidojo) city search {chk_in}-{chk_out}, "
-            f"order_by=price, review_score>=8.0, price<=ceiling. "
+            f"order_by=price, review_score>=8.0. "
             f"{len(rates)} option(s) returned."
         ),
         "assistant_summary": summary,
@@ -564,7 +565,6 @@ def ground_api(diamond, mem_text, today):
 
         destination = diamond.get("destination", "")
         est         = diamond.get("est_price_eur") or 0
-        ceiling     = C.get_price_ceiling(destination)
 
         ref = resolve_hotel(diamond)
         if not ref:
@@ -581,12 +581,12 @@ def ground_api(diamond, mem_text, today):
             rate = price(ref, chk_in, chk_out)
             if not rate:
                 raise ValueError(f"Brand sanity failed for {destination} {chk_in}-{chk_out}")
-            verdict, _ = _decide_verdict(rate["price_per_night_eur"], est, ceiling)
+            verdict, _ = _decide_verdict(rate["price_per_night_eur"], est)
             confidence = "high" if _is_explicit_short_window(diamond.get("window", "")) else "medium"
             return _to_stage3(rate, verdict, confidence, ref, today)
         else:
             # Alternatives path: city-wide best-value options
-            rates = _price_alternatives(ref, chk_in, chk_out, ceiling)
+            rates = _price_alternatives(ref, chk_in, chk_out)
             if not rates:
                 raise ValueError(f"No qualifying alternatives in {destination} {chk_in}-{chk_out}")
             return _to_stage3_alternatives(rates, ref, today)

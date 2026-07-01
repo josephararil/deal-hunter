@@ -1,28 +1,30 @@
 # Deal Hunter
 
-Finds genuinely exceptional hotel travel windows for a family of 3 (2 adults + child aged 4)
-based near Plovdiv, Bulgaria. One script, three LLM stages, live Booking.com rate verification.
-Runs daily on free GitHub Actions. Emails immediately when something is found; silent otherwise.
+Finds genuinely good-to-exceptional hotel travel windows for a family of 3 (2 adults + child
+aged 4) based near Plovdiv, Bulgaria. One script, three stages, live Booking.com rate
+verification, and a deterministic scoring model. Runs daily on free GitHub Actions and emails
+an honest tiered digest (💎 diamond / 👍 good) when something is worth knowing; silent otherwise.
 
 ## How it works
 
 ```
-find_city_anomalies.py   (daily, three-stage LLM gate)
+find_city_anomalies.py   (daily, three-stage gate)
    │
-   ├─ Stage 1 — find (web search)
-   │     Scores hotel/resort/flight/cruise candidates 0–100.
-   │     est_price_eur per candidate → ceiling gate (Bulgaria/Turkey €100; rest €130).
+   ├─ Stage 1 — FIND (web search)
+   │     Scores hotel/resort/flight/cruise candidates 0–100 with an est_price_eur.
+   │     Gate: FIND score ≥ 80 → grounding. No price filter (price is scored later).
    │
-   ├─ Stage 2 — skeptic (no search, hostile reviewer)
-   │     Forwards only score ≥ 80 AND under-ceiling candidates.
-   │     Default outcome is silence. Most candidates die here.
+   ├─ Stage 2 — GROUND (Booking.com live rates → LLM fallback)
+   │     providers.ground_api() fetches live nightly rates (apidojo RapidAPI); fuzzy-matches
+   │     the named hotel; falls back to LLM concierge + web search on failure.
+   │     kill → dropped. confirm/correct → real price merged and forwarded to scoring
+   │     (unless a data-quality guard trips: low confidence / dates out of window).
    │
-   └─ Stage 3 — verify (Booking.com live rates → LLM fallback)
-         providers.ground_api() fetches live nightly rates from Booking.com (apidojo RapidAPI).
-         Fuzzy-matches the named hotel; falls back to LLM concierge + web search on any failure.
-         verdict: confirm | correct | kill.
-         confirm/correct → email (if confidence ≥ medium, grounded price ≤ ceiling, dates in window).
-         kill → silence.
+   └─ Stage 3 — SCORE (LLM desirability score + deterministic modifiers)
+         The LLM returns a 0–100 desirability score (price held neutral). The pipeline then
+         computes: final = llm_score + price_adj (vs regional par) + transit_adj (drive/fly).
+         final ≥ 85 → 💎 diamond · ≥ 68 → 👍 good · below → skip (logged only).
+         diamond/good are emailed. Every score is recorded — no veto throws information away.
 ```
 
 State files (`state/`) are committed back by CI after each run — no external database.
@@ -48,7 +50,7 @@ State files (`state/`) are committed back by CI after each run — no external d
    | Variable | Default | Effect |
    |---|---|---|
    | `LLM_PROVIDER` | `anthropic` | `anthropic` or `gemini` |
-   | `HOTEL_PROVIDER` | `apidojo` | Set to `""` to force LLM-only Stage-3 (no Booking.com calls) |
+   | `HOTEL_PROVIDER` | `apidojo` | Set to `""` to force LLM-only grounding (no Booking.com calls) |
    | `BOOKING_RAPIDAPI_HOST` | `apidojo-booking-v1.p.rapidapi.com` | Override the RapidAPI host |
 
 3. Enable Actions. Test via *Actions → daily → Run workflow*.
@@ -66,7 +68,7 @@ export ANTHROPIC_API_KEY=...  LLM_PROVIDER=anthropic  RAPIDAPI_KEY=...
 python find_city_anomalies.py   # writes state/; emails if diamonds found + SMTP vars set
 ```
 
-To skip Booking.com calls (LLM-only Stage 3):
+To skip Booking.com calls (LLM-only grounding):
 ```bash
 HOTEL_PROVIDER="" python find_city_anomalies.py
 ```
@@ -81,15 +83,18 @@ HOTEL_PROVIDER="" python test_stub.py  # full pipeline: LLM-only, stub llm()
 
 | Knob | Default | Effect |
 |---|---|---|
-| `STAGE1_MIN_SCORE` | 80 | Minimum score to forward to Stage 2. Raise to reduce email frequency. |
-| `MAX_EMAILS_PER_RUN` | 3 | Cap on diamonds per email. |
-| `SIGNAL_TTL_DAYS` | 30 | Anti-spam TTL per destination+window pair. |
-| `PRICE_CEILING_EUR` | BG/TR: €100, rest: €130 | Hard per-night ceiling; over-ceiling deals are never emailed. |
+| `STAGE1_MIN_SCORE` | 80 | Minimum FIND score to forward a candidate to grounding (triage only; no price filter). |
+| `MAX_EMAILS_PER_RUN` | 3 | Cap on picks per digest email (diamonds first). |
+| `SIGNAL_TTL_DAYS` | 14 | Anti-spam TTL per destination+window pair. |
+| `DIAMOND_PAR_EUR` | BG €80, TR €85, rest €110 | Per-night reference price. Below par → score bonus, above → penalty. Not a wall. |
+| `PRICE_SCORE_WEIGHT` / `PRICE_BONUS_CAP` | 50 / 15 | Strength of the price modifier; bonus capped, penalty uncapped. |
+| `TRANSIT_TIER1_BONUS` / `TIER2` | +3 / −3 | Deterministic drive-vs-fly score nudge. |
+| `DIAMOND_SCORE_THRESHOLD` / `GOOD_SCORE_THRESHOLD` | 85 / 68 | Final-score cutoffs for 💎 / 👍. |
 
 ## Cost
 
 LLM calls are cheap at this volume (a few per day, Claude Haiku/Sonnet or Gemini).
-Booking.com rate lookups via RapidAPI are one call per Stage-2 survivor (rare — typically
-0–1 per day). The LLM fallback fires on any API failure.
+Booking.com rate lookups via RapidAPI are one call per gate survivor (typically 3–5 per day).
+The LLM fallback fires on any API failure.
 
 See `CLAUDE.md` for full design rationale, pipeline invariants, and grounding seam details.

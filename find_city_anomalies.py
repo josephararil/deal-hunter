@@ -1,22 +1,24 @@
 """
 find_city_anomalies.py  —  Diamond Finder (daily; apidojo grounding with LLM fallback)
 
-Three-stage gate:
+Three-stage gate (grounding runs BEFORE the skeptic, so desirability is judged on the
+real bookable price rather than the Stage-1 estimate):
   Stage 1 (find):    one llm() call with web search. Asks for travel-arbitrage
                      candidates scored 0-100 across hotels, cruises, flight fares,
                      packages, and currency plays reachable from Plovdiv.
-  Stage 2 (skeptic): one llm() call, no search. Hostile reviewer confirms only
-                     genuinely exceptional candidates (verdict: keep / kill).
-  Stage 3 (verify):  one llm() call per Stage-2 survivor, with web search.
-                     Grounds the deal in real prices at specific bookable dates;
-                     corrects or kills hallucinations. (verdict: confirm/correct/kill)
+  Stage 2 (ground):  one ground_deal() call per gate survivor. Fetches live Booking.com
+                     prices at bookable dates; drops hallucinations/over-ceiling deals and
+                     merges the real price onto the survivors. (verdict: confirm/correct/kill)
+  Stage 3 (skeptic): one llm() call, no search. Judges the LIVE price against absolute
+                     per-country bands and assigns a tier (diamond / good / skip).
 
 Outputs every run:
   state/city_signals.json  — Stage 1 candidate list (hunt=False always; schema kept for reference)
-  state/city_signals.md    — human-readable log including Stage 3 outcomes; useful even on silent days
+  state/city_signals.md    — human-readable log including grounding + tier outcomes
   state/signals_seen.json  — anti-spam TTL state, committed by CI
 
-Emails immediately when diamonds survive all three stages. Silence is the normal outcome.
+Emails a short digest when anything is tiered diamond or good. A day with only skips
+(or nothing found) sends nothing — the normal outcome.
 """
 
 import json, datetime as dt
@@ -39,6 +41,29 @@ def _section(title):
 def _eur(v):
     """Format an optional EUR price for the log; '€?' when unknown."""
     return f"€{v}" if v is not None else "€?"
+
+
+# Tier labels for the email/markdown (emoji ok in HTML/MD — never in console prints).
+TIER_LABEL = {"diamond": "💎 Diamond", "good": "👍 Good find"}
+
+
+def _baseline_note(baselines, destination, window, grounded_ppn):
+    """Short 'typically ~€X/night — N% under/over' note if a baseline exists for this
+    destination+season, else ''. `baselines` must be the PRIOR-run snapshot (taken before
+    this run recorded its own prices), else a deal compares against itself."""
+    if grounded_ppn is None:
+        return ""
+    season = M.season_key(window or "")
+    b = (baselines or {}).get(f"{destination}|{season}")
+    base = b.get("realistic_price_eur") if b else None
+    if not base:
+        return ""
+    diff = (grounded_ppn - base) / base * 100
+    if diff <= -5:
+        return f"Typically ~€{base}/night here — this is {abs(round(diff))}% under."
+    if diff >= 5:
+        return f"Typically ~€{base}/night here — this is {round(diff)}% over."
+    return f"Typically ~€{base}/night here — about the usual rate."
 
 
 # --- stage correlation helper ---
@@ -94,11 +119,22 @@ def increment_monthly(state):
 
 # --- email builders ---
 
-def build_email_html(diamonds, month_count):
+def build_email_html(diamonds, month_count, baselines):
     rows = ""
     for d in diamonds:
         type_label = d.get("type", "").replace("_", " ").title()
         summary = d.get("assistant_summary") or d.get("reason", "")
+        tier = d.get("tier", "good")
+        tier_badge = TIER_LABEL.get(tier, "👍 Good find")
+        badge_color = "#0a7d2e" if tier == "diamond" else "#8a6d00"
+
+        # "typically ~€X/night — N% under" comparison from prior-run baselines, if any.
+        base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
+                                   d.get("grounded_price_per_night_eur"))
+        base_html = (
+            f"<div style='font-size:13px;color:#555;margin:4px 0'>{base_note}</div>"
+            if base_note else ""
+        )
 
         # Options list — each with dates, price, and a booking link or how-to-book text
         opts_html = ""
@@ -131,6 +167,14 @@ def build_email_html(diamonds, month_count):
                 f"<b>How to book:</b> {d['how_to_book']}</div>"
             )
 
+        # Family-price caveat for hotel deals: apidojo's live rate can under-report the
+        # child surcharge (the exact trap that made a €103/night rate become €340 on click).
+        child_caveat_html = (
+            f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>"
+            f"⚠ Live rate is a base room price — reconfirm the 4-year-old is included at "
+            f"this price on Booking before booking; child surcharges aren't always reflected.</div>"
+            if d.get("type") == "hotel" else ""
+        )
         grounding_html = (
             f"<div style='font-size:12px;color:#777;margin:4px 0'>Source: {d['grounding']}</div>"
             if d.get("grounding") else ""
@@ -142,46 +186,61 @@ def build_email_html(diamonds, month_count):
 
         rows += (
             f"<tr><td style='padding:14px 0;border-bottom:1px solid #eee'>"
+            f"<div style='font-size:12px;font-weight:bold;color:{badge_color};margin-bottom:2px'>{tier_badge}</div>"
             f"<div style='font-size:17px;font-weight:bold'>{d['destination']}</div>"
             f"<div style='font-size:13px;color:#777;margin:3px 0'>"
             f"{type_label} &nbsp;·&nbsp; {d.get('window', '')}</div>"
             f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
+            f"{base_html}"
             f"{opts_html}"
+            f"{child_caveat_html}"
             f"{grounding_html}"
             f"{red_flags_html}"
             f"</td></tr>"
         )
 
+    n_diamond = sum(1 for d in diamonds if d.get("tier") == "diamond")
+    n_good = len(diamonds) - n_diamond
+    headline = " · ".join(p for p in [
+        f"{n_diamond} diamond" if n_diamond else "",
+        f"{n_good} good find(s)" if n_good else "",
+    ] if p) or f"{len(diamonds)} find(s)"
+
     conscience = ""
-    if month_count >= 3:
+    if month_count >= 8:
         conscience = (
             f"<p style='color:#999;font-size:12px;margin-top:16px'>"
             f"Note: {month_count} email(s) sent this month — firing more than usual. "
-            f"All are genuine finds, but worth checking if the threshold needs tuning.</p>"
+            f"All are genuine finds, but worth checking if the tier bands need tuning.</p>"
         )
     return (
         f"<div style='font-family:system-ui,sans-serif;max-width:640px;padding:8px'>"
         f"<h2 style='margin-bottom:4px'>Diamond Finder</h2>"
-        f"<p style='color:#555;margin:0 0 16px'>"
-        f"{len(diamonds)} exceptional travel window(s) confirmed today</p>"
+        f"<p style='color:#555;margin:0 0 16px'>Today's digest — {headline}</p>"
         f"<table style='width:100%;border-collapse:collapse'>{rows}</table>"
         f"{conscience}"
         f"<p style='color:#bbb;font-size:11px;margin-top:16px'>"
-        f"Silence is the normal outcome. This fired because something is genuinely unusual. "
-        f"Verify before booking.</p>"
+        f"Prices are live from Booking.com at send time. 💎 diamonds are rare grab-it finds; "
+        f"👍 good finds are solid but not urgent. Verify before booking.</p>"
         f"</div>"
     )
 
 
-def build_email_text(diamonds):
+def build_email_text(diamonds, baselines):
     parts = []
     for d in diamonds:
         summary = d.get("assistant_summary") or d.get("reason", "")
+        tier = d.get("tier", "good")
+        tier_label = "DIAMOND" if tier == "diamond" else "GOOD FIND"
         lines = [
-            f"{d['destination']} ({d.get('type', '')})",
+            f"[{tier_label}] {d['destination']} ({d.get('type', '')})",
             f"Window: {d.get('window', '')}",
             summary,
         ]
+        base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
+                                   d.get("grounded_price_per_night_eur"))
+        if base_note:
+            lines.append(base_note)
         options = d.get("options") or []
         if options:
             lines.append("Options:")
@@ -202,6 +261,9 @@ def build_email_text(diamonds):
                 lines.append(f"  - {cells}")
         elif d.get("how_to_book"):
             lines.append(f"How to book: {d['how_to_book']}")
+        if d.get("type") == "hotel":
+            lines.append("Note: live rate is a base room price — reconfirm the 4-year-old "
+                         "is included at this price on Booking before booking.")
         if d.get("grounding"):
             lines.append(f"Source: {d['grounding']}")
         if d.get("red_flags"):
@@ -212,51 +274,68 @@ def build_email_text(diamonds):
 
 # --- markdown log ---
 
-def write_md(today, candidates, diamonds, stage3_results=None, over_ceiling=None):
-    diamond_dests = {d["destination"] for d in diamonds}
-    over_ceiling_dests = {c["destination"] for c in (over_ceiling or [])}
+def write_md(today, candidates, picks, grounding_results=None, scores=None):
+    """Human-readable run log. picks = diamond/good candidates; grounding_results =
+    {deal_id: stage3 result} for every grounded candidate; scores = {deal_id: {llm,
+    price_adj, transit_adj, final, tier, why, red_flags}} for every scored candidate."""
+    grounding_results = grounding_results or {}
+    scores = scores or {}
+    n_diamond = sum(1 for s in scores.values() if s.get("tier") == "diamond")
+    n_good = sum(1 for s in scores.values() if s.get("tier") == "good")
+
+    def _sgn(n):
+        return f"+{n}" if n is not None and n >= 0 else (f"{n}" if n is not None else "?")
+
     lines = [f"# Diamond Finder — {today}", ""]
     if not candidates:
         lines.append("_No candidates found today._")
     else:
-        oc_count = len(over_ceiling or [])
         lines.append(
             f"_Stage 1: {len(candidates)} candidate(s). "
-            f"{len(diamonds)} Stage-2 diamond(s). "
-            + (f"{oc_count} over-ceiling (logged only). " if oc_count else "")
-            + f"{len(stage3_results or [])} Stage-3 verified._"
+            f"{len(grounding_results)} grounded · {len(scores)} scored. "
+            f"{n_diamond} diamond · {n_good} good._"
         )
         lines.append("")
         for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
             dest = c.get("destination", "?")
-            if dest in diamond_dests:
-                marker = " 💎"
-            elif dest in over_ceiling_dests:
-                marker = " 🔒"
-            else:
-                marker = ""
-            score = c.get("score", 0)
+            did = c.get("deal_id")
+            s = scores.get(did)
+            tier = s.get("tier") if s else None
+            marker = {"diamond": " 💎", "good": " 👍", "skip": " ·"}.get(tier, "")
+            find_score = c.get("score", 0)
             conf = c.get("confidence", "?")
             est = c.get("est_price_eur")
             est_str = f" · est €{est}/night" if est is not None else ""
-            lines.append(f"### {dest}{marker} — {score}/100 ({conf}){est_str}")
+            lines.append(f"### {dest}{marker} — FIND {find_score}/100 ({conf}){est_str}")
             lines.append(
                 f"**Type:** {c.get('type', '?')} &nbsp; **Window:** {c.get('window', '?')}"
             )
             lines.append(f"{c.get('reason', '')}")
-            if dest in over_ceiling_dests:
-                ceiling = C.get_price_ceiling(dest)
-                lines.append(f"_🔒 Over ceiling — est €{est}/night > €{ceiling} ceiling. Logged only, not emailed._")
+            if s:
+                lines.append(
+                    f"_Score: LLM {s['llm']} {_sgn(s['price_adj'])} price "
+                    f"{_sgn(s['transit_adj'])} transit = **{s['final']}** → {tier}_"
+                )
+                if s.get("why"):
+                    lines.append(f"_Scorer: {s['why']}_")
             lines.append("")
-    if stage3_results:
-        lines.append("## Stage 3 Verification")
+
+    if grounding_results:
+        lines.append("## Grounding & scoring")
         lines.append("")
-        for r in stage3_results:
+        # Iterate in candidate order for stability.
+        for c in sorted(candidates, key=lambda x: x.get("score", 0), reverse=True):
+            did = c.get("deal_id")
+            r = grounding_results.get(did)
+            if not r:
+                continue
             verdict3 = r.get("verdict", "?")
             icon = "✅" if verdict3 == "confirm" else "🔧" if verdict3 == "correct" else "❌"
-            dest3 = r.get("destination", "?")
+            dest3 = r.get("destination", c.get("destination", "?"))
             conf3 = r.get("confidence", "?")
-            lines.append(f"### {icon} {dest3} — {verdict3.upper()} (confidence: {conf3})")
+            s = scores.get(did)
+            score_str = f" → final **{s['final']}** ({s['tier']})" if s else ""
+            lines.append(f"### {icon} {dest3} — {verdict3.upper()} (confidence: {conf3}){score_str}")
             if r.get("assistant_summary"):
                 lines.append(f"**Summary:** {r['assistant_summary']}")
             opts = r.get("options", [])
@@ -276,7 +355,7 @@ def write_md(today, candidates, diamonds, stage3_results=None, over_ceiling=None
             if r.get("grounding"):
                 lines.append(f"**Grounding:** {r['grounding']}")
             if r.get("_block_reason"):
-                lines.append(f"_🔒 Email blocked: {r['_block_reason']}_")
+                lines.append(f"_🔒 Not scored (data-quality guard): {r['_block_reason']}_")
             lines.append("")
     with open("state/city_signals.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
@@ -338,10 +417,16 @@ def main():
     today = X.today_iso()
     _section(f"DIAMOND FINDER · {today} · provider={X.PROVIDER}")
     print(f"  models:  find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}")
-    print(f"  gate:    score>={C.STAGE1_MIN_SCORE} · ceilings={C.PRICE_CEILING_EUR} default €{C.DEFAULT_PRICE_CEILING_EUR} · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
+    print(f"  gate:    FIND score>={C.STAGE1_MIN_SCORE} -> ground · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
+    print(f"  scoring: par={C.DIAMOND_PAR_EUR} default €{C.DEFAULT_DIAMOND_PAR_EUR} · "
+          f"price x{C.PRICE_SCORE_WEIGHT} (bonus<={C.PRICE_BONUS_CAP}) · transit +/-{C.TRANSIT_TIER1_BONUS} · "
+          f"diamond>={C.DIAMOND_SCORE_THRESHOLD} good>={C.GOOD_SCORE_THRESHOLD}")
 
-    # Load memory once; inject into all three stage prompts
+    # Load memory once; inject into all three stage prompts. Snapshot the baselines as
+    # they were BEFORE this run so the email's "typically ~€X/night" comparison reflects
+    # prior normals, not the prices this same run is about to record.
     mem = M.load()
+    prior_baselines = {**mem.get("baselines", {})}
     mem_text = M.summarize_for_prompt(mem)
     print(f"  memory:  {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) loaded")
 
@@ -387,129 +472,53 @@ def main():
                   f"{c.get('destination', '?')} [{c.get('type', '?')}]"
                   + (f" — {hotel}" if hotel else ""))
 
-    # Stage 1 gate: score threshold, then price ceiling. Below-threshold and over-ceiling
-    # candidates are dropped here (over-ceiling ones are still recorded in memory below).
-    below_threshold  = [c for c in candidates if c.get("score", 0) < C.STAGE1_MIN_SCORE]
-    high_score       = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
-    stage2_candidates, over_ceiling = [], []
-    for c in high_score:
-        est = c.get("est_price_eur")
-        ceiling = C.get_price_ceiling(c.get("destination", ""))
-        if est is not None and est > ceiling:
-            over_ceiling.append(c)
-        else:
-            stage2_candidates.append(c)
+    # Stage 1 gate: forward only candidates FIND scored highly enough to be worth grounding.
+    # This is pure triage on FIND's estimate (cost control). There is NO price filter here —
+    # price is handled later by the deterministic scorer, so nothing is dropped on price.
+    gate_survivors  = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
+    below_threshold = [c for c in candidates if c.get("score", 0) < C.STAGE1_MIN_SCORE]
 
     if candidates:
-        print(f"  gate (score >= {C.STAGE1_MIN_SCORE} AND est_price <= country ceiling):")
+        print(f"  gate (FIND score >= {C.STAGE1_MIN_SCORE}; no price filter — price is scored later):")
         for c in below_threshold:
-            print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — score {c.get('score', '?')} < {C.STAGE1_MIN_SCORE}")
-        for c in over_ceiling:
-            ceiling = C.get_price_ceiling(c.get("destination", ""))
-            print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — {_eur(c.get('est_price_eur'))} > €{ceiling} ceiling (recorded as over_ceiling)")
-        for c in stage2_candidates:
-            print(f"    [PASS ] #{c.get('deal_id')} {c.get('destination', '?')} -> skeptic")
-        print(f"  -> {len(stage2_candidates)} forwarded · {len(below_threshold)} below-threshold · {len(over_ceiling)} over-ceiling")
+            print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — FIND score {c.get('score', '?')} < {C.STAGE1_MIN_SCORE}")
+        for c in gate_survivors:
+            print(f"    [PASS ] #{c.get('deal_id')} {c.get('destination', '?')} -> grounding")
+        print(f"  -> {len(gate_survivors)} forwarded · {len(below_threshold)} below-threshold")
 
-    # Record over-ceiling candidates in memory now (before Stage 2)
-    for c in over_ceiling:
-        ceiling = C.get_price_ceiling(c.get("destination", ""))
-        M.record_outcome(
-            mem, c.get("destination", ""), c.get("window", ""), c.get("type", ""),
-            claimed_price=c.get("est_price_eur"),
-            verdict="over_ceiling",
-            source=f"est_price_eur {c.get('est_price_eur')} > ceiling {ceiling}",
-            note=M._clip(c.get("reason", ""), 200),
-        )
-
-    # Stage 2: skeptic review, no search
-    _section("STAGE 2 · SKEPTIC — hostile review")
-    diamonds = []
-    if not stage2_candidates:
-        print("  nothing to review — no candidate cleared the Stage 1 gate")
-    else:
-        print(f"  reviewing {len(stage2_candidates)} candidate(s)…")
-        skeptic = C.SKEPTIC_PROMPT.format(
-            today=today,
-            min_score=C.STAGE1_MIN_SCORE,
-            candidates=json.dumps(stage2_candidates, ensure_ascii=False, indent=2),
-            memory=mem_text,
-        )
-        try:
-            raw2 = X.llm(
-                messages=[{"role": "user", "content": skeptic}],
-                model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
-                response_schema=C.STAGE2_RESPONSE_SCHEMA,
-                provider=C.PROVIDER_SKEPTIC,
-            )
-            verdicts = X.parse_json_block(raw2) or []
-        except Exception as e:
-            print(f"  [FAIL] Stage 2 LLM/parse error: {type(e).__name__}: {e} — treating as 0 diamonds (silent day)")
-            verdicts = []
-        if not isinstance(verdicts, list):
-            verdicts = []
-        n_kill = 0
-        for v in verdicts:
-            if not isinstance(v, dict):
-                continue
-            verdict = v.get("verdict", "?")
-            orig    = _match_candidate(v, stage2_candidates)
-            dest    = (orig or v).get("destination", "?")
-            why     = M._clip(v.get("why", ""), 160)
-            if verdict == "keep":
-                if not orig:
-                    print(f"    [WARN ] keep verdict matched no candidate "
-                          f"(deal_id={v.get('deal_id')!r}, dest={v.get('destination')!r}) — dropped")
-                    continue
-                diamonds.append({**orig, "why": v.get("why", ""), "red_flags": v.get("red_flags", "")})
-                print(f"    [KEEP ] #{orig.get('deal_id')} {dest} — {why}")
-                flags = M._clip(v.get("red_flags") or "", 140)
-                if flags:
-                    print(f"             flags: {flags}")
-            elif verdict == "kill":
-                n_kill += 1
-                print(f"    [KILL ] {dest} — {why}")
-                if orig:
-                    # Record kills so future runs learn from them.
-                    M.record_outcome(
-                        mem, orig.get("destination", ""), orig.get("window", ""), orig.get("type", ""),
-                        claimed_price=orig.get("est_price_eur"),
-                        verdict="skeptic_kill",
-                        source=v.get("why", ""),
-                        note=M._clip(v.get("red_flags") or "", 200),
-                    )
-            else:
-                print(f"    [?????] {dest} — unrecognized verdict {verdict!r}")
-        print(f"  -> kept {len(diamonds)} · killed {n_kill}")
-
-    # Stage 3: verify each Stage-2 survivor with a focused web-search call.
-    # One ground_deal() call per deal (rare — almost always 0-2 per run).
-    # Merges verified fields onto the diamond dict; drops verdict=="kill".
-    _section("STAGE 3 · VERIFY — live grounding")
-    verified_diamonds = []
-    stage3_results = []
-    if not diamonds:
-        print("  nothing to verify — no diamond survived the skeptic")
+    # Stage 2: GROUND each gate survivor on live prices BEFORE scoring desirability.
+    # This is the pivot of the pipeline: the scorer must reason about the REAL bookable
+    # price, not the Stage-1 estimate. A grounding kill (hotel not found / hallucination)
+    # drops the candidate here; a confirm/correct carries the live price on to the scorer.
+    # Data-quality guards (unusable/low-confidence price, dates out of window) block a
+    # candidate from scoring — but NOT a price ceiling (price is scored, never a wall).
+    _section("STAGE 2 · GROUND — live price verification")
+    grounded = []            # candidates (with grounded fields merged) forwarded to scorer
+    grounding_results = {}    # deal_id -> stage3 result, for every grounded candidate
+    if not gate_survivors:
+        print("  nothing to ground — no candidate cleared the Stage 1 gate")
     else:
         provider_label = ("Booking.com apidojo (LLM fallback)"
                           if (C.HOTEL_PROVIDER or "").strip().lower() == "apidojo"
                           else "LLM concierge")
-        print(f"  verifying {len(diamonds)} survivor(s) via {provider_label}…")
-        for diamond in diamonds:
-            dest3 = diamond.get("destination", "?")
+        print(f"  grounding {len(gate_survivors)} candidate(s) via {provider_label}…")
+        for c in gate_survivors:
+            dest = c.get("destination", "?")
+            did  = c.get("deal_id")
             try:
-                result = ground_deal(diamond, mem_text, today)
+                result = ground_deal(c, mem_text, today)
             except Exception as e:
-                print(f"    [FAIL ] {dest3}: grounding raised {type(e).__name__}: {e} — treating as kill")
+                print(f"    [FAIL ] #{did} {dest}: grounding raised {type(e).__name__}: {e} — treating as kill")
                 result = {}
             if not result:
                 result = {}
+            grounding_results[did] = result
             verdict3 = result.get("verdict", "kill")
             conf3    = result.get("confidence", "low")
             options3 = result.get("options") or []
             summary3 = M._clip(result.get("assistant_summary") or result.get("grounding") or "", 200)
 
-            print(f"    [{verdict3.upper():<7}] {dest3}  (confidence={conf3})")
+            print(f"    [{verdict3.upper():<7}] #{did} {dest}  (confidence={conf3})")
             if options3:
                 o = options3[0]
                 print(f"             grounded: {_eur(o.get('price_per_night_eur'))}/night · "
@@ -517,65 +526,180 @@ def main():
             if summary3:
                 print(f"             {summary3}")
 
-            # Email guards: confidence must be medium/high, dates must be in window,
-            # and grounded price must be under the country ceiling.
-            if verdict3 in ("confirm", "correct"):
-                first_dates = options3[0].get("dates", "") if options3 else ""
-                grounded_price = options3[0].get("price_per_night_eur") if options3 else None
-                ceiling = C.get_price_ceiling(diamond.get("destination", ""))
-                block_reason = None
-                if conf3 == "low":
-                    block_reason = "low confidence"
-                elif not _dates_in_window(first_dates, diamond.get("window", "")):
-                    block_reason = f"dates out of window ({first_dates!r} vs candidate window {diamond.get('window', '')!r})"
-                elif grounded_price is not None and grounded_price > ceiling:
-                    block_reason = f"grounded €{grounded_price} > €{ceiling} ceiling"
-                if block_reason:
-                    result["_block_reason"] = block_reason
-                    print(f"             [BLOCK] not emailed: {block_reason}")
-                else:
-                    print(f"             [EMAIL-ELIGIBLE]")
-                    verified_diamonds.append({**diamond, **{
-                        "verdict": verdict3,
-                        "options": result.get("options", []),
-                        "how_to_book": result.get("how_to_book", ""),
-                        "grounding": result.get("grounding", ""),
-                        "assistant_summary": result.get("assistant_summary", ""),
-                        "confidence": result.get("confidence", "low"),
-                    }})
-            stage3_results.append(result)
-        print(f"  -> {len(verified_diamonds)} email-eligible diamond(s)")
+            if verdict3 == "kill":
+                print(f"             [DROP] grounding kill — not forwarded to scorer")
+                continue
 
-    # Record outcomes and baselines in memory — every run, including silent days.
-    # diamonds and stage3_results are parallel lists (same order, same length).
-    for diamond, r3 in zip(diamonds, stage3_results):
-        dest     = diamond.get("destination", "")
-        window   = diamond.get("window", "")
-        type_    = diamond.get("type", "")
-        verdict3 = r3.get("verdict", "kill") if r3 else "kill"
-        options  = (r3.get("options") or []) if r3 else []
+            # confirm/correct: data-quality guards only (no price ceiling).
+            first_dates    = options3[0].get("dates", "") if options3 else ""
+            block_reason = None
+            if conf3 == "low":
+                block_reason = "low confidence (unreliable price)"
+            elif not options3:
+                block_reason = "no grounded option returned"
+            elif not _dates_in_window(first_dates, c.get("window", "")):
+                block_reason = f"dates out of window ({first_dates!r} vs candidate window {c.get('window', '')!r})"
+            if block_reason:
+                result["_block_reason"] = block_reason
+                print(f"             [BLOCK] not forwarded to scorer: {block_reason}")
+                continue
+
+            o = options3[0]
+            grounded.append({**c,
+                "verdict": verdict3,
+                "options": options3,
+                "how_to_book": result.get("how_to_book", ""),
+                "grounding": result.get("grounding", ""),
+                "assistant_summary": result.get("assistant_summary", ""),
+                "confidence": conf3,
+                "grounded_price_per_night_eur": o.get("price_per_night_eur"),
+                "grounded_total_eur": o.get("total_eur"),
+                "grounded_nights": o.get("nights"),
+                "grounded_dates": o.get("dates"),
+            })
+            print(f"             [-> SCORER]")
+        print(f"  -> {len(grounded)} grounded candidate(s) forwarded to scorer")
+
+    # Stage 3: SCORER. The LLM returns a 0-100 desirability score per grounded candidate
+    # (price held neutral). The pipeline then applies deterministic modifiers
+    # (compute_final_score: price-vs-par + drive-vs-fly) and derives the tier from the final
+    # score. Nothing is vetoed by the LLM — a low final score is dropped by default, but the
+    # full breakdown (llm · price_adj · transit_adj · final · tier) is recorded for every
+    # candidate so no signal is lost and the LLM's judgment stays visible for tuning.
+    _section("STAGE 3 · SCORE — desirability + deterministic modifiers")
+    picks = []     # diamond/good candidates — email-eligible
+    scores = {}    # deal_id -> {llm, price_adj, transit_adj, final, tier, why, red_flags}
+    if not grounded:
+        print("  nothing to score — no candidate survived grounding")
+    else:
+        print(f"  scoring {len(grounded)} grounded candidate(s)…")
+        scorer_input = [{
+            "deal_id":                      c.get("deal_id"),
+            "destination":                  c.get("destination", ""),
+            "type":                         c.get("type", ""),
+            "window":                       c.get("window", ""),
+            "grounded_price_per_night_eur": c.get("grounded_price_per_night_eur"),
+            "grounded_total_eur":           c.get("grounded_total_eur"),
+            "grounded_nights":              c.get("grounded_nights"),
+            "grounded_dates":               c.get("grounded_dates"),
+            "diamond_par_eur":              C.get_diamond_par(c.get("destination", "")),
+            "grounding_summary":            c.get("assistant_summary", ""),
+            "original_est_price_eur":       c.get("est_price_eur"),
+            "reason":                       c.get("reason", ""),
+        } for c in grounded]
+        scorer = C.SKEPTIC_PROMPT.format(
+            today=today,
+            diamond_threshold=C.DIAMOND_SCORE_THRESHOLD,
+            good_threshold=C.GOOD_SCORE_THRESHOLD,
+            candidates=json.dumps(scorer_input, ensure_ascii=False, indent=2),
+            memory=mem_text,
+        )
+        try:
+            raw2 = X.llm(
+                messages=[{"role": "user", "content": scorer}],
+                model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+                response_schema=C.STAGE2_RESPONSE_SCHEMA,
+                provider=C.PROVIDER_SKEPTIC,
+            )
+            verdicts = X.parse_json_block(raw2) or []
+        except Exception as e:
+            print(f"  [FAIL] Stage 3 scorer LLM/parse error: {type(e).__name__}: {e} — treating as 0 scores (silent day)")
+            verdicts = []
+        if not isinstance(verdicts, list):
+            verdicts = []
+        # Index the LLM scores by deal_id (robust to paraphrased destinations).
+        llm_by_id = {}
+        for v in verdicts:
+            if not isinstance(v, dict):
+                continue
+            orig = _match_candidate(v, grounded)
+            if orig:
+                llm_by_id[orig.get("deal_id")] = v
+            else:
+                print(f"    [WARN  ] score matched no candidate "
+                      f"(deal_id={v.get('deal_id')!r}, dest={v.get('destination')!r})")
+
+        def _sgn(n):
+            return f"+{n}" if n >= 0 else f"{n}"
+
+        for c in grounded:
+            did  = c.get("deal_id")
+            dest = c.get("destination", "?")
+            v    = llm_by_id.get(did)
+            if v is None:
+                print(f"    [WARN  ] #{did} {dest} — no score returned; treating as 0")
+            raw_llm = (v or {}).get("score")
+            llm_val = raw_llm if isinstance(raw_llm, (int, float)) else 0
+            why     = (v or {}).get("why", "")
+            red     = (v or {}).get("red_flags", "")
+            ppn     = c.get("grounded_price_per_night_eur")
+            final, price_adj, transit_adj = C.compute_final_score(llm_val, ppn, dest)
+            tier = C.tier_for_score(final)
+            scores[did] = {"llm": llm_val, "price_adj": price_adj, "transit_adj": transit_adj,
+                           "final": final, "tier": tier, "why": why, "red_flags": red}
+
+            label = {"diamond": "DIAMOND", "good": "GOOD", "skip": "SKIP"}[tier]
+            print(f"    [{label:<7}] #{did} {dest} — llm {llm_val} {_sgn(price_adj)} price "
+                  f"{_sgn(transit_adj)} transit = {final} -> {tier}")
+            wl = M._clip(why, 150)
+            if wl:
+                print(f"             {wl}")
+
+            if tier in ("diamond", "good"):
+                picks.append({**c, "tier": tier, "final_score": final,
+                              "llm_score": llm_val, "why": why, "red_flags": red})
+
+        n_diamond = sum(1 for p in picks if p["tier"] == "diamond")
+        n_good    = len(picks) - n_diamond
+        n_skip    = len(grounded) - len(picks)
+        print(f"  -> {n_diamond} diamond · {n_good} good · {n_skip} skip")
+
+    # Record outcomes + baselines for every gate survivor that reached grounding.
+    # Every candidate's score breakdown is stored (final_score/llm_score) so memory keeps
+    # the full signal — a good deal that scored 69 today may score 74 next week at a lower
+    # price, and that history is now visible rather than thrown away by a veto.
+    for c in gate_survivors:
+        did       = c.get("deal_id")
+        r3        = grounding_results.get(did) or {}
+        g_verdict = r3.get("verdict", "kill")
+        options   = r3.get("options") or []
         actual_price = options[0].get("price_per_night_eur") if options else None
-        source3  = (options[0].get("source", "") if options
-                    else (r3.get("grounding", "") if r3 else ""))
-        summary  = M._clip((r3.get("assistant_summary") or "") if r3 else "", 200)
+        source3   = (options[0].get("source", "") if options else r3.get("grounding", ""))
+        sc        = scores.get(did)            # None if killed or guard-blocked before scoring
+        summary   = M._clip(r3.get("assistant_summary") or "", 200)
+
+        # Ledger verdict captures where the candidate ended up:
+        #   scored → its tier (diamond/good/skip); grounding kill → "kill";
+        #   grounded but guard-blocked before scoring → "blocked".
+        if sc:
+            ledger_verdict = sc["tier"]
+            note = M._clip(sc.get("why") or summary, 200)
+        elif g_verdict == "kill":
+            ledger_verdict = "kill"
+            note = summary
+        else:
+            ledger_verdict = "blocked"
+            note = M._clip(r3.get("_block_reason") or summary, 200)
 
         M.record_outcome(
-            mem, dest, window, type_,
-            claimed_price=diamond.get("est_price_eur"),
-            verdict=verdict3,
+            mem, c.get("destination", ""), c.get("window", ""), c.get("type", ""),
+            claimed_price=c.get("est_price_eur"),
+            verdict=ledger_verdict,
             actual_price=actual_price,
             source=source3,
-            note=summary,
+            note=note,
+            llm_score=(sc["llm"] if sc else None),
+            final_score=(sc["final"] if sc else None),
         )
-        # Only write a baseline when confidence is high AND grounded dates are in-window.
-        # Out-of-window or low-confidence verifications produce unreliable price data.
-        conf3 = (r3.get("confidence", "low") if r3 else "low")
+        # Baseline whenever grounding is confirm/correct, high-confidence, in-window —
+        # the live price is real regardless of the desirability tier (even a skip).
+        conf3 = r3.get("confidence", "low")
         first_dates = options[0].get("dates", "") if options else ""
-        if (verdict3 in ("confirm", "correct") and actual_price
+        if (g_verdict in ("confirm", "correct") and actual_price
                 and conf3 == "high"
-                and _dates_in_window(first_dates, window)):
-            season = M.season_key(first_dates or window)
-            M.record_baseline(mem, dest, season, actual_price,
+                and _dates_in_window(first_dates, c.get("window", ""))):
+            season = M.season_key(first_dates or c.get("window", ""))
+            M.record_baseline(mem, c.get("destination", ""), season, actual_price,
                               note=M._clip(summary, 300), source=source3)
 
     M.prune(mem)
@@ -583,17 +707,24 @@ def main():
     _section("MEMORY + OUTPUTS")
     print(f"  memory written: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) (pruned)")
 
-    # Write city_signals.json — hunt=False always; field kept for schema compatibility
-    # "anomaly" only for deals that survived all three stages (not just Stage-2)
-    verified_ids = {d.get("deal_id") for d in verified_diamonds}
+    # Write city_signals.json — hunt=False always; field kept for schema compatibility.
+    # "anomaly" only for deals that reached a diamond/good pick. The full score breakdown
+    # is attached to every candidate so the machine-readable log shows what the scorer did.
+    pick_ids = {p.get("deal_id") for p in picks}
     signals = [
         {
             "deal_id": c.get("deal_id"),
             "city": c.get("destination", ""),
             "window": c.get("window", ""),
             "reason": c.get("reason", ""),
-            "type": "anomaly" if c.get("deal_id") in verified_ids else "reminder",
+            "type": "anomaly" if c.get("deal_id") in pick_ids else "reminder",
             "confidence": c.get("confidence", "low"),
+            "find_score": c.get("score"),
+            "llm_score": (scores.get(c.get("deal_id")) or {}).get("llm"),
+            "price_adj": (scores.get(c.get("deal_id")) or {}).get("price_adj"),
+            "transit_adj": (scores.get(c.get("deal_id")) or {}).get("transit_adj"),
+            "final_score": (scores.get(c.get("deal_id")) or {}).get("final"),
+            "tier": (scores.get(c.get("deal_id")) or {}).get("tier"),
             "hunt": False,
         }
         for c in candidates
@@ -601,31 +732,36 @@ def main():
     X.save_json("city_signals.json", {"generated": today, "signals": signals})
 
     # Write markdown every run regardless of email outcome
-    write_md(today, candidates, diamonds, stage3_results, over_ceiling=over_ceiling)
+    write_md(today, candidates, picks, grounding_results, scores)
     n_anom = sum(1 for s in signals if s["type"] == "anomaly")
     print(f"  wrote state/city_signals.json ({len(signals)} signal(s), {n_anom} anomaly) + city_signals.md")
 
-    # Anti-spam check + email — uses verified_diamonds (Stage-3 survivors only)
+    # Anti-spam check + email — uses picks (diamond/good), diamonds first.
     _section("EMAIL — anti-spam gate + send")
     seen_state = load_seen()
     seen_state = prune_seen(seen_state)
 
-    new_diamonds = [
-        d for d in verified_diamonds
+    picks_sorted = sorted(picks, key=lambda p: 0 if p.get("tier") == "diamond" else 1)
+    new_picks = [
+        d for d in picks_sorted
         if not is_already_seen(seen_state, d["destination"], d["window"])
     ]
-    suppressed = len(verified_diamonds) - len(new_diamonds)
+    suppressed = len(picks) - len(new_picks)
     emailed = 0
 
-    if new_diamonds:
-        to_email = new_diamonds[:C.MAX_EMAILS_PER_RUN]
-        capped = len(new_diamonds) - len(to_email)
+    if new_picks:
+        to_email = new_picks[:C.MAX_EMAILS_PER_RUN]
+        capped = len(new_picks) - len(to_email)
         month_count = monthly_email_count(seen_state)
-        print(f"  {len(verified_diamonds)} eligible · {suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL "
+        n_d = sum(1 for d in to_email if d.get("tier") == "diamond")
+        print(f"  {len(picks)} eligible ({n_d} diamond) · {suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL "
               f"· {capped} over MAX_EMAILS_PER_RUN · sending {len(to_email)}")
-        subject = f"Diamond Find: {len(to_email)} exceptional travel window(s) — {today}"
-        html = build_email_html(to_email, month_count)
-        text = build_email_text(to_email)
+        if n_d:
+            subject = f"Diamond Finder: {n_d} diamond + {len(to_email) - n_d} good — {today}"
+        else:
+            subject = f"Diamond Finder: {len(to_email)} good travel find(s) — {today}"
+        html = build_email_html(to_email, month_count, prior_baselines)
+        text = build_email_text(to_email, prior_baselines)
         try:
             X.send_email(subject, html, text)
             for d in to_email:
@@ -635,16 +771,16 @@ def main():
             print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email)}")
         except Exception as e:
             print(f"  [FAIL] email send error: {type(e).__name__}: {e} (state not marked seen)")
-    elif verified_diamonds:
-        print(f"  {len(verified_diamonds)} eligible but all suppressed by {C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
+    elif picks:
+        print(f"  {len(picks)} eligible but all suppressed by {C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
     else:
-        print("  no email — silence is correct")
+        print("  no email — nothing tiered diamond/good today")
 
     X.save_json("signals_seen.json", seen_state)
 
     _section("RUN COMPLETE")
-    print(f"  {len(candidates)} found -> {len(stage2_candidates)} to skeptic -> {len(diamonds)} kept "
-          f"-> {len(verified_diamonds)} eligible -> {emailed} emailed")
+    print(f"  {len(candidates)} found -> {len(gate_survivors)} to grounding -> {len(grounded)} grounded "
+          f"-> {len(picks)} picks -> {emailed} emailed")
 
 
 if __name__ == "__main__":

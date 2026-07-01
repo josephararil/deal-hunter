@@ -173,7 +173,20 @@ ground_deal = _resolve_ground_deal()
   bound grounding cost. NO price filter at the gate.
 - **FIND scoring is triage; the scorer is authoritative.** FIND's score only decides who gets
   grounded. The Stage-3 scorer re-scores from the real price + full context; its score (plus
-  modifiers) is what tiers the deal.
+  modifiers) is what tiers the deal. FIND_PROMPT frames its score as "worth *investigating*?"
+  — explicitly NOT an email trigger — and tells FIND NOT to pre-penalise flights / far places
+  (the scorer owns that). This matters: if FIND self-censors Tier-2 ideas below the gate they
+  are silently killed before grounding, which is what made early runs an all-Bulgaria rotation.
+- **FIND carries a DISCOVERY MANDATE — variety is a feature, not noise.** The user already
+  knows the cheap nearby Bulgarian spa/coast/mountain towns; for those the tool is only a
+  reminder. FIND_PROMPT + SEARCH_PROMPT therefore require ≥1-2 genuinely left-field / novel /
+  Tier-2 candidates per run (direct-PDV cities like Bratislava, off-season city breaks, island
+  shoulder troughs, cruises), even at lower confidence, and the scout must return concrete
+  PRICED leads (not price-less "new openings"). This leans on two other invariants to be safe:
+  grounding is cheap (apidojo, 0 LLM) so investigating more candidates is affordable, and skips
+  are emailed so a left-field idea that scores middling still reaches the user as an idea. Do
+  NOT "tighten" FIND back toward value-only — the concentration on cheap Bulgaria that produces
+  is the exact failure this mandate fixes.
 - **Gemini token budgets carry thinking-token headroom.** `maxOutputTokens` caps hidden
   thinking + visible output combined; if it runs out mid-answer the JSON truncates
   (`finishReason=MAX_TOKENS`) and parses to nothing — indistinguishable from a quiet day.

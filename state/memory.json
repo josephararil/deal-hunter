@@ -29,6 +29,24 @@
       "note": "I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…",
       "source": "hu openair official booking engine check 2026-07-01",
       "updated": "2026-07-01"
+    },
+    "Rome, Italy|2026-08": {
+      "realistic_price_eur": 63.89,
+      "note": "Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-02",
+      "updated": "2026-07-02"
+    },
+    "Bansko, Bulgaria|2026-08": {
+      "realistic_price_eur": 167.61,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €167.61/night (€502.84 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-02",
+      "updated": "2026-07-02"
+    },
+    "Velingrad, Bulgaria|2026-08": {
+      "realistic_price_eur": 127,
+      "note": "I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…",
+      "source": "Spa Hotel Olimp official website price list 2026",
+      "updated": "2026-07-02"
     }
   },
   "ledger": [
@@ -270,6 +288,45 @@
       "final_score": 66,
       "source": "hu openair official booking engine check 2026-07-01",
       "note": "While the bungalow and pools offer a good toddler refuge, the exhausting logistics of driving to Sofia, flying, and navigating a major historic city severely dilute the net family value."
+    },
+    {
+      "date": "2026-07-02",
+      "destination": "Rome, Italy",
+      "window": "Aug 6-10, 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "good",
+      "actual_price": 63.89,
+      "llm_score": 58,
+      "final_score": 70,
+      "source": "Booking.com (apidojo) live 2026-07-02",
+      "note": "The logistical friction of flying from Sofia and the severe August heat in a major city heavily limit the net family utility for a 4-year-old, even with good on-site pools."
+    },
+    {
+      "date": "2026-07-02",
+      "destination": "Bansko, Bulgaria",
+      "window": "Aug 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "skip",
+      "actual_price": 167.61,
+      "llm_score": 81,
+      "final_score": 29,
+      "source": "Booking.com (apidojo) live 2026-07-02",
+      "note": "A highly convenient 2.5-hour drive and a perfectly sized 3-night stay with excellent 5-star kids' facilities deliver very high utility and zero transit fatigue."
+    },
+    {
+      "date": "2026-07-02",
+      "destination": "Velingrad, Bulgaria",
+      "window": "Aug 14-17, 2026",
+      "type": "hotel",
+      "claimed_price": 141,
+      "verdict": "skip",
+      "actual_price": 127,
+      "llm_score": 83,
+      "final_score": 57,
+      "source": "Spa Hotel Olimp official website price list 2026",
+      "note": "An ultra-low friction 1.5-hour drive combined with half-board dining and daily children's animation offers an exceptionally hassle-free and enjoyable family break."
     }
   ]
 }

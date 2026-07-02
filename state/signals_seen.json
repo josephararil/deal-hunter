@@ -6,10 +6,13 @@
     "Lucky Bansko Aparthotel SPA & Relax|September 10-17, 2026": "2026-06-29",
     "Bansko, Lucky Bansko Aparthotel SPA & Relax|September 10-17, 2026": "2026-06-30",
     "Hisarya, Bulgaria|July 17-20, 2026": "2026-07-01",
-    "Bansko, Bulgaria|10 September 2026 - 13 September 2026": "2026-07-01"
+    "Bansko, Bulgaria|10 September 2026 - 13 September 2026": "2026-07-01",
+    "Rome, Italy|Aug 6-10, 2026|good": "2026-07-02",
+    "Velingrad, Bulgaria|Aug 14-17, 2026|skip": "2026-07-02",
+    "Bansko, Bulgaria|Aug 6-9, 2026|skip": "2026-07-02"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 2
+    "2026-07": 3
   }
 }

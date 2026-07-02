@@ -1,6 +1,11 @@
-# Diamond Finder Memory — updated 2026-07-01
+# Diamond Finder Memory — updated 2026-07-02
 
-## Price Baselines (5 entries)
+## Price Baselines (8 entries)
+
+### Bansko, Bulgaria|2026-08
+**Realistic:** ~€167.61/night &nbsp; **Updated:** 2026-07-02
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €167.61/night (€502.84 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-02_
 
 ### Bansko, Bulgaria|2026-09
 **Realistic:** ~€104/night &nbsp; **Updated:** 2026-07-01
@@ -22,13 +27,26 @@ _Source: Booking.com (apidojo) live 2026-07-01_
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-06-29_
 
+### Rome, Italy|2026-08
+**Realistic:** ~€63.89/night &nbsp; **Updated:** 2026-07-02
+Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-02_
+
 ### Rome, Italy|2026-09
 **Realistic:** ~€85/night &nbsp; **Updated:** 2026-07-01
 I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…
 _Source: hu openair official booking engine check 2026-07-01_
 
-## Outcome Ledger (21 entries)
+### Velingrad, Bulgaria|2026-08
+**Realistic:** ~€127/night &nbsp; **Updated:** 2026-07-02
+I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…
+_Source: Spa Hotel Olimp official website price list 2026_
 
+## Outcome Ledger (24 entries)
+
+- 👍 2026-07-02 | Rome, Italy | Aug 6-10, 2026 | good score=58->70 claimed=€85 actual=€63.89 — The logistical friction of flying from Sofia and the severe August heat in a major city heavily…
+- · 2026-07-02 | Bansko, Bulgaria | Aug 6-9, 2026 | skip score=81->29 claimed=€128 actual=€167.61 — A highly convenient 2.5-hour drive and a perfectly sized 3-night stay with excellent 5-star kids'…
+- · 2026-07-02 | Velingrad, Bulgaria | Aug 14-17, 2026 | skip score=83->57 claimed=€141 actual=€127 — An ultra-low friction 1.5-hour drive combined with half-board dining and daily children's animation…
 - • 2026-07-01 | Antalya, Turkey | August 12-19, 2026 | over_ceiling claimed=€135 — Leverages highly competitive direct charter-style flights from Sofia to Antalya ($71-$91 one-way on…
 - • 2026-07-01 | Corfu, Greece | July 15-22, 2026 | skeptic_kill claimed=€115 — The 'Toddler Tax' via budget airline baggage/seating fees and exhausting multi-leg ground/air…
 - • 2026-07-01 | Bansko, Bulgaria | July 24-27, 2026 | skeptic_kill claimed=€95 — False discount framing based on winter peak pricing; absolute value is totally standard for Bansko…

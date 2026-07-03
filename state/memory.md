@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-02
+# Diamond Finder Memory — updated 2026-07-03
 
-## Price Baselines (8 entries)
+## Price Baselines (10 entries)
 
 ### Bansko, Bulgaria|2026-08
 **Realistic:** ~€167.61/night &nbsp; **Updated:** 2026-07-02
@@ -22,6 +22,11 @@ _Source: Booking.com (apidojo) live 2026-06-30_
 Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.
 _Source: Booking.com (apidojo) live 2026-07-01_
 
+### Lake Garda (via PDV direct)|2026-08
+**Realistic:** ~€167/night &nbsp; **Updated:** 2026-07-03
+I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…
+_Source: Parc Hotel Peschiera del Garda official property site_
+
 ### Lucky Bansko Aparthotel SPA & Relax|2026-09
 **Realistic:** ~€96.21/night &nbsp; **Updated:** 2026-06-29
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
@@ -37,13 +42,20 @@ _Source: Booking.com (apidojo) live 2026-07-02_
 I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…
 _Source: hu openair official booking engine check 2026-07-01_
 
+### Turkish Aegean Coast|2026-08
+**Realistic:** ~€386.21/night &nbsp; **Updated:** 2026-07-03
+Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-03_
+
 ### Velingrad, Bulgaria|2026-08
 **Realistic:** ~€127/night &nbsp; **Updated:** 2026-07-02
 I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…
 _Source: Spa Hotel Olimp official website price list 2026_
 
-## Outcome Ledger (24 entries)
+## Outcome Ledger (26 entries)
 
+- · 2026-07-03 | Lake Garda (via PDV direct) | August 8-13, 2026 | skip score=72->43 claimed=€135 actual=€167 — Leveraging a direct flight from Plovdiv minimizes local departure friction, and Lake Garda delivers…
+- · 2026-07-03 | Turkish Aegean Coast | August 24-29, 2026 | skip score=45->0 claimed=€85 actual=€386.21 — While an ultra all-inclusive resort with a massive aquapark offers outstanding in-window utility,…
 - 👍 2026-07-02 | Rome, Italy | Aug 6-10, 2026 | good score=58->70 claimed=€85 actual=€63.89 — The logistical friction of flying from Sofia and the severe August heat in a major city heavily…
 - · 2026-07-02 | Bansko, Bulgaria | Aug 6-9, 2026 | skip score=81->29 claimed=€128 actual=€167.61 — A highly convenient 2.5-hour drive and a perfectly sized 3-night stay with excellent 5-star kids'…
 - · 2026-07-02 | Velingrad, Bulgaria | Aug 14-17, 2026 | skip score=83->57 claimed=€141 actual=€127 — An ultra-low friction 1.5-hour drive combined with half-board dining and daily children's animation…

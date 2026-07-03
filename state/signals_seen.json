@@ -9,10 +9,12 @@
     "Bansko, Bulgaria|10 September 2026 - 13 September 2026": "2026-07-01",
     "Rome, Italy|Aug 6-10, 2026|good": "2026-07-02",
     "Velingrad, Bulgaria|Aug 14-17, 2026|skip": "2026-07-02",
-    "Bansko, Bulgaria|Aug 6-9, 2026|skip": "2026-07-02"
+    "Bansko, Bulgaria|Aug 6-9, 2026|skip": "2026-07-02",
+    "Lake Garda (via PDV direct)|August 8-13, 2026|skip": "2026-07-03",
+    "Turkish Aegean Coast|August 24-29, 2026|skip": "2026-07-03"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 3
+    "2026-07": 4
   }
 }

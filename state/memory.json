@@ -47,6 +47,18 @@
       "note": "I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…",
       "source": "Spa Hotel Olimp official website price list 2026",
       "updated": "2026-07-02"
+    },
+    "Lake Garda (via PDV direct)|2026-08": {
+      "realistic_price_eur": 167,
+      "note": "I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…",
+      "source": "Parc Hotel Peschiera del Garda official property site",
+      "updated": "2026-07-03"
+    },
+    "Turkish Aegean Coast|2026-08": {
+      "realistic_price_eur": 386.21,
+      "note": "Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-03",
+      "updated": "2026-07-03"
     }
   },
   "ledger": [
@@ -327,6 +339,32 @@
       "final_score": 57,
       "source": "Spa Hotel Olimp official website price list 2026",
       "note": "An ultra-low friction 1.5-hour drive combined with half-board dining and daily children's animation offers an exceptionally hassle-free and enjoyable family break."
+    },
+    {
+      "date": "2026-07-03",
+      "destination": "Lake Garda (via PDV direct)",
+      "window": "August 8-13, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 167,
+      "llm_score": 72,
+      "final_score": 43,
+      "source": "Parc Hotel Peschiera del Garda official property site",
+      "note": "Leveraging a direct flight from Plovdiv minimizes local departure friction, and Lake Garda delivers premium summer family utility, though navigating the onward train transfer to the hotel adds…"
+    },
+    {
+      "date": "2026-07-03",
+      "destination": "Turkish Aegean Coast",
+      "window": "August 24-29, 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "skip",
+      "actual_price": 386.21,
+      "llm_score": 45,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-07-03",
+      "note": "While an ultra all-inclusive resort with a massive aquapark offers outstanding in-window utility, the exhausting 7-hour drive—compounded by peak August border delays—heavily degrades the net family…"
     }
   ]
 }

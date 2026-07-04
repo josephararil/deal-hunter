@@ -11,10 +11,14 @@
     "Velingrad, Bulgaria|Aug 14-17, 2026|skip": "2026-07-02",
     "Bansko, Bulgaria|Aug 6-9, 2026|skip": "2026-07-02",
     "Lake Garda (via PDV direct)|August 8-13, 2026|skip": "2026-07-03",
-    "Turkish Aegean Coast|August 24-29, 2026|skip": "2026-07-03"
+    "Turkish Aegean Coast|August 24-29, 2026|skip": "2026-07-03",
+    "Puglia Coastal Escape via Bari|Aug 23-28, 2026|skip": "2026-07-04",
+    "Rhodes, Greece|Sep 5-12, 2026|skip": "2026-07-04",
+    "Sunny Beach, Bulgaria|Aug 10-15, 2026|skip": "2026-07-04",
+    "Antalya All-Inclusive via SunExpress|Aug 26-Sep 2, 2026|skip": "2026-07-04"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 4
+    "2026-07": 5
   }
 }

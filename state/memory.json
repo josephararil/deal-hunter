@@ -59,6 +59,24 @@
       "note": "Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-03",
       "updated": "2026-07-03"
+    },
+    "Rhodes, Greece|2026-09": {
+      "realistic_price_eur": 426.0,
+      "note": "Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "updated": "2026-07-04"
+    },
+    "Sunny Beach, Bulgaria|2026-08": {
+      "realistic_price_eur": 215.0,
+      "note": "Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "updated": "2026-07-04"
+    },
+    "Antalya All-Inclusive via SunExpress|2026-08": {
+      "realistic_price_eur": 380,
+      "note": "I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…",
+      "source": "Booking.com live search 2026-07-04",
+      "updated": "2026-07-04"
     }
   },
   "ledger": [
@@ -365,6 +383,58 @@
       "final_score": 0,
       "source": "Booking.com (apidojo) live 2026-07-03",
       "note": "While an ultra all-inclusive resort with a massive aquapark offers outstanding in-window utility, the exhausting 7-hour drive—compounded by peak August border delays—heavily degrades the net family…"
+    },
+    {
+      "date": "2026-07-04",
+      "destination": "Rhodes, Greece",
+      "window": "Sep 5-12, 2026",
+      "type": "hotel",
+      "claimed_price": 210,
+      "verdict": "skip",
+      "actual_price": 426.0,
+      "llm_score": 75,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "note": "Massive in-window utility from the 5-star waterpark is excellent for a 4-year-old, though the transit requirement of driving to Sofia and flying adds noticeable friction and unquoted travel costs."
+    },
+    {
+      "date": "2026-07-04",
+      "destination": "Sunny Beach, Bulgaria",
+      "window": "Aug 10-15, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 215.0,
+      "llm_score": 82,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "note": "An easy 3-hour drive from Plovdiv delivers an ultra-low friction, high-utility summer beach break perfectly sized at 5 nights before toddler fatigue sets in."
+    },
+    {
+      "date": "2026-07-04",
+      "destination": "Puglia Coastal Escape via Bari",
+      "window": "Aug 23-28, 2026",
+      "type": "hotel",
+      "claimed_price": 150,
+      "verdict": "skip",
+      "actual_price": 69.49,
+      "llm_score": 42,
+      "final_score": 54,
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "note": "The failure to confirm a family resort means downgrading to a basic city guesthouse, offering poor utility for a 4-year-old that absolutely does not justify the hassle of flying via Sofia."
+    },
+    {
+      "date": "2026-07-04",
+      "destination": "Antalya All-Inclusive via SunExpress",
+      "window": "Aug 26-Sep 2, 2026",
+      "type": "hotel",
+      "claimed_price": 255,
+      "verdict": "skip",
+      "actual_price": 380,
+      "llm_score": 83,
+      "final_score": 0,
+      "source": "Booking.com live search 2026-07-04",
+      "note": "The exceptional family utility of an elite Antalya ultra-all-inclusive resort provides enough friction-free on-site entertainment to fully justify the Sofia departure logistics for a week."
     }
   ]
 }

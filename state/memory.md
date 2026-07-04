@@ -1,6 +1,11 @@
-# Diamond Finder Memory — updated 2026-07-03
+# Diamond Finder Memory — updated 2026-07-04
 
-## Price Baselines (10 entries)
+## Price Baselines (13 entries)
+
+### Antalya All-Inclusive via SunExpress|2026-08
+**Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
+I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…
+_Source: Booking.com live search 2026-07-04_
 
 ### Bansko, Bulgaria|2026-08
 **Realistic:** ~€167.61/night &nbsp; **Updated:** 2026-07-02
@@ -32,6 +37,11 @@ _Source: Parc Hotel Peschiera del Garda official property site_
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-06-29_
 
+### Rhodes, Greece|2026-09
+**Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04
+Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-04_
+
 ### Rome, Italy|2026-08
 **Realistic:** ~€63.89/night &nbsp; **Updated:** 2026-07-02
 Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.
@@ -41,6 +51,11 @@ _Source: Booking.com (apidojo) live 2026-07-02_
 **Realistic:** ~€85/night &nbsp; **Updated:** 2026-07-01
 I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…
 _Source: hu openair official booking engine check 2026-07-01_
+
+### Sunny Beach, Bulgaria|2026-08
+**Realistic:** ~€215.0/night &nbsp; **Updated:** 2026-07-04
+Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-04_
 
 ### Turkish Aegean Coast|2026-08
 **Realistic:** ~€386.21/night &nbsp; **Updated:** 2026-07-03
@@ -52,8 +67,12 @@ _Source: Booking.com (apidojo) live 2026-07-03_
 I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…
 _Source: Spa Hotel Olimp official website price list 2026_
 
-## Outcome Ledger (26 entries)
+## Outcome Ledger (30 entries)
 
+- · 2026-07-04 | Rhodes, Greece | Sep 5-12, 2026 | skip score=75->0 claimed=€210 actual=€426.0 — Massive in-window utility from the 5-star waterpark is excellent for a 4-year-old, though the…
+- · 2026-07-04 | Sunny Beach, Bulgaria | Aug 10-15, 2026 | skip score=82->0 claimed=€135 actual=€215.0 — An easy 3-hour drive from Plovdiv delivers an ultra-low friction, high-utility summer beach break…
+- · 2026-07-04 | Puglia Coastal Escape via Bari | Aug 23-28, 2026 | skip score=42->54 claimed=€150 actual=€69.49 — The failure to confirm a family resort means downgrading to a basic city guesthouse, offering poor…
+- · 2026-07-04 | Antalya All-Inclusive via SunExpress | Aug 26-Sep 2, 2026 | skip score=83->0 claimed=€255 actual=€380 — The exceptional family utility of an elite Antalya ultra-all-inclusive resort provides enough…
 - · 2026-07-03 | Lake Garda (via PDV direct) | August 8-13, 2026 | skip score=72->43 claimed=€135 actual=€167 — Leveraging a direct flight from Plovdiv minimizes local departure friction, and Lake Garda delivers…
 - · 2026-07-03 | Turkish Aegean Coast | August 24-29, 2026 | skip score=45->0 claimed=€85 actual=€386.21 — While an ultra all-inclusive resort with a massive aquapark offers outstanding in-window utility,…
 - 👍 2026-07-02 | Rome, Italy | Aug 6-10, 2026 | good score=58->70 claimed=€85 actual=€63.89 — The logistical friction of flying from Sofia and the severe August heat in a major city heavily…

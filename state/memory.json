@@ -1,10 +1,10 @@
 {
   "baselines": {
     "Lucky Bansko Aparthotel SPA & Relax|2026-09": {
-      "realistic_price_eur": 96.21,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-06-29",
-      "updated": "2026-06-29"
+      "realistic_price_eur": 101.87,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-13, 2026: €101.87/night (€305.6 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "updated": "2026-07-05"
     },
     "Bansko, Lucky Bansko Aparthotel SPA & Relax|2026-09": {
       "realistic_price_eur": 104.57,
@@ -77,6 +77,24 @@
       "note": "I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…",
       "source": "Booking.com live search 2026-07-04",
       "updated": "2026-07-04"
+    },
+    "Mövenpick Istanbul Golden Horn|2026-09": {
+      "realistic_price_eur": 108.0,
+      "note": "Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "updated": "2026-07-05"
+    },
+    "Hissar Spa Hotel|2026-09": {
+      "realistic_price_eur": 122.94,
+      "note": "Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "updated": "2026-07-05"
+    },
+    "hu Roma Camping In Town|2026-09": {
+      "realistic_price_eur": 57.72,
+      "note": "Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "updated": "2026-07-05"
     }
   },
   "ledger": [
@@ -435,6 +453,58 @@
       "final_score": 0,
       "source": "Booking.com live search 2026-07-04",
       "note": "The exceptional family utility of an elite Antalya ultra-all-inclusive resort provides enough friction-free on-site entertainment to fully justify the Sofia departure logistics for a week."
+    },
+    {
+      "date": "2026-07-05",
+      "destination": "Lucky Bansko Aparthotel SPA & Relax",
+      "window": "Sep 10-13, 2026",
+      "type": "hotel",
+      "claimed_price": 104,
+      "verdict": "diamond",
+      "actual_price": 101.87,
+      "llm_score": 82,
+      "final_score": 89,
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "note": "An easy sub-3-hour drive and excellent 5-star kids' facilities deliver an ultra-low friction, high-utility weekend perfectly sized for a 4-year-old."
+    },
+    {
+      "date": "2026-07-05",
+      "destination": "Mövenpick Istanbul Golden Horn",
+      "window": "Sep 14-19, 2026",
+      "type": "hotel",
+      "claimed_price": 80,
+      "verdict": "skip",
+      "actual_price": 108.0,
+      "llm_score": 56,
+      "final_score": 54,
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "note": "While the destination is exciting, the exhausting 5-hour drive with border delays or flight transfers from Sofia heavily tax a family, and 5 nights in a massive city offers low net utility for a…"
+    },
+    {
+      "date": "2026-07-05",
+      "destination": "Hissar Spa Hotel",
+      "window": "Sep 17-20, 2026",
+      "type": "hotel",
+      "claimed_price": 103,
+      "verdict": "good",
+      "actual_price": 122.94,
+      "llm_score": 83,
+      "final_score": 74,
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "note": "An ultra-local 45-minute drive eliminates transit friction entirely, offering high relaxing utility with thermal pools and park spaces for a perfectly paced 3-night family weekend."
+    },
+    {
+      "date": "2026-07-05",
+      "destination": "hu Roma Camping In Town",
+      "window": "Sep 21-26, 2026",
+      "type": "hotel",
+      "claimed_price": 64,
+      "verdict": "good",
+      "actual_price": 57.72,
+      "llm_score": 57,
+      "final_score": 69,
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "note": "The resort pools offer decent on-site toddler utility, but the exhausting logistics of driving to Sofia for a flight and navigating a sprawling city for 5 nights drastically reduce net family value."
     }
   ]
 }

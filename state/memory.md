@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-04
+# Diamond Finder Memory — updated 2026-07-05
 
-## Price Baselines (13 entries)
+## Price Baselines (16 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -27,15 +27,25 @@ _Source: Booking.com (apidojo) live 2026-06-30_
 Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.
 _Source: Booking.com (apidojo) live 2026-07-01_
 
+### Hissar Spa Hotel|2026-09
+**Realistic:** ~€122.94/night &nbsp; **Updated:** 2026-07-05
+Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-05_
+
 ### Lake Garda (via PDV direct)|2026-08
 **Realistic:** ~€167/night &nbsp; **Updated:** 2026-07-03
 I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…
 _Source: Parc Hotel Peschiera del Garda official property site_
 
 ### Lucky Bansko Aparthotel SPA & Relax|2026-09
-**Realistic:** ~€96.21/night &nbsp; **Updated:** 2026-06-29
-Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-06-29_
+**Realistic:** ~€101.87/night &nbsp; **Updated:** 2026-07-05
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-13, 2026: €101.87/night (€305.6 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-05_
+
+### Mövenpick Istanbul Golden Horn|2026-09
+**Realistic:** ~€108.0/night &nbsp; **Updated:** 2026-07-05
+Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-05_
 
 ### Rhodes, Greece|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04
@@ -67,8 +77,17 @@ _Source: Booking.com (apidojo) live 2026-07-03_
 I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…
 _Source: Spa Hotel Olimp official website price list 2026_
 
-## Outcome Ledger (30 entries)
+### hu Roma Camping In Town|2026-09
+**Realistic:** ~€57.72/night &nbsp; **Updated:** 2026-07-05
+Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-05_
 
+## Outcome Ledger (34 entries)
+
+- 💎 2026-07-05 | Lucky Bansko Aparthotel SPA & Relax | Sep 10-13, 2026 | diamond score=82->89 claimed=€104 actual=€101.87 — An easy sub-3-hour drive and excellent 5-star kids' facilities deliver an ultra-low friction,…
+- · 2026-07-05 | Mövenpick Istanbul Golden Horn | Sep 14-19, 2026 | skip score=56->54 claimed=€80 actual=€108.0 — While the destination is exciting, the exhausting 5-hour drive with border delays or flight…
+- 👍 2026-07-05 | Hissar Spa Hotel | Sep 17-20, 2026 | good score=83->74 claimed=€103 actual=€122.94 — An ultra-local 45-minute drive eliminates transit friction entirely, offering high relaxing utility…
+- 👍 2026-07-05 | hu Roma Camping In Town | Sep 21-26, 2026 | good score=57->69 claimed=€64 actual=€57.72 — The resort pools offer decent on-site toddler utility, but the exhausting logistics of driving to…
 - · 2026-07-04 | Rhodes, Greece | Sep 5-12, 2026 | skip score=75->0 claimed=€210 actual=€426.0 — Massive in-window utility from the 5-star waterpark is excellent for a 4-year-old, though the…
 - · 2026-07-04 | Sunny Beach, Bulgaria | Aug 10-15, 2026 | skip score=82->0 claimed=€135 actual=€215.0 — An easy 3-hour drive from Plovdiv delivers an ultra-low friction, high-utility summer beach break…
 - · 2026-07-04 | Puglia Coastal Escape via Bari | Aug 23-28, 2026 | skip score=42->54 claimed=€150 actual=€69.49 — The failure to confirm a family resort means downgrading to a basic city guesthouse, offering poor…

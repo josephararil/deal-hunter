@@ -19,10 +19,13 @@
     "Lucky Bansko Aparthotel SPA & Relax|Sep 10-13, 2026|diamond": "2026-07-05",
     "Hissar Spa Hotel|Sep 17-20, 2026|good": "2026-07-05",
     "hu Roma Camping In Town|Sep 21-26, 2026|good": "2026-07-05",
-    "Mövenpick Istanbul Golden Horn|Sep 14-19, 2026|skip": "2026-07-05"
+    "Mövenpick Istanbul Golden Horn|Sep 14-19, 2026|skip": "2026-07-05",
+    "Bansko|2026-08-14 - 2026-08-17|diamond": "2026-07-06",
+    "Velingrad|2026-08-01 - 2026-08-04|good": "2026-07-06",
+    "Thassos Island|2026-09-06 - 2026-09-11|skip": "2026-07-06"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 6
+    "2026-07": 7
   }
 }

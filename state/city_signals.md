@@ -1,57 +1,48 @@
-# Diamond Finder — 2026-07-05
+# Diamond Finder — 2026-07-06
 
-_Stage 1: 4 candidate(s). 4 grounded · 4 scored. 1 diamond · 2 good._
+_Stage 1: 4 candidate(s). 4 grounded · 3 scored. 1 diamond · 1 good._
 
-### Lucky Bansko Aparthotel SPA & Relax 💎 — FIND 88/100 (high) · est €104/night
-**Type:** hotel &nbsp; **Window:** Sep 10-13, 2026
-Tier 1 low-friction play: Under 3 hours drive from Plovdiv. Verified EUR 104 per night September rate for a 5-star spa property with free kids accommodation and dedicated 4-12yo animation. A short 3-night window is perfectly sized to maximize utility before boredom sets in.
-_Score: LLM 82 +4 price +3 transit = **89** → diamond_
-_Scorer: An easy sub-3-hour drive and excellent 5-star kids' facilities deliver an ultra-low friction, high-utility weekend perfectly sized for a 4-year-old._
+### Bansko 💎 — FIND 86/100 (high) · est €83/night
+**Type:** hotel &nbsp; **Window:** 2026-08-14 - 2026-08-17
+Dropping to ~€83/night in its summer trough (compared to winter rates well over €200), this 5-star resort offers peak arbitrage. Heated outdoor pools, open spaces, and summer family amenities make this a premium, low-friction Tier 1 getaway accessible via a 2.5-hour drive, perfectly sized for a punchy 3-night mountain stay.
+_Score: LLM 82 +12 price +3 transit = **97** → diamond_
+_Scorer: A scenic 2.5-hour drive yields a highly relaxed premium mountain retreat with open spaces and heated pools, ideally sized at 3 nights before a 4-year-old loses interest._
 
-### Mövenpick Istanbul Golden Horn · — FIND 86/100 (high) · est €80/night
-**Type:** hotel &nbsp; **Window:** Sep 14-19, 2026
-High-excitement destination at staggering absolute value. At just EUR 80 per night for a 5-star family property, this easily justifies the drive or quick flight from SOF. Located on the Golden Horn near Miniatürk, ideal for a 4-year-old. A 5-night stay allows comfortable pacing.
-_Score: LLM 56 +1 price -3 transit = **54** → skip_
-_Scorer: While the destination is exciting, the exhausting 5-hour drive with border delays or flight transfers from Sofia heavily tax a family, and 5 nights in a massive city offers low net utility for a toddler._
+### Velingrad 👍 — FIND 85/100 (high) · est €77/night
+**Type:** hotel &nbsp; **Window:** 2026-08-01 - 2026-08-04
+At ~€77/night, Spa Hotel Olymp offers exceptional value for a family-friendly Tier 1 destination just 1.5 hours from Plovdiv. The live 'Summer SPA Getaway' lead confirms access to indoor/outdoor mineral pools (35-36°C) and dedicated children's animation, perfect for a short 3-night low-friction break with a 4-year-old before boredom sets in.
+_Score: LLM 84 -19 price +3 transit = **68** → good_
+_Scorer: An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and dedicated kids' animation perfectly suited for a toddler over a short 3-night break._
 
-### Hissar Spa Hotel 👍 — FIND 84/100 (high) · est €103/night
-**Type:** hotel &nbsp; **Window:** Sep 17-20, 2026
-Ultra-local Tier 1 arbitrage just a 45-min drive from Plovdiv. Rates settle to approx EUR 103 per night. Features excellent thermal pools and a quiet park setting ideal for a toddler. A punchy 3-night weekend perfectly matches the low-excitement profile while minimizing logistical friction.
-_Score: LLM 83 -6 price -3 transit = **74** → good_
-_Scorer: An ultra-local 45-minute drive eliminates transit friction entirely, offering high relaxing utility with thermal pools and park spaces for a perfectly paced 3-night family weekend._
+### Nessebar — FIND 84/100 (high) · est €120/night
+**Type:** hotel &nbsp; **Window:** 2026-09-02 - 2026-09-07
+By shifting into early September, this premium 5-star ultra all-inclusive resort drops from peak €220+ rates down to ~€120/night while the weather and sea remain perfectly warm. The massive on-site aquapark and kids' facilities offer high utility for a 4-year-old, and the easy 3-hour highway drive from Plovdiv ensures a friction-free 5-night beach holiday.
 
-### hu Roma Camping In Town 👍 — FIND 81/100 (high) · est €64/night
-**Type:** hotel &nbsp; **Window:** Sep 21-26, 2026
-Leveraging flash EUR 15-28 flights from SOF to Rome in late September when temperatures finally cool. Combining this with hu Roma Camping in Town at approx EUR 64 per night creates a high-excitement 5-night European city break with kid-friendly resort pools for unmatched total value.
-_Score: LLM 57 +15 price -3 transit = **69** → good_
-_Scorer: The resort pools offer decent on-site toddler utility, but the exhausting logistics of driving to Sofia for a flight and navigating a sprawling city for 5 nights drastically reduce net family value._
+### Thassos Island · — FIND 82/100 (high) · est €140/night
+**Type:** hotel &nbsp; **Window:** 2026-09-06 - 2026-09-11
+This classic family resort offers massive early-September value as peak August rates drop by 30-40%. The shallow, private sandy bay and on-site kids club are exceptional for a 4-year-old, and the manageable 3.5-hour drive from Plovdiv provides a high-excitement 5-night Greek island break with very low transit friction.
+_Score: LLM 83 -49 price +3 transit = **37** → skip_
+_Scorer: A manageable drive and short ferry ride unlock top-tier beach utility with a private shallow sandy bay and kids' club, offering a premium, low-friction Aegean escape in early September._
 
 ## Grounding & scoring
 
-### ✅ Lucky Bansko Aparthotel SPA & Relax — CONFIRM (confidence: high) → final **89** (diamond)
-**Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-13, 2026: €101.87/night (€305.6 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.
+### ✅ Bansko — CONFIRM (confidence: high) → final **97** (diamond)
+**Summary:** I have confirmed the availability of the 83 EUR per night rate at the Premier Luxury Mountain Resort for your requested dates of August 14-17, 2026. This price is accessible through the property's official 'Stay More, Pay Less' offer and is bookable directly at https://www.premier-bansko.com/.
 **Options:**
-  - Sep 10-13, 2026 · €101.87/night · €305.6 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-10&checkout=2026-09-13&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-05_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-10&checkout=2026-09-13&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-10–2026-09-13, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.1. Live rate: €101.87/night (€305.6 total).
+  - Aug 14-17, 2026 · €83/night · €249 total · [book](https://www.premier-bansko.com/) · _Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer_
+**How to book:** Book directly through the hotel's official website at https://www.premier-bansko.com/ to access the 'Stay More, Pay Less' rate.
+**Grounding:** The deal is grounded by the 'Stay More, Pay Less' promotional offer on the official Premier Luxury Mountain Resort website, which explicitly lists a starting price of 83 EUR per night for the summer 2026 season for minimum night stays matching the candidate dates.
 
-### 🔧 Mövenpick Istanbul Hotel Golden Horn — CORRECT (confidence: high) → final **54** (skip)
-**Summary:** Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
+### 🔧 Velingrad — CORRECT (confidence: high) → final **68** (good)
+**Summary:** I verified the 'Summer SPA Getaway' at Spa Hotel Olymp for your dates (Aug 1–4). The actual price is €151 per night (€453 total for 3 nights), which includes half-board and spa access. You can book directly at https://www.olymp-bg.com or by calling +359 88 733 6863.
 **Options:**
-  - Sep 14-19, 2026 · €108.0/night · €540.0 total · [book](https://www.booking.com/searchresults.html?ss=M%C3%B6venpick+Istanbul+Hotel+Golden+Horn&checkin=2026-09-14&checkout=2026-09-19&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-05_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=M%C3%B6venpick+Istanbul+Hotel+Golden+Horn&checkin=2026-09-14&checkout=2026-09-19&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-14–2026-09-19, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.5. Live rate: €108.0/night (€540.0 total).
+  - Aug 1-4, 2026 · €151/night · €453 total · [book](https://www.olymp-bg.com) · _Official Hotel Website - Summer SPA Getaway offer_
+**How to book:** Book online via the official website at https://www.olymp-bg.com or call +359 88 733 6863. Reservations require a deposit; please note the cancellation policy (100% penalty if cancelled less than 3 days before arrival).
+**Grounding:** Verified via the official 'Summer SPA Getaway' offer page, which lists a starting rate of €151 per night for two persons (minimum 3-night stay) between 01.08.2026 and 07.09.2026. This package includes breakfast, dinner, and full spa access. The initially estimated €77/night price is incorrect; market rates for this peak-season period are higher.
 
-### 🔧 Hissar Spa Hotel — CORRECT (confidence: high) → final **74** (good)
-**Summary:** Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.
+### 🔧 Thassos Island — CORRECT (confidence: high) → final **37** (skip)
+**Summary:** I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent transition to a 5-star rating. You can book directly at https://www.makryammos-hotel.gr/.
 **Options:**
-  - Sep 17-20, 2026 · €122.94/night · €368.81 total · [book](https://www.booking.com/searchresults.html?ss=Hissar+Spa+Hotel&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-05_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Hissar+Spa+Hotel&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-17–2026-09-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.4. Live rate: €122.94/night (€368.81 total).
-
-### ✅ hu Roma Camping In Town — CONFIRM (confidence: high) → final **69** (good)
-**Summary:** Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
-**Options:**
-  - Sep 21-26, 2026 · €57.72/night · €288.59 total · [book](https://www.booking.com/searchresults.html?ss=hu+Roma+Camping+In+Town&checkin=2026-09-21&checkout=2026-09-26&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-05_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=hu+Roma+Camping+In+Town&checkin=2026-09-21&checkout=2026-09-26&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-21–2026-09-26, currency=EUR, adults=2, children=[4]. Review score: 8.5. Live rate: €57.72/night (€288.59 total).
+  - Sep 6-11, 2026 · €218/night · €1090 total · [book](https://www.makryammos-hotel.gr/) · _Official Hotel Booking Engine 2026-07-06_
+**How to book:** Book directly through the official website at https://www.makryammos-hotel.gr/ or via major platforms like Booking.com.
+**Grounding:** Checked availability for September 6–11, 2026. The resort is available but rates start at €218/night, reflecting its updated status as a 5-star property. The resort remains highly rated for families with its private beach and kids' club.

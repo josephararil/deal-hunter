@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-05
+# Diamond Finder Memory — updated 2026-07-06
 
-## Price Baselines (16 entries)
+## Price Baselines (19 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -21,6 +21,11 @@ _Source: Lucky Bansko official website booking portal_
 **Realistic:** ~€104.57/night &nbsp; **Updated:** 2026-06-30
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-06-30_
+
+### Bansko|2026-08
+**Realistic:** ~€83/night &nbsp; **Updated:** 2026-07-06
+I have confirmed the availability of the 83 EUR per night rate at the Premier Luxury Mountain Resort for your requested dates of August 14-17, 2026. This price is accessible through the property's…
+_Source: Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer_
 
 ### Hisarya, Bulgaria|2026-07
 **Realistic:** ~€103.67/night &nbsp; **Updated:** 2026-07-01
@@ -67,6 +72,11 @@ _Source: hu openair official booking engine check 2026-07-01_
 Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-04_
 
+### Thassos Island|2026-09
+**Realistic:** ~€218/night &nbsp; **Updated:** 2026-07-06
+I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent…
+_Source: Official Hotel Booking Engine 2026-07-06_
+
 ### Turkish Aegean Coast|2026-08
 **Realistic:** ~€386.21/night &nbsp; **Updated:** 2026-07-03
 Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
@@ -77,13 +87,22 @@ _Source: Booking.com (apidojo) live 2026-07-03_
 I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…
 _Source: Spa Hotel Olimp official website price list 2026_
 
+### Velingrad|2026-08
+**Realistic:** ~€151/night &nbsp; **Updated:** 2026-07-06
+I verified the 'Summer SPA Getaway' at Spa Hotel Olymp for your dates (Aug 1–4). The actual price is €151 per night (€453 total for 3 nights), which includes half-board and spa access. You can book…
+_Source: Official Hotel Website - Summer SPA Getaway offer_
+
 ### hu Roma Camping In Town|2026-09
 **Realistic:** ~€57.72/night &nbsp; **Updated:** 2026-07-05
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (34 entries)
+## Outcome Ledger (38 entries)
 
+- 👍 2026-07-06 | Velingrad | 2026-08-01 - 2026-08-04 | good score=84->68 claimed=€77 actual=€151 — An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and…
+- 💎 2026-07-06 | Bansko | 2026-08-14 - 2026-08-17 | diamond score=82->97 claimed=€83 actual=€83 — A scenic 2.5-hour drive yields a highly relaxed premium mountain retreat with open spaces and…
+- ❌ 2026-07-06 | Nessebar | 2026-09-02 - 2026-09-07 | kill claimed=€120
+- · 2026-07-06 | Thassos Island | 2026-09-06 - 2026-09-11 | skip score=83->37 claimed=€140 actual=€218 — A manageable drive and short ferry ride unlock top-tier beach utility with a private shallow sandy…
 - 💎 2026-07-05 | Lucky Bansko Aparthotel SPA & Relax | Sep 10-13, 2026 | diamond score=82->89 claimed=€104 actual=€101.87 — An easy sub-3-hour drive and excellent 5-star kids' facilities deliver an ultra-low friction,…
 - · 2026-07-05 | Mövenpick Istanbul Golden Horn | Sep 14-19, 2026 | skip score=56->54 claimed=€80 actual=€108.0 — While the destination is exciting, the exhausting 5-hour drive with border delays or flight…
 - 👍 2026-07-05 | Hissar Spa Hotel | Sep 17-20, 2026 | good score=83->74 claimed=€103 actual=€122.94 — An ultra-local 45-minute drive eliminates transit friction entirely, offering high relaxing utility…

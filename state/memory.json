@@ -95,6 +95,24 @@
       "note": "Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-05",
       "updated": "2026-07-05"
+    },
+    "Velingrad|2026-08": {
+      "realistic_price_eur": 151,
+      "note": "I verified the 'Summer SPA Getaway' at Spa Hotel Olymp for your dates (Aug 1–4). The actual price is €151 per night (€453 total for 3 nights), which includes half-board and spa access. You can book…",
+      "source": "Official Hotel Website - Summer SPA Getaway offer",
+      "updated": "2026-07-06"
+    },
+    "Bansko|2026-08": {
+      "realistic_price_eur": 83,
+      "note": "I have confirmed the availability of the 83 EUR per night rate at the Premier Luxury Mountain Resort for your requested dates of August 14-17, 2026. This price is accessible through the property's…",
+      "source": "Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer",
+      "updated": "2026-07-06"
+    },
+    "Thassos Island|2026-09": {
+      "realistic_price_eur": 218,
+      "note": "I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent…",
+      "source": "Official Hotel Booking Engine 2026-07-06",
+      "updated": "2026-07-06"
     }
   },
   "ledger": [
@@ -505,6 +523,58 @@
       "final_score": 69,
       "source": "Booking.com (apidojo) live 2026-07-05",
       "note": "The resort pools offer decent on-site toddler utility, but the exhausting logistics of driving to Sofia for a flight and navigating a sprawling city for 5 nights drastically reduce net family value."
+    },
+    {
+      "date": "2026-07-06",
+      "destination": "Velingrad",
+      "window": "2026-08-01 - 2026-08-04",
+      "type": "hotel",
+      "claimed_price": 77,
+      "verdict": "good",
+      "actual_price": 151,
+      "llm_score": 84,
+      "final_score": 68,
+      "source": "Official Hotel Website - Summer SPA Getaway offer",
+      "note": "An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and dedicated kids' animation perfectly suited for a toddler over a short 3-night break."
+    },
+    {
+      "date": "2026-07-06",
+      "destination": "Bansko",
+      "window": "2026-08-14 - 2026-08-17",
+      "type": "hotel",
+      "claimed_price": 83,
+      "verdict": "diamond",
+      "actual_price": 83,
+      "llm_score": 82,
+      "final_score": 97,
+      "source": "Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer",
+      "note": "A scenic 2.5-hour drive yields a highly relaxed premium mountain retreat with open spaces and heated pools, ideally sized at 3 nights before a 4-year-old loses interest."
+    },
+    {
+      "date": "2026-07-06",
+      "destination": "Nessebar",
+      "window": "2026-09-02 - 2026-09-07",
+      "type": "hotel",
+      "claimed_price": 120,
+      "verdict": "kill",
+      "actual_price": null,
+      "llm_score": null,
+      "final_score": null,
+      "source": "",
+      "note": ""
+    },
+    {
+      "date": "2026-07-06",
+      "destination": "Thassos Island",
+      "window": "2026-09-06 - 2026-09-11",
+      "type": "hotel",
+      "claimed_price": 140,
+      "verdict": "skip",
+      "actual_price": 218,
+      "llm_score": 83,
+      "final_score": 37,
+      "source": "Official Hotel Booking Engine 2026-07-06",
+      "note": "A manageable drive and short ferry ride unlock top-tier beach utility with a private shallow sandy bay and kids' club, offering a premium, low-friction Aegean escape in early September."
     }
   ]
 }

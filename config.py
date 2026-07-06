@@ -123,9 +123,10 @@ PROVIDER_VERIFY  = None
 # reason fields, on top of the thinking pass over the grounded leads.
 MAX_TOKENS_FIND    = 16000
 
-# Stage 2 (skeptic): one verdict line per candidate, but the flagship still thinks
-# hard before writing. Headroom for a large input batch + thinking.
-MAX_TOKENS_SKEPTIC = 12000
+# Stage 2 (skeptic): a score plus a short prose dossier (about + value_case) per
+# candidate, and the flagship still thinks hard before writing. Headroom for a large
+# input batch + thinking + the extra descriptive prose.
+MAX_TOKENS_SKEPTIC = 16000
 
 # Stage 3 (verify): structured grounding output + thinking.
 MAX_TOKENS_VERIFY = 12000
@@ -517,6 +518,16 @@ Input Candidates (each has a numeric deal_id you must echo back):
 
 ---
 
+### ALSO WRITE A SHORT DOSSIER (this is what the HUMAN actually reads)
+The score routes the pipeline, but the email that reaches the user is a hand-off for a HUMAN to make the final call — and most of these properties are ones they have never heard of. A bare "5-star, €117/night" tells them nothing: they cannot tell a landmark resort from an anonymous block, or a genuine steal from an ordinary rate. So for each candidate, in addition to the score, write two descriptive fields that give them the context they'd otherwise have to go and research themselves:
+
+- `about`: 2-4 sentences describing the property AND its location for someone who has never heard of it. Cover: what tier/kind of place it is and its standing (a well-known flagship? a solid mid-range option? a basic one?), its standout amenities (spa, indoor/outdoor pools, dining, kids' facilities), and what a family with a 4-year-old can actually DO — both in the property and in the surrounding area. Use the star rating and review score in `grounding_summary` as anchors.
+- `value_case`: 1-3 sentences making the value case a savvy traveller would make out loud — how this grounded price compares to what this property (or this class of place, in this destination) normally costs, and to comparable alternatives, so the human can judge the deal at a glance. This is the "is this actually a good deal, and why?" line. E.g.: "€117/night for a genuine 5-star in Bansko is excellent — it usually trades nearer €150-200, and comparable 4-stars in town sit around €80, so you're paying a small premium for a full tier more hotel."
+
+HONESTY (these fields must not become a source of hallucination): base both ONLY on what you genuinely know about this specific property or destination, anchored by the star / review-score / price signals you were given. If you do not recognise the specific property, describe the destination and what its class and review score imply, and say plainly that the specifics should be confirmed — do NOT invent named restaurants, amenities, or facts. These fields are DESCRIPTIVE ONLY: they must NOT change your numeric `score`, and you must NOT use them to keep, kill, or tier a deal.
+
+---
+
 ### OUTPUT FORMAT
 Return JSON only. No markdown fences. The root of your response MUST be a bare JSON array (starting with `[`) — do NOT wrap it in an object like {{"results": [...]}}. One object per input candidate, in input order. Echo each candidate's `deal_id` back unchanged (the integer key matching your score to the deal) and copy `destination` verbatim as a fallback. Do not invent, renumber, or omit deal_ids.
 
@@ -527,6 +538,8 @@ JSON Schema:
     "destination": "Exact string from input",
     "score": 72,
     "why": "One direct sentence on the NET FAMILY VALUE (utility minus friction) that justifies the score — not the nightly hotel price.",
+    "about": "2-4 sentences: what this property and its location are, its tier/standing, standout amenities, and what a family with a 4-year-old can do here and nearby. For someone who has never heard of it.",
+    "value_case": "1-3 sentences: why this grounded price is (or isn't) a genuine deal vs this property's/area's usual rates and comparable alternatives — the 'is this a good deal?' line.",
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
   }}
 ]
@@ -626,9 +639,11 @@ STAGE2_RESPONSE_SCHEMA = {
             "destination": {"type": "string"},
             "score":       {"type": "integer"},
             "why":         {"type": "string"},
+            "about":       {"type": "string"},
+            "value_case":  {"type": "string"},
             "red_flags":   {"type": "string"},
         },
-        "required": ["deal_id", "destination", "score", "why", "red_flags"],
+        "required": ["deal_id", "destination", "score", "why", "about", "value_case", "red_flags"],
     },
 }
 

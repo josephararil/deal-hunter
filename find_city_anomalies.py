@@ -164,6 +164,20 @@ def build_email_html(items, dropped, month_count, baselines):
         tier_badge = TIER_LABEL.get(tier, "👍 Good find")
         badge_color = TIER_COLOR.get(tier, "#8a6d00")
 
+        # Scorer dossier — what the place IS and why the price is a deal. This is the
+        # context a human needs to judge an unfamiliar property; without it the email is
+        # just a price with no way to tell a landmark resort from an anonymous block.
+        about_html = (
+            f"<div style='font-size:14px;color:#333;line-height:1.5;margin:8px 0'>{d['about']}</div>"
+            if d.get("about") else ""
+        )
+        value_case_html = (
+            f"<div style='font-size:14px;color:#0a3;background:#f2faf4;border-left:3px solid #0a7d2e;"
+            f"padding:8px 12px;margin:8px 0;line-height:1.5'>"
+            f"<b style='color:#0a7d2e'>Why it's a deal:</b> {d['value_case']}</div>"
+            if d.get("value_case") else ""
+        )
+
         # "typically ~€X/night — N% under" comparison from prior-run baselines, if any.
         base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
                                    d.get("grounded_price_per_night_eur"))
@@ -230,6 +244,8 @@ def build_email_html(items, dropped, month_count, baselines):
             f"<div style='font-size:13px;color:#777;margin:3px 0'>"
             f"{type_label} &nbsp;·&nbsp; {d.get('window', '')}</div>"
             f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
+            f"{about_html}"
+            f"{value_case_html}"
             f"{score_html}"
             f"{base_html}"
             f"{opts_html}"
@@ -298,6 +314,10 @@ def build_email_text(items, dropped, baselines):
             f"Window: {d.get('window', '')}",
             summary,
         ]
+        if d.get("about"):
+            lines.append(d["about"])
+        if d.get("value_case"):
+            lines.append(f"Why it's a deal: {d['value_case']}")
         score_note = _score_breakdown_text(d)
         if score_note:
             lines.append(score_note)
@@ -390,6 +410,10 @@ def write_md(today, candidates, picks, grounding_results=None, scores=None):
                 )
                 if s.get("why"):
                     lines.append(f"_Scorer: {s['why']}_")
+                if s.get("about"):
+                    lines.append(f"**About:** {s['about']}")
+                if s.get("value_case"):
+                    lines.append(f"**Why it's a deal:** {s['value_case']}")
             lines.append("")
 
     if grounding_results:
@@ -704,12 +728,15 @@ def main():
             raw_llm = (v or {}).get("score")
             llm_val = raw_llm if isinstance(raw_llm, (int, float)) else 0
             why     = (v or {}).get("why", "")
+            about   = (v or {}).get("about", "")
+            value_case = (v or {}).get("value_case", "")
             red     = (v or {}).get("red_flags", "")
             ppn     = c.get("grounded_price_per_night_eur")
             final, price_adj, transit_adj = C.compute_final_score(llm_val, ppn, dest)
             tier = C.tier_for_score(final)
             scores[did] = {"llm": llm_val, "price_adj": price_adj, "transit_adj": transit_adj,
-                           "final": final, "tier": tier, "why": why, "red_flags": red}
+                           "final": final, "tier": tier, "why": why,
+                           "about": about, "value_case": value_case, "red_flags": red}
 
             label = {"diamond": "DIAMOND", "good": "GOOD", "skip": "SKIP"}[tier]
             print(f"    [{label:<7}] #{did} {dest} — llm {llm_val} {_sgn(price_adj)} price "
@@ -720,7 +747,8 @@ def main():
 
             scored_item = {**c, "tier": tier, "final_score": final, "llm_score": llm_val,
                            "price_adj": price_adj, "transit_adj": transit_adj,
-                           "why": why, "red_flags": red}
+                           "why": why, "about": about, "value_case": value_case,
+                           "red_flags": red}
             scored_all.append(scored_item)
             if tier in ("diamond", "good"):
                 picks.append(scored_item)

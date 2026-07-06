@@ -71,11 +71,20 @@ _STAGE1 = {"candidates": [
 # ── Canned Stage 3 (SCORER) — desirability scores, price held neutral ─────────
 _SCORES = [
     {"deal_id": 1, "destination": "Antalya 5-Star All-Inclusive", "score": 86,
-     "why": "Standout AI resort, high in-window utility.", "red_flags": "Confirm kids club Jan hours."},
+     "why": "Standout AI resort, high in-window utility.",
+     "about": "Rixos Premium is a flagship all-inclusive on the Antalya coast with indoor pools and a kids' club.",
+     "value_case": "€70/night AI for a 5-star is exceptional — these rooms trade at €150+ in summer.",
+     "red_flags": "Confirm kids club Jan hours."},
     {"deal_id": 2, "destination": "Kempinski Hotel Grand Arena, Bansko, Bulgaria", "score": 90,
-     "why": "Genuinely special 5-star property with full family spa.", "red_flags": "Confirm pool heating."},
+     "why": "Genuinely special 5-star property with full family spa.",
+     "about": "The Kempinski is Bansko's landmark ski-in/ski-out 5-star, with a large spa and family pools.",
+     "value_case": "€85/night for the top hotel in town is a steal — it usually sits near €180 in season.",
+     "red_flags": "Confirm pool heating."},
     {"deal_id": 3, "destination": "Regnum Bansko, Bulgaria", "score": 80,
-     "why": "Comfortable resort, pleasant but not exceptional.", "red_flags": "Check August weekend rates."},
+     "why": "Comfortable resort, pleasant but not exceptional.",
+     "about": "Regnum is a solid mid-upper Bansko resort with an indoor pool.",
+     "value_case": "At €112/night it is priced above the Bansko norm of ~€80 — no real discount here.",
+     "red_flags": "Check August weekend rates."},
     # Arte is a grounding kill and Sofia is guard-blocked, so they never reach the scorer;
     # include them anyway to prove the pipeline ignores scores for non-scored candidates.
     {"deal_id": 4, "destination": "Arte Spa & Park, Velingrad, Bulgaria", "score": 70, "why": "x", "red_flags": "x"},
@@ -159,6 +168,13 @@ try:
     assert "Arte" in html and "killed" in html, "killed Arte missing from footer"
     assert "Sofia" in html and "blocked" in html, "guard-blocked Sofia missing from footer"
     print("Arte/Sofia shown in 'seen & dropped' footer [OK]")
+
+    # Scorer dossier: 'about' description + 'value_case' callout reach the email (HTML + text).
+    assert "landmark ski-in/ski-out 5-star" in html, "Kempinski 'about' description missing from email HTML"
+    assert "Why it's a deal:" in html, "'Why it's a deal' value-case callout missing from email HTML"
+    assert "usually sits near €180" in html, "Kempinski value_case text missing from email HTML"
+    assert "Why it's a deal:" in text and "landmark ski-in/ski-out 5-star" in text, "dossier missing from plain-text email"
+    print("Scorer dossier (about + value_case) rendered in email [OK]")
 
     # Baseline comparison + child caveat present.
     assert "30% under" in html, f"Antalya baseline comparison wrong: {html[html.find('Antalya'):html.find('Antalya')+300]}"

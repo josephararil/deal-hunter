@@ -55,7 +55,11 @@ find_city_anomalies.py
   │    tier = diamond (final>=DIAMOND_SCORE_THRESHOLD) | good (>=GOOD_SCORE_THRESHOLD) | skip.
   │    The LLM never vetoes or tiers — a low final score is dropped by default, but every
   │    score is recorded. Same €85 can be a diamond for a standout (high llm_score) and a
-  │    skip for an ordinary place.
+  │    skip for an ordinary place. The scorer also emits a descriptive DOSSIER per candidate
+  │    (`about` = what the property/location is + amenities + what a family does there;
+  │    `value_case` = why the grounded price is/isn't a deal vs normal rates & alternatives),
+  │    surfaced verbatim in the email so a human can judge an unfamiliar property. Descriptive
+  │    only — must not move the score.
   │
   ├─ Memory write — state/memory.json + state/memory.md
   │    Every run: record_outcome per gate survivor with llm_score + final_score and a verdict
@@ -73,7 +77,8 @@ find_city_anomalies.py
   ├─ Email (common.send_email) — an honest daily digest of EVERY scored candidate
   │    One email per run, fired whenever ≥1 scored candidate is new/tier-changed (any tier,
   │    incl. skip). Items grouped diamond→good→skip; each shows its tier badge, score
-  │    breakdown (llm · price · transit = final), live all-in price, a "typically ~€X/night"
+  │    breakdown (llm · price · transit = final), live all-in price, the scorer's `about`
+  │    description + a "Why it's a deal" value-case callout, a "typically ~€X/night"
   │    comparison from PRIOR baselines, a child-price caveat for hotels, and the booking link.
   │    MAX_EMAILS_PER_RUN caps only the actionable diamond/good picks; skips are context and
   │    always shown in full. A "seen & dropped" footer lists that run's grounding kills /
@@ -154,10 +159,13 @@ ground_deal = _resolve_ground_deal()
   prices. Core design decision — the scorer must never grade a Stage-1 *estimate*. Preserve
   this if you touch the pipeline order.
 - **The final tier is deterministic, NOT the LLM's call.** The Stage-3 LLM returns only a
-  0–100 `score` (nightly hotel price held neutral — the prompt tells it so). The pipeline
-  computes `final = llm_score + price_adj + transit_adj` (`config.compute_final_score`) and
-  derives the tier via `tier_for_score`. Do not let the LLM emit a tier or a veto — that was
-  deliberately removed so scores stay comparable and every one is recorded for tuning.
+  0–100 `score` for scoring (nightly hotel price held neutral — the prompt tells it so),
+  plus purely-descriptive `why`/`about`/`value_case`/`red_flags` prose for the human. The
+  pipeline computes `final = llm_score + price_adj + transit_adj` (`config.compute_final_score`)
+  and derives the tier via `tier_for_score`. Do not let the LLM emit a tier or a veto — that was
+  deliberately removed so scores stay comparable and every one is recorded for tuning. The
+  descriptive fields (`about` = what the place is; `value_case` = why the price is a deal) must
+  NEVER influence the numeric score or gate a deal — the prompt says so explicitly.
 - **The LLM score is NET FAMILY VALUE DELIVERED, not luxury/prestige** (the numerator; the
   price modifier is the denominator). A modest low-friction local break can outscore a
   glamorous far-flung one. Attraction is one modest input for a 4-year-old. Because flights

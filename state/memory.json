@@ -113,6 +113,24 @@
       "note": "I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent…",
       "source": "Official Hotel Booking Engine 2026-07-06",
       "updated": "2026-07-06"
+    },
+    "Thassos Island Beach Break|2026-07": {
+      "realistic_price_eur": 65,
+      "note": "I have verified the Esperia Hotel deal in Pefkari, Thassos. Availability is confirmed for early to mid-July 2026 at approximately €65–€66/night for a room including breakfast. You can book this…",
+      "source": "Go-Thassos direct availability search 2026-07-07",
+      "updated": "2026-07-07"
+    },
+    "Velingrad Thermal Escape|2026-07": {
+      "realistic_price_eur": 70,
+      "note": "I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…",
+      "source": "Official hotel offer site (profi tours) valid 26.05.2026 - 16.07.2026",
+      "updated": "2026-07-07"
+    },
+    "Rome City Break|2026-08": {
+      "realistic_price_eur": 85,
+      "note": "I have verified the availability of hu Roma Camping In Town for your requested dates of August 4–9, 2026. The current nightly rate is approximately €85, totaling €425 for the 5-night stay. The flight…",
+      "source": "booking.com live search 2026-07-07",
+      "updated": "2026-07-07"
     }
   },
   "ledger": [
@@ -575,6 +593,45 @@
       "final_score": 37,
       "source": "Official Hotel Booking Engine 2026-07-06",
       "note": "A manageable drive and short ferry ride unlock top-tier beach utility with a private shallow sandy bay and kids' club, offering a premium, low-friction Aegean escape in early September."
+    },
+    {
+      "date": "2026-07-07",
+      "destination": "Thassos Island Beach Break",
+      "window": "2026-07-08 to 2026-07-15",
+      "type": "hotel",
+      "claimed_price": 66,
+      "verdict": "diamond",
+      "actual_price": 65,
+      "llm_score": 81,
+      "final_score": 99,
+      "source": "Go-Thassos direct availability search 2026-07-07",
+      "note": "A manageable 3.5-hour drive and short ferry ride from Plovdiv yield excellent summer beach utility, though the lack of an on-site pool slightly limits immediate toddler entertainment."
+    },
+    {
+      "date": "2026-07-07",
+      "destination": "Velingrad Thermal Escape",
+      "window": "2026-07-14 to 2026-07-17",
+      "type": "hotel",
+      "claimed_price": 102,
+      "verdict": "diamond",
+      "actual_price": 70,
+      "llm_score": 85,
+      "final_score": 100,
+      "source": "Official hotel offer site (profi tours) valid 26.05.2026 - 16.07.2026",
+      "note": "An ultra-short 1.5-hour drive from Plovdiv delivers a zero-friction, high-utility 3-night getaway with fantastic on-site thermal pools perfect for a 4-year-old."
+    },
+    {
+      "date": "2026-07-07",
+      "destination": "Rome City Break",
+      "window": "2026-08-04 to 2026-08-09",
+      "type": "hotel",
+      "claimed_price": 75,
+      "verdict": "skip",
+      "actual_price": 85,
+      "llm_score": 57,
+      "final_score": 65,
+      "source": "booking.com live search 2026-07-07",
+      "note": "While the on-site pools offer decent toddler utility, the exhausting logistics of driving to Sofia for a flight and navigating mid-summer heat in a major city heavily dilute the net family value."
     }
   ]
 }

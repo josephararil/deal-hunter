@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-06
+# Diamond Finder Memory — updated 2026-07-07
 
-## Price Baselines (19 entries)
+## Price Baselines (22 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -57,6 +57,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-04_
 
+### Rome City Break|2026-08
+**Realistic:** ~€85/night &nbsp; **Updated:** 2026-07-07
+I have verified the availability of hu Roma Camping In Town for your requested dates of August 4–9, 2026. The current nightly rate is approximately €85, totaling €425 for the 5-night stay. The flight…
+_Source: booking.com live search 2026-07-07_
+
 ### Rome, Italy|2026-08
 **Realistic:** ~€63.89/night &nbsp; **Updated:** 2026-07-02
 Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.
@@ -72,6 +77,11 @@ _Source: hu openair official booking engine check 2026-07-01_
 Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-04_
 
+### Thassos Island Beach Break|2026-07
+**Realistic:** ~€65/night &nbsp; **Updated:** 2026-07-07
+I have verified the Esperia Hotel deal in Pefkari, Thassos. Availability is confirmed for early to mid-July 2026 at approximately €65–€66/night for a room including breakfast. You can book this…
+_Source: Go-Thassos direct availability search 2026-07-07_
+
 ### Thassos Island|2026-09
 **Realistic:** ~€218/night &nbsp; **Updated:** 2026-07-06
 I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent…
@@ -81,6 +91,11 @@ _Source: Official Hotel Booking Engine 2026-07-06_
 **Realistic:** ~€386.21/night &nbsp; **Updated:** 2026-07-03
 Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-03_
+
+### Velingrad Thermal Escape|2026-07
+**Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
+I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…
+_Source: Official hotel offer site (profi tours) valid 26.05.2026 - 16.07.2026_
 
 ### Velingrad, Bulgaria|2026-08
 **Realistic:** ~€127/night &nbsp; **Updated:** 2026-07-02
@@ -97,8 +112,11 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (38 entries)
+## Outcome Ledger (41 entries)
 
+- 💎 2026-07-07 | Thassos Island Beach Break | 2026-07-08 to 2026-07-15 | diamond score=81->99 claimed=€66 actual=€65 — A manageable 3.5-hour drive and short ferry ride from Plovdiv yield excellent summer beach utility,…
+- 💎 2026-07-07 | Velingrad Thermal Escape | 2026-07-14 to 2026-07-17 | diamond score=85->100 claimed=€102 actual=€70 — An ultra-short 1.5-hour drive from Plovdiv delivers a zero-friction, high-utility 3-night getaway…
+- · 2026-07-07 | Rome City Break | 2026-08-04 to 2026-08-09 | skip score=57->65 claimed=€75 actual=€85 — While the on-site pools offer decent toddler utility, the exhausting logistics of driving to Sofia…
 - 👍 2026-07-06 | Velingrad | 2026-08-01 - 2026-08-04 | good score=84->68 claimed=€77 actual=€151 — An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and…
 - 💎 2026-07-06 | Bansko | 2026-08-14 - 2026-08-17 | diamond score=82->97 claimed=€83 actual=€83 — A scenic 2.5-hour drive yields a highly relaxed premium mountain retreat with open spaces and…
 - ❌ 2026-07-06 | Nessebar | 2026-09-02 - 2026-09-07 | kill claimed=€120

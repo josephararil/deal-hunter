@@ -25,10 +25,14 @@
     "Thassos Island|2026-09-06 - 2026-09-11|skip": "2026-07-06",
     "Velingrad Thermal Escape|2026-07-14 to 2026-07-17|diamond": "2026-07-07",
     "Thassos Island Beach Break|2026-07-08 to 2026-07-15|diamond": "2026-07-07",
-    "Rome City Break|2026-08-04 to 2026-08-09|skip": "2026-07-07"
+    "Rome City Break|2026-08-04 to 2026-08-09|skip": "2026-07-07",
+    "Velingrad SPA Retreat|2026-08-18 to 2026-08-21|diamond": "2026-07-08",
+    "Pirin Mountain Escape|2026-08-13 to 2026-08-16|good": "2026-07-08",
+    "Sunny Beach Post-Peak Value Play|2026-08-30 to 2026-09-04|skip": "2026-07-08",
+    "Corfu Late Summer Beach Break|2026-09-08 to 2026-09-13|skip": "2026-07-08"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 8
+    "2026-07": 9
   }
 }

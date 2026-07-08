@@ -131,6 +131,30 @@
       "note": "I have verified the availability of hu Roma Camping In Town for your requested dates of August 4–9, 2026. The current nightly rate is approximately €85, totaling €425 for the 5-night stay. The flight…",
       "source": "booking.com live search 2026-07-07",
       "updated": "2026-07-07"
+    },
+    "Velingrad SPA Retreat|2026-08": {
+      "realistic_price_eur": 105,
+      "note": "I verified the Park Hotel & SPA Vella Hills for your requested August 18–21, 2026 window. Current rates are approximately €105 per night (total €315 for the 3-night stay), which is higher than the…",
+      "source": "Official hotel website and market aggregators (KAYAK/Booking.com) as of 2026-07-08",
+      "updated": "2026-07-08"
+    },
+    "Pirin Mountain Escape|2026-08": {
+      "realistic_price_eur": 103,
+      "note": "I have verified that the Pirin Golf & Country Club is available for your dates of August 13–16, 2026, but the price is higher than the initial estimate. The current realistic rate for a studio is…",
+      "source": "Official property website price list 2026",
+      "updated": "2026-07-08"
+    },
+    "Sunny Beach Post-Peak Value Play|2026-08": {
+      "realistic_price_eur": 165,
+      "note": "I verified the Festa Panorama Hotel in Nessebar (near Sunny Beach). The deal is real and the hotel is operational for your requested dates, but the actual price is higher than estimated, currently…",
+      "source": "Festa Hotels official site / Booking aggregators live check",
+      "updated": "2026-07-08"
+    },
+    "Corfu Late Summer Beach Break|2026-09": {
+      "realistic_price_eur": 218,
+      "note": "I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…",
+      "source": "Booking.com, Expedia, and Trivago live search 2026-07-08",
+      "updated": "2026-07-08"
     }
   },
   "ledger": [
@@ -632,6 +656,58 @@
       "final_score": 65,
       "source": "booking.com live search 2026-07-07",
       "note": "While the on-site pools offer decent toddler utility, the exhausting logistics of driving to Sofia for a flight and navigating mid-summer heat in a major city heavily dilute the net family value."
+    },
+    {
+      "date": "2026-07-08",
+      "destination": "Velingrad SPA Retreat",
+      "window": "2026-08-18 to 2026-08-21",
+      "type": "hotel",
+      "claimed_price": 72,
+      "verdict": "diamond",
+      "actual_price": 105,
+      "llm_score": 82,
+      "final_score": 87,
+      "source": "Official hotel website and market aggregators (KAYAK/Booking.com) as of 2026-07-08",
+      "note": "An effortless 1.5-hour drive delivers outstanding family utility with warm mineral pools and kids' facilities perfect for a relaxing 3-night toddler break."
+    },
+    {
+      "date": "2026-07-08",
+      "destination": "Pirin Mountain Escape",
+      "window": "2026-08-13 to 2026-08-16",
+      "type": "hotel",
+      "claimed_price": 69,
+      "verdict": "good",
+      "actual_price": 103,
+      "llm_score": 81,
+      "final_score": 81,
+      "source": "Official property website price list 2026",
+      "note": "A highly manageable 2.5-hour drive provides immense safe, open-air utility in a cooler mountain setting with great pools, ideal for a short summer family escape."
+    },
+    {
+      "date": "2026-07-08",
+      "destination": "Sunny Beach Post-Peak Value Play",
+      "window": "2026-08-30 to 2026-09-04",
+      "type": "hotel",
+      "claimed_price": 58,
+      "verdict": "skip",
+      "actual_price": 165,
+      "llm_score": 76,
+      "final_score": 48,
+      "source": "Festa Hotels official site / Booking aggregators live check",
+      "note": "A straightforward 3-hour highway drive offers solid late-summer beach utility with good pools, though the 5-night duration approaches the limit for a standard resort stay."
+    },
+    {
+      "date": "2026-07-08",
+      "destination": "Corfu Late Summer Beach Break",
+      "window": "2026-09-08 to 2026-09-13",
+      "type": "hotel",
+      "claimed_price": 120,
+      "verdict": "skip",
+      "actual_price": 218,
+      "llm_score": 56,
+      "final_score": 4,
+      "source": "Booking.com, Expedia, and Trivago live search 2026-07-08",
+      "note": "Despite massive on-site toddler utility from the waterpark, the exhausting logistics and unquoted costs of driving to Sofia for a flight severely drain the net family value."
     }
   ]
 }

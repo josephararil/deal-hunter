@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-07
+# Diamond Finder Memory — updated 2026-07-08
 
-## Price Baselines (22 entries)
+## Price Baselines (26 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -27,6 +27,11 @@ _Source: Booking.com (apidojo) live 2026-06-30_
 I have confirmed the availability of the 83 EUR per night rate at the Premier Luxury Mountain Resort for your requested dates of August 14-17, 2026. This price is accessible through the property's…
 _Source: Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer_
 
+### Corfu Late Summer Beach Break|2026-09
+**Realistic:** ~€218/night &nbsp; **Updated:** 2026-07-08
+I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…
+_Source: Booking.com, Expedia, and Trivago live search 2026-07-08_
+
 ### Hisarya, Bulgaria|2026-07
 **Realistic:** ~€103.67/night &nbsp; **Updated:** 2026-07-01
 Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.
@@ -52,6 +57,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
+### Pirin Mountain Escape|2026-08
+**Realistic:** ~€103/night &nbsp; **Updated:** 2026-07-08
+I have verified that the Pirin Golf & Country Club is available for your dates of August 13–16, 2026, but the price is higher than the initial estimate. The current realistic rate for a studio is…
+_Source: Official property website price list 2026_
+
 ### Rhodes, Greece|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04
 Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.
@@ -71,6 +81,11 @@ _Source: Booking.com (apidojo) live 2026-07-02_
 **Realistic:** ~€85/night &nbsp; **Updated:** 2026-07-01
 I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…
 _Source: hu openair official booking engine check 2026-07-01_
+
+### Sunny Beach Post-Peak Value Play|2026-08
+**Realistic:** ~€165/night &nbsp; **Updated:** 2026-07-08
+I verified the Festa Panorama Hotel in Nessebar (near Sunny Beach). The deal is real and the hotel is operational for your requested dates, but the actual price is higher than estimated, currently…
+_Source: Festa Hotels official site / Booking aggregators live check_
 
 ### Sunny Beach, Bulgaria|2026-08
 **Realistic:** ~€215.0/night &nbsp; **Updated:** 2026-07-04
@@ -92,6 +107,11 @@ _Source: Official Hotel Booking Engine 2026-07-06_
 Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-03_
 
+### Velingrad SPA Retreat|2026-08
+**Realistic:** ~€105/night &nbsp; **Updated:** 2026-07-08
+I verified the Park Hotel & SPA Vella Hills for your requested August 18–21, 2026 window. Current rates are approximately €105 per night (total €315 for the 3-night stay), which is higher than the…
+_Source: Official hotel website and market aggregators (KAYAK/Booking.com) as of 2026-07-08_
+
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
 I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…
@@ -112,8 +132,12 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (41 entries)
+## Outcome Ledger (45 entries)
 
+- 💎 2026-07-08 | Velingrad SPA Retreat | 2026-08-18 to 2026-08-21 | diamond score=82->87 claimed=€72 actual=€105 — An effortless 1.5-hour drive delivers outstanding family utility with warm mineral pools and kids'…
+- 👍 2026-07-08 | Pirin Mountain Escape | 2026-08-13 to 2026-08-16 | good score=81->81 claimed=€69 actual=€103 — A highly manageable 2.5-hour drive provides immense safe, open-air utility in a cooler mountain…
+- · 2026-07-08 | Sunny Beach Post-Peak Value Play | 2026-08-30 to 2026-09-04 | skip score=76->48 claimed=€58 actual=€165 — A straightforward 3-hour highway drive offers solid late-summer beach utility with good pools,…
+- · 2026-07-08 | Corfu Late Summer Beach Break | 2026-09-08 to 2026-09-13 | skip score=56->4 claimed=€120 actual=€218 — Despite massive on-site toddler utility from the waterpark, the exhausting logistics and unquoted…
 - 💎 2026-07-07 | Thassos Island Beach Break | 2026-07-08 to 2026-07-15 | diamond score=81->99 claimed=€66 actual=€65 — A manageable 3.5-hour drive and short ferry ride from Plovdiv yield excellent summer beach utility,…
 - 💎 2026-07-07 | Velingrad Thermal Escape | 2026-07-14 to 2026-07-17 | diamond score=85->100 claimed=€102 actual=€70 — An ultra-short 1.5-hour drive from Plovdiv delivers a zero-friction, high-utility 3-night getaway…
 - · 2026-07-07 | Rome City Break | 2026-08-04 to 2026-08-09 | skip score=57->65 claimed=€75 actual=€85 — While the on-site pools offer decent toddler utility, the exhausting logistics of driving to Sofia…

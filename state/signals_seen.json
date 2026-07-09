@@ -29,10 +29,14 @@
     "Velingrad SPA Retreat|2026-08-18 to 2026-08-21|diamond": "2026-07-08",
     "Pirin Mountain Escape|2026-08-13 to 2026-08-16|good": "2026-07-08",
     "Sunny Beach Post-Peak Value Play|2026-08-30 to 2026-09-04|skip": "2026-07-08",
-    "Corfu Late Summer Beach Break|2026-09-08 to 2026-09-13|skip": "2026-07-08"
+    "Corfu Late Summer Beach Break|2026-09-08 to 2026-09-13|skip": "2026-07-08",
+    "Bansko Summer Mountain Escape|Aug 7 - Aug 10, 2026|diamond": "2026-07-09",
+    "Velingrad Spa & Thermal Break|Jul 24 - Jul 27, 2026|good": "2026-07-09",
+    "Hisarya Ultra-Local Thermal Retreat|Aug 21 - Aug 24, 2026|good": "2026-07-09",
+    "Milan & Northern Italy City Break|Jul 15 - Jul 20, 2026|skip": "2026-07-09"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 9
+    "2026-07": 10
   }
 }

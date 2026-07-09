@@ -155,6 +155,30 @@
       "note": "I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…",
       "source": "Booking.com, Expedia, and Trivago live search 2026-07-08",
       "updated": "2026-07-08"
+    },
+    "Velingrad Spa & Thermal Break|2026-07": {
+      "realistic_price_eur": 128,
+      "note": "I searched for Balneo Complex & Spa Aquatonik for July 24-27, 2026, and found rooms available at approximately 128 EUR per night (384 EUR total). While higher than your initial estimate, this remains…",
+      "source": "booking.com live search 2026-07-09",
+      "updated": "2026-07-09"
+    },
+    "Milan & Northern Italy City Break|2026-07": {
+      "realistic_price_eur": 142,
+      "note": "I verified the Novotel Milano Nord Ca Granda for your July 15–20, 2026 window; while the hotel is available, the nightly rate is approximately €142 (total €710), which is higher than the original…",
+      "source": "Accor official website dynamic check 2026-07-09",
+      "updated": "2026-07-09"
+    },
+    "Bansko Summer Mountain Escape|2026-08": {
+      "realistic_price_eur": 104,
+      "note": "I verified the 'Summer SPA vacation' at Lucky Bansko Aparthotel SPA & Relax for your August 7-10, 2026 window. The current bookable rate is approximately 104 EUR/night (total 312 EUR for 3 nights),…",
+      "source": "Lucky Bansko official website 'Summer SPA vacation' offer",
+      "updated": "2026-07-09"
+    },
+    "Hisarya Ultra-Local Thermal Retreat|2026-08": {
+      "realistic_price_eur": 123,
+      "note": "I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor…",
+      "source": "Booking.com / representative market rates for late August 2026",
+      "updated": "2026-07-09"
     }
   },
   "ledger": [
@@ -708,6 +732,58 @@
       "final_score": 4,
       "source": "Booking.com, Expedia, and Trivago live search 2026-07-08",
       "note": "Despite massive on-site toddler utility from the waterpark, the exhausting logistics and unquoted costs of driving to Sofia for a flight severely drain the net family value."
+    },
+    {
+      "date": "2026-07-09",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Jul 24 - Jul 27, 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "good",
+      "actual_price": 128,
+      "llm_score": 82,
+      "final_score": 77,
+      "source": "booking.com live search 2026-07-09",
+      "note": "An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and dedicated kids' areas, perfect for a relaxed 3-night weekend."
+    },
+    {
+      "date": "2026-07-09",
+      "destination": "Milan & Northern Italy City Break",
+      "window": "Jul 15 - Jul 20, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "skip",
+      "actual_price": 142,
+      "llm_score": 68,
+      "final_score": 56,
+      "source": "Accor official website dynamic check 2026-07-09",
+      "note": "Direct flights from Plovdiv minimize transit friction, and the hotel's family infrastructure is strong, but a 5-night city break in mid-July heat offers only moderate utility for a 4-year-old."
+    },
+    {
+      "date": "2026-07-09",
+      "destination": "Bansko Summer Mountain Escape",
+      "window": "Aug 7 - Aug 10, 2026",
+      "type": "hotel",
+      "claimed_price": 78,
+      "verdict": "diamond",
+      "actual_price": 104,
+      "llm_score": 81,
+      "final_score": 87,
+      "source": "Lucky Bansko official website 'Summer SPA vacation' offer",
+      "note": "A manageable 2.5-hour drive unlocks excellent summer mountain utility, featuring cooler temperatures, massive pools, and stellar kids' clubs perfectly suited for a 3-night break."
+    },
+    {
+      "date": "2026-07-09",
+      "destination": "Hisarya Ultra-Local Thermal Retreat",
+      "window": "Aug 21 - Aug 24, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 123,
+      "llm_score": 76,
+      "final_score": 73,
+      "source": "Booking.com / representative market rates for late August 2026",
+      "note": "An ultra-local 45-minute drive eliminates transit friction entirely, providing highly actionable, low-stress relaxation with excellent thermal pools and green parks."
     }
   ]
 }

@@ -1,11 +1,16 @@
-# Diamond Finder Memory — updated 2026-07-08
+# Diamond Finder Memory — updated 2026-07-09
 
-## Price Baselines (26 entries)
+## Price Baselines (30 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
 I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…
 _Source: Booking.com live search 2026-07-04_
+
+### Bansko Summer Mountain Escape|2026-08
+**Realistic:** ~€104/night &nbsp; **Updated:** 2026-07-09
+I verified the 'Summer SPA vacation' at Lucky Bansko Aparthotel SPA & Relax for your August 7-10, 2026 window. The current bookable rate is approximately 104 EUR/night (total 312 EUR for 3 nights),…
+_Source: Lucky Bansko official website 'Summer SPA vacation' offer_
 
 ### Bansko, Bulgaria|2026-08
 **Realistic:** ~€167.61/night &nbsp; **Updated:** 2026-07-02
@@ -32,6 +37,11 @@ _Source: Official Premier Luxury Mountain Resort website, confirmed via 'Stay Mo
 I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…
 _Source: Booking.com, Expedia, and Trivago live search 2026-07-08_
 
+### Hisarya Ultra-Local Thermal Retreat|2026-08
+**Realistic:** ~€123/night &nbsp; **Updated:** 2026-07-09
+I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor…
+_Source: Booking.com / representative market rates for late August 2026_
+
 ### Hisarya, Bulgaria|2026-07
 **Realistic:** ~€103.67/night &nbsp; **Updated:** 2026-07-01
 Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.
@@ -51,6 +61,11 @@ _Source: Parc Hotel Peschiera del Garda official property site_
 **Realistic:** ~€101.87/night &nbsp; **Updated:** 2026-07-05
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-13, 2026: €101.87/night (€305.6 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
+
+### Milan & Northern Italy City Break|2026-07
+**Realistic:** ~€142/night &nbsp; **Updated:** 2026-07-09
+I verified the Novotel Milano Nord Ca Granda for your July 15–20, 2026 window; while the hotel is available, the nightly rate is approximately €142 (total €710), which is higher than the original…
+_Source: Accor official website dynamic check 2026-07-09_
 
 ### Mövenpick Istanbul Golden Horn|2026-09
 **Realistic:** ~€108.0/night &nbsp; **Updated:** 2026-07-05
@@ -112,6 +127,11 @@ _Source: Booking.com (apidojo) live 2026-07-03_
 I verified the Park Hotel & SPA Vella Hills for your requested August 18–21, 2026 window. Current rates are approximately €105 per night (total €315 for the 3-night stay), which is higher than the…
 _Source: Official hotel website and market aggregators (KAYAK/Booking.com) as of 2026-07-08_
 
+### Velingrad Spa & Thermal Break|2026-07
+**Realistic:** ~€128/night &nbsp; **Updated:** 2026-07-09
+I searched for Balneo Complex & Spa Aquatonik for July 24-27, 2026, and found rooms available at approximately 128 EUR per night (384 EUR total). While higher than your initial estimate, this remains…
+_Source: booking.com live search 2026-07-09_
+
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
 I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…
@@ -132,8 +152,12 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (45 entries)
+## Outcome Ledger (49 entries)
 
+- 👍 2026-07-09 | Velingrad Spa & Thermal Break | Jul 24 - Jul 27, 2026 | good score=82->77 claimed=€85 actual=€128 — An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and…
+- · 2026-07-09 | Milan & Northern Italy City Break | Jul 15 - Jul 20, 2026 | skip score=68->56 claimed=€115 actual=€142 — Direct flights from Plovdiv minimize transit friction, and the hotel's family infrastructure is…
+- 💎 2026-07-09 | Bansko Summer Mountain Escape | Aug 7 - Aug 10, 2026 | diamond score=81->87 claimed=€78 actual=€104 — A manageable 2.5-hour drive unlocks excellent summer mountain utility, featuring cooler…
+- 👍 2026-07-09 | Hisarya Ultra-Local Thermal Retreat | Aug 21 - Aug 24, 2026 | good score=76->73 claimed=€118 actual=€123 — An ultra-local 45-minute drive eliminates transit friction entirely, providing highly actionable,…
 - 💎 2026-07-08 | Velingrad SPA Retreat | 2026-08-18 to 2026-08-21 | diamond score=82->87 claimed=€72 actual=€105 — An effortless 1.5-hour drive delivers outstanding family utility with warm mineral pools and kids'…
 - 👍 2026-07-08 | Pirin Mountain Escape | 2026-08-13 to 2026-08-16 | good score=81->81 claimed=€69 actual=€103 — A highly manageable 2.5-hour drive provides immense safe, open-air utility in a cooler mountain…
 - · 2026-07-08 | Sunny Beach Post-Peak Value Play | 2026-08-30 to 2026-09-04 | skip score=76->48 claimed=€58 actual=€165 — A straightforward 3-hour highway drive offers solid late-summer beach utility with good pools,…

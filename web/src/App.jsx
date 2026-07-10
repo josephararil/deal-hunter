@@ -3,6 +3,14 @@ import { useEffect, useMemo, useState } from "react";
 const TIER_LABEL = { diamond: "💎 Diamond", good: "👍 Good find", skip: "· Skipped" };
 const TIER_ORDER = { diamond: 0, good: 1, skip: 2 };
 
+// Local dev reads the synced copy in public/ (npm run dev syncs it from ../state).
+// The deployed build fetches straight from GitHub's raw content each page load, so the
+// site is always current the moment CI commits a new deals_history.json — no rebuild
+// or redeploy needed when the data changes, only when the UI code itself changes.
+const DATA_URL = import.meta.env.DEV
+  ? "/data.json"
+  : "https://raw.githubusercontent.com/josephararil/deal-hunter/main/state/deals_history.json";
+
 function sign(n) {
   if (n === null || n === undefined) return "?";
   return n >= 0 ? `+${n}` : `${n}`;
@@ -25,7 +33,7 @@ export default function App() {
   const [selectedKey, setSelectedKey] = useState(null);
 
   useEffect(() => {
-    fetch("/data.json")
+    fetch(DATA_URL)
       .then((r) => r.json())
       .then((d) => setEntries(d.entries || []))
       .catch((e) => setError(String(e)));

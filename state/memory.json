@@ -37,10 +37,10 @@
       "updated": "2026-07-02"
     },
     "Bansko, Bulgaria|2026-08": {
-      "realistic_price_eur": 167.61,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €167.61/night (€502.84 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-02",
-      "updated": "2026-07-02"
+      "realistic_price_eur": 124,
+      "note": "I verified availability at Lucky Bansko Aparthotel SPA & Relax for August 7–10, 2026; the current bookable rate for a Junior Suite is €124 per night (€372 total for 3 nights). You can book this stay…",
+      "source": "Lucky Bansko Aparthotel SPA & Relax official booking engine 2026-07-10",
+      "updated": "2026-07-10"
     },
     "Velingrad, Bulgaria|2026-08": {
       "realistic_price_eur": 127,
@@ -179,6 +179,30 @@
       "note": "I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor…",
       "source": "Booking.com / representative market rates for late August 2026",
       "updated": "2026-07-09"
+    },
+    "Antalya, Turkey|2026-08": {
+      "realistic_price_eur": 215,
+      "note": "I verified that Dream Fun World in Side, Antalya is a real and popular 5-star all-inclusive resort, but the claimed €95/night introductory price is incorrect for late August 2026. Current market…",
+      "source": "Booking.com live search 2026-07-10",
+      "updated": "2026-07-10"
+    },
+    "Hisarya, Bulgaria|2026-08": {
+      "realistic_price_eur": 123,
+      "note": "I have verified the availability of the Sana Spa Hotel in Hisarya for August 21-24, 2026. The rate is confirmed at approximately €123 per night (€369 total for 3 nights). You can book your stay via…",
+      "source": "booking.com live search 2026-07-10",
+      "updated": "2026-07-10"
+    },
+    "Thassos, Greece|2026-09": {
+      "realistic_price_eur": 218,
+      "note": "I have verified the Atrium Hotel Thassos for your requested dates of September 6–11, 2026. While the hotel is available, the current realistic price is approximately €218 per night (€1,090 total for…",
+      "source": "booking.com live search 2026-07-10",
+      "updated": "2026-07-10"
+    },
+    "Velingrad, Bulgaria|2026-07": {
+      "realistic_price_eur": 128,
+      "note": "I have verified the availability of Balneo Complex & Spa Aquatonik for your requested dates of July 24–27, 2026. The nightly rate is €128, totaling €384 for the 3-night stay. You can book this stay…",
+      "source": "Booking.com live search 2026-07-10",
+      "updated": "2026-07-10"
     }
   },
   "ledger": [
@@ -784,6 +808,71 @@
       "final_score": 73,
       "source": "Booking.com / representative market rates for late August 2026",
       "note": "An ultra-local 45-minute drive eliminates transit friction entirely, providing highly actionable, low-stress relaxation with excellent thermal pools and green parks."
+    },
+    {
+      "date": "2026-07-10",
+      "destination": "Antalya, Turkey",
+      "window": "2026-08-20 to 2026-08-27",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "skip",
+      "actual_price": 215,
+      "llm_score": 18,
+      "final_score": 0,
+      "source": "Booking.com live search 2026-07-10",
+      "note": "A mere 2-night stay requiring a drive to Sofia followed by an international flight is a logistical disaster for a family with a 4-year-old, completely destroying the resort's utility."
+    },
+    {
+      "date": "2026-07-10",
+      "destination": "Hisarya, Bulgaria",
+      "window": "2026-08-21 to 2026-08-24",
+      "type": "hotel",
+      "claimed_price": 123,
+      "verdict": "skip",
+      "actual_price": 123,
+      "llm_score": 78,
+      "final_score": 54,
+      "source": "booking.com live search 2026-07-10",
+      "note": "An effortless 45-minute drive eliminates transit friction, offering high-value, low-stress relaxation with excellent thermal pools perfectly suited for a short toddler break."
+    },
+    {
+      "date": "2026-07-10",
+      "destination": "Thassos, Greece",
+      "window": "2026-09-06 to 2026-09-11",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 218,
+      "llm_score": 37,
+      "final_score": 0,
+      "source": "booking.com live search 2026-07-10",
+      "note": "While the warm, shallow Aegean waters offer great beach utility, the exhausting 4.5-hour door-to-door drive and ferry logistics from Plovdiv severely diminish the net family value."
+    },
+    {
+      "date": "2026-07-10",
+      "destination": "Velingrad, Bulgaria",
+      "window": "2026-07-24 to 2026-07-27",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "skip",
+      "actual_price": 128,
+      "llm_score": 77,
+      "final_score": 50,
+      "source": "Booking.com live search 2026-07-10",
+      "note": "A highly manageable 1.5-hour drive delivers outstanding family utility with warm thermal mineral pools and dedicated kids' areas for an easy 3-night summer weekend."
+    },
+    {
+      "date": "2026-07-10",
+      "destination": "Bansko, Bulgaria",
+      "window": "2026-08-07 to 2026-08-10",
+      "type": "hotel",
+      "claimed_price": 104,
+      "verdict": "skip",
+      "actual_price": 124,
+      "llm_score": 81,
+      "final_score": 56,
+      "source": "Lucky Bansko Aparthotel SPA & Relax official booking engine 2026-07-10",
+      "note": "A straightforward 2.5-hour drive unlocks elite child-friendly infrastructure in a cooler mountain setting, providing immense safe, open-air utility for a short summer escape."
     }
   ]
 }

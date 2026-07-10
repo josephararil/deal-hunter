@@ -33,10 +33,15 @@
     "Bansko Summer Mountain Escape|Aug 7 - Aug 10, 2026|diamond": "2026-07-09",
     "Velingrad Spa & Thermal Break|Jul 24 - Jul 27, 2026|good": "2026-07-09",
     "Hisarya Ultra-Local Thermal Retreat|Aug 21 - Aug 24, 2026|good": "2026-07-09",
-    "Milan & Northern Italy City Break|Jul 15 - Jul 20, 2026|skip": "2026-07-09"
+    "Milan & Northern Italy City Break|Jul 15 - Jul 20, 2026|skip": "2026-07-09",
+    "Bansko, Bulgaria|2026-08-07 to 2026-08-10|skip": "2026-07-10",
+    "Hisarya, Bulgaria|2026-08-21 to 2026-08-24|skip": "2026-07-10",
+    "Velingrad, Bulgaria|2026-07-24 to 2026-07-27|skip": "2026-07-10",
+    "Antalya, Turkey|2026-08-20 to 2026-08-27|skip": "2026-07-10",
+    "Thassos, Greece|2026-09-06 to 2026-09-11|skip": "2026-07-10"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 10
+    "2026-07": 11
   }
 }

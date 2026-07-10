@@ -1,65 +1,81 @@
-# Diamond Finder — 2026-07-09
+# Diamond Finder — 2026-07-10
 
-_Stage 1: 4 candidate(s). 4 grounded · 4 scored. 1 diamond · 2 good._
+_Stage 1: 5 candidate(s). 5 grounded · 5 scored. 0 diamond · 0 good._
 
-### Velingrad Spa & Thermal Break 👍 — FIND 88/100 (high) · est €85/night
-**Type:** hotel &nbsp; **Window:** Jul 24 - Jul 27, 2026
-An effortless 1.5-hour drive unlocks peak-summer spa utility at a steep discount (live leads indicate packages ~€85/night vs typical €130+). The short 3-night window perfectly matches the low-excitement, high-relaxation vibe. Dedicated kids' pools and play areas ensure zero friction for a 4-year-old.
-_Score: LLM 82 -8 price +3 transit = **77** → good_
-_Scorer: An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and dedicated kids' areas, perfect for a relaxed 3-night weekend._
-**About:** Balneo Complex & Spa Aquatonik is a well-known 4-star wellness resort situated in the spa capital of the Balkans, Velingrad. It features a renowned mineral water aquatonic pool, extensive spa facilities, and outdoor pools that are fully operational in summer. For families with a 4-year-old, the dedicated children's pool, outdoor playground, and adjacent pine forests provide safe, easy entertainment without leaving the resort.
-**Why it's a deal:** At 128 EUR per night, this is a standard peak-season rate for a premium Velingrad spa hotel. While not a deep discount, it represents fair value for the extensive on-site amenities compared to similar 4-star properties in the area that often exceed 150 EUR per night in late July.
+### Hisarya, Bulgaria · — FIND 86/100 (high) · est €123/night
+**Type:** hotel &nbsp; **Window:** 2026-08-21 to 2026-08-24
+An ultra-local 45-minute drive from Plovdiv eliminates transit friction entirely, providing highly actionable, low-stress relaxation. The hotel features excellent thermal pools and is set next to large parks. A short 3-night stay perfectly matches the low-excitement nature of the town, making it an effortless weekend win for a family with a toddler.
+_Score: LLM 78 -27 price +3 transit = **54** → skip_
+_Scorer: An effortless 45-minute drive eliminates transit friction, offering high-value, low-stress relaxation with excellent thermal pools perfectly suited for a short toddler break._
+**About:** Sana Spa Hotel is a solid 4-star wellness retreat located just a short drive from Plovdiv, nestled directly beside Hisarya's expansive, stroller-friendly parks. The property boasts excellent indoor and outdoor thermal mineral pools, making it highly comfortable for both adults and young children. A 4-year-old will enjoy the open park spaces and warm water splashing, while parents can take advantage of the quiet atmosphere and spa treatments.
+**Why it's a deal:** At €123/night, this is a very fair price for a reputable 4-star spa hotel in Hisarya during peak summer, sitting right in line with the town's standard premium rates. It saves significant transit costs and delivers immediate, high-quality relaxation.
 
-### Bansko Summer Mountain Escape 💎 — FIND 86/100 (high) · est €78/night
-**Type:** hotel &nbsp; **Window:** Aug 7 - Aug 10, 2026
-A highly manageable 2.5-hour drive provides immense safe, open-air utility in a cooler mountain setting, avoiding August heat. Aggressive summer repositioning brings premium winter aparthotels down to ~€78/night. Features massive indoor pools and supervised kids' clubs perfect for a short 3-night break.
-_Score: LLM 81 +3 price +3 transit = **87** → diamond_
-_Scorer: A manageable 2.5-hour drive unlocks excellent summer mountain utility, featuring cooler temperatures, massive pools, and stellar kids' clubs perfectly suited for a 3-night break._
-**About:** Lucky Bansko Aparthotel SPA & Relax is one of Bansko's premier 5-star properties, operating year-round with exceptional family facilities. The hotel boasts modern, spacious apartments, a high-end spa with multiple indoor pools, and outdoor play areas. For a family with a 4-year-old, the standout is the fully supervised, complimentary kids' club and the easy access to gentle mountain walks and gondola rides in the fresh summer air.
-**Why it's a deal:** Securing a 5-star apartment here for 104 EUR per night in August is a strong value play, as winter rates easily double this figure. It is highly competitive with 4-star coastal or spa alternatives, offering a full tier more in luxury and space for less money.
+### Antalya, Turkey · — FIND 85/100 (high) · est €95/night
+**Type:** hotel &nbsp; **Window:** 2026-08-20 to 2026-08-27
+A staggering price drop for a premium experience. Dream Fun World is a newly opened 2026 resort offering aggressive introductory pricing at ~€95/night during peak August. Despite the Tier 2 transit (flight from Sofia), the massive savings on an all-inclusive property with an extensive on-site aquapark easily justifies the transit friction, providing a full week of high-excitement utility for a 4-year-old.
+_Score: LLM 18 -76 price -3 transit = **0** → skip_
+_Scorer: A mere 2-night stay requiring a drive to Sofia followed by an international flight is a logistical disaster for a family with a 4-year-old, completely destroying the resort's utility._
+**About:** Dream Fun World is a new, large-scale 5-star all-inclusive resort in Side, Antalya, featuring a massive on-site aquapark and extensive family facilities. A family with a 4-year-old can enjoy endless water play, comprehensive kids' clubs, and diverse dining options without ever leaving the property. While the surrounding area of Side offers ancient ruins and sandy beaches, the resort itself provides more than enough entertainment for a young child.
+**Why it's a deal:** Although €215/night is a standard and fair rate for a peak August stay in a brand-new 5-star Turkish resort (normally closer to €250+), the overall value is entirely negated by the immense cost and hassle of flying for just a 2-night window.
 
-### Milan & Northern Italy City Break · — FIND 85/100 (medium) · est €115/night
-**Type:** hotel &nbsp; **Window:** Jul 15 - Jul 20, 2026
-Bypasses Sofia entirely with ultra-low €17 direct Ryanair flights from Plovdiv (PDV) currently available for mid-July. Milan offers high-excitement utility for a 5-night stay. The recommended hotel provides reliable family infrastructure and free stays for kids, offsetting the premium city location.
-_Score: LLM 68 -15 price +3 transit = **56** → skip_
-_Scorer: Direct flights from Plovdiv minimize transit friction, and the hotel's family infrastructure is strong, but a 5-night city break in mid-July heat offers only moderate utility for a 4-year-old._
-**About:** Novotel Milano Nord Ca Granda is a dependable 4-star hotel located a short tram ride from central Milan, known for its family-friendly Accor standards. It features a seasonal outdoor pool, which is a massive plus in the Italian summer, and spacious family rooms. While Milan offers world-class sights for adults, a 4-year-old will most appreciate the hotel pool, nearby parks, and the novelty of riding the city's vintage trams.
-**Why it's a deal:** At 142 EUR per night, this is a reasonable rate for Milan, especially considering Novotel's policy where kids stay and eat breakfast for free. You are paying a slight premium over basic city hotels, but the pool and family room configuration make it well worth the difference.
+### Velingrad, Bulgaria · — FIND 84/100 (high) · est €128/night
+**Type:** hotel &nbsp; **Window:** 2026-07-24 to 2026-07-27
+An effortless 1.5-hour drive delivers outstanding Tier 1 family utility with warm thermal mineral pools and dedicated kids' areas. The pricing is well-grounded for mid-summer, and the 3-night window ensures the family avoids boredom in a quiet spa town while maximizing pure relaxation.
+_Score: LLM 77 -30 price +3 transit = **50** → skip_
+_Scorer: A highly manageable 1.5-hour drive delivers outstanding family utility with warm thermal mineral pools and dedicated kids' areas for an easy 3-night summer weekend._
+**About:** Balneo Complex & Spa Aquatonik is a popular 4-star spa hotel in Velingrad, known as the spa capital of the Balkans, located a convenient drive from Plovdiv. The hotel features an impressive array of thermal mineral pools, including dedicated shallow zones for kids, alongside robust spa amenities. It is an ideal spot for a family with a 4-year-old to splash in warm water year-round while parents take turns enjoying the extensive wellness facilities.
+**Why it's a deal:** A rate of €128/night is a strong deal for a well-equipped 4-star thermal hotel in Velingrad during the summer, where equivalent properties often push past €150. It offers a high standard of spa infrastructure for a modest premium over basic local guesthouses.
 
-### Hisarya Ultra-Local Thermal Retreat 👍 — FIND 81/100 (high) · est €118/night
-**Type:** hotel &nbsp; **Window:** Aug 21 - Aug 24, 2026
-An ultra-local 45-minute drive entirely eliminates transit friction for a family with a toddler. Although the absolute price is slightly higher than Bansko, the massive time savings, sprawling parks, and top-tier thermal pool utility make this a highly actionable and stress-free 3-night weekend play.
-_Score: LLM 76 -6 price +3 transit = **73** → good_
-_Scorer: An ultra-local 45-minute drive eliminates transit friction entirely, providing highly actionable, low-stress relaxation with excellent thermal pools and green parks._
-**About:** Sana Spa Hotel is a highly regarded 4-star wellness retreat in Hisarya, famous for its Roman ruins and healing mineral waters. The property offers excellent indoor and outdoor mineral pools, a comprehensive spa centre, and extensive manicured gardens. A 4-year-old will thrive here thanks to the spacious outdoor lawns, the kids' pool area, and the town's sprawling, pedestrian-friendly parks right on the doorstep.
-**Why it's a deal:** At 123 EUR per night, this sits squarely at the standard rate for quality Hisarya spa hotels in summer. While not an aggressive discount, the value lies in the complete elimination of travel costs and stress, making it a perfectly priced zero-friction getaway.
+### Thassos, Greece · — FIND 83/100 (high) · est €135/night
+**Type:** hotel &nbsp; **Window:** 2026-09-06 to 2026-09-11
+A manageable drive and short ferry ride from Plovdiv unlock top-tier beach utility without airport hassle. The hotel features shallow, kid-friendly sandy beaches ideal for a 4-year-old. Shifting to early September captures a steep price drop from peak August while the Aegean Sea remains perfectly warm for an excellent 5-night beach break.
+_Score: LLM 37 -49 price +3 transit = **0** → skip_
+_Scorer: While the warm, shallow Aegean waters offer great beach utility, the exhausting 4.5-hour door-to-door drive and ferry logistics from Plovdiv severely diminish the net family value._
+**About:** The Atrium Hotel Thassos is a well-regarded 4-star beachfront property offering direct access to the sea and a relaxed, family-friendly vibe. It features a nice outdoor pool area, comfortable rooms, and a shallow sandy beach that is perfectly safe for a 4-year-old to wade and play in. The island of Thassos is highly scenic and provides classic Greek seaside charm, though reaching it requires a drive to Keramoti followed by a ferry crossing.
+**Why it's a deal:** At €218/night in early September, the price reflects a typical post-peak discount from August's €250+ highs, remaining a premium choice for the island. Compared to local Bulgarian options, you are paying a steep premium purely for the pristine Aegean setting.
+
+### Bansko, Bulgaria · — FIND 81/100 (high) · est €104/night
+**Type:** hotel &nbsp; **Window:** 2026-08-07 to 2026-08-10
+A highly manageable 2.5-hour drive provides immense safe, open-air utility in a cooler mountain setting to escape the August heat. The property boasts elite family infrastructure, including a dedicated kids' club and indoor/outdoor pools, making it a perfect low-stress, high-value 3-night summer mountain escape.
+_Score: LLM 81 -28 price +3 transit = **56** → skip_
+_Scorer: A straightforward 2.5-hour drive unlocks elite child-friendly infrastructure in a cooler mountain setting, providing immense safe, open-air utility for a short summer escape._
+**About:** Lucky Bansko Aparthotel SPA & Relax is a premier 5-star family property in the mountain town of Bansko, renowned for its exceptional child-friendly infrastructure. It offers a large indoor pool with warm water, summer outdoor pools, an excellent supervised kids' club, and spacious apartment-style rooms. While Bansko is primarily a ski resort, the cool summer mountain air and the hotel's on-site entertainment make it a fantastic, low-stress retreat for a family with a toddler.
+**Why it's a deal:** Securing a summer stay here for €124/night is fantastic value, as this flagship property heavily outperforms comparable summer options by offering genuine 5-star resort infrastructure at a mid-range 4-star price point.
 
 ## Grounding & scoring
 
-### 🔧 Velingrad Spa & Thermal Break — CORRECT (confidence: high) → final **77** (good)
-**Summary:** I searched for Balneo Complex & Spa Aquatonik for July 24-27, 2026, and found rooms available at approximately 128 EUR per night (384 EUR total). While higher than your initial estimate, this remains a standard rate for this popular thermal spa resort in peak season. You can book via Booking.com or contact the hotel directly for potential promotional packages.
+### ✅ Hisarya, Bulgaria — CONFIRM (confidence: high) → final **54** (skip)
+**Summary:** I have verified the availability of the Sana Spa Hotel in Hisarya for August 21-24, 2026. The rate is confirmed at approximately €123 per night (€369 total for 3 nights). You can book your stay via the hotel's official website or booking platforms like Booking.com.
 **Options:**
-  - Jul 24-27, 2026 · €128/night · €384 total · [book](https://www.booking.com/hotel/bg/balneo-complex-amp-spa-aquatonik.en-gb.html) · _booking.com live search 2026-07-09_
-**How to book:** Book via the direct Booking.com link provided or contact the property directly at +359 878 441 685 or reception@aquatonik.com to inquire about 'Summer Package' rates.
-**Grounding:** Verified real-time availability for Balneo Complex & Spa Aquatonik for July 24-27, 2026. Current live pricing for the peak summer period is approximately 128 EUR per night (384 EUR total), correcting the initial 85 EUR estimate.
+  - Aug 21-24, 2026 · €123/night · €369 total · [book](https://www.booking.com/hotel/bg/sana-spa.html) · _booking.com live search 2026-07-10_
+**How to book:** Book directly through the hotel website at https://sanaspahotels.bg/ or via major platforms like Booking.com. You can also contact the hotel directly at +359 337 6 20 99 or +359 878 016 939.
+**Grounding:** Verified availability and pricing for the Sana Spa Hotel in Hisarya for the requested August 21-24, 2026 dates. The property remains active and available for booking at the ~€123/night rate. Amenities such as thermal pools, kids' club, and proximity to Hisarya center were confirmed through official and aggregator sources.
 
-### 🔧 Bansko Summer Mountain Escape — CORRECT (confidence: high) → final **87** (diamond)
-**Summary:** I verified the 'Summer SPA vacation' at Lucky Bansko Aparthotel SPA & Relax for your August 7-10, 2026 window. The current bookable rate is approximately 104 EUR/night (total 312 EUR for 3 nights), which includes breakfast and spa access; you can book this directly at https://luckybansko.com/.
+### 🔧 Antalya, Turkey — CORRECT (confidence: high) → final **0** (skip)
+**Summary:** I verified that Dream Fun World in Side, Antalya is a real and popular 5-star all-inclusive resort, but the claimed €95/night introductory price is incorrect for late August 2026. Current market rates for your requested travel window are closer to €208–€215 per night. You can book directly via platforms like Booking.com.
 **Options:**
-  - Aug 7-10, 2026 · €104/night · €312 total · [book](https://luckybansko.com/) · _Lucky Bansko official website 'Summer SPA vacation' offer_
-**How to book:** Book directly via the hotel's official website at https://luckybansko.com/ to access the 'Summer SPA vacation with breakfasts' package, or call the front desk at +359 889 111 333.
-**Grounding:** Live search on the official Lucky Bansko website confirms a 'Summer SPA vacation with breakfasts' rate starting from 104 EUR per room per night for the requested August 7-10, 2026 window. The initial estimate of 78 EUR/night was lower than the actual current bookable rate.
+  - Aug 20-22, 2026 · €215/night · €430 total · [book](https://www.booking.com/hotel/tr/dream-fun-world-side.en-gb.html) · _Booking.com live search 2026-07-10_
+  - Aug 24-26, 2026 · €208/night · €416 total · [book](https://www.booking.com/hotel/tr/dream-fun-world-side.en-gb.html) · _Booking.com live search 2026-07-10_
+**How to book:** Book directly through major travel platforms like Booking.com, Agoda, or TUI, where current rates for August 2026 reflect a standard peak-season pricing structure rather than the requested €95/night.
+**Grounding:** Live searches on booking platforms (Booking.com, Agoda, On the Beach) confirm the hotel is fully operational and popular, but nightly rates for late August 2026 are significantly higher than the candidate's €95 estimate, typically ranging from €208–€215 per night for standard all-inclusive packages.
 
-### 🔧 Milan & Northern Italy City Break — CORRECT (confidence: high) → final **56** (skip)
-**Summary:** I verified the Novotel Milano Nord Ca Granda for your July 15–20, 2026 window; while the hotel is available, the nightly rate is approximately €142 (total €710), which is higher than the original estimate. Direct Ryanair flights from Plovdiv to Milan are confirmed to be operating during this period, supporting the viability of this route. You can secure your room directly via the official Accor website at all.accor.com.
+### ✅ Velingrad, Bulgaria — CONFIRM (confidence: high) → final **50** (skip)
+**Summary:** I have verified the availability of Balneo Complex & Spa Aquatonik for your requested dates of July 24–27, 2026. The nightly rate is €128, totaling €384 for the 3-night stay. You can book this stay via Booking.com or by contacting the hotel directly at +359 878 441 685.
 **Options:**
-  - Jul 15 - Jul 20, 2026 · €142/night · €710 total · [book](https://all.accor.com) · _Accor official website dynamic check 2026-07-09_
-**How to book:** Book directly through the official Accor website (all.accor.com) by searching for 'Novotel Milano Nord Ca Granda' for your desired dates. Alternatively, compare prices via major booking aggregators like Booking.com or Skyscanner to ensure the best available rate.
-**Grounding:** I checked availability at the Novotel Milano Nord Ca Granda for the requested window of July 15–20, 2026. While the hotel is operational and verified as a family-friendly 4-star property in Milan, current dynamic pricing for those mid-July dates is approximately €142/night, exceeding the initial €115/night estimate. Direct Ryanair flights from Plovdiv (PDV) to Milan-Malpensa (MXP) are active for July 2026 with consistent availability, grounding the travel portion of the deal.
+  - July 24-27, 2026 · €128/night · €384 total · [book](https://www.booking.com) · _Booking.com live search 2026-07-10_
+**How to book:** Book via major travel platforms like Booking.com or directly through the hotel website at aquatonik.com. For reservations and inquiries, you can also contact the property reception at +359 878 441 685.
+**Grounding:** Live search confirmed that Balneo Complex & Spa Aquatonik is operational and available for the requested dates of July 24–27, 2026. Current market rates confirm the €128/night price point is accurate for mid-summer bookings in 2026.
 
-### 🔧 Hisarya Ultra-Local Thermal Retreat — CORRECT (confidence: high) → final **73** (good)
-**Summary:** I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor adjustment from your initial estimate. You can book directly through Booking.com or by contacting the hotel's reservation desk.
+### 🔧 Thassos, Greece — CORRECT (confidence: high) → final **0** (skip)
+**Summary:** I have verified the Atrium Hotel Thassos for your requested dates of September 6–11, 2026. While the hotel is available, the current realistic price is approximately €218 per night (€1,090 total for 5 nights), which is higher than the original estimate. You can book this stay via major platforms like Booking.com or through the hotel's official booking portal.
 **Options:**
-  - Aug 21 - Aug 24, 2026 · €123/night · €369 total · [book](https://www.booking.com/hotel/bg/sana-spa.en-gb.html) · _Booking.com / representative market rates for late August 2026_
-**How to book:** Book via Booking.com, or contact the hotel directly at +359 337 6 20 99 or reservations@sanaspahotels.bg.
-**Grounding:** Cross-referenced hotel availability for August 2026. Current pricing trends for the Sana Spa Hotel in Hisarya place typical mid-to-late August nightly rates around €123, which is slightly above the initial €118 estimate. The hotel is confirmed as operational with full spa facilities.
+  - Sep 6-11, 2026 · €218/night · €1090 total · [book](https://www.booking.com) · _booking.com live search 2026-07-10_
+**How to book:** The property can be booked via Booking.com, Expedia, or the hotel's official booking engine (linked via HotelBrain). Alternatively, contact the front desk at +30 259 305 3404.
+**Grounding:** Live search results for September 2026 at Atrium Hotel Thassos confirm the property is fully operational. Aggregated pricing data from major travel platforms indicates the current nightly rate for the requested September window is approximately €218, which is higher than the initial estimate of €135. Availability is confirmed.
+
+### 🔧 Bansko, Bulgaria — CORRECT (confidence: high) → final **56** (skip)
+**Summary:** I verified availability at Lucky Bansko Aparthotel SPA & Relax for August 7–10, 2026; the current bookable rate for a Junior Suite is €124 per night (€372 total for 3 nights). You can book this stay directly through their website at https://luckybansko.bg/.
+**Options:**
+  - Aug 7-10, 2026 · €124/night · €372 total · [book](https://luckybansko.bg/) · _Lucky Bansko Aparthotel SPA & Relax official booking engine 2026-07-10_
+**How to book:** Book directly via the hotel's official website at https://luckybansko.bg/ or via major platforms like Booking.com. For specific family packages, calling +359 879 111 222 is recommended.
+**Grounding:** Live search on the hotel's official reservation system for the requested dates of August 7-10, 2026, confirms availability for a Junior Suite. The rate is approximately 124 EUR per night, totaling 372 EUR for the 3-night stay, which is slightly higher than the initial estimate of 104 EUR per night.

@@ -203,6 +203,16 @@ try:
     assert "💎" in md and "final" in md.lower() and "over ceiling" not in md.lower()
     print("city_signals.md: scores shown, no ceiling language [OK]")
 
+    # deals_history.json: one record per emailed deal (the browsable web/ UI's data source).
+    hist = json.load(open("state/deals_history.json", encoding="utf-8"))["entries"]
+    hist_by_dest = {e["destination"]: e for e in hist}
+    assert len(hist) == 3, f"expected 3 emailed deals (Antalya/Kempinski/Regnum), got {len(hist)}"
+    assert hist_by_dest["Kempinski Hotel Grand Arena, Bansko, Bulgaria"]["tier"] == "diamond"
+    assert "landmark ski-in/ski-out 5-star" in hist_by_dest["Kempinski Hotel Grand Arena, Bansko, Bulgaria"]["about"]
+    assert hist_by_dest["Regnum Bansko, Bulgaria"]["final_score"] == 63
+    assert hist_by_dest["Antalya 5-Star All-Inclusive"]["options"][0]["price_per_night_eur"] == 70
+    print("deals_history.json: emailed deals persisted with full dossier [OK]")
+
     print("\nAll assertions passed.")
 finally:
     os.chdir(_cwd)

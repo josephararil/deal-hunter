@@ -91,6 +91,7 @@ find_city_anomalies.py
        state/signals_seen.json  — updated TTL state
        state/memory.json        — baselines + outcome ledger (updated every run)
        state/memory.md          — human-readable memory digest
+       state/deals_history.json — one record per emailed deal (diamond/good/skip), for web/
 ```
 
 ## Files — active pipeline
@@ -108,6 +109,26 @@ find_city_anomalies.py
 | `state/signals_seen.json` | Anti-spam TTL memory: `destination\|window\|tier → date_emailed`, monthly count |
 | `state/memory.json` | Price baselines + outcome ledger (grows every run, pruned at 200 entries / 180 days) |
 | `state/memory.md` | Human-readable digest of memory.json |
+| `state/deals_history.json` | One dossier record per emailed deal (diamond/good/skip) — full about/value_case/options/red_flags, not just scores. Appended every run a digest is sent, pruned at `DEALS_HISTORY_MAX_ENTRIES`/`DEALS_HISTORY_MAX_DAYS` (config.py). Data source for `web/` |
+| `web/` | Standalone React (Vite) app to browse `deals_history.json` — see "Web UI" below |
+
+## Web UI (`web/`)
+
+A simple static React app for browsing every deal that has ever been emailed, in one place,
+instead of digging through daily emails. It reads `state/deals_history.json` only — it has
+no server and does not call the pipeline or any LLM.
+
+- `npm run dev --prefix web` (or `cd web && npm run dev`) syncs the latest
+  `state/deals_history.json` into `web/public/data.json` and starts a local Vite dev server.
+- `npm run build --prefix web` does the same sync then produces a static `web/dist/`.
+- `web/wrangler.toml` deploys `dist/` as static assets on Cloudflare Workers
+  (`npm run deploy --prefix web`, or `wrangler deploy` from `web/`) — no Worker script, pure
+  static hosting.
+- The data sync (`web/scripts/sync-data.mjs`) is a build step, not a runtime fetch — the
+  deployed site is a snapshot as of the last build. Re-run the build/deploy to refresh it
+  with new history after a CI run commits fresh state.
+- Since `deals_history.json` is only appended to when a digest is actually emailed, the UI
+  shows exactly "everything that made it to the email" — nothing more, nothing less.
 
 ## Hotel grounding seam (Booking.com / apidojo)
 
@@ -152,9 +173,13 @@ ground_deal = _resolve_ground_deal()
   `LLM_PROVIDER`. Do not call provider HTTP endpoints directly.
 - **All email goes through `common.send_email()`.** Single SMTP path. No duplication.
 - **State files in `state/` are CI-managed.** `city_signals.json`, `city_signals.md`,
-  `signals_seen.json`, `memory.json`, `memory.md` are committed after each run.
-  They are real state, not scratch. Seed values: `{}` / `{"seen":{}, "monthly_count":{}}` /
-  `{"baselines": {}, "ledger": []}`.
+  `signals_seen.json`, `memory.json`, `memory.md`, `deals_history.json` are committed after
+  each run. They are real state, not scratch. Seed values: `{}` / `{"seen":{}, "monthly_count":{}}` /
+  `{"baselines": {}, "ledger": []}` / `{"entries": []}`.
+- **`deals_history.json` is appended to, never overwritten, and only from `to_email`** (the
+  exact list the digest renders) — so it stays an honest "everything that made it to the
+  email" record for `web/`. Do not populate it from `scored_all` or any pre-anti-spam-gate
+  list; that would show deals the user was never actually notified about.
 - **Grounding runs BEFORE scoring.** Stage 2 grounds live prices; Stage 3 scores those live
   prices. Core design decision — the scorer must never grade a Stage-1 *estimate*. Preserve
   this if you touch the pipeline order.

@@ -16,6 +16,8 @@ Outputs every run:
   state/city_signals.json  — Stage 1 candidate list (hunt=False always; schema kept for reference)
   state/city_signals.md    — human-readable log including grounding + tier outcomes
   state/signals_seen.json  — anti-spam TTL state, committed by CI
+  state/deals_history.json — one record per emailed deal (diamond/good/skip), pruned;
+                             data source for the browsable web/ UI
 
 Emails an honest daily digest of every scored candidate (diamond/good/skip) whenever
 there is a new or tier-changed one, plus a "seen & dropped" footer of grounding kills.
@@ -300,6 +302,50 @@ def build_email_html(items, dropped, month_count, baselines):
         f"pipeline weighed and why. Verify before booking.</p>"
         f"</div>"
     )
+
+
+def load_deals_history():
+    return X.load_json("deals_history.json", {"entries": []})
+
+
+def prune_deals_history(state):
+    cutoff = (dt.date.today() - dt.timedelta(days=C.DEALS_HISTORY_MAX_DAYS)).isoformat()
+    entries = [e for e in state.get("entries", []) if e.get("date", "") >= cutoff]
+    state["entries"] = entries[-C.DEALS_HISTORY_MAX_ENTRIES:]
+    return state
+
+
+def build_history_entries(items, today, baselines):
+    """One record per emailed deal (diamond/good/skip) — everything the digest shows,
+    for the browsable UI. Mirrors the fields build_email_html/text render."""
+    entries = []
+    for d in items:
+        entries.append({
+            "date": today,
+            "deal_id": d.get("deal_id"),
+            "destination": d.get("destination", ""),
+            "type": d.get("type", ""),
+            "window": d.get("window", ""),
+            "tier": d.get("tier", ""),
+            "llm_score": d.get("llm_score"),
+            "price_adj": d.get("price_adj"),
+            "transit_adj": d.get("transit_adj"),
+            "final_score": d.get("final_score"),
+            "confidence": d.get("confidence", ""),
+            "summary": d.get("assistant_summary") or d.get("reason", ""),
+            "about": d.get("about", ""),
+            "value_case": d.get("value_case", ""),
+            "why": d.get("why", ""),
+            "red_flags": d.get("red_flags", ""),
+            "grounding": d.get("grounding", ""),
+            "how_to_book": d.get("how_to_book", ""),
+            "options": d.get("options", []),
+            "baseline_note": _baseline_note(baselines, d.get("destination", ""),
+                                            d.get("window", ""),
+                                            d.get("grounded_price_per_night_eur")),
+            "child_price_caveat": d.get("type") == "hotel",
+        })
+    return entries
 
 
 def build_email_text(items, dropped, baselines):
@@ -896,6 +942,13 @@ def main():
             subject = f"Diamond Finder: {n_s} logged travel find(s) — {today}"
         html = build_email_html(to_email, dropped, month_count, prior_baselines)
         text = build_email_text(to_email, dropped, prior_baselines)
+
+        # Persist everything that made it into this digest for the browsable UI —
+        # independent of whether the SMTP send below succeeds.
+        hist = load_deals_history()
+        hist["entries"].extend(build_history_entries(to_email, today, prior_baselines))
+        X.save_json("deals_history.json", prune_deals_history(hist))
+
         try:
             X.send_email(subject, html, text)
             for d in to_email:

@@ -118,15 +118,17 @@ A simple static React app for browsing every deal that has ever been emailed, in
 instead of digging through daily emails. It reads `state/deals_history.json` only — it has
 no server and does not call the pipeline or any LLM.
 
-- `npm run dev --prefix web` (or `cd web && npm run dev`) syncs the latest
-  `state/deals_history.json` into `web/public/data.json` and starts a local Vite dev server.
-- `npm run build --prefix web` does the same sync then produces a static `web/dist/`.
-- `web/wrangler.toml` deploys `dist/` as static assets on Cloudflare Workers
-  (`npm run deploy --prefix web`, or `wrangler deploy` from `web/`) — no Worker script, pure
-  static hosting.
-- The data sync (`web/scripts/sync-data.mjs`) is a build step, not a runtime fetch — the
-  deployed site is a snapshot as of the last build. Re-run the build/deploy to refresh it
-  with new history after a CI run commits fresh state.
+- **The deployed build fetches `deals_history.json` at page-load time straight from GitHub's
+  raw content URL** (`raw.githubusercontent.com/josephararil/deal-hunter/main/state/...`,
+  the repo is public) — not a bundled copy. So the site is always current the moment `daily.yml`
+  commits fresh state; it only needs rebuilding/redeploying when the UI *code* changes, never
+  when the data changes.
+- Local dev fetches `/data.json` instead (`import.meta.env.DEV` switch in `src/App.jsx`).
+  `npm run dev --prefix web` syncs the latest `state/deals_history.json` into
+  `web/public/data.json` first (`web/scripts/sync-data.mjs`) then starts Vite.
+- `web/wrangler.toml` deploys `web/dist/` as static assets on Cloudflare Workers
+  (`npm run build --prefix web && npm run deploy --prefix web`, or `wrangler deploy` from
+  `web/`) — no Worker script, pure static hosting, no CI redeploy step needed.
 - Since `deals_history.json` is only appended to when a digest is actually emailed, the UI
   shows exactly "everything that made it to the email" — nothing more, nothing less.
 

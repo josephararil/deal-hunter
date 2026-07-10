@@ -1,4 +1,4 @@
-name = "deal-hunter-web"
+name = "diamonds"
 compatibility_date = "2024-09-23"
 
 # Runs automatically before `wrangler deploy`/`versions upload` (both locally and in

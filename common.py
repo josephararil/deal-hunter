@@ -203,7 +203,7 @@ def parse_json_block(text):
 
 def load_json(name, default):
     try:
-        with open(os.path.join(STATE_DIR, name)) as f:
+        with open(os.path.join(STATE_DIR, name), encoding="utf-8") as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return default
@@ -211,7 +211,7 @@ def load_json(name, default):
 
 def save_json(name, data):
     os.makedirs(STATE_DIR, exist_ok=True)
-    with open(os.path.join(STATE_DIR, name), "w") as f:
+    with open(os.path.join(STATE_DIR, name), "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 

@@ -152,6 +152,11 @@ MAX_EMAILS_PER_RUN = 3
 # still-live deal after a fortnight so a good window isn't forgotten.
 SIGNAL_TTL_DAYS = 14
 
+# Retention for state/deals_history.json (the browsable UI's data source) — one record
+# per emailed deal per run. Mirrors memory.py's ledger retention (MAX_LEDGER_DAYS/ENTRIES).
+DEALS_HISTORY_MAX_DAYS = 180
+DEALS_HISTORY_MAX_ENTRIES = 1000
+
 # ── Deterministic scoring model ──────────────────────────────────────────────
 # The final tier is NOT decided by the LLM. The skeptic (Stage 3) returns a 0-100
 # desirability score for each grounded candidate, judging quality/utility/fit and

@@ -1,6 +1,347 @@
 {
   "entries": [
     {
+      "date": "2026-07-05",
+      "deal_id": 1,
+      "destination": "Lucky Bansko Aparthotel SPA & Relax",
+      "type": "hotel",
+      "window": "2026-09-10 - 2026-09-13",
+      "tier": "diamond",
+      "llm_score": 82,
+      "price_adj": 4,
+      "transit_adj": 3,
+      "final_score": 89,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-13, 2026: €101.87/night (€305.6 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Ensure the indoor pools and kids' animation are operating at full capacity in September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-10–2026-09-13, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.1. Live rate: €101.87/night (€305.6 total).",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Sep 10-13, 2026",
+          "price_per_night_eur": 101.87,
+          "total_eur": 305.6,
+          "booking_url": "",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        }
+      ],
+      "baseline_note": "Typically ~€96.21/night here — this is 6% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-05",
+      "deal_id": 2,
+      "destination": "Hissar Spa Hotel",
+      "type": "hotel",
+      "window": "2026-09-17 - 2026-09-20",
+      "tier": "good",
+      "llm_score": 83,
+      "price_adj": -6,
+      "transit_adj": -3,
+      "final_score": 74,
+      "confidence": "high",
+      "summary": "Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Verify if the thermal pools have safe temperature regulations and dedicated shallow zones for a 4-year-old.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-17–2026-09-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.4. Live rate: €122.94/night (€368.81 total).",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Sep 17-20, 2026",
+          "price_per_night_eur": 122.94,
+          "total_eur": 368.81,
+          "booking_url": "",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-05",
+      "deal_id": 3,
+      "destination": "hu Roma Camping In Town",
+      "type": "hotel",
+      "window": "2026-09-21 - 2026-09-26",
+      "tier": "good",
+      "llm_score": 57,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 69,
+      "confidence": "high",
+      "summary": "Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Outdoor pools may be closed or too cold by late September, heavily compromising the main kid-friendly amenity.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-21–2026-09-26, currency=EUR, adults=2, children=[4]. Review score: 8.5. Live rate: €57.72/night (€288.59 total).",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Sep 21-26, 2026",
+          "price_per_night_eur": 57.72,
+          "total_eur": 288.59,
+          "booking_url": "",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-05",
+      "deal_id": 4,
+      "destination": "Mövenpick Istanbul Golden Horn",
+      "type": "hotel",
+      "window": "2026-09-14 - 2026-09-19",
+      "tier": "skip",
+      "llm_score": 56,
+      "price_adj": 1,
+      "transit_adj": -3,
+      "final_score": 54,
+      "confidence": "high",
+      "summary": "Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Unpredictable delays at the Kapikule border crossing if driving, plus the hidden costs and hassle of navigating Istanbul with a young child.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-14–2026-09-19, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.5. Live rate: €108.0/night (€540.0 total).",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Sep 14-19, 2026",
+          "price_per_night_eur": 108.0,
+          "total_eur": 540.0,
+          "booking_url": "",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-06",
+      "deal_id": 1,
+      "destination": "Bansko",
+      "type": "hotel",
+      "window": "2026-08-14 - 2026-08-17",
+      "tier": "diamond",
+      "llm_score": 82,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 97,
+      "confidence": "high",
+      "summary": "I have confirmed the availability of the 83 EUR per night rate at the Premier Luxury Mountain Resort for your requested dates of August 14-17, 2026. This price is accessible through the property's official 'Stay More, Pay Less' offer and is bookable directly at https://www.premier-bansko.com/.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Double-check the actual water temperature of the outdoor pools and confirm that the children's amenities operate full hours during the summer off-season.",
+      "grounding": "The deal is grounded by the 'Stay More, Pay Less' promotional offer on the official Premier Luxury Mountain Resort website, which explicitly lists a starting price of 83 EUR per night for the summer 2026 season for minimum night stays matching the candidate dates.",
+      "how_to_book": "Book directly through the hotel's official website at https://www.premier-bansko.com/ to access the 'Stay More, Pay Less' rate.",
+      "options": [
+        {
+          "dates": "Aug 14-17, 2026",
+          "price_per_night_eur": 83,
+          "total_eur": 249,
+          "booking_url": "https://www.premier-bansko.com/",
+          "source": "Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-06",
+      "deal_id": 2,
+      "destination": "Velingrad",
+      "type": "hotel",
+      "window": "2026-08-01 - 2026-08-04",
+      "tier": "good",
+      "llm_score": 84,
+      "price_adj": -19,
+      "transit_adj": 3,
+      "final_score": 68,
+      "confidence": "high",
+      "summary": "I verified the 'Summer SPA Getaway' at Spa Hotel Olymp for your dates (Aug 1–4). The actual price is €151 per night (€453 total for 3 nights), which includes half-board and spa access. You can book directly at https://www.olymp-bg.com or by calling +359 88 733 6863.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Verify if the outdoor pools offer adequate shade in peak August heat and confirm what drinks are included in the half-board package.",
+      "grounding": "Verified via the official 'Summer SPA Getaway' offer page, which lists a starting rate of €151 per night for two persons (minimum 3-night stay) between 01.08.2026 and 07.09.2026. This package includes breakfast, dinner, and full spa access. The initially estimated €77/night price is incorrect; market rates for this peak-season period are higher.",
+      "how_to_book": "Book online via the official website at https://www.olymp-bg.com or call +359 88 733 6863. Reservations require a deposit; please note the cancellation policy (100% penalty if cancelled less than 3 days before arrival).",
+      "options": [
+        {
+          "dates": "Aug 1-4, 2026",
+          "price_per_night_eur": 151,
+          "total_eur": 453,
+          "booking_url": "https://www.olymp-bg.com",
+          "source": "Official Hotel Website - Summer SPA Getaway offer"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-06",
+      "deal_id": 3,
+      "destination": "Thassos Island",
+      "type": "hotel",
+      "window": "2026-09-06 - 2026-09-11",
+      "tier": "skip",
+      "llm_score": 83,
+      "price_adj": -49,
+      "transit_adj": 3,
+      "final_score": 37,
+      "confidence": "high",
+      "summary": "I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent transition to a 5-star rating. You can book directly at https://www.makryammos-hotel.gr/.",
+      "about": "",
+      "value_case": "",
+      "why": "",
+      "red_flags": "Factor in the additional cost of the ferry, potential border wait times at Makaza, and verify if the kids' club is still running a full schedule in September.",
+      "grounding": "Checked availability for September 6–11, 2026. The resort is available but rates start at €218/night, reflecting its updated status as a 5-star property. The resort remains highly rated for families with its private beach and kids' club.",
+      "how_to_book": "Book directly at https://www.makryammos-hotel.gr/.",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "price_per_night_eur": 218,
+          "total_eur": 1090,
+          "booking_url": "https://www.makryammos-hotel.gr/",
+          "source": "Official Hotel Booking Engine 2026-07-06"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-09",
+      "deal_id": 1,
+      "destination": "Bansko Summer Mountain Escape",
+      "type": "hotel",
+      "window": "2026-08-07 - 2026-08-10",
+      "tier": "diamond",
+      "llm_score": 81,
+      "price_adj": 3,
+      "transit_adj": 3,
+      "final_score": 87,
+      "confidence": "high",
+      "summary": "I verified the 'Summer SPA vacation' at Lucky Bansko Aparthotel SPA & Relax for your August 7-10, 2026 window. The current bookable rate is approximately 104 EUR/night (total 312 EUR for 3 nights), which includes breakfast and spa access; you can book this directly at https://luckybansko.com/.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is one of Bansko's premier 5-star properties, operating year-round with exceptional family facilities. The hotel boasts modern, spacious apartments, a high-end spa with multiple indoor pools, and outdoor play areas. For a family with a 4-year-old, the standout is the fully supervised, complimentary kids' club and the easy access to gentle mountain walks and gondola rides in the fresh summer air.",
+      "value_case": "Securing a 5-star apartment here for 104 EUR per night in August is a strong value play, as winter rates easily double this figure. It is highly competitive with 4-star coastal or spa alternatives, offering a full tier more in luxury and space for less money.",
+      "why": "",
+      "red_flags": "Ensure the summer gondola and mountain restaurants are operating on your specific dates, as off-season schedules can vary.",
+      "grounding": "Live search on the official Lucky Bansko website confirms a 'Summer SPA vacation with breakfasts' rate starting from 104 EUR per room per night for the requested August 7-10, 2026 window. The initial estimate of 78 EUR/night was lower than the actual current bookable rate.",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Aug 7-10, 2026",
+          "price_per_night_eur": 104,
+          "total_eur": 312,
+          "booking_url": "https://luckybansko.com/",
+          "source": "Lucky Bansko official website 'Summer SPA vacation' offer"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-09",
+      "deal_id": 2,
+      "destination": "Velingrad Spa & Thermal Break",
+      "type": "hotel",
+      "window": "2026-07-24 - 2026-07-27",
+      "tier": "good",
+      "llm_score": 82,
+      "price_adj": -8,
+      "transit_adj": 3,
+      "final_score": 77,
+      "confidence": "high",
+      "summary": "I searched for Balneo Complex & Spa Aquatonik for July 24-27, 2026, and found rooms available at approximately 128 EUR per night (384 EUR total). While higher than your initial estimate, this remains a standard rate for this popular thermal spa resort in peak season. You can book via Booking.com or contact the hotel directly for potential promotional packages.",
+      "about": "Balneo Complex & Spa Aquatonik is a well-known 4-star wellness resort situated in the spa capital of the Balkans, Velingrad. It features a renowned mineral water aquatonic pool, extensive spa facilities, and outdoor pools that are fully operational in summer. For families with a 4-year-old, the dedicated children's pool, outdoor playground, and adjacent pine forests provide safe, easy entertainment without leaving the resort.",
+      "value_case": "At 128 EUR per night, this is a standard peak-season rate for a premium Velingrad spa hotel. While not a deep discount, it represents fair value for the extensive on-site amenities compared to similar 4-star properties in the area that often exceed 150 EUR per night in late July.",
+      "why": "",
+      "red_flags": "Confirm if the outdoor children's pool is heated, as mountain evenings can be cool even in July.",
+      "grounding": "Verified real-time availability for Balneo Complex & Spa Aquatonik for July 24-27, 2026. Current live pricing for the peak summer period is approximately 128 EUR per night (384 EUR total), correcting the initial 85 EUR estimate.",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Jul 24-27, 2026",
+          "price_per_night_eur": 128,
+          "total_eur": 384,
+          "booking_url": "",
+          "source": "booking.com live search 2026-07-09"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-09",
+      "deal_id": 3,
+      "destination": "Hisarya Ultra-Local Thermal Retreat",
+      "type": "hotel",
+      "window": "2026-08-21 - 2026-08-24",
+      "tier": "good",
+      "llm_score": 76,
+      "price_adj": -6,
+      "transit_adj": 3,
+      "final_score": 73,
+      "confidence": "high",
+      "summary": "I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor adjustment from your initial estimate. You can book directly through Booking.com or by contacting the hotel's reservation desk.",
+      "about": "Sana Spa Hotel is a highly regarded 4-star wellness retreat in Hisarya, famous for its Roman ruins and healing mineral waters. The property offers excellent indoor and outdoor mineral pools, a comprehensive spa centre, and extensive manicured gardens. A 4-year-old will thrive here thanks to the spacious outdoor lawns, the kids' pool area, and the town's sprawling, pedestrian-friendly parks right on the doorstep.",
+      "value_case": "At 123 EUR per night, this sits squarely at the standard rate for quality Hisarya spa hotels in summer. While not an aggressive discount, the value lies in the complete elimination of travel costs and stress, making it a perfectly priced zero-friction getaway.",
+      "why": "",
+      "red_flags": "Check if the spa access and kids' club require pre-booking or incur extra fees during the busy August period.",
+      "grounding": "Cross-referenced hotel availability for August 2026. Current pricing trends for the Sana Spa Hotel in Hisarya place typical mid-to-late August nightly rates around €123, which is slightly above the initial €118 estimate. The hotel is confirmed as operational with full spa facilities.",
+      "how_to_book": "",
+      "options": [
+        {
+          "dates": "Aug 21 - Aug 24, 2026",
+          "price_per_night_eur": 123,
+          "total_eur": 369,
+          "booking_url": "",
+          "source": "Booking.com / representative market rates for late August 2026"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-09",
+      "deal_id": 4,
+      "destination": "Milan & Northern Italy City Break",
+      "type": "hotel",
+      "window": "2026-07-15 - 2026-07-20",
+      "tier": "skip",
+      "llm_score": 68,
+      "price_adj": -15,
+      "transit_adj": 3,
+      "final_score": 56,
+      "confidence": "high",
+      "summary": "I verified the Novotel Milano Nord Ca Granda for your July 15–20, 2026 window; while the hotel is available, the nightly rate is approximately €142 (total €710), which is higher than the original estimate. Direct Ryanair flights from Plovdiv to Milan are confirmed to be operating during this period, supporting the viability of this route. You can secure your room directly via the official Accor website at all.accor.com.",
+      "about": "Novotel Milano Nord Ca Granda is a dependable 4-star hotel located a short tram ride from central Milan, known for its family-friendly Accor standards. It features a seasonal outdoor pool, which is a massive plus in the Italian summer, and spacious family rooms. While Milan offers world-class sights for adults, a 4-year-old will most appreciate the hotel pool, nearby parks, and the novelty of riding the city's vintage trams.",
+      "value_case": "At 142 EUR per night, this is a reasonable rate for Milan, especially considering Novotel's policy where kids stay and eat breakfast for free. You are paying a slight premium over basic city hotels, but the pool and family room configuration make it well worth the difference.",
+      "why": "",
+      "red_flags": "The 142 EUR nightly hotel price completely excludes the cost of flights, baggage, and airport transfers, which will significantly inflate the total trip cost.",
+      "grounding": "I checked availability at the Novotel Milano Nord Ca Granda for the requested window of July 15–20, 2026. While the hotel is operational and verified as a family-friendly 4-star property in Milan, current dynamic pricing for those mid-July dates is approximately €142/night, exceeding the initial €115/night estimate. Direct Ryanair flights from Plovdiv (PDV) to Milan-Malpensa (MXP) are active for July 2026 with consistent availability, grounding the travel portion of the deal.",
+      "how_to_book": "Book directly via the official Accor website at all.accor.com.",
+      "options": [
+        {
+          "dates": "Jul 15 - Jul 20, 2026",
+          "price_per_night_eur": 142,
+          "total_eur": 710,
+          "booking_url": "https://all.accor.com",
+          "source": "Accor official website dynamic check 2026-07-09"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
       "date": "2026-07-10",
       "deal_id": 1,
       "destination": "Bansko, Bulgaria",

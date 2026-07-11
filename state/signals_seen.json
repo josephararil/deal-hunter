@@ -1,7 +1,5 @@
 {
   "seen": {
-    "Bansko, Bulgaria (Regnum Bansko Ski Hotel & Spa)|Aug 1-31, 2026": "2026-06-26",
-    "Velingrad, Bulgaria (Arte Spa & Park Hotel)|Jul 10 - Sep 3, 2026": "2026-06-26",
     "Kempinski Hotel Grand Arena, Bansko, Bulgaria|Sep 10-14, 2026": "2026-06-28",
     "Lucky Bansko Aparthotel SPA & Relax|September 10-17, 2026": "2026-06-29",
     "Bansko, Lucky Bansko Aparthotel SPA & Relax|September 10-17, 2026": "2026-06-30",
@@ -38,10 +36,14 @@
     "Hisarya, Bulgaria|2026-08-21 to 2026-08-24|skip": "2026-07-10",
     "Velingrad, Bulgaria|2026-07-24 to 2026-07-27|skip": "2026-07-10",
     "Antalya, Turkey|2026-08-20 to 2026-08-27|skip": "2026-07-10",
-    "Thassos, Greece|2026-09-06 to 2026-09-11|skip": "2026-07-10"
+    "Thassos, Greece|2026-09-06 to 2026-09-11|skip": "2026-07-10",
+    "Hisarya Ultra-Local Thermal Retreat|Aug 28-31, 2026|good": "2026-07-11",
+    "Velingrad Spa & Thermal Break|Aug 21-24, 2026|good": "2026-07-11",
+    "Bansko Summer Mountain Escape|Aug 14-17, 2026|good": "2026-07-11",
+    "Milan City Break via PDV|Sep 15-20, 2026|skip": "2026-07-11"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 11
+    "2026-07": 12
   }
 }

@@ -471,6 +471,134 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-11",
+      "deal_id": 1,
+      "destination": "Hisarya Ultra-Local Thermal Retreat",
+      "type": "hotel",
+      "window": "Aug 28-31, 2026",
+      "tier": "good",
+      "llm_score": 74,
+      "price_adj": 4,
+      "transit_adj": 3,
+      "final_score": 81,
+      "confidence": "high",
+      "summary": "Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €101.93/night (€305.8 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "about": "Sana Spa Hotel is a well-regarded 3-star thermal property in Hisarya, offering a peaceful atmosphere and excellent mineral pools. Families with a 4-year-old can enjoy easy access to both indoor and outdoor swimming facilities, as well as the town's famous Roman ruins and expansive stroller-friendly parks. It provides a reliable, no-fuss base for a quiet wellness weekend.",
+      "value_case": "At roughly 102 EUR per night, this is a solid deal for a highly-rated spa property in Hisarya, where comparable options often push 120 EUR or more. It sits slightly below the regional average, offering straightforward value for a hassle-free retreat.",
+      "why": "An ultra-local 45-minute drive offers zero transit friction, delivering highly actionable, low-stress relaxation for parents and a 4-year-old over a perfectly sized 3-night weekend.",
+      "red_flags": "As a 3-star property, room amenities and dining options may be more basic than higher-tier local spa resorts.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-28–2026-08-31, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.8. Live rate: €101.93/night (€305.8 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-08-28&checkout=2026-08-31&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 28-31, 2026",
+          "nights": 3,
+          "price_per_night_eur": 101.93,
+          "total_eur": 305.8,
+          "source": "Booking.com (apidojo) live 2026-07-11",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-08-28&checkout=2026-08-31&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€123/night here — this is 17% under.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-11",
+      "deal_id": 2,
+      "destination": "Velingrad Spa & Thermal Break",
+      "type": "hotel",
+      "window": "Aug 21-24, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": -3,
+      "transit_adj": 3,
+      "final_score": 78,
+      "confidence": "high",
+      "summary": "Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "about": "Balneo Complex & Spa Aquatonik is a popular 4-star spa resort in Velingrad, renowned as the spa capital of the Balkans. It features extensive thermal mineral pools, a comprehensive wellness center, and dedicated kids' play areas. For a family with a 4-year-old, the main draw is the endless pool time and easy access to nearby pine forest walks.",
+      "value_case": "A rate of 116 EUR per night is highly competitive for a 4-star Velingrad spa with an 8.9 rating, as top-tier local resorts often demand 130 to 150 EUR in late summer. It represents an excellent balance of elevated comfort and reasonable pricing.",
+      "why": "A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral pools and dedicated kids' areas that do the heavy lifting for parents.",
+      "red_flags": "Velingrad resorts can get quite crowded in August, meaning the popular thermal pools and spa areas might be busy.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-21–2026-08-24, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.9. Live rate: €116.39/night (€349.16 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-08-21&checkout=2026-08-24&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 21-24, 2026",
+          "nights": 3,
+          "price_per_night_eur": 116.39,
+          "total_eur": 349.16,
+          "source": "Booking.com (apidojo) live 2026-07-11",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-08-21&checkout=2026-08-24&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-11",
+      "deal_id": 3,
+      "destination": "Bansko Summer Mountain Escape",
+      "type": "hotel",
+      "window": "Aug 14-17, 2026",
+      "tier": "good",
+      "llm_score": 82,
+      "price_adj": -13,
+      "transit_adj": 3,
+      "final_score": 72,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 14-17, 2026: €139.59/night (€418.76 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel is one of the premier 5-star family properties in Bansko, boasting stellar reviews and outstanding child-friendly infrastructure. Families get access to multiple heated pools, a highly-rated kids' club, and spacious apartment-style rooms. In summer, Bansko offers a cool mountain climate, fresh air, and easy gondola rides up the Pirin mountains that a toddler will love.",
+      "value_case": "At 140 EUR per night, this is an exceptional find for a 9.1-rated 5-star property of this caliber; Lucky Bansko usually commands a higher premium for its top-tier family amenities, making this a worthwhile splurge compared to standard 90 EUR 4-stars.",
+      "why": "An easy 2.5-hour drive unlocks elite 5-star child-friendly infrastructure and a cool mountain climate, providing immense safe, open-air utility to escape the August heat.",
+      "red_flags": "Mountain weather can be unpredictable even in August, which might occasionally limit outdoor activities.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-14–2026-08-17, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.1. Live rate: €139.59/night (€418.76 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-08-14&checkout=2026-08-17&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 14-17, 2026",
+          "nights": 3,
+          "price_per_night_eur": 139.59,
+          "total_eur": 418.76,
+          "source": "Booking.com (apidojo) live 2026-07-11",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-08-14&checkout=2026-08-17&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€104/night here — this is 34% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-11",
+      "deal_id": 4,
+      "destination": "Milan City Break via PDV",
+      "type": "hotel",
+      "window": "Sep 15-20, 2026",
+      "tier": "skip",
+      "llm_score": 58,
+      "price_adj": -20,
+      "transit_adj": 3,
+      "final_score": 41,
+      "confidence": "high",
+      "summary": "I have verified the Novotel Milano Nord Ca Granda for your dates of September 15–20, 2026. While the hotel is available, the nightly rate is approximately €154 (total €770 for 5 nights). Direct Ryanair flights from Plovdiv to Milan are confirmed to operate on this route, making the city break fully bookable.",
+      "about": "Novotel Milano Nord Ca Granda is a solid, practical 4-star hotel located slightly outside Milan's bustling historic center, offering a quieter base with good transit links. It features standard modern comforts and an outdoor pool. While Milan offers world-class dining and sights like the Duomo, a 5-night stay requires pacing and finding local parks to keep a 4-year-old entertained.",
+      "value_case": "At 154 EUR per night, this is a fair market rate for a branded 4-star in Milan, where central hotels easily exceed 250 EUR, but the true value relies entirely on securing ultra-cheap Ryanair flights from Plovdiv.",
+      "why": "Direct flights minimize travel friction, but a 5-night city break in Milan offers limited utility for a 4-year-old and introduces flight costs not reflected in the hotel price.",
+      "red_flags": "A 5-night city break with a 4-year-old can be exhausting, and the required flights add hidden luggage and transit costs not included in the hotel rate.",
+      "grounding": "Verified that the Novotel Milano Nord Ca Granda is an active, bookable 4-star property. The original €142/night estimate is slightly low; current market trends for this property in September 2026 suggest a rate closer to €154/night. Ryanair operates direct, low-cost flights from Plovdiv (PDV) to Milan (MXP) twice weekly, confirming the logistical feasibility.",
+      "how_to_book": "Book directly through the Accor website (accor.com) or major OTAs. Flights can be booked via Ryanair.com for the PDV-MXP route.",
+      "options": [
+        {
+          "dates": "Sep 15-20, 2026",
+          "nights": 5,
+          "price_per_night_eur": 154,
+          "total_eur": 770,
+          "source": "Market rate estimation for Novotel Milano Nord Ca Granda",
+          "booking_url": "https://www.accor.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

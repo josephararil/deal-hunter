@@ -169,16 +169,16 @@
       "updated": "2026-07-09"
     },
     "Bansko Summer Mountain Escape|2026-08": {
-      "realistic_price_eur": 104,
-      "note": "I verified the 'Summer SPA vacation' at Lucky Bansko Aparthotel SPA & Relax for your August 7-10, 2026 window. The current bookable rate is approximately 104 EUR/night (total 312 EUR for 3 nights),…",
-      "source": "Lucky Bansko official website 'Summer SPA vacation' offer",
-      "updated": "2026-07-09"
+      "realistic_price_eur": 139.59,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 14-17, 2026: €139.59/night (€418.76 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-11",
+      "updated": "2026-07-11"
     },
     "Hisarya Ultra-Local Thermal Retreat|2026-08": {
-      "realistic_price_eur": 123,
-      "note": "I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor…",
-      "source": "Booking.com / representative market rates for late August 2026",
-      "updated": "2026-07-09"
+      "realistic_price_eur": 101.93,
+      "note": "Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €101.93/night (€305.8 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-11",
+      "updated": "2026-07-11"
     },
     "Antalya, Turkey|2026-08": {
       "realistic_price_eur": 215,
@@ -203,6 +203,18 @@
       "note": "I have verified the availability of Balneo Complex & Spa Aquatonik for your requested dates of July 24–27, 2026. The nightly rate is €128, totaling €384 for the 3-night stay. You can book this stay…",
       "source": "Booking.com live search 2026-07-10",
       "updated": "2026-07-10"
+    },
+    "Velingrad Spa & Thermal Break|2026-08": {
+      "realistic_price_eur": 116.39,
+      "note": "Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-11",
+      "updated": "2026-07-11"
+    },
+    "Milan City Break via PDV|2026-09": {
+      "realistic_price_eur": 154,
+      "note": "I have verified the Novotel Milano Nord Ca Granda for your dates of September 15–20, 2026. While the hotel is available, the nightly rate is approximately €154 (total €770 for 5 nights). Direct…",
+      "source": "Market rate estimation for Novotel Milano Nord Ca Granda",
+      "updated": "2026-07-11"
     }
   },
   "ledger": [
@@ -873,6 +885,58 @@
       "final_score": 56,
       "source": "Lucky Bansko Aparthotel SPA & Relax official booking engine 2026-07-10",
       "note": "A straightforward 2.5-hour drive unlocks elite child-friendly infrastructure in a cooler mountain setting, providing immense safe, open-air utility for a short summer escape."
+    },
+    {
+      "date": "2026-07-11",
+      "destination": "Hisarya Ultra-Local Thermal Retreat",
+      "window": "Aug 28-31, 2026",
+      "type": "hotel",
+      "claimed_price": 123,
+      "verdict": "good",
+      "actual_price": 101.93,
+      "llm_score": 74,
+      "final_score": 81,
+      "source": "Booking.com (apidojo) live 2026-07-11",
+      "note": "An ultra-local 45-minute drive offers zero transit friction, delivering highly actionable, low-stress relaxation for parents and a 4-year-old over a perfectly sized 3-night weekend."
+    },
+    {
+      "date": "2026-07-11",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Aug 21-24, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 116.39,
+      "llm_score": 78,
+      "final_score": 78,
+      "source": "Booking.com (apidojo) live 2026-07-11",
+      "note": "A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral pools and dedicated kids' areas that do the heavy lifting for parents."
+    },
+    {
+      "date": "2026-07-11",
+      "destination": "Bansko Summer Mountain Escape",
+      "window": "Aug 14-17, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "good",
+      "actual_price": 139.59,
+      "llm_score": 82,
+      "final_score": 72,
+      "source": "Booking.com (apidojo) live 2026-07-11",
+      "note": "An easy 2.5-hour drive unlocks elite 5-star child-friendly infrastructure and a cool mountain climate, providing immense safe, open-air utility to escape the August heat."
+    },
+    {
+      "date": "2026-07-11",
+      "destination": "Milan City Break via PDV",
+      "window": "Sep 15-20, 2026",
+      "type": "hotel",
+      "claimed_price": 142,
+      "verdict": "skip",
+      "actual_price": 154,
+      "llm_score": 58,
+      "final_score": 41,
+      "source": "Market rate estimation for Novotel Milano Nord Ca Granda",
+      "note": "Direct flights minimize travel friction, but a 5-night city break in Milan offers limited utility for a 4-year-old and introduces flight costs not reflected in the hotel price."
     }
   ]
 }

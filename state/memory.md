@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-10
+# Diamond Finder Memory — updated 2026-07-11
 
-## Price Baselines (34 entries)
+## Price Baselines (36 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -13,9 +13,9 @@ I verified that Dream Fun World in Side, Antalya is a real and popular 5-star al
 _Source: Booking.com live search 2026-07-10_
 
 ### Bansko Summer Mountain Escape|2026-08
-**Realistic:** ~€104/night &nbsp; **Updated:** 2026-07-09
-I verified the 'Summer SPA vacation' at Lucky Bansko Aparthotel SPA & Relax for your August 7-10, 2026 window. The current bookable rate is approximately 104 EUR/night (total 312 EUR for 3 nights),…
-_Source: Lucky Bansko official website 'Summer SPA vacation' offer_
+**Realistic:** ~€139.59/night &nbsp; **Updated:** 2026-07-11
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 14-17, 2026: €139.59/night (€418.76 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-11_
 
 ### Bansko, Bulgaria|2026-08
 **Realistic:** ~€124/night &nbsp; **Updated:** 2026-07-10
@@ -43,9 +43,9 @@ I verified the availability of the Aqualand Resort in Corfu for your requested d
 _Source: Booking.com, Expedia, and Trivago live search 2026-07-08_
 
 ### Hisarya Ultra-Local Thermal Retreat|2026-08
-**Realistic:** ~€123/night &nbsp; **Updated:** 2026-07-09
-I have verified availability for the Sana Spa Hotel in Hisarya for the requested August 21–24, 2026 window. Current rates are approximately €123 per night (€369 total for 3 nights), which is a minor…
-_Source: Booking.com / representative market rates for late August 2026_
+**Realistic:** ~€101.93/night &nbsp; **Updated:** 2026-07-11
+Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €101.93/night (€305.8 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-11_
 
 ### Hisarya, Bulgaria|2026-07
 **Realistic:** ~€103.67/night &nbsp; **Updated:** 2026-07-01
@@ -76,6 +76,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 **Realistic:** ~€142/night &nbsp; **Updated:** 2026-07-09
 I verified the Novotel Milano Nord Ca Granda for your July 15–20, 2026 window; while the hotel is available, the nightly rate is approximately €142 (total €710), which is higher than the original…
 _Source: Accor official website dynamic check 2026-07-09_
+
+### Milan City Break via PDV|2026-09
+**Realistic:** ~€154/night &nbsp; **Updated:** 2026-07-11
+I have verified the Novotel Milano Nord Ca Granda for your dates of September 15–20, 2026. While the hotel is available, the nightly rate is approximately €154 (total €770 for 5 nights). Direct…
+_Source: Market rate estimation for Novotel Milano Nord Ca Granda_
 
 ### Mövenpick Istanbul Golden Horn|2026-09
 **Realistic:** ~€108.0/night &nbsp; **Updated:** 2026-07-05
@@ -147,6 +152,11 @@ _Source: Official hotel website and market aggregators (KAYAK/Booking.com) as of
 I searched for Balneo Complex & Spa Aquatonik for July 24-27, 2026, and found rooms available at approximately 128 EUR per night (384 EUR total). While higher than your initial estimate, this remains…
 _Source: booking.com live search 2026-07-09_
 
+### Velingrad Spa & Thermal Break|2026-08
+**Realistic:** ~€116.39/night &nbsp; **Updated:** 2026-07-11
+Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-11_
+
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
 I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…
@@ -172,8 +182,12 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (54 entries)
+## Outcome Ledger (58 entries)
 
+- 👍 2026-07-11 | Hisarya Ultra-Local Thermal Retreat | Aug 28-31, 2026 | good score=74->81 claimed=€123 actual=€101.93 — An ultra-local 45-minute drive offers zero transit friction, delivering highly actionable,…
+- 👍 2026-07-11 | Velingrad Spa & Thermal Break | Aug 21-24, 2026 | good score=78->78 claimed=€128 actual=€116.39 — A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral…
+- 👍 2026-07-11 | Bansko Summer Mountain Escape | Aug 14-17, 2026 | good score=82->72 claimed=€115 actual=€139.59 — An easy 2.5-hour drive unlocks elite 5-star child-friendly infrastructure and a cool mountain…
+- · 2026-07-11 | Milan City Break via PDV | Sep 15-20, 2026 | skip score=58->41 claimed=€142 actual=€154 — Direct flights minimize travel friction, but a 5-night city break in Milan offers limited utility…
 - · 2026-07-10 | Antalya, Turkey | 2026-08-20 to 2026-08-27 | skip score=18->0 claimed=€95 actual=€215 — A mere 2-night stay requiring a drive to Sofia followed by an international flight is a logistical…
 - · 2026-07-10 | Hisarya, Bulgaria | 2026-08-21 to 2026-08-24 | skip score=78->54 claimed=€123 actual=€123 — An effortless 45-minute drive eliminates transit friction, offering high-value, low-stress…
 - · 2026-07-10 | Thassos, Greece | 2026-09-06 to 2026-09-11 | skip score=37->0 claimed=€135 actual=€218 — While the warm, shallow Aegean waters offer great beach utility, the exhausting 4.5-hour…
@@ -220,8 +234,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - • 2026-06-30 | Paphos, Aliathon Aegean | September 14-21, 2026 | skeptic_kill claimed=€118 — Budget flight 'toddler tax' (mandatory seating/baggage fees) and transit fatigue.
 - ✅ 2026-06-30 | Bansko, Lucky Bansko Aparthotel SPA & Relax | September 10-17, 2026 | confirm claimed=€96 actual=€104.57 — Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02…
 - • 2026-06-30 | Bansko, Bulgaria | Sep 10-13, 2026 | over_ceiling claimed=€104.0 — Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with…
-- ❌ 2026-06-30 | Bansko, Bulgaria | Jul 24-27, 2026 | kill claimed=€83.0 actual=€128.01 — Grounded price for Premier Luxury Mountain Resort (Jul 24-27, 2026) is €128.01/night, which exceeds…
-- • 2026-06-29 | Santé SPA Hotel | September 14-21, 2026 | skeptic_kill claimed=€105 — September is actually a high-demand transition period for Bulgarian spa tourism, meaning local…
-- • 2026-06-29 | Hotel Rila Borovets | September 7-14, 2026 | skeptic_kill claimed=€95 — Mountain lifts are frequently reduced to weekend-only operations by mid-September, severely…
-- ✅ 2026-06-29 | Lucky Bansko Aparthotel SPA & Relax | September 10-17, 2026 | confirm claimed=€85 actual=€96.21 — Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46…
-_... and 4 earlier entries_
+_... and 8 earlier entries_

@@ -1,4 +1,65 @@
 {
-  "generated": "2026-07-13",
-  "signals": []
+  "generated": "2026-07-14",
+  "signals": [
+    {
+      "deal_id": 1,
+      "city": "Velingrad Spa & Thermal Break",
+      "window": "Sep 1 - Sep 5, 2026",
+      "reason": "A live late-summer 'Pay 3, Get 4' promotion drops the effective nightly rate for a half-board stay to an incredible ~€72/night (based on a €96 base rate). Coupled with a frictionless 1.5-hour Tier 1 drive from Plovdiv and excellent children's pools, this 4-night stay is an elite value play for early September.",
+      "type": "anomaly",
+      "confidence": "high",
+      "find_score": 89,
+      "llm_score": 83,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 100,
+      "tier": "diamond",
+      "hunt": false
+    },
+    {
+      "deal_id": 2,
+      "city": "Hisarya Ultra-Local Thermal Retreat",
+      "window": "Aug 28 - Aug 31, 2026",
+      "reason": "An effortless 45-minute ultra-local drive eliminates transit friction completely. At ~€102/night, this spa offers high-value, low-stress relaxation with warm thermal pools and expansive parks perfectly suited for a 4-year-old on a short, punchy 3-night break.",
+      "type": "anomaly",
+      "confidence": "high",
+      "find_score": 82,
+      "llm_score": 81,
+      "price_adj": 4,
+      "transit_adj": 3,
+      "final_score": 88,
+      "tier": "diamond",
+      "hunt": false
+    },
+    {
+      "deal_id": 3,
+      "city": "Bansko Summer Mountain Escape",
+      "window": "Sep 4 - Sep 7, 2026",
+      "reason": "A straightforward 2.5-hour drive unlocks elite 5-star child-friendly infrastructure, including dedicated kids' clubs and indoor pools, in a cooler mountain setting. A 3-night stay in early September provides exceptional Tier 1 utility and zero transit exhaustion at an accessible luxury price point.",
+      "type": "anomaly",
+      "confidence": "high",
+      "find_score": 80,
+      "llm_score": 80,
+      "price_adj": -14,
+      "transit_adj": 3,
+      "final_score": 69,
+      "tier": "good",
+      "hunt": false
+    },
+    {
+      "deal_id": 4,
+      "city": "Antalya Late Summer All-Inclusive",
+      "window": "Sep 15 - Sep 22, 2026",
+      "reason": "Live data shows September flights from SOF to Antalya dropping to ~€108 RT. By booking a full 7-night stay, you fully justify the Tier 2 transit friction (drive to SOF + flight), unlocking high-excitement, world-class 5-star kids' infrastructure and warm seas during a shoulder-season price trough.",
+      "type": "reminder",
+      "confidence": "high",
+      "find_score": 84,
+      "llm_score": 78,
+      "price_adj": -10,
+      "transit_adj": -3,
+      "final_score": 65,
+      "tier": "skip",
+      "hunt": false
+    }
+  ]
 }

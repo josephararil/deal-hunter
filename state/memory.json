@@ -175,10 +175,10 @@
       "updated": "2026-07-11"
     },
     "Hisarya Ultra-Local Thermal Retreat|2026-08": {
-      "realistic_price_eur": 101.93,
-      "note": "Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €101.93/night (€305.8 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-11",
-      "updated": "2026-07-11"
+      "realistic_price_eur": 102,
+      "note": "I have verified the availability of the Sana Spa Hotel in Hisarya for August 28–31, 2026. The nightly rate is approximately €102, totaling €306 for the 3-night stay. You can book this through various…",
+      "source": "KAYAK live search 2026-07-14",
+      "updated": "2026-07-14"
     },
     "Antalya, Turkey|2026-08": {
       "realistic_price_eur": 215,
@@ -215,6 +215,24 @@
       "note": "I have verified the Novotel Milano Nord Ca Granda for your dates of September 15–20, 2026. While the hotel is available, the nightly rate is approximately €154 (total €770 for 5 nights). Direct…",
       "source": "Market rate estimation for Novotel Milano Nord Ca Granda",
       "updated": "2026-07-11"
+    },
+    "Velingrad Spa & Thermal Break|2026-09": {
+      "realistic_price_eur": 72,
+      "note": "I have verified the 'Pay 3, Get 4' promotion at Spa Hotel Select for your requested dates of September 1-5, 2026. The base nightly rate is 96 EUR, resulting in a total of 288 EUR for 4 nights, which…",
+      "source": "Profi Tours / Official hotel rate documentation 2026-07-14",
+      "updated": "2026-07-14"
+    },
+    "Bansko Summer Mountain Escape|2026-09": {
+      "realistic_price_eur": 141,
+      "note": "I have verified availability for the Lucky Bansko Aparthotel SPA & Relax for your requested dates of September 4-7, 2026. While the property remains an excellent 5-star option for families, the…",
+      "source": "Aggregated live search data for September 2026 dates",
+      "updated": "2026-07-14"
+    },
+    "Antalya Late Summer All-Inclusive|2026-09": {
+      "realistic_price_eur": 131,
+      "note": "I have verified the Fame Residence Lara & Spa as a real, bookable destination for your dates of September 15–22, 2026. While the original estimate of €210/night was higher than current market…",
+      "source": "Fame Residence Lara & Spa official site / aggregator market data July 2026",
+      "updated": "2026-07-14"
     }
   },
   "ledger": [
@@ -937,6 +955,58 @@
       "final_score": 41,
       "source": "Market rate estimation for Novotel Milano Nord Ca Granda",
       "note": "Direct flights minimize travel friction, but a 5-night city break in Milan offers limited utility for a 4-year-old and introduces flight costs not reflected in the hotel price."
+    },
+    {
+      "date": "2026-07-14",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Sep 1 - Sep 5, 2026",
+      "type": "hotel",
+      "claimed_price": 72,
+      "verdict": "diamond",
+      "actual_price": 72,
+      "llm_score": 83,
+      "final_score": 100,
+      "source": "Profi Tours / Official hotel rate documentation 2026-07-14",
+      "note": "A completely frictionless 1.5-hour drive and excellent thermal children's pools provide outstanding net family utility for a 4-night stay."
+    },
+    {
+      "date": "2026-07-14",
+      "destination": "Hisarya Ultra-Local Thermal Retreat",
+      "window": "Aug 28 - Aug 31, 2026",
+      "type": "hotel",
+      "claimed_price": 102,
+      "verdict": "diamond",
+      "actual_price": 102,
+      "llm_score": 81,
+      "final_score": 88,
+      "source": "KAYAK live search 2026-07-14",
+      "note": "An ultra-local 45-minute drive means zero transit exhaustion, offering a perfectly sized 3-night thermal break for a young family."
+    },
+    {
+      "date": "2026-07-14",
+      "destination": "Bansko Summer Mountain Escape",
+      "window": "Sep 4 - Sep 7, 2026",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "good",
+      "actual_price": 141,
+      "llm_score": 80,
+      "final_score": 69,
+      "source": "Aggregated live search data for September 2026 dates",
+      "note": "Elite 5-star kids' infrastructure and indoor pools offer fantastic on-property utility, easily justifying the straightforward 2.5-hour drive."
+    },
+    {
+      "date": "2026-07-14",
+      "destination": "Antalya Late Summer All-Inclusive",
+      "window": "Sep 15 - Sep 22, 2026",
+      "type": "hotel",
+      "claimed_price": 210,
+      "verdict": "skip",
+      "actual_price": 131,
+      "llm_score": 78,
+      "final_score": 65,
+      "source": "Fame Residence Lara & Spa official site / aggregator market data July 2026",
+      "note": "World-class resort utility and warm September seas provide massive family value, amortising the heavier transit burden of flying via Sofia over a 7-night stay."
     }
   ]
 }

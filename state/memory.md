@@ -1,11 +1,16 @@
-# Diamond Finder Memory — updated 2026-07-13
+# Diamond Finder Memory — updated 2026-07-14
 
-## Price Baselines (36 entries)
+## Price Baselines (39 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
 I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…
 _Source: Booking.com live search 2026-07-04_
+
+### Antalya Late Summer All-Inclusive|2026-09
+**Realistic:** ~€131/night &nbsp; **Updated:** 2026-07-14
+I have verified the Fame Residence Lara & Spa as a real, bookable destination for your dates of September 15–22, 2026. While the original estimate of €210/night was higher than current market…
+_Source: Fame Residence Lara & Spa official site / aggregator market data July 2026_
 
 ### Antalya, Turkey|2026-08
 **Realistic:** ~€215/night &nbsp; **Updated:** 2026-07-10
@@ -16,6 +21,11 @@ _Source: Booking.com live search 2026-07-10_
 **Realistic:** ~€139.59/night &nbsp; **Updated:** 2026-07-11
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 14-17, 2026: €139.59/night (€418.76 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-11_
+
+### Bansko Summer Mountain Escape|2026-09
+**Realistic:** ~€141/night &nbsp; **Updated:** 2026-07-14
+I have verified availability for the Lucky Bansko Aparthotel SPA & Relax for your requested dates of September 4-7, 2026. While the property remains an excellent 5-star option for families, the…
+_Source: Aggregated live search data for September 2026 dates_
 
 ### Bansko, Bulgaria|2026-08
 **Realistic:** ~€124/night &nbsp; **Updated:** 2026-07-10
@@ -43,9 +53,9 @@ I verified the availability of the Aqualand Resort in Corfu for your requested d
 _Source: Booking.com, Expedia, and Trivago live search 2026-07-08_
 
 ### Hisarya Ultra-Local Thermal Retreat|2026-08
-**Realistic:** ~€101.93/night &nbsp; **Updated:** 2026-07-11
-Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €101.93/night (€305.8 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-11_
+**Realistic:** ~€102/night &nbsp; **Updated:** 2026-07-14
+I have verified the availability of the Sana Spa Hotel in Hisarya for August 28–31, 2026. The nightly rate is approximately €102, totaling €306 for the 3-night stay. You can book this through various…
+_Source: KAYAK live search 2026-07-14_
 
 ### Hisarya, Bulgaria|2026-07
 **Realistic:** ~€103.67/night &nbsp; **Updated:** 2026-07-01
@@ -157,6 +167,11 @@ _Source: booking.com live search 2026-07-09_
 Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-11_
 
+### Velingrad Spa & Thermal Break|2026-09
+**Realistic:** ~€72/night &nbsp; **Updated:** 2026-07-14
+I have verified the 'Pay 3, Get 4' promotion at Spa Hotel Select for your requested dates of September 1-5, 2026. The base nightly rate is 96 EUR, resulting in a total of 288 EUR for 4 nights, which…
+_Source: Profi Tours / Official hotel rate documentation 2026-07-14_
+
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
 I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…
@@ -182,8 +197,12 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (58 entries)
+## Outcome Ledger (62 entries)
 
+- 💎 2026-07-14 | Velingrad Spa & Thermal Break | Sep 1 - Sep 5, 2026 | diamond score=83->100 claimed=€72 actual=€72 — A completely frictionless 1.5-hour drive and excellent thermal children's pools provide outstanding…
+- 💎 2026-07-14 | Hisarya Ultra-Local Thermal Retreat | Aug 28 - Aug 31, 2026 | diamond score=81->88 claimed=€102 actual=€102 — An ultra-local 45-minute drive means zero transit exhaustion, offering a perfectly sized 3-night…
+- 👍 2026-07-14 | Bansko Summer Mountain Escape | Sep 4 - Sep 7, 2026 | good score=80->69 claimed=€125 actual=€141 — Elite 5-star kids' infrastructure and indoor pools offer fantastic on-property utility, easily…
+- · 2026-07-14 | Antalya Late Summer All-Inclusive | Sep 15 - Sep 22, 2026 | skip score=78->65 claimed=€210 actual=€131 — World-class resort utility and warm September seas provide massive family value, amortising the…
 - 👍 2026-07-11 | Hisarya Ultra-Local Thermal Retreat | Aug 28-31, 2026 | good score=74->81 claimed=€123 actual=€101.93 — An ultra-local 45-minute drive offers zero transit friction, delivering highly actionable,…
 - 👍 2026-07-11 | Velingrad Spa & Thermal Break | Aug 21-24, 2026 | good score=78->78 claimed=€128 actual=€116.39 — A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral…
 - 👍 2026-07-11 | Bansko Summer Mountain Escape | Aug 14-17, 2026 | good score=82->72 claimed=€115 actual=€139.59 — An easy 2.5-hour drive unlocks elite 5-star child-friendly infrastructure and a cool mountain…
@@ -230,8 +249,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - ❌ 2026-07-01 | Thassos, Greece | 6 September 2026 - 11 September 2026 | kill claimed=€135 actual=€365 — I searched for availability at Makryammos Bungalows for September 6–11, 2026, and found that the…
 - · 2026-07-01 | Rome, Italy | 15 September 2026 - 20 September 2026 | skip score=58->66 claimed=€85 actual=€85 — While the bungalow and pools offer a good toddler refuge, the exhausting logistics of driving to…
 - • 2026-06-30 | Velingrad, Park Hotel and SPA Vella Hills | September 12-19, 2026 | skeptic_kill claimed=€105 — Standard regional pricing masquerading as a seasonal discount.
-- • 2026-06-30 | Hisarya, Sana Spa Hotel | September 15-22, 2026 | skeptic_kill claimed=€98 — Lack of genuine discount; ordinary absolute pricing for the geography.
-- • 2026-06-30 | Paphos, Aliathon Aegean | September 14-21, 2026 | skeptic_kill claimed=€118 — Budget flight 'toddler tax' (mandatory seating/baggage fees) and transit fatigue.
-- ✅ 2026-06-30 | Bansko, Lucky Bansko Aparthotel SPA & Relax | September 10-17, 2026 | confirm claimed=€96 actual=€104.57 — Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02…
-- • 2026-06-30 | Bansko, Bulgaria | Sep 10-13, 2026 | over_ceiling claimed=€104.0 — Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with…
-_... and 8 earlier entries_
+_... and 12 earlier entries_

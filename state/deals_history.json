@@ -599,6 +599,134 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-14",
+      "deal_id": 1,
+      "destination": "Velingrad Spa & Thermal Break",
+      "type": "hotel",
+      "window": "Sep 1 - Sep 5, 2026",
+      "tier": "diamond",
+      "llm_score": 83,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 100,
+      "confidence": "high",
+      "summary": "I have verified the 'Pay 3, Get 4' promotion at Spa Hotel Select for your requested dates of September 1-5, 2026. The base nightly rate is 96 EUR, resulting in a total of 288 EUR for 4 nights, which perfectly confirms your effective nightly rate of 72 EUR. You can book this package through their official reservation partner links or by contacting the hotel directly.",
+      "about": "Spa Hotel Select is a solid 4-star property located near the pine forests of Velingrad, Bulgaria's spa capital. It features extensive thermal mineral pools, including shallow areas and playgrounds perfectly suited for a 4-year-old. The surrounding area offers easy nature walks, making it a reliable mid-range base for a low-stress thermal getaway.",
+      "value_case": "At just €72 per night on a 'Pay 3, Get 4' promotion, this is an absolute steal for Velingrad, where 4-star thermal hotels typically start well over €110. This package delivers high family value at a massive discount to the regional norm.",
+      "why": "A completely frictionless 1.5-hour drive and excellent thermal children's pools provide outstanding net family utility for a 4-night stay.",
+      "red_flags": "Confirm that the outdoor children's pools are fully heated in early September and verify exactly what meal plan is included in the promotional rate.",
+      "grounding": "Live search confirmed that Spa Hotel Select offers a 'Pay 3, Get 4' promotion for the period 01.07.2026 to 01.10.2026. The standard double room rate is confirmed at 96 EUR per night. By utilizing the 'Pay 3, Get 4' deal, the 4-night stay total is 288 EUR, which validates the provided estimate of 72 EUR effective per night.",
+      "how_to_book": "The 'Pay 3, Get 4' offer is a seasonal promotion available through authorized tour operators like Profi Tours. You can verify availability and book directly via their portal, the hotel's website, or by contacting the hotel at +359 56 901 005.",
+      "options": [
+        {
+          "dates": "Sep 1-5, 2026",
+          "nights": 4,
+          "price_per_night_eur": 72,
+          "total_eur": 288,
+          "source": "Profi Tours / Official hotel rate documentation 2026-07-14",
+          "booking_url": "https://www.spahotelselect.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-14",
+      "deal_id": 2,
+      "destination": "Hisarya Ultra-Local Thermal Retreat",
+      "type": "hotel",
+      "window": "Aug 28 - Aug 31, 2026",
+      "tier": "diamond",
+      "llm_score": 81,
+      "price_adj": 4,
+      "transit_adj": 3,
+      "final_score": 88,
+      "confidence": "high",
+      "summary": "I have verified the availability of the Sana Spa Hotel in Hisarya for August 28–31, 2026. The nightly rate is approximately €102, totaling €306 for the 3-night stay. You can book this through various travel portals or by contacting the hotel directly.",
+      "about": "Sana Spa Hotel is a highly regarded property in the ultra-local resort town of Hisarya, famous for its Roman ruins and vast, stroller-friendly parks. The hotel boasts extensive wellness facilities, including indoor and outdoor thermal mineral pools that are highly soothing and safe for young children. It offers a quiet, relaxed environment, making it a great base for a short family break with zero travel exhaustion.",
+      "value_case": "Paying €102 per night for a well-reviewed spa hotel in Hisarya is a very fair deal, as similar properties often command €120-150 during late summer weekends. The incredibly short drive means you save significantly on fuel and transit stress, adding hidden value.",
+      "why": "An ultra-local 45-minute drive means zero transit exhaustion, offering a perfectly sized 3-night thermal break for a young family.",
+      "red_flags": "Verify if the outdoor pools remain open and comfortably heated in late August, as the transition toward shoulder season can sometimes affect outdoor amenities.",
+      "grounding": "Live search on KAYAK and booking aggregator sources confirms consistent pricing near €102/night for late August 2026. The property (Sana Spa Hotel) is well-documented as a year-round facility in Hisarya, Bulgaria, featuring thermal mineral pools and family-friendly amenities.",
+      "how_to_book": "Book online via major travel platforms like KAYAK or Booking.com, or contact the property directly at +359 337 6 20 99 / +359 878 016 939 or via email at reservations@sanaspahotels.bg.",
+      "options": [
+        {
+          "dates": "Aug 28-31, 2026",
+          "nights": 3,
+          "price_per_night_eur": 102,
+          "total_eur": 306,
+          "source": "KAYAK live search 2026-07-14",
+          "booking_url": "https://www.kayak.com/hotels/Sana-Spa-Hotel,Hisarya-c21530-h203022-details/2026-08-28/2026-08-31/2adults"
+        }
+      ],
+      "baseline_note": "Typically ~€101.93/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-14",
+      "deal_id": 3,
+      "destination": "Bansko Summer Mountain Escape",
+      "type": "hotel",
+      "window": "Sep 4 - Sep 7, 2026",
+      "tier": "good",
+      "llm_score": 80,
+      "price_adj": -14,
+      "transit_adj": 3,
+      "final_score": 69,
+      "confidence": "high",
+      "summary": "I have verified availability for the Lucky Bansko Aparthotel SPA & Relax for your requested dates of September 4-7, 2026. While the property remains an excellent 5-star option for families, the current realistic nightly rate is approximately €141, totaling €423 for the 3-night stay. You can book this stay via platforms like Booking.com or directly through the hotel.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is one of Bansko's premier 5-star family properties, standing out for its exceptional child-friendly infrastructure. It features multiple indoor pools, including a warm kids' pool, alongside professionally staffed kids' clubs, gaming rooms, and spacious suite lodging. While Bansko is a ski resort, early September offers cool mountain air, easy nature walks, and plenty of in-hotel entertainment for a 4-year-old.",
+      "value_case": "Securing a 5-star suite here for €141 per night is a solid value, as peak winter rates can triple this, and comparable high-end mountain resorts often hover around €160-200. You are paying a premium over basic Bansko hotels, but it buys top-tier family amenities and spaciousness.",
+      "why": "Elite 5-star kids' infrastructure and indoor pools offer fantastic on-property utility, easily justifying the straightforward 2.5-hour drive.",
+      "red_flags": "Bansko town can be very quiet in September with many local restaurants closed, meaning you may be largely reliant on the hotel's own dining options.",
+      "grounding": "Live search indicates that while the property is highly rated (5-star) and offers the described amenities (kids' club, indoor/outdoor pools), the price point for early September 2026 is higher than the original €125/night estimate. Current market rates for standard accommodation at this property are consistently trending at approximately €141/night.",
+      "how_to_book": "Book via major travel platforms like Booking.com, Expedia, or directly through the Lucky Bansko Aparthotel website. For specific family packages, you can also contact the hotel directly at +359 889 111 333.",
+      "options": [
+        {
+          "dates": "Sep 4-7, 2026",
+          "nights": 3,
+          "price_per_night_eur": 141,
+          "total_eur": 423,
+          "source": "Aggregated live search data for September 2026 dates",
+          "booking_url": "https://www.booking.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-14",
+      "deal_id": 4,
+      "destination": "Antalya Late Summer All-Inclusive",
+      "type": "hotel",
+      "window": "Sep 15 - Sep 22, 2026",
+      "tier": "skip",
+      "llm_score": 78,
+      "price_adj": -10,
+      "transit_adj": -3,
+      "final_score": 65,
+      "confidence": "high",
+      "summary": "I have verified the Fame Residence Lara & Spa as a real, bookable destination for your dates of September 15–22, 2026. While the original estimate of €210/night was higher than current market availability, I found rates starting at approximately €131/night (€917 total for 7 nights). You can book your stay through the hotel's official website at https://www.famehotels.com.",
+      "about": "Fame Residence Lara & Spa is a sprawling 5-star all-inclusive beachfront resort on the famous Lara strip in Antalya. Known for its high-energy family offerings, it features enormous pool complexes, water slides, a dedicated kids' club, and direct access to a private sandy beach. For a 4-year-old, this provides peak entertainment with endless food and activities, while adults can enjoy the extensive spa and dining options.",
+      "value_case": "At €131 per night for a 5-star all-inclusive in Antalya during the spectacular September shoulder season, this is an outstanding find, easily beating the €200+ summer peak rates. Factoring in all meals, drinks, and entertainment for the family, the daily cost is incredibly low for this tier of resort.",
+      "why": "World-class resort utility and warm September seas provide massive family value, amortising the heavier transit burden of flying via Sofia over a 7-night stay.",
+      "red_flags": "The transit requires a drive to Sofia followed by an international flight and transfers; ensure the total door-to-door travel time and flight costs do not wipe out the hotel savings or exhaust a 4-year-old.",
+      "grounding": "Live search indicates that the 'Fame Residence Lara & Spa' is a real, operational 5-star all-inclusive resort. The claimed price of €210/night in the candidate deal was found to be inaccurate for September 2026; current market rates for the requested dates are approximately €131/night. The property offers comprehensive all-inclusive services including multiple pools, a private beach, and kids' facilities.",
+      "how_to_book": "Book directly through the hotel website at https://www.famehotels.com or via major travel aggregators like Booking.com or Expedia. You may also contact the property directly at +90 242 352 27 27 for reservations.",
+      "options": [
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 131,
+          "total_eur": 917,
+          "source": "Fame Residence Lara & Spa official site / aggregator market data July 2026",
+          "booking_url": "https://www.famehotels.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

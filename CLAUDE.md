@@ -114,9 +114,21 @@ find_city_anomalies.py
 
 ## Web UI (`web/`)
 
-A simple static React app for browsing every deal that has ever been emailed, in one place,
+A static React app for browsing every deal that has ever been emailed, in one place,
 instead of digging through daily emails. It reads `state/deals_history.json` only — it has
 no server and does not call the pipeline or any LLM.
+
+- **Design** (`src/App.jsx` + `src/index.css`): a responsive, editorial card gallery with a
+  slide-in detail drawer. No CSS framework or UI library — one hand-crafted `index.css`
+  design system (CSS custom properties, light + dark themes with a manual toggle persisted to
+  `localStorage`, `prefers-color-scheme` default, `prefers-reduced-motion` respected). Cards
+  show a per-tier accent, an SVG score ring, live price and the scorer's blurb; the drawer
+  shows the full dossier (score breakdown, value case, availability + Book links, caveats,
+  grounding). Fonts are Fraunces (display) + Inter (UI), loaded from Google Fonts in
+  `index.html` — the only external network dependency the page has.
+- `prettyWindow()` in `App.jsx` reformats FIND's ISO window (`2026-09-10 - 2026-09-13`) for
+  display; it splits **only on a space-padded hyphen** (`/\s+-\s+/`) so the hyphens inside
+  ISO dates are preserved, and falls back to the raw string for any non-ISO window.
 
 - **The deployed build fetches `deals_history.json` at page-load time straight from GitHub's
   raw content URL** (`raw.githubusercontent.com/josephararil/deal-hunter/main/state/...`,

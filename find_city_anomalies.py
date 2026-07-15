@@ -25,7 +25,7 @@ Anti-spam TTL (destination|window|tier) keeps repeats quiet; a day with nothing 
 (or nothing found) sends nothing.
 """
 
-import json, datetime as dt
+import json, re, datetime as dt
 try:
     from dotenv import load_dotenv; load_dotenv()
 except ImportError:
@@ -45,6 +45,15 @@ def _section(title):
 def _eur(v):
     """Format an optional EUR price for the log; '€?' when unknown."""
     return f"€{v}" if v is not None else "€?"
+
+
+def _location(c):
+    """A city+country string for par-fallback and transit-tier matching. FIND emits `city`
+    and `country` as structured fields; its free-text `destination` label usually omits the
+    country, which would make get_diamond_par default to the wrong (€110) tier — so we build
+    the location from the structured fields, falling back to the label only if both are empty."""
+    loc = " ".join(p for p in [c.get("city", ""), c.get("country", "")] if p).strip()
+    return loc or c.get("destination", "")
 
 
 # Tier labels for the email/markdown (emoji ok in HTML/MD — never in console prints).
@@ -127,20 +136,30 @@ def prune_seen(state):
     return state
 
 
-def seen_key(destination, window, tier=""):
-    """Anti-spam key. Includes the tier so a tier CHANGE at the same destination+window
-    (e.g. a skip becoming a good when the price drops) re-notifies instead of being
-    suppressed — that upgrade is the whole point. Same destination+window+tier stays quiet
-    for SIGNAL_TTL_DAYS."""
-    return f"{destination}|{window}|{tier}"
+def _identity(d):
+    """Stable property identity for anti-spam: the hotel name if FIND gave one, else the
+    city, else the free-text label — lowercased with punctuation/spaces stripped. This
+    collapses the day-to-day label drift ('Velingrad Spa & Thermal Break' vs 'Velingrad SPA
+    Retreat') that used to defeat the TTL and re-alert the same place under a new name."""
+    ident = (d.get("hotel_name") or d.get("city") or d.get("destination") or "")
+    return re.sub(r'[^a-z0-9]+', '', ident.lower())
 
 
-def is_already_seen(state, destination, window, tier=""):
-    return seen_key(destination, window, tier) in state.get("seen", {})
+def seen_key(d):
+    """Anti-spam key: property identity + coarse SEASON (not the exact window) + tier.
+    Season collapses date drift ('Sep 1-5' and 'Sep 4-7' are one signal); tier is included so
+    a tier CHANGE (e.g. skip→good when the price drops) still re-notifies. Same
+    property+season+tier stays quiet for SIGNAL_TTL_DAYS."""
+    season = M.season_key(d.get("window", "") or "")
+    return f"{_identity(d)}|{season}|{d.get('tier', '')}"
 
 
-def mark_seen(state, destination, window, tier=""):
-    state.setdefault("seen", {})[seen_key(destination, window, tier)] = X.today_iso()
+def is_already_seen(state, d):
+    return seen_key(d) in state.get("seen", {})
+
+
+def mark_seen(state, d):
+    state.setdefault("seen", {})[seen_key(d)] = X.today_iso()
 
 
 def this_month():
@@ -165,6 +184,8 @@ def build_email_html(items, dropped, month_count, baselines):
         tier = d.get("tier", "good")
         tier_badge = TIER_LABEL.get(tier, "👍 Good find")
         badge_color = TIER_COLOR.get(tier, "#8a6d00")
+        if d.get("is_wildcard"):
+            tier_badge = f"🃏 Wildcard · {tier_badge}"
 
         # Scorer dossier — what the place IS and why the price is a deal. This is the
         # context a human needs to judge an unfamiliar property; without it the email is
@@ -355,6 +376,8 @@ def build_email_text(items, dropped, baselines):
         summary = d.get("assistant_summary") or d.get("reason", "")
         tier = d.get("tier", "good")
         tier_label = _text_tier.get(tier, "GOOD FIND")
+        if d.get("is_wildcard"):
+            tier_label = f"WILDCARD · {tier_label}"
         lines = [
             f"[{tier_label}] {d['destination']} ({d.get('type', '')})",
             f"Window: {d.get('window', '')}",
@@ -725,7 +748,7 @@ def main():
             "grounded_total_eur":           c.get("grounded_total_eur"),
             "grounded_nights":              c.get("grounded_nights"),
             "grounded_dates":               c.get("grounded_dates"),
-            "diamond_par_eur":              C.get_diamond_par(c.get("destination", "")),
+            "diamond_par_eur":              C.get_diamond_par(_location(c)),
             "grounding_summary":            c.get("assistant_summary", ""),
             "original_est_price_eur":       c.get("est_price_eur"),
             "reason":                       c.get("reason", ""),
@@ -734,6 +757,8 @@ def main():
             today=today,
             diamond_threshold=C.DIAMOND_SCORE_THRESHOLD,
             good_threshold=C.GOOD_SCORE_THRESHOLD,
+            diamond_min_llm=C.DIAMOND_MIN_LLM_SCORE,
+            diamond_min_discount_pct=round(C.DIAMOND_MIN_DISCOUNT * 100),
             candidates=json.dumps(scorer_input, ensure_ascii=False, indent=2),
             memory=mem_text,
         )
@@ -777,22 +802,28 @@ def main():
             about   = (v or {}).get("about", "")
             value_case = (v or {}).get("value_case", "")
             red     = (v or {}).get("red_flags", "")
+            raw_normal = (v or {}).get("normal_price_eur")
+            normal_price = raw_normal if isinstance(raw_normal, (int, float)) and raw_normal > 0 else None
             ppn     = c.get("grounded_price_per_night_eur")
-            final, price_adj, transit_adj = C.compute_final_score(llm_val, ppn, dest)
-            tier = C.tier_for_score(final)
+            final, price_adj, transit_adj, discount = C.compute_final_score(
+                llm_val, ppn, _location(c), normal_price)
+            tier = C.tier_for(final, llm_val, discount)
             scores[did] = {"llm": llm_val, "price_adj": price_adj, "transit_adj": transit_adj,
-                           "final": final, "tier": tier, "why": why,
+                           "final": final, "tier": tier, "why": why, "discount": discount,
+                           "normal_price_eur": normal_price,
                            "about": about, "value_case": value_case, "red_flags": red}
 
             label = {"diamond": "DIAMOND", "good": "GOOD", "skip": "SKIP"}[tier]
             print(f"    [{label:<7}] #{did} {dest} — llm {llm_val} {_sgn(price_adj)} price "
-                  f"{_sgn(transit_adj)} transit = {final} -> {tier}")
+                  f"{_sgn(transit_adj)} transit = {final} (disc {round(discount * 100)}% "
+                  f"vs €{normal_price or C.get_diamond_par(_location(c))}) -> {tier}")
             wl = M._clip(why, 150)
             if wl:
                 print(f"             {wl}")
 
             scored_item = {**c, "tier": tier, "final_score": final, "llm_score": llm_val,
                            "price_adj": price_adj, "transit_adj": transit_adj,
+                           "discount": discount, "normal_price_eur": normal_price,
                            "why": why, "about": about, "value_case": value_case,
                            "red_flags": red}
             scored_all.append(scored_item)
@@ -873,6 +904,8 @@ def main():
             "llm_score": (scores.get(c.get("deal_id")) or {}).get("llm"),
             "price_adj": (scores.get(c.get("deal_id")) or {}).get("price_adj"),
             "transit_adj": (scores.get(c.get("deal_id")) or {}).get("transit_adj"),
+            "normal_price_eur": (scores.get(c.get("deal_id")) or {}).get("normal_price_eur"),
+            "discount": (scores.get(c.get("deal_id")) or {}).get("discount"),
             "final_score": (scores.get(c.get("deal_id")) or {}).get("final"),
             "tier": (scores.get(c.get("deal_id")) or {}).get("tier"),
             "hunt": False,
@@ -906,7 +939,7 @@ def main():
 
     # Email — an honest daily digest of EVERY scored candidate (diamond/good/skip), so the
     # reader can see what the pipeline weighed and why. Anti-spam TTL (keyed
-    # destination|window|tier) fires the digest on any genuinely new/changed scored item and
+    # property|season|tier) fires the digest on any genuinely new/changed scored item and
     # stays silent when there is nothing new. Only the actionable diamond/good picks are
     # capped by MAX_EMAILS_PER_RUN; skips are context and always shown in full.
     _section("EMAIL — anti-spam gate + send")
@@ -916,9 +949,19 @@ def main():
     scored_sorted = sorted(scored_all, key=lambda p: (TIER_RANK.get(p.get("tier"), 9),
                                                       -(p.get("final_score") or 0)))
     new_scored = [d for d in scored_sorted
-                  if not is_already_seen(seen_state, d["destination"], d["window"], d.get("tier", ""))]
+                  if not is_already_seen(seen_state, d)]
     suppressed = len(scored_all) - len(new_scored)
     emailed = 0
+
+    # Wildcard: the single most interesting NON-LOCAL find this run — a fly/far destination
+    # or a non-hotel (cruise/package) — surfaced regardless of tier so the digest visibly
+    # reaches beyond the usual drivable towns. Chosen from everything scored, and pinned into
+    # the digest even if the anti-spam TTL would otherwise suppress it (it's only ever one
+    # extra, clearly-badged item), so the reader always sees the pipeline casting wide.
+    def _is_wildcard(d):
+        return C.transit_tier(_location(d)) == 2 or (d.get("type") or "hotel") != "hotel"
+    wildcard = max((d for d in scored_all if _is_wildcard(d)),
+                   key=lambda d: d.get("final_score") or 0, default=None)
 
     if new_scored:
         actionable = [d for d in new_scored if d.get("tier") in ("diamond", "good")]
@@ -927,6 +970,10 @@ def main():
         capped = len(actionable) - len(shown_actionable)
         to_email = sorted(shown_actionable + skips,
                           key=lambda p: (TIER_RANK.get(p.get("tier"), 9), -(p.get("final_score") or 0)))
+        if wildcard is not None:
+            wildcard["is_wildcard"] = True
+            if wildcard not in to_email:
+                to_email.append(wildcard)
         month_count = monthly_email_count(seen_state)
         n_d = sum(1 for d in to_email if d.get("tier") == "diamond")
         n_g = sum(1 for d in to_email if d.get("tier") == "good")
@@ -952,7 +999,7 @@ def main():
         try:
             X.send_email(subject, html, text)
             for d in to_email:
-                mark_seen(seen_state, d["destination"], d["window"], d.get("tier", ""))
+                mark_seen(seen_state, d)
             increment_monthly(seen_state)
             emailed = len(to_email)
             print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email)}")

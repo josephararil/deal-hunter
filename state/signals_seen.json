@@ -1,6 +1,5 @@
 {
   "seen": {
-    "Bansko, Lucky Bansko Aparthotel SPA & Relax|September 10-17, 2026": "2026-06-30",
     "Hisarya, Bulgaria|July 17-20, 2026": "2026-07-01",
     "Bansko, Bulgaria|10 September 2026 - 13 September 2026": "2026-07-01",
     "Rome, Italy|Aug 6-10, 2026|good": "2026-07-02",
@@ -42,10 +41,13 @@
     "Velingrad Spa & Thermal Break|Sep 1 - Sep 5, 2026|diamond": "2026-07-14",
     "Hisarya Ultra-Local Thermal Retreat|Aug 28 - Aug 31, 2026|diamond": "2026-07-14",
     "Bansko Summer Mountain Escape|Sep 4 - Sep 7, 2026|good": "2026-07-14",
-    "Antalya Late Summer All-Inclusive|Sep 15 - Sep 22, 2026|skip": "2026-07-14"
+    "Antalya Late Summer All-Inclusive|Sep 15 - Sep 22, 2026|skip": "2026-07-14",
+    "Bansko Mountain Off-Season Escape|Aug 21-24, 2026|diamond": "2026-07-15",
+    "Velingrad Spa & Thermal Break|Sep 11-14, 2026|diamond": "2026-07-15",
+    "London Direct Flight from PDV|Sep 25 - Oct 2, 2026|skip": "2026-07-15"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 13
+    "2026-07": 14
   }
 }

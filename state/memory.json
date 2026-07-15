@@ -217,10 +217,10 @@
       "updated": "2026-07-11"
     },
     "Velingrad Spa & Thermal Break|2026-09": {
-      "realistic_price_eur": 72,
-      "note": "I have verified the 'Pay 3, Get 4' promotion at Spa Hotel Select for your requested dates of September 1-5, 2026. The base nightly rate is 96 EUR, resulting in a total of 288 EUR for 4 nights, which…",
-      "source": "Profi Tours / Official hotel rate documentation 2026-07-14",
-      "updated": "2026-07-14"
+      "realistic_price_eur": 101.71,
+      "note": "Verified Balneo Complex & Spa Aquatonik, 4-star for Sep 11-14, 2026: €101.71/night (€305.12 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-15",
+      "updated": "2026-07-15"
     },
     "Bansko Summer Mountain Escape|2026-09": {
       "realistic_price_eur": 141,
@@ -233,6 +233,18 @@
       "note": "I have verified the Fame Residence Lara & Spa as a real, bookable destination for your dates of September 15–22, 2026. While the original estimate of €210/night was higher than current market…",
       "source": "Fame Residence Lara & Spa official site / aggregator market data July 2026",
       "updated": "2026-07-14"
+    },
+    "Bansko Mountain Off-Season Escape|2026-08": {
+      "realistic_price_eur": 63.0,
+      "note": "Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-15",
+      "updated": "2026-07-15"
+    },
+    "London Direct Flight from PDV|2026-09": {
+      "realistic_price_eur": 21.0,
+      "note": "I have verified that Wizz Air operates direct flights from Plovdiv (PDV) to London Luton (LTN) for your travel window. The original estimate of €30 total was a promotional minimum; the flights are…",
+      "source": "Wizz Air live search 2026-07-15",
+      "updated": "2026-07-15"
     }
   },
   "ledger": [
@@ -1007,6 +1019,45 @@
       "final_score": 65,
       "source": "Fame Residence Lara & Spa official site / aggregator market data July 2026",
       "note": "World-class resort utility and warm September seas provide massive family value, amortising the heavier transit burden of flying via Sofia over a 7-night stay."
+    },
+    {
+      "date": "2026-07-15",
+      "destination": "Bansko Mountain Off-Season Escape",
+      "window": "Aug 21-24, 2026",
+      "type": "hotel",
+      "claimed_price": 53,
+      "verdict": "diamond",
+      "actual_price": 63.0,
+      "llm_score": 80,
+      "final_score": 98,
+      "source": "Booking.com (apidojo) live 2026-07-15",
+      "note": "A highly manageable 2.5-hour drive and excellent indoor pool amenities deliver a low-stress, high-value 3-night mountain weekend perfectly sized for a 4-year-old."
+    },
+    {
+      "date": "2026-07-15",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 93,
+      "verdict": "diamond",
+      "actual_price": 101.71,
+      "llm_score": 84,
+      "final_score": 91,
+      "source": "Booking.com (apidojo) live 2026-07-15",
+      "note": "An effortless 1.5-hour drive provides nearly zero travel friction, unlocking fantastic thermal pools and dedicated kids facilities that maximize parental relaxation and toddler fun over a 3-night…"
+    },
+    {
+      "date": "2026-07-15",
+      "destination": "London Direct Flight from PDV",
+      "window": "Sep 25 - Oct 2, 2026",
+      "type": "flight",
+      "claimed_price": 30,
+      "verdict": "skip",
+      "actual_price": 21.0,
+      "llm_score": 42,
+      "final_score": 60,
+      "source": "Wizz Air live search 2026-07-15",
+      "note": "While the direct flight from Plovdiv is highly convenient, a 7-night dense city break in London offers exhausting logistics and modest genuine utility for a 4-year-old, plus it lacks an included…"
     }
   ]
 }

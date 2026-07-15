@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-14
+# Diamond Finder Memory — updated 2026-07-15
 
-## Price Baselines (39 entries)
+## Price Baselines (41 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -16,6 +16,11 @@ _Source: Fame Residence Lara & Spa official site / aggregator market data July 2
 **Realistic:** ~€215/night &nbsp; **Updated:** 2026-07-10
 I verified that Dream Fun World in Side, Antalya is a real and popular 5-star all-inclusive resort, but the claimed €95/night introductory price is incorrect for late August 2026. Current market…
 _Source: Booking.com live search 2026-07-10_
+
+### Bansko Mountain Off-Season Escape|2026-08
+**Realistic:** ~€63.0/night &nbsp; **Updated:** 2026-07-15
+Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-15_
 
 ### Bansko Summer Mountain Escape|2026-08
 **Realistic:** ~€139.59/night &nbsp; **Updated:** 2026-07-11
@@ -76,6 +81,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 **Realistic:** ~€167/night &nbsp; **Updated:** 2026-07-03
 I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…
 _Source: Parc Hotel Peschiera del Garda official property site_
+
+### London Direct Flight from PDV|2026-09
+**Realistic:** ~€21.0/night &nbsp; **Updated:** 2026-07-15
+I have verified that Wizz Air operates direct flights from Plovdiv (PDV) to London Luton (LTN) for your travel window. The original estimate of €30 total was a promotional minimum; the flights are…
+_Source: Wizz Air live search 2026-07-15_
 
 ### Lucky Bansko Aparthotel SPA & Relax|2026-09
 **Realistic:** ~€101.87/night &nbsp; **Updated:** 2026-07-05
@@ -168,9 +178,9 @@ Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/n
 _Source: Booking.com (apidojo) live 2026-07-11_
 
 ### Velingrad Spa & Thermal Break|2026-09
-**Realistic:** ~€72/night &nbsp; **Updated:** 2026-07-14
-I have verified the 'Pay 3, Get 4' promotion at Spa Hotel Select for your requested dates of September 1-5, 2026. The base nightly rate is 96 EUR, resulting in a total of 288 EUR for 4 nights, which…
-_Source: Profi Tours / Official hotel rate documentation 2026-07-14_
+**Realistic:** ~€101.71/night &nbsp; **Updated:** 2026-07-15
+Verified Balneo Complex & Spa Aquatonik, 4-star for Sep 11-14, 2026: €101.71/night (€305.12 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-15_
 
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
@@ -197,8 +207,11 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (62 entries)
+## Outcome Ledger (65 entries)
 
+- 💎 2026-07-15 | Bansko Mountain Off-Season Escape | Aug 21-24, 2026 | diamond score=80->98 claimed=€53 actual=€63.0 — A highly manageable 2.5-hour drive and excellent indoor pool amenities deliver a low-stress,…
+- 💎 2026-07-15 | Velingrad Spa & Thermal Break | Sep 11-14, 2026 | diamond score=84->91 claimed=€93 actual=€101.71 — An effortless 1.5-hour drive provides nearly zero travel friction, unlocking fantastic thermal…
+- · 2026-07-15 | London Direct Flight from PDV | Sep 25 - Oct 2, 2026 | skip score=42->60 claimed=€30 actual=€21.0 — While the direct flight from Plovdiv is highly convenient, a 7-night dense city break in London…
 - 💎 2026-07-14 | Velingrad Spa & Thermal Break | Sep 1 - Sep 5, 2026 | diamond score=83->100 claimed=€72 actual=€72 — A completely frictionless 1.5-hour drive and excellent thermal children's pools provide outstanding…
 - 💎 2026-07-14 | Hisarya Ultra-Local Thermal Retreat | Aug 28 - Aug 31, 2026 | diamond score=81->88 claimed=€102 actual=€102 — An ultra-local 45-minute drive means zero transit exhaustion, offering a perfectly sized 3-night…
 - 👍 2026-07-14 | Bansko Summer Mountain Escape | Sep 4 - Sep 7, 2026 | good score=80->69 claimed=€125 actual=€141 — Elite 5-star kids' infrastructure and indoor pools offer fantastic on-property utility, easily…
@@ -246,7 +259,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - 🔧 2026-07-01 | Hisarya, Bulgaria | July 17-20, 2026 | correct claimed=€78 actual=€103.67 — Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights),…
 - ❌ 2026-07-01 | Hisarya, Bulgaria | 17 July 2026 - 20 July 2026 | kill claimed=€104 actual=€104 — While the Hissar Spa Hotel is available for your requested dates at approximately €104/night, I…
 - 👍 2026-07-01 | Bansko, Bulgaria | 10 September 2026 - 13 September 2026 | good score=80->68 claimed=€105 actual=€104 — A highly convenient 2.5h drive for a perfectly sized 3-night weekend with excellent 5-star indoor…
-- ❌ 2026-07-01 | Thassos, Greece | 6 September 2026 - 11 September 2026 | kill claimed=€135 actual=€365 — I searched for availability at Makryammos Bungalows for September 6–11, 2026, and found that the…
-- · 2026-07-01 | Rome, Italy | 15 September 2026 - 20 September 2026 | skip score=58->66 claimed=€85 actual=€85 — While the bungalow and pools offer a good toddler refuge, the exhausting logistics of driving to…
-- • 2026-06-30 | Velingrad, Park Hotel and SPA Vella Hills | September 12-19, 2026 | skeptic_kill claimed=€105 — Standard regional pricing masquerading as a seasonal discount.
-_... and 12 earlier entries_
+_... and 15 earlier entries_

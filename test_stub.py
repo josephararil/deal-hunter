@@ -6,10 +6,15 @@ Runs the real pipeline in a throwaway temp directory (non-destructive) with:
   - find_city_anomalies.ground_deal stubbed per destination — live grounding results.
 
 Coverage:
-  - No hard ceiling: Kempinski (FIND est €158) is NOT gate-dropped; it grounds at €85 and,
-    as a standout property (high LLM score), scores a DIAMOND — the "same €85 is a diamond
-    for Kempinski but merely good/skip for an ordinary hotel" behaviour.
-  - Regnum grounds at €112 and sinks to SKIP purely via the uncapped price penalty (no wall).
+  - Discount-vs-normal scoring: DIAMOND requires a standout LLM score AND a genuine discount
+    below the property's own normal rate. Kempinski (normal €180) grounds at €85 → big
+    discount → DIAMOND; Antalya (normal €150) grounds at €70 → DIAMOND.
+  - No hard ceiling: Kempinski (FIND est €158) is NOT gate-dropped; it grounds at €85.
+  - Regnum grounds at €112 vs an €80 normal → priced ABOVE normal → uncapped penalty → SKIP.
+  - Country-aware par fallback + diamond bar: an ordinary Hisarya spa weekend (label omits the
+    country, no normal_price_eur) grounds at a fair €95 and lands in GOOD, not diamond — the
+    old flat-€110-default bug used to auto-diamond exactly this.
+  - Wildcard: the most interesting non-local find (Antalya) is badged in the digest.
   - Arte Spa: grounding KILL (hallucination) → dropped before scoring.
   - Sofia: grounding low-confidence → data-quality guard blocks it before scoring.
   - Deterministic tiers: final = llm + price_adj + transit_adj.
@@ -66,6 +71,10 @@ _STAGE1 = {"candidates": [
      "city": "Sofia", "country": "Bulgaria", "score": 82, "type": "hotel",
      "window": "Sep 5-7, 2026", "est_price_eur": 90,
      "reason": "City weekend.", "confidence": "medium"},
+    {"destination": "Hisarya Ultra-Local Thermal Retreat", "hotel_name": "Sana Spa Hotel",
+     "city": "Hisarya", "country": "Bulgaria", "score": 81, "type": "hotel",
+     "window": "Aug 28-31, 2026", "est_price_eur": 100,
+     "reason": "Ordinary local spa weekend.", "confidence": "high"},
 ]}
 
 # ── Canned Stage 3 (SCORER) — desirability scores, price held neutral ─────────
@@ -74,21 +83,34 @@ _SCORES = [
      "why": "Standout AI resort, high in-window utility.",
      "about": "Rixos Premium is a flagship all-inclusive on the Antalya coast with indoor pools and a kids' club.",
      "value_case": "€70/night AI for a 5-star is exceptional — these rooms trade at €150+ in summer.",
+     "normal_price_eur": 150,
      "red_flags": "Confirm kids club Jan hours."},
     {"deal_id": 2, "destination": "Kempinski Hotel Grand Arena, Bansko, Bulgaria", "score": 90,
      "why": "Genuinely special 5-star property with full family spa.",
      "about": "The Kempinski is Bansko's landmark ski-in/ski-out 5-star, with a large spa and family pools.",
      "value_case": "€85/night for the top hotel in town is a steal — it usually sits near €180 in season.",
+     "normal_price_eur": 180,
      "red_flags": "Confirm pool heating."},
     {"deal_id": 3, "destination": "Regnum Bansko, Bulgaria", "score": 80,
      "why": "Comfortable resort, pleasant but not exceptional.",
      "about": "Regnum is a solid mid-upper Bansko resort with an indoor pool.",
      "value_case": "At €112/night it is priced above the Bansko norm of ~€80 — no real discount here.",
+     "normal_price_eur": 80,
      "red_flags": "Check August weekend rates."},
     # Arte is a grounding kill and Sofia is guard-blocked, so they never reach the scorer;
     # include them anyway to prove the pipeline ignores scores for non-scored candidates.
     {"deal_id": 4, "destination": "Arte Spa & Park, Velingrad, Bulgaria", "score": 70, "why": "x", "red_flags": "x"},
     {"deal_id": 5, "destination": "Sofia City Break, Bulgaria", "score": 75, "why": "x", "red_flags": "x"},
+    # Ordinary frictionless local spa weekend at a fair (not discounted) price. The label
+    # deliberately OMITS the country and NO normal_price_eur is given — this exercises both
+    # the country-aware par fallback (must use the €80 Bulgaria par via city/country, not the
+    # €110 default) and the discount gate. Under the old model this auto-diamonded; now it
+    # must land in GOOD, not diamond.
+    {"deal_id": 6, "destination": "Hisarya Ultra-Local Thermal Retreat", "score": 82,
+     "why": "Pleasant frictionless local spa weekend, but ordinary and fairly priced.",
+     "about": "Sana Spa is a solid 4-star thermal hotel in Hisarya with family mineral pools.",
+     "value_case": "€95/night is about the usual Hisarya rate — a fair price, not a real steal.",
+     "red_flags": "Confirm child pool hours."},
 ]
 
 def _stub_llm(messages, model, max_tokens=2000, want_search=False, response_schema=None,
@@ -128,6 +150,11 @@ _GROUND = {
         "confidence": "low", "how_to_book": "", "grounding": "search returned no firm rate",
         "assistant_summary": "Could not verify a firm Sofia rate.",
         "options": [_opt(88, 176, "Sep 5-7, 2026", 2)]},
+    # Ordinary local spa at a fair price → GOOD, not diamond (no discount, ordinary desirability).
+    "Hisarya Ultra-Local Thermal Retreat": {"destination": "Sana Spa Hotel", "verdict": "confirm",
+        "confidence": "high", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
+        "assistant_summary": "Sana Spa Hotel, Aug 28-31: €95/night.",
+        "options": [_opt(95, 285, "Aug 28-31, 2026", 3)]},
 }
 def _stub_ground(diamond, mem_text, today):
     return _GROUND.get(diamond.get("destination"), {})
@@ -193,6 +220,18 @@ try:
     assert led["Kempinski Hotel Grand Arena, Bansko, Bulgaria"]["llm_score"] == 90
     print("Memory ledger: tiers + scores recorded, no over_ceiling [OK]")
 
+    # CORE REGRESSION: an ordinary, fairly-priced local spa weekend must be GOOD, not a diamond.
+    # Its label omits the country and it has no normal_price_eur, so the country-aware par
+    # fallback must use the €80 Bulgaria par (not the €110 default that used to auto-diamond it).
+    hisarya = led["Hisarya Ultra-Local Thermal Retreat"]
+    assert hisarya["verdict"] == "good", f"ordinary local spa must be GOOD not {hisarya['verdict']}: {hisarya}"
+    assert hisarya["final_score"] == 76, f"expected par-fallback final 76, got {hisarya['final_score']}"
+    print("Ordinary local spa scored GOOD (not diamond) via country-aware par fallback [OK]")
+
+    # Wildcard: the most interesting NON-LOCAL find (Antalya) is badged in the digest.
+    assert "🃏 Wildcard" in html, "wildcard badge missing from digest"
+    print("Wildcard badge surfaced for the non-local find [OK]")
+
     # city_signals.json carries the full score breakdown.
     sig = {s["city"]: s for s in json.load(open("state/city_signals.json", encoding="utf-8"))["signals"]}
     assert sig["Regnum Bansko, Bulgaria"]["price_adj"] == -20, sig["Regnum Bansko, Bulgaria"]
@@ -206,7 +245,7 @@ try:
     # deals_history.json: one record per emailed deal (the browsable web/ UI's data source).
     hist = json.load(open("state/deals_history.json", encoding="utf-8"))["entries"]
     hist_by_dest = {e["destination"]: e for e in hist}
-    assert len(hist) == 3, f"expected 3 emailed deals (Antalya/Kempinski/Regnum), got {len(hist)}"
+    assert len(hist) == 4, f"expected 4 emailed deals (Antalya/Kempinski/Regnum/Hisarya), got {len(hist)}"
     assert hist_by_dest["Kempinski Hotel Grand Arena, Bansko, Bulgaria"]["tier"] == "diamond"
     assert "landmark ski-in/ski-out 5-star" in hist_by_dest["Kempinski Hotel Grand Arena, Bansko, Bulgaria"]["about"]
     assert hist_by_dest["Regnum Bansko, Bulgaria"]["final_score"] == 63

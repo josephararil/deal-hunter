@@ -46,13 +46,19 @@ find_city_anomalies.py
   │
   ├─ Stage 3 · SCORE (llm scorer + deterministic modifiers, model=MODEL_SKEPTIC)
   │    The LLM returns a 0–100 DESIRABILITY score per grounded candidate (price held
-  │    neutral — it is told the pipeline handles price). The pipeline then applies
-  │    deterministic modifiers (config.compute_final_score):
+  │    neutral — it is told the pipeline handles price). It ALSO emits normal_price_eur —
+  │    its honest estimate of the property's OWN typical rate — as the reference the discount
+  │    is measured against. The pipeline then applies deterministic modifiers
+  │    (config.compute_final_score):
   │      final = clamp(0,100, llm_score + price_adj + transit_adj)
-  │      price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*(1 - grounded_ppn/par))
+  │      discount  = 1 - grounded_ppn/normal_price   (falls back to regional par if the LLM
+  │                  gave no usable normal_price_eur)
+  │      price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*discount)
   │                  (bonus capped, penalty UNCAPPED — overpriced deals sink on their own)
   │      transit_adj = ±TRANSIT_TIER1_BONUS (drivable Tier-1 vs fly Tier-2)
-  │    tier = diamond (final>=DIAMOND_SCORE_THRESHOLD) | good (>=GOOD_SCORE_THRESHOLD) | skip.
+  │    tier (config.tier_for): DIAMOND needs ALL of final>=DIAMOND_SCORE_THRESHOLD,
+  │    llm_score>=DIAMOND_MIN_LLM_SCORE, AND discount>=DIAMOND_MIN_DISCOUNT — so an ordinary
+  │    local weekend, however cheap, is at most GOOD (>=GOOD_SCORE_THRESHOLD), else skip.
   │    The LLM never vetoes or tiers — a low final score is dropped by default, but every
   │    score is recorded. Same €85 can be a diamond for a standout (high llm_score) and a
   │    skip for an ordinary place. The scorer also emits a descriptive DOSSIER per candidate
@@ -68,11 +74,14 @@ find_city_anomalies.py
   │    (even skips — the price is real). prune() + save().
   │
   ├─ Anti-spam gate — state/signals_seen.json
-  │    Keyed by destination+window+TIER, SIGNAL_TTL_DAYS TTL. EVERY scored candidate
+  │    Keyed by PROPERTY-IDENTITY (hotel_name→city→label, punctuation-stripped) + coarse
+  │    SEASON (M.season_key of the window) + TIER, SIGNAL_TTL_DAYS TTL. EVERY scored candidate
   │    (diamond/good/skip) passes through this gate — a candidate is "new" if that
-  │    destination+window has not been emailed at that tier within the TTL, so a TIER
-  │    CHANGE (e.g. skip→good when the price drops) re-notifies while same-tier repeats
-  │    stay quiet.
+  │    property+season has not been emailed at that tier within the TTL. Season (not the exact
+  │    window) and a normalised identity (not FIND's drifting free-text label) mean the same
+  │    hotel with shifting dates/names no longer re-alerts; a TIER CHANGE (skip→good when the
+  │    price drops) still re-notifies. A single WILDCARD (the best non-local find) can bypass
+  │    suppression to keep variety visible.
   │
   ├─ Email (common.send_email) — an honest daily digest of EVERY scored candidate
   │    One email per run, fired whenever ≥1 scored candidate is new/tier-changed (any tier,
@@ -81,7 +90,9 @@ find_city_anomalies.py
   │    description + a "Why it's a deal" value-case callout, a "typically ~€X/night"
   │    comparison from PRIOR baselines, a child-price caveat for hotels, and the booking link.
   │    MAX_EMAILS_PER_RUN caps only the actionable diamond/good picks; skips are context and
-  │    always shown in full. A "seen & dropped" footer lists that run's grounding kills /
+  │    always shown in full. One item may carry a 🃏 WILDCARD badge — the best non-local find
+  │    (fly/far destination or non-hotel), surfaced regardless of tier so the digest visibly
+  │    reaches beyond the usual drivable towns. A "seen & dropped" footer lists that run's grounding kills /
   │    guard blocks (destination + reason) so the digest reflects everything the pipeline
   │    looked at. Conscience note if monthly count >= 8.
   │
@@ -106,7 +117,7 @@ find_city_anomalies.py
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
-| `state/signals_seen.json` | Anti-spam TTL memory: `destination\|window\|tier → date_emailed`, monthly count |
+| `state/signals_seen.json` | Anti-spam TTL memory: `property-identity\|season\|tier → date_emailed`, monthly count |
 | `state/memory.json` | Price baselines + outcome ledger (grows every run, pruned at 200 entries / 180 days) |
 | `state/memory.md` | Human-readable digest of memory.json |
 | `state/deals_history.json` | One dossier record per emailed deal (diamond/good/skip) — full about/value_case/options/red_flags, not just scores. Appended every run a digest is sent, pruned at `DEALS_HISTORY_MAX_ENTRIES`/`DEALS_HISTORY_MAX_DAYS` (config.py). Data source for `web/` |
@@ -197,25 +208,48 @@ ground_deal = _resolve_ground_deal()
 - **Grounding runs BEFORE scoring.** Stage 2 grounds live prices; Stage 3 scores those live
   prices. Core design decision — the scorer must never grade a Stage-1 *estimate*. Preserve
   this if you touch the pipeline order.
-- **The final tier is deterministic, NOT the LLM's call.** The Stage-3 LLM returns only a
-  0–100 `score` for scoring (nightly hotel price held neutral — the prompt tells it so),
-  plus purely-descriptive `why`/`about`/`value_case`/`red_flags` prose for the human. The
-  pipeline computes `final = llm_score + price_adj + transit_adj` (`config.compute_final_score`)
-  and derives the tier via `tier_for_score`. Do not let the LLM emit a tier or a veto — that was
-  deliberately removed so scores stay comparable and every one is recorded for tuning. The
-  descriptive fields (`about` = what the place is; `value_case` = why the price is a deal) must
-  NEVER influence the numeric score or gate a deal — the prompt says so explicitly.
+- **The final tier is deterministic, NOT the LLM's call.** The Stage-3 LLM returns a 0–100
+  `score` for scoring (nightly hotel price held neutral — the prompt tells it so), one numeric
+  `normal_price_eur` reference (see next invariant), plus purely-descriptive
+  `why`/`about`/`value_case`/`red_flags` prose for the human. The pipeline computes
+  `final = llm_score + price_adj + transit_adj` (`config.compute_final_score`) and derives the
+  tier via `config.tier_for(final, llm_score, discount)`. Do not let the LLM emit a tier or a
+  veto — that was deliberately removed so scores stay comparable and every one is recorded for
+  tuning. The descriptive fields (`about` = what the place is; `value_case` = why the price is
+  a deal) must NEVER influence the numeric score or gate a deal — the prompt says so explicitly.
+- **DIAMOND is a multi-gate, deliberately-rare tier.** `tier_for` promotes to diamond ONLY when
+  all three hold: `final >= DIAMOND_SCORE_THRESHOLD`, `llm_score >= DIAMOND_MIN_LLM_SCORE` (a
+  standout property, above the ~82 ordinary-local baseline), AND `discount >= DIAMOND_MIN_DISCOUNT`
+  (a genuine steal vs the property's normal rate). This is the fix for "every local spa weekend
+  became a diamond" — an ordinary or fairly-priced place is at most GOOD. Target cadence is a
+  few diamonds per MONTH. Do not collapse this back to a single final-score threshold.
+- **The price modifier measures a real discount vs the property's OWN normal price, not distance
+  from a flat regional par.** The LLM's `normal_price_eur` is the reference; `discount = 1 -
+  grounded_ppn/normal_price` and `price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*discount)`.
+  A flat par cannot express "a 5-star that normally costs €170 dropping to €110 is a steal even
+  though €110 is above the €80 regional floor" — that's why the reference is per-property. This
+  is a narrow, deliberate exception to "price held fully neutral by the LLM": the LLM supplies a
+  *reference* price (an input, like `est_price_eur` upstream) but still does NOT tier or apply
+  the modifier. `normal_price_eur` MUST be honest — a fabricated high "normal" manufactures a
+  false diamond; the prompt tells the LLM to set it at/below the grounded price when unsure.
+  `DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR` remain ONLY as the fallback reference when the LLM
+  gave no usable `normal_price_eur`.
+- **Par/transit lookups take a city+country string, never FIND's free-text label.**
+  `find_city_anomalies._location(c)` builds `"City Country"` from FIND's structured fields;
+  `get_diamond_par`/`transit_tier` substring-match country/city tokens. Passing the prose
+  `destination` label (which usually omits the country) silently defaulted every Bulgarian deal
+  to the €110 par — the original bug behind the phantom diamonds. Keep using `_location(c)`.
 - **The LLM score is NET FAMILY VALUE DELIVERED, not luxury/prestige** (the numerator; the
   price modifier is the denominator). A modest low-friction local break can outscore a
   glamorous far-flung one. Attraction is one modest input for a 4-year-old. Because flights
   are out of scope and NOT in the grounded hotel price, the scorer is the only stage that can
   weigh flight cost/hassle — so a no-direct-PDV destination is penalised in the score itself,
   not just by the small transit nudge. If you ever add flight data, revisit this.
-- **The scoring knobs live in config, nowhere else** (`DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR`,
-  `PRICE_SCORE_WEIGHT`, `PRICE_BONUS_CAP`, `TRANSIT_TIER1_BONUS`/`TIER2`, `DIAMOND_SCORE_THRESHOLD`,
-  `GOOD_SCORE_THRESHOLD`). `par` is a reference, NOT a wall: a standout property (high llm_score)
-  can be a diamond above par; an ordinary one cannot. The price bonus is capped; the penalty is
-  UNCAPPED, which is *why there is no hard price ceiling* — overpriced deals sink to skip on their own.
+- **The scoring knobs live in config, nowhere else** (`DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR`
+  [fallback reference only], `PRICE_SCORE_WEIGHT`, `PRICE_BONUS_CAP`, `TRANSIT_TIER1_BONUS`/`TIER2`,
+  `DIAMOND_SCORE_THRESHOLD`, `GOOD_SCORE_THRESHOLD`, `DIAMOND_MIN_LLM_SCORE`, `DIAMOND_MIN_DISCOUNT`).
+  The price bonus is capped; the penalty is UNCAPPED, which is *why there is no hard price ceiling* —
+  overpriced deals sink to skip on their own.
 - **`STAGE1_MIN_SCORE = 80`** is the gate into grounding — pure triage on FIND's estimate to
   bound grounding cost. NO price filter at the gate.
 - **FIND scoring is triage; the scorer is authoritative.** FIND's score only decides who gets
@@ -266,17 +300,20 @@ ground_deal = _resolve_ground_deal()
   mint it. The scorer echoes it back so scores merge onto grounded candidates by id, not by
   fragile destination-string matching (`_match_candidate`, with a destination fallback).
   It only correlates within one run — candidate #1 today ≠ #1 tomorrow — so it must NEVER
-  key `signals_seen.json` or `memory.json`; those stay keyed by `destination|window`(`|tier`
-  for signals_seen) / season to survive across runs. It appears in `city_signals.json`
+  key `signals_seen.json` or `memory.json`; those stay keyed by durable identity across runs
+  (`memory.json` by `destination|season`; `signals_seen.json` by `property-identity|season|tier`
+  via `seen_key`). It appears in `city_signals.json`
   (regenerated each run) for traceability only.
 - **The email is an honest digest of EVERY scored candidate, not a diamond/good-only alarm.**
   It shows diamonds, good finds AND skips — each with its full score breakdown — so the user
   builds a mental model of what the pipeline sees and why, and can human-override a
   low-scored deal (e.g. a Rome skip that's useful if they were going anyway). It fires
   whenever ≥1 scored candidate is new or has changed tier since the last email (any tier).
-  Anti-spam TTL is keyed `destination|window|tier`, so a recurring same-window skip stays
-  quiet but a skip→good upgrade re-notifies. Only diamond/good picks are capped by
-  MAX_EMAILS_PER_RUN; skips are always shown. Grounding kills / guard blocks appear in a
+  Anti-spam TTL is keyed `property-identity|season|tier` (see `seen_key`), so a recurring
+  same-property skip stays quiet even as its label/exact dates drift, but a skip→good upgrade
+  re-notifies. One best non-local find may carry a 🃏 wildcard badge (may bypass suppression).
+  Only diamond/good picks are capped by MAX_EMAILS_PER_RUN; skips are always shown. Grounding
+  kills / guard blocks appear in a
   compact "seen & dropped" footer (no email is sent purely for a kill). A day with nothing
   new (or nothing found) still sends nothing.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger

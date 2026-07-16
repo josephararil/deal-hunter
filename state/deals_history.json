@@ -823,6 +823,102 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-07-16",
+      "deal_id": 1,
+      "destination": "Hisarya Thermal Retreat",
+      "type": "hotel",
+      "window": "Aug 28-31, 2026",
+      "tier": "good",
+      "llm_score": 81,
+      "price_adj": 10,
+      "transit_adj": 3,
+      "final_score": 94,
+      "confidence": "high",
+      "summary": "Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "about": "Sana Spa Hotel is a highly-rated 3-star property in the tranquil spa town of Hisarya, famous for its Roman ruins and mineral springs. The hotel features dedicated indoor and outdoor thermal pools, extensive park-like grounds, and a solid wellness center. For a family with a 4-year-old, the combination of warm, shallow waters and vast car-free parks nearby provides a perfectly paced, effortless retreat.",
+      "value_case": "At €92/night, this is a very fair deal for late-summer thermal relaxation. Similar highly-rated spa hotels in the region often hover closer to €110-€120, making this a solid choice for a budget-friendly weekend escape without sacrificing cleanliness or pool access.",
+      "why": "An ultra-local 45-minute drive eliminates transit friction entirely, offering high-value, low-stress thermal pool relaxation perfectly suited for a toddler.",
+      "red_flags": "Check if outdoor pools are transitioning to colder temperatures by late August, though the thermal mineral water usually mitigates this issue.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-28–2026-08-31, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.8. Live rate: €92.2/night (€276.59 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-08-28&checkout=2026-08-31&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 28-31, 2026",
+          "nights": 3,
+          "price_per_night_eur": 92.2,
+          "total_eur": 276.59,
+          "source": "Booking.com (apidojo) live 2026-07-16",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-08-28&checkout=2026-08-31&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-16",
+      "deal_id": 3,
+      "destination": "Velingrad Spa & Thermal Break",
+      "type": "hotel",
+      "window": "Sep 11-14, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 93,
+      "confidence": "high",
+      "summary": "Verified Balneo Complex & Spa Aquatonik, 4-star for Sep 11-14, 2026: €101.71/night (€305.12 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "about": "Balneo Complex & Spa Aquatonik is a very popular 4-star wellness resort situated near Lake Kleptuza in Velingrad, the spa capital of the Balkans. The property boasts an impressive array of thermal mineral pools, including specialized aquatic zones and a dedicated children's pool. Families with young kids love the warm water, easy access to nearby nature walks, and the generally relaxed, health-focused atmosphere of the resort.",
+      "value_case": "Securing this property at €102/night in September represents a sharp discount for a premier Velingrad 4-star, which typically trades around €130-€140. It offers near 5-star aquatic facilities at a distinctly mid-range price.",
+      "why": "A highly manageable 1.5-hour drive unlocks outstanding family utility with warm thermal mineral pools and dedicated kids' aquatic zones.",
+      "red_flags": "Velingrad traffic and parking can be tight on weekends; verify if guaranteed on-site parking is included in the rate.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-11–2026-09-14, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.9. Live rate: €101.71/night (€305.12 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 101.71,
+          "total_eur": 305.12,
+          "source": "Booking.com (apidojo) live 2026-07-16",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€101.71/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-16",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Escape & Jazz Fest",
+      "type": "hotel",
+      "window": "Aug 6-9, 2026",
+      "tier": "good",
+      "llm_score": 76,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 86,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is widely considered one of Bulgaria's premier 5-star family properties, located just a short walk from Bansko's old town. It is renowned for its elite child-friendly infrastructure, including multiple indoor pools, extensive kids' clubs, and gaming zones. During the summer, families can enjoy cool mountain air, easy nature walks in the Pirin mountains, and adult appeal from events like the Bansko Jazz Festival.",
+      "value_case": "Paying €154/night is an excellent rate for a true 5-star family flagship during the peak of the Bansko Jazz Festival. Typical mid-summer rates here normally push €180-€200, so you are securing top-tier amenities at a meaningful discount.",
+      "why": "Elite 5-star kids' infrastructure provides massive on-property utility, though the 2.5-hour drive and mountain resort setting inherently carry slightly more friction than local spas.",
+      "red_flags": "The Jazz Festival brings crowds and evening noise to the town center; request a room situated away from street noise to avoid disrupting a toddler's sleep schedule.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-06–2026-08-09, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €153.88/night (€461.65 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-08-06&checkout=2026-08-09&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 6-9, 2026",
+          "nights": 3,
+          "price_per_night_eur": 153.88,
+          "total_eur": 461.65,
+          "source": "Booking.com (apidojo) live 2026-07-16",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-08-06&checkout=2026-08-09&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

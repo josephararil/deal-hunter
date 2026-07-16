@@ -219,8 +219,8 @@
     "Velingrad Spa & Thermal Break|2026-09": {
       "realistic_price_eur": 101.71,
       "note": "Verified Balneo Complex & Spa Aquatonik, 4-star for Sep 11-14, 2026: €101.71/night (€305.12 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-15",
-      "updated": "2026-07-15"
+      "source": "Booking.com (apidojo) live 2026-07-16",
+      "updated": "2026-07-16"
     },
     "Bansko Summer Mountain Escape|2026-09": {
       "realistic_price_eur": 141,
@@ -245,6 +245,18 @@
       "note": "I have verified that Wizz Air operates direct flights from Plovdiv (PDV) to London Luton (LTN) for your travel window. The original estimate of €30 total was a promotional minimum; the flights are…",
       "source": "Wizz Air live search 2026-07-15",
       "updated": "2026-07-15"
+    },
+    "Hisarya Thermal Retreat|2026-08": {
+      "realistic_price_eur": 92.2,
+      "note": "Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-16",
+      "updated": "2026-07-16"
+    },
+    "Bansko Mountain Escape & Jazz Fest|2026-08": {
+      "realistic_price_eur": 153.88,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-16",
+      "updated": "2026-07-16"
     }
   },
   "ledger": [
@@ -1058,6 +1070,45 @@
       "final_score": 60,
       "source": "Wizz Air live search 2026-07-15",
       "note": "While the direct flight from Plovdiv is highly convenient, a 7-night dense city break in London offers exhausting logistics and modest genuine utility for a 4-year-old, plus it lacks an included…"
+    },
+    {
+      "date": "2026-07-16",
+      "destination": "Hisarya Thermal Retreat",
+      "window": "Aug 28-31, 2026",
+      "type": "hotel",
+      "claimed_price": 102,
+      "verdict": "good",
+      "actual_price": 92.2,
+      "llm_score": 81,
+      "final_score": 94,
+      "source": "Booking.com (apidojo) live 2026-07-16",
+      "note": "An ultra-local 45-minute drive eliminates transit friction entirely, offering high-value, low-stress thermal pool relaxation perfectly suited for a toddler."
+    },
+    {
+      "date": "2026-07-16",
+      "destination": "Bansko Mountain Escape & Jazz Fest",
+      "window": "Aug 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 124,
+      "verdict": "good",
+      "actual_price": 153.88,
+      "llm_score": 76,
+      "final_score": 86,
+      "source": "Booking.com (apidojo) live 2026-07-16",
+      "note": "Elite 5-star kids' infrastructure provides massive on-property utility, though the 2.5-hour drive and mountain resort setting inherently carry slightly more friction than local spas."
+    },
+    {
+      "date": "2026-07-16",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 102,
+      "verdict": "good",
+      "actual_price": 101.71,
+      "llm_score": 78,
+      "final_score": 93,
+      "source": "Booking.com (apidojo) live 2026-07-16",
+      "note": "A highly manageable 1.5-hour drive unlocks outstanding family utility with warm thermal mineral pools and dedicated kids' aquatic zones."
     }
   ]
 }

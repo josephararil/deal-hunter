@@ -1,54 +1,54 @@
-# Diamond Finder — 2026-07-15
+# Diamond Finder — 2026-07-16
 
-_Stage 1: 4 candidate(s). 3 grounded · 3 scored. 2 diamond · 0 good._
+_Stage 1: 4 candidate(s). 3 grounded · 3 scored. 0 diamond · 3 good._
 
-### Bansko Mountain Off-Season Escape 💎 — FIND 86/100 (high) · est €53/night
-**Type:** hotel &nbsp; **Window:** Aug 21-24, 2026
-Live leads show Gardenia Park Hotel plummeting to ~€53/night in the summer trough. An easy 2.5h Tier 1 drive from Plovdiv yields fantastic family value with free spa access, an indoor pool, and summer terrace amenities, perfectly suited for a short, low-stress 3-night mountain break for a 4-year-old.
-_Score: LLM 80 +15 price +3 transit = **98** → diamond_
-_Scorer: A highly manageable 2.5-hour drive and excellent indoor pool amenities deliver a low-stress, high-value 3-night mountain weekend perfectly sized for a 4-year-old._
-**About:** The Gardenia Park Hotel is a solid 4-star property located centrally in Bansko, known for its traditional architecture and extensive spa facilities. While Bansko is primarily a ski resort, in summer it transforms into a quiet, cooler mountain retreat. Families with a 4-year-old can take advantage of the hotel's indoor pool and summer terrace, while the town offers easy gondola rides up the mountain and plenty of open pedestrian spaces for relaxed strolls. With an 8.2 review score, it represents a dependable mid-range base for a short break.
-**Why it's a deal:** At just 63 EUR per night, this is a phenomenal summer trough deal for a 4-star mountain hotel, which would easily command double or triple this rate during peak winter season. It heavily undercuts standard regional weekend rates, offering spa and pool access for the price of a basic guesthouse.
+### Hisarya Thermal Retreat 👍 — FIND 84/100 (high) · est €102/night
+**Type:** hotel &nbsp; **Window:** Aug 28-31, 2026
+An ultra-local 45-minute drive from Plovdiv offers zero transit friction, delivering highly actionable, low-stress relaxation for a family with a 4-year-old. Excellent dedicated thermal pools provide high utility, and the short 3-night window perfectly matches the destination's appeal.
+_Score: LLM 81 +10 price +3 transit = **94** → good_
+_Scorer: An ultra-local 45-minute drive eliminates transit friction entirely, offering high-value, low-stress thermal pool relaxation perfectly suited for a toddler._
+**About:** Sana Spa Hotel is a highly-rated 3-star property in the tranquil spa town of Hisarya, famous for its Roman ruins and mineral springs. The hotel features dedicated indoor and outdoor thermal pools, extensive park-like grounds, and a solid wellness center. For a family with a 4-year-old, the combination of warm, shallow waters and vast car-free parks nearby provides a perfectly paced, effortless retreat.
+**Why it's a deal:** At €92/night, this is a very fair deal for late-summer thermal relaxation. Similar highly-rated spa hotels in the region often hover closer to €110-€120, making this a solid choice for a budget-friendly weekend escape without sacrificing cleanliness or pool access.
 
-### Velingrad Spa & Thermal Break 💎 — FIND 82/100 (high) · est €93/night
+### Bansko Mountain Escape & Jazz Fest 👍 — FIND 82/100 (high) · est €124/night
+**Type:** hotel &nbsp; **Window:** Aug 6-9, 2026
+An easy 2.5-hour drive unlocks elite 5-star child-friendly infrastructure (pools, indoor kids' club) and a cool mountain retreat from summer heat. Timed to overlap with the Bansko Jazz Festival, providing great adult utility while maintaining a punchy 3-night stay optimal for this mountain resort.
+_Score: LLM 76 +7 price +3 transit = **86** → good_
+_Scorer: Elite 5-star kids' infrastructure provides massive on-property utility, though the 2.5-hour drive and mountain resort setting inherently carry slightly more friction than local spas._
+**About:** Lucky Bansko Aparthotel SPA & Relax is widely considered one of Bulgaria's premier 5-star family properties, located just a short walk from Bansko's old town. It is renowned for its elite child-friendly infrastructure, including multiple indoor pools, extensive kids' clubs, and gaming zones. During the summer, families can enjoy cool mountain air, easy nature walks in the Pirin mountains, and adult appeal from events like the Bansko Jazz Festival.
+**Why it's a deal:** Paying €154/night is an excellent rate for a true 5-star family flagship during the peak of the Bansko Jazz Festival. Typical mid-summer rates here normally push €180-€200, so you are securing top-tier amenities at a meaningful discount.
+
+### Velingrad Spa & Thermal Break 👍 — FIND 80/100 (high) · est €102/night
 **Type:** hotel &nbsp; **Window:** Sep 11-14, 2026
-Live pricing confirms a fantastic shoulder-season rate of €93/night. Just a 1.5h drive from Plovdiv (Tier 1), this highly-rated 4-star property offers exceptional thermal pools and dedicated kid-friendly infrastructure, providing massive low-friction relaxation over a punchy 3-night stay.
-_Score: LLM 84 +4 price +3 transit = **91** → diamond_
-_Scorer: An effortless 1.5-hour drive provides nearly zero travel friction, unlocking fantastic thermal pools and dedicated kids facilities that maximize parental relaxation and toddler fun over a 3-night stay._
-**About:** Balneo Complex & Spa Aquatonik is a highly regarded 4-star spa resort situated in Velingrad, Bulgaria's premier thermal spa capital. It is famous for its extensive wellness center, warm mineral water pools, and strong family focus, reflected in its impressive 8.9 review score. For a family with a toddler, the warm indoor and outdoor thermal pools, kids play areas, and nearby parks offer endless, weather-proof entertainment. The surrounding town is peaceful and completely geared toward leisurely wellness tourism.
-**Why it's a deal:** Securing a top-rated Velingrad spa property for roughly 100 EUR per night is a strong shoulder-season value, as this tier of hotel typically hovers around 130-150 EUR for September weekends. It represents a small premium over average 3-star local options but delivers vastly superior amenities and comfort.
+A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral pools and dedicated kids' areas. The €102/night September rate represents verified, exceptional value for a premium domestic resort. Perfectly suited for a short, high-comfort weekend reset.
+_Score: LLM 78 +12 price +3 transit = **93** → good_
+_Scorer: A highly manageable 1.5-hour drive unlocks outstanding family utility with warm thermal mineral pools and dedicated kids' aquatic zones._
+**About:** Balneo Complex & Spa Aquatonik is a very popular 4-star wellness resort situated near Lake Kleptuza in Velingrad, the spa capital of the Balkans. The property boasts an impressive array of thermal mineral pools, including specialized aquatic zones and a dedicated children's pool. Families with young kids love the warm water, easy access to nearby nature walks, and the generally relaxed, health-focused atmosphere of the resort.
+**Why it's a deal:** Securing this property at €102/night in September represents a sharp discount for a premier Velingrad 4-star, which typically trades around €130-€140. It offers near 5-star aquatic facilities at a distinctly mid-range price.
 
-### London Direct Flight from PDV · — FIND 81/100 (high) · est €30/night
-**Type:** flight &nbsp; **Window:** Sep 25 - Oct 2, 2026
-Fresh Wizz Air inventory shows ~€15 one-way flights directly from Plovdiv (PDV) to London, bypassing Sofia transit entirely. London is a high-excitement destination with world-class free museums and parks highly engaging for a 4-year-old. A 7-night stay maximizes the utility of this Tier 1 transit play.
-_Score: LLM 42 +15 price +3 transit = **60** → skip_
-_Scorer: While the direct flight from Plovdiv is highly convenient, a 7-night dense city break in London offers exhausting logistics and modest genuine utility for a 4-year-old, plus it lacks an included hotel._
-**About:** This is a direct Wizz Air flight route from Plovdiv (PDV) to London Luton (LTN), offering a rare chance to bypass Sofia Airport entirely. London itself is a massive, bustling metropolis with world-class attractions like the Natural History Museum and expansive green spaces like Hyde Park. However, navigating the Tube and massive crowds with a 4-year-old requires significant stamina, and the sheer scale of the city makes it a demanding destination for young families compared to a contained resort.
-**Why it's a deal:** A round-trip direct flight for around 147 EUR total for the family is a very solid low-cost carrier fare, significantly cheaper than legacy airlines or last-minute bookings. However, you must factor in that London accommodation and daily living costs are exceptionally high, meaning the cheap flight is only a fraction of the true trip cost.
-
-### Antalya Late Summer Bundle — FIND 72/100 (high) · est €131/night
-**Type:** package &nbsp; **Window:** Sep 15-22, 2026
-Charter capacity from Sofia offers competitive hotel bundling for late summer. While the drive to Sofia adds Tier 2 transit friction for a young child, 7 nights of warm Mediterranean seas and elite all-inclusive kids clubs largely amortize the travel hassle. Scored below 80 purely due to the transit penalty.
+### Antalya Premium Late Summer Launch — FIND 75/100 (medium) · est €180/night
+**Type:** hotel &nbsp; **Window:** Sep 15-22, 2026
+A highly anticipated 2026 debut featuring lagoon swim-up rooms and extensive dedicated kids' facilities. While the resort utility and warm September seas offer massive 7-night family value, the requirement to drive to Sofia for the flight introduces transit friction for a 4-year-old, keeping the score below the email threshold.
 
 ## Grounding & scoring
 
-### 🔧 Gardenia Park Hotel — CORRECT (confidence: high) → final **98** (diamond)
-**Summary:** Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
+### ✅ Sana Spa Hotel — CONFIRM (confidence: high) → final **94** (good)
+**Summary:** Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
 **Options:**
-  - Aug 21-24, 2026 · €63.0/night · €189.01 total · [book](https://www.booking.com/searchresults.html?ss=Gardenia+Park+Hotel&checkin=2026-08-21&checkout=2026-08-24&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-15_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Gardenia+Park+Hotel&checkin=2026-08-21&checkout=2026-08-24&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-08-21–2026-08-24, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.2. Live rate: €63.0/night (€189.01 total).
+  - Aug 28-31, 2026 · €92.2/night · €276.59 total · [book](https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-08-28&checkout=2026-08-31&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-16_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-08-28&checkout=2026-08-31&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-08-28–2026-08-31, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.8. Live rate: €92.2/night (€276.59 total).
 
-### ✅ Balneo Complex & Spa Aquatonik — CONFIRM (confidence: high) → final **91** (diamond)
+### 🔧 Lucky Bansko Aparthotel SPA & Relax — CORRECT (confidence: high) → final **86** (good)
+**Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.
+**Options:**
+  - Aug 6-9, 2026 · €153.88/night · €461.65 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-08-06&checkout=2026-08-09&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-16_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-08-06&checkout=2026-08-09&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-08-06–2026-08-09, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €153.88/night (€461.65 total).
+
+### ✅ Balneo Complex & Spa Aquatonik — CONFIRM (confidence: high) → final **93** (good)
 **Summary:** Verified Balneo Complex & Spa Aquatonik, 4-star for Sep 11-14, 2026: €101.71/night (€305.12 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.
 **Options:**
-  - Sep 11-14, 2026 · €101.71/night · €305.12 total · [book](https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-15_
+  - Sep 11-14, 2026 · €101.71/night · €305.12 total · [book](https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-16_
 **How to book:** Book at https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4
 **Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-11–2026-09-14, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.9. Live rate: €101.71/night (€305.12 total).
-
-### 🔧 London Direct Flight from PDV — CORRECT (confidence: high) → final **60** (skip)
-**Summary:** I have verified that Wizz Air operates direct flights from Plovdiv (PDV) to London Luton (LTN) for your travel window. The original estimate of €30 total was a promotional minimum; the flights are currently available for approximately €147 total (round trip) for the September 25–October 2 dates. You can book these directly via the Wizz Air website.
-**Options:**
-  - Sep 25 - Oct 2, 2026 · €21.0/night · €147.0 total · [book](https://wizzair.com) · _Wizz Air live search 2026-07-15_
-**How to book:** Book directly at wizzair.com. Search for round-trip flights from Plovdiv (PDV) to London Luton (LTN) for the specified dates.
-**Grounding:** Live search confirms that Wizz Air operates direct flights between Plovdiv (PDV) and London Luton (LTN). While the initial estimate cited a promotional ~€15 one-way price, current bookings for the requested window (Sep 25–Oct 2) total approximately €147 for a round trip (amortized as €21 per night for the 7-night duration). Flight schedules confirm service is active on this route.

@@ -47,10 +47,13 @@
     "London Direct Flight from PDV|Sep 25 - Oct 2, 2026|skip": "2026-07-15",
     "sanaspahotel|2026-08|good": "2026-07-16",
     "balneocomplexspaaquatonik|2026-09|good": "2026-07-16",
-    "luckybanskoaparthotelsparelax|2026-08|good": "2026-07-16"
+    "luckybanskoaparthotelsparelax|2026-08|good": "2026-07-16",
+    "artespaparkhotel|2026-09|good": "2026-07-17",
+    "balneocomplexspaaquatonik|2026-08|good": "2026-07-17",
+    "festapanoramahotel|2026-09|good": "2026-07-17"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 15
+    "2026-07": 16
   }
 }

@@ -207,8 +207,8 @@
     "Velingrad Spa & Thermal Break|2026-08": {
       "realistic_price_eur": 116.39,
       "note": "Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-11",
-      "updated": "2026-07-11"
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
     },
     "Milan City Break via PDV|2026-09": {
       "realistic_price_eur": 154,
@@ -249,14 +249,26 @@
     "Hisarya Thermal Retreat|2026-08": {
       "realistic_price_eur": 92.2,
       "note": "Verified Sana Spa Hotel, 3-star for Aug 28-31, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-16",
-      "updated": "2026-07-16"
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
     },
     "Bansko Mountain Escape & Jazz Fest|2026-08": {
       "realistic_price_eur": 153.88,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-16",
-      "updated": "2026-07-16"
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
+    },
+    "Black Sea Late Summer Off-Peak|2026-09": {
+      "realistic_price_eur": 128,
+      "note": "I have verified the Festa Panorama Hotel in Nessebar for your dates of September 6-11, 2026. The real-time pricing is approximately €128 per night (totaling €640 for the 5-night stay), which is a…",
+      "source": "Festa Hotels official booking engine / Profi Tours 2026-07-17",
+      "updated": "2026-07-17"
+    },
+    "Velingrad Premium Family Luxury|2026-09": {
+      "realistic_price_eur": 250.76,
+      "note": "Verified Hotel Arte SPA & Park, 5-star for Sep 11-14, 2026: €250.76/night (€752.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
     }
   },
   "ledger": [
@@ -1109,6 +1121,71 @@
       "final_score": 93,
       "source": "Booking.com (apidojo) live 2026-07-16",
       "note": "A highly manageable 1.5-hour drive unlocks outstanding family utility with warm thermal mineral pools and dedicated kids' aquatic zones."
+    },
+    {
+      "date": "2026-07-17",
+      "destination": "Hisarya Thermal Retreat",
+      "window": "Aug 28-31, 2026",
+      "type": "hotel",
+      "claimed_price": 92.2,
+      "verdict": "good",
+      "actual_price": 92.2,
+      "llm_score": 81,
+      "final_score": 85,
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "note": "An effortless 45-minute drive from Plovdiv delivers an incredibly relaxed, low-friction spa weekend where parents can unwind and a 4-year-old can safely enjoy the thermal pools."
+    },
+    {
+      "date": "2026-07-17",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Aug 21-24, 2026",
+      "type": "hotel",
+      "claimed_price": 116.39,
+      "verdict": "good",
+      "actual_price": 116.39,
+      "llm_score": 81,
+      "final_score": 87,
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "note": "A manageable 1.5-hour drive unlocks excellent family utility with warm thermal mineral pools and dedicated kids' areas, perfect for a short 3-night punchy break."
+    },
+    {
+      "date": "2026-07-17",
+      "destination": "Bansko Mountain Escape & Jazz Fest",
+      "window": "Aug 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 153.88,
+      "verdict": "good",
+      "actual_price": 153.88,
+      "llm_score": 78,
+      "final_score": 83,
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "note": "Elite 5-star kids' infrastructure provides massive on-property utility and a cool mountain climate, easily justifying the 2.5-hour drive."
+    },
+    {
+      "date": "2026-07-17",
+      "destination": "Black Sea Late Summer Off-Peak",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "good",
+      "actual_price": 128,
+      "llm_score": 75,
+      "final_score": 84,
+      "source": "Festa Hotels official booking engine / Profi Tours 2026-07-17",
+      "note": "A 2.5-hour highway drive to Nessebar offers strong all-inclusive utility, though late September means minor weather risks for outdoor pools with a young child."
+    },
+    {
+      "date": "2026-07-17",
+      "destination": "Velingrad Premium Family Luxury",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 185,
+      "verdict": "good",
+      "actual_price": 250.76,
+      "llm_score": 85,
+      "final_score": 90,
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "note": "Exceptional on-property luxury and dedicated kids' facilities provide maximum family utility just 1.5 hours away, completely removing travel stress."
     }
   ]
 }

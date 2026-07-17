@@ -919,6 +919,102 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-17",
+      "deal_id": 5,
+      "destination": "Velingrad Premium Family Luxury",
+      "type": "hotel",
+      "window": "Sep 11-14, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 2,
+      "transit_adj": 3,
+      "final_score": 90,
+      "confidence": "high",
+      "summary": "Verified Hotel Arte SPA & Park, 5-star for Sep 11-14, 2026: €250.76/night (€752.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "about": "Arte SPA & Park is widely considered one of the finest 5-star luxury wellness resorts in Velingrad. It offers spectacular thermal pools (both indoor and outdoor) that are open year-round, top-tier dining, and highly attentive service. For families, the resort is a paradise, featuring specialized children's pools, professional animation, and supervised kids' clubs that allow parents to fully relax in the extensive spa.",
+      "value_case": "At €250/night, this is undoubtedly a premium product, but it aligns perfectly with Arte's typical pricing of €240-€280. While it is significantly more expensive than 4-star alternatives, it delivers a genuinely elite, zero-compromise family experience that justifies the luxury price tag.",
+      "why": "Exceptional on-property luxury and dedicated kids' facilities provide maximum family utility just 1.5 hours away, completely removing travel stress.",
+      "red_flags": "High occupancy means dining and kids' club facilities can be busy; ensure spa appointments and specialized child services are booked pre-arrival.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-11–2026-09-14, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €250.76/night (€752.29 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 250.76,
+          "total_eur": 752.29,
+          "source": "Booking.com (apidojo) live 2026-07-17",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-17",
+      "deal_id": 2,
+      "destination": "Velingrad Spa & Thermal Break",
+      "type": "hotel",
+      "window": "Aug 21-24, 2026",
+      "tier": "good",
+      "llm_score": 81,
+      "price_adj": 3,
+      "transit_adj": 3,
+      "final_score": 87,
+      "confidence": "high",
+      "summary": "Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "about": "Aquatonik is a well-established 4-star balneo complex in Velingrad, the spa capital of the Balkans. It is famous for its large indoor aquatonic pool with various massage jets, as well as an outdoor thermal pool. Families with young children will appreciate the warm water, the dedicated children's pool areas, and the on-site kids' club, allowing parents to actually enjoy the extensive spa and wellness center.",
+      "value_case": "At €116/night, this is a very standard and fair rate for a reputable 4-star in Velingrad during the summer, which normally trades between €115 and €135. You are getting reliable 4-star spa quality without paying the €200+ premium commanded by the town's 5-star flagships.",
+      "why": "A manageable 1.5-hour drive unlocks excellent family utility with warm thermal mineral pools and dedicated kids' areas, perfect for a short 3-night punchy break.",
+      "red_flags": "The hotel's aquatonic pool can get crowded on weekends, and popular spa treatments may need to be booked well in advance.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-21–2026-08-24, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.9. Live rate: €116.39/night (€349.16 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-08-21&checkout=2026-08-24&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 21-24, 2026",
+          "nights": 3,
+          "price_per_night_eur": 116.39,
+          "total_eur": 349.16,
+          "source": "Booking.com (apidojo) live 2026-07-17",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Balneo+Complex+%26+Spa+Aquatonik&checkin=2026-08-21&checkout=2026-08-24&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€116.39/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-17",
+      "deal_id": 4,
+      "destination": "Black Sea Late Summer Off-Peak",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 75,
+      "price_adj": 6,
+      "transit_adj": 3,
+      "final_score": 84,
+      "confidence": "high",
+      "summary": "I have verified the Festa Panorama Hotel in Nessebar for your dates of September 6-11, 2026. The real-time pricing is approximately €128 per night (totaling €640 for the 5-night stay), which is a slight adjustment from your initial €115 estimate. You can book this directly through the Festa Hotels website or via standard travel booking platforms.",
+      "about": "Festa Panorama is a solid 4-star all-inclusive hotel located on the promenade in the newer part of Nessebar. It boasts a large outdoor pool, an indoor heated pool, various dining options, and daily animation programs. The location is excellent for families: you have the convenience of the hotel's amenities for the 4-year-old, plus easy access to the historic Old Town of Nessebar for evening walks.",
+      "value_case": "At €128/night for an all-inclusive package, this is a reasonable off-peak rate for the late summer window, normally pricing around €140-€150. It represents a solid family beach vacation without the peak-season crowds or inflated August pricing.",
+      "why": "A 2.5-hour highway drive to Nessebar offers strong all-inclusive utility, though late September means minor weather risks for outdoor pools with a young child.",
+      "red_flags": "Early September weather on the Black Sea can be unpredictable, and the unheated outdoor pools may be too cold for a toddler.",
+      "grounding": "Live search for Festa Panorama Hotel in Nessebar confirms it is an active 4-star all-inclusive property. September dates show typical pricing around €128/night for standard double rooms, which is slightly above the initial €115 estimate. Parking is available at ~€8/day. The hotel is open throughout September with full all-inclusive services and pool access.",
+      "how_to_book": "Book directly through the Festa Hotels website (festahotels.com) or via major OTA partners like Booking.com or Expedia. You can also contact their sales office at +359 700 144 22 or sales@festahotels.com for inquiries.",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 128,
+          "total_eur": 640,
+          "source": "Festa Hotels official booking engine / Profi Tours 2026-07-17",
+          "booking_url": "https://www.festahotels.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

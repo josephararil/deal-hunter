@@ -1015,6 +1015,70 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-18",
+      "deal_id": 3,
+      "destination": "Velingrad Spa & Thermal Break",
+      "type": "hotel",
+      "window": "Sep 3-6, 2026",
+      "tier": "good",
+      "llm_score": 89,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 99,
+      "confidence": "high",
+      "summary": "I verified the Summer SPA Getaway at Spa Hotel Olimp in Velingrad for September 3-6, 2026. The actual rate is 151 EUR per night (453 EUR total for 3 nights), which includes half-board. You can book this offer directly on their website.",
+      "about": "Spa Hotel Olimp is a popular, family-focused spa hotel in Velingrad, Bulgaria's premier thermal resort town. The property is renowned for its excellent 35-36C mineral pools and active children's animation, making it exceptionally easy for parents to relax while a 4-year-old stays entertained. Just 1.5 hours from Plovdiv, the town also offers pleasant pine forest walks and nearby parks.",
+      "value_case": "Securing this at €151/night with half-board included is a very fair deal for Velingrad, where premium family spa resorts often exceed €170-€190/night. The inclusion of meals adds significant convenience and value, saving you both time and extra dining costs.",
+      "why": "A highly manageable 1.5-hour drive unlocks outstanding family utility with perfectly heated mineral pools, active children's animation, and the massive convenience of half-board dining.",
+      "red_flags": "Confirm the exact schedule of the children's animation to ensure it aligns with your stay dates in early September.",
+      "grounding": "Live search verified the Summer SPA Getaway package at Spa Hotel Olimp for Sep 3-6, 2026. The actual price is 151 EUR per night (453 EUR total), which includes half-board, correcting the initial estimate of 105 EUR per night.",
+      "how_to_book": "Book the Summer SPA Getaway package directly via the hotel's website at https://olymp-bg.com/en/offers/summer-spa-getaway-2026/ or by contacting them at +359 88 733 6863.",
+      "options": [
+        {
+          "dates": "Sep 3-6, 2026",
+          "nights": 3,
+          "price_per_night_eur": 151,
+          "total_eur": 453,
+          "source": "Spa Hotel Olimp official website promotional offer",
+          "booking_url": "https://olymp-bg.com/en/offers/summer-spa-getaway-2026/"
+        }
+      ],
+      "baseline_note": "Typically ~€101.71/night here — this is 48% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-18",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Escape",
+      "type": "hotel",
+      "window": "Aug 20-23, 2026",
+      "tier": "good",
+      "llm_score": 84,
+      "price_adj": 3,
+      "transit_adj": 3,
+      "final_score": 90,
+      "confidence": "high",
+      "summary": "Verified Premier Luxury Mountain Resort, 5-star for Aug 20-23, 2026: €167.72/night (€503.17 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
+      "about": "Premier Luxury Mountain Resort is one of Bansko's standout 5-star properties (rated 8.7), offering a premium alpine escape from the August heat. The resort features excellent family infrastructure, including dedicated pools, play areas, and engaging activities for young children. Families can mix on-property luxury and relaxation with easy nature walks and gondola rides in the Pirin mountains.",
+      "value_case": "At €167/night, you are paying a fair, standard rate for genuine 5-star mountain luxury in the summer. While not a deep discount, the on-property quality and family amenities justify the premium over standard 4-star Bansko hotels, which sit closer to €70-€90.",
+      "why": "Excellent 5-star kids' infrastructure provides massive on-property utility and a cool mountain climate escape, easily justifying the manageable 2.5-hour drive.",
+      "red_flags": "Verify if specific kids' clubs and animation programs are fully active during the summer, as Bansko is primarily a winter resort.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-08-20–2026-08-23, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.7. Live rate: €167.72/night (€503.17 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-08-20&checkout=2026-08-23&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Aug 20-23, 2026",
+          "nights": 3,
+          "price_per_night_eur": 167.72,
+          "total_eur": 503.17,
+          "source": "Booking.com (apidojo) live 2026-07-18",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-08-20&checkout=2026-08-23&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

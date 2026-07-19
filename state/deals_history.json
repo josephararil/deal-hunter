@@ -1079,6 +1079,102 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-19",
+      "deal_id": 4,
+      "destination": "Bansko Mountain Off-Season",
+      "type": "hotel",
+      "window": "Sep 24-27, 2026",
+      "tier": "good",
+      "llm_score": 87,
+      "price_adj": 9,
+      "transit_adj": 3,
+      "final_score": 99,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is widely considered one of the most family-friendly 5-star hotels in Bulgaria, situated a scenic 2.5-hour drive from Plovdiv. It excels in keeping children engaged with an impressive indoor kids' club, computer zones, and multiple heated pools, including specialized shallow areas. For parents, it offers spacious apartment accommodations, a high-end spa, and exceptional service in a quieter mountain setting.",
+      "value_case": "Securing Lucky Bansko for ~€128/night is a strong deal, as it routinely commands €150-160+ for standard suites even in the late September shoulder season. Given its unmatched on-property kids' infrastructure and luxury spa, this rate delivers elite family utility for the price of a standard 4-star.",
+      "why": "Arguably Bansko's best family hotel offers massive on-property utility with top-tier kids' clubs and specialized warm pools, easily justifying the 2.5-hour drive.",
+      "red_flags": "Late September in Bansko means cooler mountain weather and a quiet town, meaning the family will rely almost entirely on the hotel's indoor amenities.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-24–2026-09-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €127.63/night (€382.89 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 24-27, 2026",
+          "nights": 3,
+          "price_per_night_eur": 127.63,
+          "total_eur": 382.89,
+          "source": "Booking.com (apidojo) live 2026-07-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-19",
+      "deal_id": 1,
+      "destination": "Hisarya Thermal Retreat",
+      "type": "hotel",
+      "window": "Sep 18-21, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 95,
+      "confidence": "high",
+      "summary": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "about": "Sana Spa Hotel is a well-regarded 3-star thermal hotel in the tranquil spa town of Hisarya, located just 45 minutes from Plovdiv. It features extensive spa facilities for adults alongside indoor and outdoor warm mineral pools that are highly suitable for young children. The surrounding town is known for its expansive, flat green parks and Roman ruins, making it ideal for easy stroller walks and outdoor play.",
+      "value_case": "At roughly €98/night, this is a very fair rate for a well-reviewed spa property in Hisarya, which typically commands €110-125 during prime weekend periods. It offers a highly accessible, low-stress thermal getaway without the premium price tag of 4- or 5-star alternatives in Velingrad.",
+      "why": "An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering a high-utility, low-stress thermal weekend where a 4-year-old can safely enjoy warm mineral pools.",
+      "red_flags": "Verify the exact operating hours of the kids' facilities and whether the outdoor pool temperature is sufficiently maintained for a 4-year-old in mid-September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-18–2026-09-21, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.8. Live rate: €97.76/night (€293.28 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 18-21, 2026",
+          "nights": 3,
+          "price_per_night_eur": 97.76,
+          "total_eur": 293.28,
+          "source": "Booking.com (apidojo) live 2026-07-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-19",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Escape",
+      "type": "hotel",
+      "window": "Sep 9-13, 2026",
+      "tier": "good",
+      "llm_score": 83,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 93,
+      "confidence": "high",
+      "summary": "Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "about": "Regnum Bansko Mountain Resort is one of the premier 5-star properties in Bansko, known for its spacious apartment-style rooms and strong family infrastructure. It boasts a large, warm indoor pool, a dedicated children's area, and high-quality dining, providing everything needed for a self-contained resort break. While the town of Bansko transitions to a quieter off-season vibe in September, the property's amenities easily keep a 4-year-old entertained.",
+      "value_case": "At €152/night, this is roughly in line with what you would expect for a premium 5-star resort in Bansko during the shoulder season, slightly below its peak winter or mid-summer rates of €175+. It represents solid, straightforward value for a top-tier property with extensive family amenities.",
+      "why": "A straightforward 2.5-hour drive unlocks excellent 5-star resort utility with strong indoor kids' amenities, making it a very comfortable escape even in the quieter shoulder season.",
+      "red_flags": "Check if outdoor amenities like the aqua park have closed for the season by early September, which would shift all activity indoors.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-09–2026-09-13, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €151.8/night (€607.18 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Regnum+Bansko+Mountain+Resort&checkin=2026-09-09&checkout=2026-09-13&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 9-13, 2026",
+          "nights": 4,
+          "price_per_night_eur": 151.8,
+          "total_eur": 607.18,
+          "source": "Booking.com (apidojo) live 2026-07-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Regnum+Bansko+Mountain+Resort&checkin=2026-09-09&checkout=2026-09-13&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

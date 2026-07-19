@@ -218,9 +218,9 @@
     },
     "Velingrad Spa & Thermal Break|2026-09": {
       "realistic_price_eur": 151,
-      "note": "I verified the Summer SPA Getaway at Spa Hotel Olimp in Velingrad for September 3-6, 2026. The actual rate is 151 EUR per night (453 EUR total for 3 nights), which includes half-board. You can book…",
-      "source": "Spa Hotel Olimp official website promotional offer",
-      "updated": "2026-07-18"
+      "note": "I have confirmed the pricing for Spa Hotel Olimp in Velingrad for your dates of September 10-13, 2026. The rate is €151 per night (€453 total for 3 nights) and includes half-board. You can book this…",
+      "source": "Spa Hotel Olimp official website and 'Summer SPA Getaway' offer terms 2026",
+      "updated": "2026-07-19"
     },
     "Bansko Summer Mountain Escape|2026-09": {
       "realistic_price_eur": 141,
@@ -259,10 +259,10 @@
       "updated": "2026-07-17"
     },
     "Black Sea Late Summer Off-Peak|2026-09": {
-      "realistic_price_eur": 188,
-      "note": "I verified the Festa Panorama Hotel in Nessebar for September 6–11, 2026. The real-time pricing is higher than the initial estimate, with a blended rate tracking at roughly €188/night, totaling €940…",
-      "source": "Festa Hotels official seasonal rate card 2026",
-      "updated": "2026-07-18"
+      "realistic_price_eur": 186,
+      "note": "I have verified the Festa Panorama Hotel in Nessebar for September 6–11, 2026. The real-time pricing tracks at approximately €186/night (totaling €930 for the 5-night stay), which closely aligns with…",
+      "source": "Skyscanner/Agoda live search 2026-07-19",
+      "updated": "2026-07-19"
     },
     "Velingrad Premium Family Luxury|2026-09": {
       "realistic_price_eur": 250.76,
@@ -275,6 +275,24 @@
       "note": "Verified Premier Luxury Mountain Resort, 5-star for Aug 20-23, 2026: €167.72/night (€503.17 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-18",
       "updated": "2026-07-18"
+    },
+    "Hisarya Thermal Retreat|2026-09": {
+      "realistic_price_eur": 97.76,
+      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "updated": "2026-07-19"
+    },
+    "Bansko Mountain Escape|2026-09": {
+      "realistic_price_eur": 151.8,
+      "note": "Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "updated": "2026-07-19"
+    },
+    "Bansko Mountain Off-Season|2026-09": {
+      "realistic_price_eur": 127.63,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "updated": "2026-07-19"
     }
   },
   "ledger": [
@@ -1244,6 +1262,71 @@
       "final_score": 83,
       "source": "Festa Hotels official seasonal rate card 2026",
       "note": "A direct highway drive to Nessebar offers strong all-inclusive utility for families, though late September introduces minor weather risks for a 5-night beach stay."
+    },
+    {
+      "date": "2026-07-19",
+      "destination": "Hisarya Thermal Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 92,
+      "verdict": "good",
+      "actual_price": 97.76,
+      "llm_score": 85,
+      "final_score": 95,
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "note": "An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering a high-utility, low-stress thermal weekend where a 4-year-old can safely enjoy warm mineral pools."
+    },
+    {
+      "date": "2026-07-19",
+      "destination": "Bansko Mountain Escape",
+      "window": "Sep 9-13, 2026",
+      "type": "hotel",
+      "claimed_price": 45,
+      "verdict": "good",
+      "actual_price": 151.8,
+      "llm_score": 83,
+      "final_score": 93,
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "note": "A straightforward 2.5-hour drive unlocks excellent 5-star resort utility with strong indoor kids' amenities, making it a very comfortable escape even in the quieter shoulder season."
+    },
+    {
+      "date": "2026-07-19",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Sep 10-13, 2026",
+      "type": "hotel",
+      "claimed_price": 151,
+      "verdict": "good",
+      "actual_price": 151,
+      "llm_score": 88,
+      "final_score": 99,
+      "source": "Spa Hotel Olimp official website and 'Summer SPA Getaway' offer terms 2026",
+      "note": "A highly manageable 1.5-hour drive provides outstanding family utility with perfectly heated mineral pools and dedicated kids' areas, paired with the convenience of half-board dining."
+    },
+    {
+      "date": "2026-07-19",
+      "destination": "Bansko Mountain Off-Season",
+      "window": "Sep 24-27, 2026",
+      "type": "hotel",
+      "claimed_price": 112,
+      "verdict": "good",
+      "actual_price": 127.63,
+      "llm_score": 87,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "note": "Arguably Bansko's best family hotel offers massive on-property utility with top-tier kids' clubs and specialized warm pools, easily justifying the 2.5-hour drive."
+    },
+    {
+      "date": "2026-07-19",
+      "destination": "Black Sea Late Summer Off-Peak",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 188,
+      "verdict": "good",
+      "actual_price": 186,
+      "llm_score": 79,
+      "final_score": 83,
+      "source": "Skyscanner/Agoda live search 2026-07-19",
+      "note": "A straightforward highway drive offers good all-inclusive utility for a young family, though the late-season timing introduces some weather risk for outdoor activities."
     }
   ]
 }

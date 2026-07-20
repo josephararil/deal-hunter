@@ -1,80 +1,82 @@
-# Diamond Finder — 2026-07-19
+# Diamond Finder — 2026-07-20
 
-_Stage 1: 5 candidate(s). 5 grounded · 5 scored. 0 diamond · 5 good._
+_Stage 1: 5 candidate(s). 5 grounded · 5 scored. 1 diamond · 3 good._
 
-### Hisarya Thermal Retreat 👍 — FIND 95/100 (high) · est €92/night
-**Type:** hotel &nbsp; **Window:** Sep 18-21, 2026
-An ultra-local 45-minute drive from Plovdiv eliminates transit friction entirely, making this an ideal 3-night thermal retreat. At ~€92/night, it delivers an incredibly relaxed, low-stress weekend where parents can enjoy the spa while the 4-year-old plays safely in warm mineral pools.
-_Score: LLM 85 +7 price +3 transit = **95** → good_
-_Scorer: An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering a high-utility, low-stress thermal weekend where a 4-year-old can safely enjoy warm mineral pools._
-**About:** Sana Spa Hotel is a well-regarded 3-star thermal hotel in the tranquil spa town of Hisarya, located just 45 minutes from Plovdiv. It features extensive spa facilities for adults alongside indoor and outdoor warm mineral pools that are highly suitable for young children. The surrounding town is known for its expansive, flat green parks and Roman ruins, making it ideal for easy stroller walks and outdoor play.
-**Why it's a deal:** At roughly €98/night, this is a very fair rate for a well-reviewed spa property in Hisarya, which typically commands €110-125 during prime weekend periods. It offers a highly accessible, low-stress thermal getaway without the premium price tag of 4- or 5-star alternatives in Velingrad.
-
-### Bansko Mountain Escape 👍 — FIND 94/100 (high) · est €45/night
-**Type:** hotel &nbsp; **Window:** Sep 9-13, 2026
-A massive post-peak value play using their 'Stay 4, Pay 3' late summer offer. Averaging ~€45/night, it offers elite family utility with its indoor heated pool and kids' facilities at a fraction of winter rates. A 2.5-hour direct drive from Plovdiv creates an almost zero-friction extended weekend for a 4-year-old.
-_Score: LLM 83 +7 price +3 transit = **93** → good_
-_Scorer: A straightforward 2.5-hour drive unlocks excellent 5-star resort utility with strong indoor kids' amenities, making it a very comfortable escape even in the quieter shoulder season._
-**About:** Regnum Bansko Mountain Resort is one of the premier 5-star properties in Bansko, known for its spacious apartment-style rooms and strong family infrastructure. It boasts a large, warm indoor pool, a dedicated children's area, and high-quality dining, providing everything needed for a self-contained resort break. While the town of Bansko transitions to a quieter off-season vibe in September, the property's amenities easily keep a 4-year-old entertained.
-**Why it's a deal:** At €152/night, this is roughly in line with what you would expect for a premium 5-star resort in Bansko during the shoulder season, slightly below its peak winter or mid-summer rates of €175+. It represents solid, straightforward value for a top-tier property with extensive family amenities.
-
-### Velingrad Spa & Thermal Break 👍 — FIND 90/100 (high) · est €151/night
-**Type:** hotel &nbsp; **Window:** Sep 10-13, 2026
-Velingrad is a 1.5-hour zero-stress drive from Plovdiv, unlocking outstanding family utility with perfectly heated mineral pools and dedicated kids' areas. At roughly €151/night with half-board in September, this represents an excellent Tier-1 balance of premium relaxation and short transit.
-_Score: LLM 88 +8 price +3 transit = **99** → good_
-_Scorer: A highly manageable 1.5-hour drive provides outstanding family utility with perfectly heated mineral pools and dedicated kids' areas, paired with the convenience of half-board dining._
-**About:** Spa Hotel Olimp is a well-established, family-focused thermal hotel in Velingrad, Bulgaria's premier spa destination, located just 1.5 hours from Plovdiv. The property features excellent indoor and outdoor mineral pools maintained at very comfortable temperatures, alongside dedicated kids' playrooms. The surrounding area offers easy forest walks and nearby parks, ensuring a great mix of relaxation for parents and active fun for a young child.
-**Why it's a deal:** At €151/night including half-board, this is a very competitive rate for Velingrad, where comparable 4-star half-board spa stays often reach €170-190 per night. Factoring in the included breakfast and dinner, it delivers excellent value and minimizes out-of-pocket daily expenses.
-
-### Bansko Mountain Off-Season 👍 — FIND 88/100 (high) · est €112/night
+### Lucky Bansko Aparthotel SPA & Relax 💎 — FIND 95/100 (high) · est €127/night
 **Type:** hotel &nbsp; **Window:** Sep 24-27, 2026
-An elite 5-star mountain aparthotel dropping to ~€112/night during the September shoulder season. Consistently top-rated for families, its robust indoor kids' club and warm spa pools keep a 4-year-old completely entertained, easily justifying the scenic 2.5-hour drive.
-_Score: LLM 87 +9 price +3 transit = **99** → good_
-_Scorer: Arguably Bansko's best family hotel offers massive on-property utility with top-tier kids' clubs and specialized warm pools, easily justifying the 2.5-hour drive._
-**About:** Lucky Bansko Aparthotel SPA & Relax is widely considered one of the most family-friendly 5-star hotels in Bulgaria, situated a scenic 2.5-hour drive from Plovdiv. It excels in keeping children engaged with an impressive indoor kids' club, computer zones, and multiple heated pools, including specialized shallow areas. For parents, it offers spacious apartment accommodations, a high-end spa, and exceptional service in a quieter mountain setting.
-**Why it's a deal:** Securing Lucky Bansko for ~€128/night is a strong deal, as it routinely commands €150-160+ for standard suites even in the late September shoulder season. Given its unmatched on-property kids' infrastructure and luxury spa, this rate delivers elite family utility for the price of a standard 4-star.
+Consistent with historically verified off-season pricing, this 5-star property drops to ~€127/night in late September while keeping massive on-property utility fully open, including specialized warm kids' pools and supervised playrooms. A straightforward 2.5h drive makes this an elite, low-friction 3-night escape for a young family.
+_Score: LLM 88 +14 price +3 transit = **100** → diamond_
+_Scorer: A straightforward 2.5-hour drive unlocks one of Bulgaria's best family hotels, offering massive on-property utility with specialized warm kids' pools and supervised playrooms._
+**About:** Lucky Bansko is widely regarded as one of the premier 5-star family properties in the mountain town of Bansko. Anchored by an impressive 9.0 review score, it features extensive spa facilities, multiple indoor pools with dedicated warm sections for children, and excellent supervised play areas. For a family with a 4-year-old, the hotel offers a fully contained ecosystem of relaxation and entertainment, while the surrounding Pirin mountains provide accessible nature walks.
+**Why it's a deal:** At €127/night, you are securing a genuine 5-star flagship at shoulder-season rates. Comparable premium properties in Bansko typically command €160-€190 during active months, making this an exceptional value for a top-tier family stay.
 
-### Black Sea Late Summer Off-Peak 👍 — FIND 84/100 (high) · est €188/night
+### Park Hotel & SPA Vella Hills 👍 — FIND 92/100 (high) · est €100/night
+**Type:** hotel &nbsp; **Window:** Sep 17-20, 2026
+Late September shoulder season drops rates significantly at this highly-rated family wellness property. A 1.5-hour drive from Plovdiv offers near-zero transit friction, delivering exceptional heated pool utility and outdoor forest walks before winter. An optimal 3-night window prevents toddler boredom while maximizing parental relaxation.
+_Score: LLM 86 +9 price +3 transit = **98** → good_
+_Scorer: An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding family utility via perfectly heated mineral pools._
+**About:** Vella Hills is a highly-rated 4-star spa hotel situated above the spa capital of Velingrad, offering panoramic views and a tranquil forest setting. Known for its 9.2 review score, the property boasts excellent thermal water pools, both indoor and outdoor, alongside comprehensive spa facilities. Families with a 4-year-old will spend most of their time enjoying the warm, accessible pools or taking easy strolls in the adjacent pine forests.
+**Why it's a deal:** Priced at €128/night, this is a solid deal for a high-quality Velingrad spa hotel, which often trades closer to €150-€160. It offers 5-star level relaxation at a 4-star price point, comfortably beating the premium rates of nearby flagships.
+
+### Sofia to Rome, Italy (Flight) · — FIND 88/100 (high) · est €38/night
+**Type:** flight &nbsp; **Window:** Oct 16-19, 2026
+Live Wizz Air fare alerts show direct round-trip flights from Sofia to Rome dropping to ~€38. The short 1h 50m flight time and 1.5h drive to SOF make this highly manageable for traveling with a 4-year-old. Rome's high-excitement value easily justifies the Tier 2 transit, perfectly sized for a 3-night weekend before museum fatigue sets in.
+_Score: LLM 55 +15 price -3 transit = **67** → skip_
+_Scorer: While Rome is an elite destination, a 3-night trip with a 4-year-old introduces heavy transit friction and museum fatigue that severely caps the actual family utility._
+**About:** This itinerary involves a drive to Sofia and a direct flight to Rome, dropping you into one of Europe's most historic and vibrant capitals. While adults can revel in the world-class dining, architecture, and cultural landmarks, the city is heavily paved, crowded, and not inherently designed for toddlers. A family with a 4-year-old will need to focus on open parks like Villa Borghese, gelato stops, and simply soaking in the atmosphere rather than intense sightseeing.
+**Why it's a deal:** The grounded guest house rates around €61/night are incredibly cheap for Rome, where standard accommodations easily average €110-€150. However, the true cost must factor in flights, airport transfers, and the heavy logistics tax of a short weekend break.
+
+### Orange County Resort Hotel Belek 👍 — FIND 86/100 (high) · est €138/night
+**Type:** hotel &nbsp; **Window:** Sep 8-15, 2026
+Priced at an estimated €138/night in September, this budget-friendly family resort features a dedicated kids' waterpark and programming. When paired with cheap direct SunExpress flights from SOF, the steep resort discount completely offsets the Tier 2 transit friction, yielding a high-utility, week-long Turkish Riviera holiday.
+_Score: LLM 81 +15 price -3 transit = **93** → good_
+_Scorer: Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value, though the required flight via Sofia adds notable transit friction._
+**About:** Orange County Resort Belek is a vibrant 5-star all-inclusive property on the Turkish Riviera, designed specifically for comprehensive family entertainment. It features expansive pool landscapes, a dedicated children's aqua park, kids' clubs, and diverse dining options. For a 4-year-old, it is a non-stop aquatic playground, allowing parents to genuinely relax without needing to leave the resort grounds.
+**Why it's a deal:** At €215/night for a 5-star all-inclusive in Belek during the warm September window, this is an aggressive discount compared to standard rates of €300-€350+. It offsets the added cost and hassle of the required flights from Sofia.
+
+### Laguna Park Hotel & Aqua Club 👍 — FIND 83/100 (medium) · est €65/night
 **Type:** hotel &nbsp; **Window:** Sep 6-11, 2026
-A direct 2.5-hour highway drive from Plovdiv offers strong all-inclusive utility at ~€188/night. Late summer means the major high-season chaos has dispersed, creating a much lower-stress beach environment perfectly suited for a young family while the sea remains warm.
-_Score: LLM 79 +1 price +3 transit = **83** → good_
-_Scorer: A straightforward highway drive offers good all-inclusive utility for a young family, though the late-season timing introduces some weather risk for outdoor activities._
-**About:** Festa Panorama Hotel is a prominent all-inclusive resort located in the historic coastal town of Nessebar, accessible via a straightforward 2.5-hour highway drive from Plovdiv. The property features large outdoor pool areas, an indoor heated pool, and comprehensive animation programs. Families can enjoy the nearby sandy beaches, which remain pleasant in early autumn, or take a short walk to explore the UNESCO-listed Old Town of Nessebar.
-**Why it's a deal:** At €186/night for an all-inclusive stay, this rate is standard for a well-known Black Sea resort in early September, where typical rates hover around €190-200 before dropping sharply later in the month. While it provides high convenience through its all-inclusive package, it lacks a heavy discount, making it a fair but unexceptional buy.
+Rates collapse to roughly €65/night in the post-peak September window, backed by seasonal promotional offers. The on-site aqua park provides enormous utility for a 4-year-old. A direct 2.5h highway drive from Plovdiv makes this a solid 5-night all-inclusive value play, though late-season timing adds slight weather risk.
+_Score: LLM 77 +10 price -3 transit = **84** → good_
+_Scorer: A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility, though late September introduces weather risk for outdoor pools._
+**About:** Laguna Park Hotel & Aqua Club is a well-regarded 4-star all-inclusive complex located in the central part of Sunny Beach. Backed by an 8.7 review score, its crowning feature is a large on-site aqua park with dedicated toddler zones, slides, and splash pools. A 4-year-old will find endless entertainment in the water areas and kids' animations, while parents can enjoy the convenience of the all-inclusive setup.
+**Why it's a deal:** Securing this at €167/night in early September is a fair step down from its €200+ peak summer pricing. It offers substantial all-inclusive value for a family, though you are betting on the Black Sea weather holding up for outdoor water play.
 
 ## Grounding & scoring
 
-### ✅ Sana Spa Hotel — CONFIRM (confidence: high) → final **95** (good)
-**Summary:** Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-**Options:**
-  - Sep 18-21, 2026 · €97.76/night · €293.28 total · [book](https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-19_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-18–2026-09-21, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.8. Live rate: €97.76/night (€293.28 total).
-
-### 🔧 Regnum Bansko Mountain Resort — CORRECT (confidence: high) → final **93** (good)
-**Summary:** Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
-**Options:**
-  - Sep 9-13, 2026 · €151.8/night · €607.18 total · [book](https://www.booking.com/searchresults.html?ss=Regnum+Bansko+Mountain+Resort&checkin=2026-09-09&checkout=2026-09-13&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-19_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Regnum+Bansko+Mountain+Resort&checkin=2026-09-09&checkout=2026-09-13&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-09–2026-09-13, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €151.8/night (€607.18 total).
-
-### ✅ Velingrad Spa & Thermal Break — CONFIRM (confidence: high) → final **99** (good)
-**Summary:** I have confirmed the pricing for Spa Hotel Olimp in Velingrad for your dates of September 10-13, 2026. The rate is €151 per night (€453 total for 3 nights) and includes half-board. You can book this directly through their official website or by calling their reservations team.
-**Options:**
-  - Sep 10-13, 2026 · €151/night · €453 total · [book](https://www.olymp-bg.com) · _Spa Hotel Olimp official website and 'Summer SPA Getaway' offer terms 2026_
-**How to book:** Book directly via the official website at https://www.olymp-bg.com or contact the hotel at +359 88 733 6863 / reservations@olymp-bg.com to secure the half-board rate.
-**Grounding:** I verified the 'Summer SPA Getaway' / September standard package at Spa Hotel Olimp for Sep 10-13, 2026. The rate of €151 per night includes half-board (breakfast and dinner) and access to mineral pools, perfectly aligning with the initial estimate.
-
-### ✅ Lucky Bansko Aparthotel SPA & Relax — CONFIRM (confidence: high) → final **99** (good)
+### ✅ Lucky Bansko Aparthotel SPA & Relax — CONFIRM (confidence: high) → final **100** (diamond)
 **Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
 **Options:**
-  - Sep 24-27, 2026 · €127.63/night · €382.89 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-19_
+  - Sep 24-27, 2026 · €127.63/night · €382.89 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-20_
 **How to book:** Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4
 **Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-24–2026-09-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €127.63/night (€382.89 total).
 
-### 🔧 Black Sea Late Summer Off-Peak — CORRECT (confidence: high) → final **83** (good)
-**Summary:** I have verified the Festa Panorama Hotel in Nessebar for September 6–11, 2026. The real-time pricing tracks at approximately €186/night (totaling €930 for the 5-night stay), which closely aligns with the initial estimate. You can book this property via major platforms like Agoda, Booking.com, or directly through the hotel's sales team.
+### 🔧 Park Hotel and SPA Vella Hills — CORRECT (confidence: high) → final **98** (good)
+**Summary:** Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
 **Options:**
-  - Sep 6-11, 2026 · €186/night · €930 total · [book](https://www.agoda.com) · _Skyscanner/Agoda live search 2026-07-19_
-**How to book:** Book online via major travel platforms like Agoda, Booking.com, or Expedia. Alternatively, contact the hotel directly at +359 700 144 22 or sales@festahotels.com.
-**Grounding:** Live search results confirm the Festa Panorama Hotel is active and bookable for September 6-11, 2026. Current pricing for the requested window tracks at approximately €186 per night, confirming earlier estimates. Online booking is widely available through standard OTAs.
+  - Sep 17-20, 2026 · €128.31/night · €384.94 total · [book](https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-20_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-17–2026-09-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €128.31/night (€384.94 total).
+
+### 🔧 Rome — CORRECT (confidence: medium) → final **67** (skip)
+**Summary:** best-value family stays in Rome for Oct 16-19, 2026: Via Veneto Art Suite - Guest House €-58907403.11/night; OCTAVIA Guest House €60.97/night; AP Holiday House €60.97/night.
+**Options:**
+  - Oct 16-19, 2026 · €-58907403.11/night · €-176722209.34 total · [book](https://www.booking.com/searchresults.html?ss=Via+Veneto+Art+Suite+-+Guest+House&checkin=2026-10-16&checkout=2026-10-19&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-20_
+  - Oct 16-19, 2026 · €60.97/night · €182.92 total · [book](https://www.booking.com/searchresults.html?ss=OCTAVIA+Guest+House&checkin=2026-10-16&checkout=2026-10-19&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-20_
+  - Oct 16-19, 2026 · €60.97/night · €182.92 total · [book](https://www.booking.com/searchresults.html?ss=AP+Holiday+House&checkin=2026-10-16&checkout=2026-10-19&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-20_
+**How to book:** Search the listed properties on Booking.com for the dates above.
+**Grounding:** Booking.com (apidojo) city search 2026-10-16-2026-10-19, order_by=price, review_score>=8.0. 3 option(s) returned.
+
+### 🔧 Orange County Resort Hotel Belek — CORRECT (confidence: high) → final **93** (good)
+**Summary:** I verified the Orange County Resort Hotel Belek for the dates of September 8-15, 2026. While the resort is fully available, the real-time pricing tracks at €215 per night (€1505 total for 7 nights), which corrects your initial estimate of €138/night. You can secure this stay via Booking.com or the official hotel website.
+**Options:**
+  - Sep 8-15, 2026 · €215/night · €1505 total · [book](https://www.booking.com/hotel/tr/orange-county-belek.en-gb.html) · _booking.com live availability check 2026-07-20_
+**How to book:** Book directly through the hotel website at www.orangecounty.com.tr, via Booking.com, or through major tour operators like TUI or Jet2holidays which frequently package this property.
+**Grounding:** Live search on Booking.com and other travel aggregators for September 2026 indicates that while the property is available, current market rates for the requested September 8-15 window are higher than the candidate's estimate of €138/night, averaging €215/night. The property operates as an 'Ultra All Inclusive' resort during this period.
+
+### 🔧 Hotel Laguna Park & Aqua Club - All Inclusive — CORRECT (confidence: high) → final **84** (good)
+**Summary:** Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price corrected from the Stage-1 estimate.
+**Options:**
+  - Sep 6-11, 2026 · €167.51/night · €837.56 total · [book](https://www.booking.com/searchresults.html?ss=Hotel+Laguna+Park+%26+Aqua+Club+-+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-07-20_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Hotel+Laguna+Park+%26+Aqua+Club+-+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.7. Live rate: €167.51/night (€837.56 total).

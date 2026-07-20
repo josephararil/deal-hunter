@@ -1175,6 +1175,153 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-20",
+      "deal_id": 1,
+      "destination": "Lucky Bansko Aparthotel SPA & Relax",
+      "type": "hotel",
+      "window": "Sep 24-27, 2026",
+      "tier": "diamond",
+      "llm_score": 88,
+      "price_adj": 14,
+      "transit_adj": 3,
+      "final_score": 100,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Lucky Bansko is widely regarded as one of the premier 5-star family properties in the mountain town of Bansko. Anchored by an impressive 9.0 review score, it features extensive spa facilities, multiple indoor pools with dedicated warm sections for children, and excellent supervised play areas. For a family with a 4-year-old, the hotel offers a fully contained ecosystem of relaxation and entertainment, while the surrounding Pirin mountains provide accessible nature walks.",
+      "value_case": "At €127/night, you are securing a genuine 5-star flagship at shoulder-season rates. Comparable premium properties in Bansko typically command €160-€190 during active months, making this an exceptional value for a top-tier family stay.",
+      "why": "A straightforward 2.5-hour drive unlocks one of Bulgaria's best family hotels, offering massive on-property utility with specialized warm kids' pools and supervised playrooms.",
+      "red_flags": "Check if any specific outdoor summer amenities have closed for the season, though the indoor facilities alone easily justify the trip.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-24–2026-09-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €127.63/night (€382.89 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 24-27, 2026",
+          "nights": 3,
+          "price_per_night_eur": 127.63,
+          "total_eur": 382.89,
+          "source": "Booking.com (apidojo) live 2026-07-20",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-24&checkout=2026-09-27&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€101.87/night here — this is 25% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-20",
+      "deal_id": 2,
+      "destination": "Park Hotel & SPA Vella Hills",
+      "type": "hotel",
+      "window": "Sep 17-20, 2026",
+      "tier": "good",
+      "llm_score": 86,
+      "price_adj": 9,
+      "transit_adj": 3,
+      "final_score": 98,
+      "confidence": "high",
+      "summary": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "about": "Vella Hills is a highly-rated 4-star spa hotel situated above the spa capital of Velingrad, offering panoramic views and a tranquil forest setting. Known for its 9.2 review score, the property boasts excellent thermal water pools, both indoor and outdoor, alongside comprehensive spa facilities. Families with a 4-year-old will spend most of their time enjoying the warm, accessible pools or taking easy strolls in the adjacent pine forests.",
+      "value_case": "Priced at €128/night, this is a solid deal for a high-quality Velingrad spa hotel, which often trades closer to €150-€160. It offers 5-star level relaxation at a 4-star price point, comfortably beating the premium rates of nearby flagships.",
+      "why": "An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding family utility via perfectly heated mineral pools.",
+      "red_flags": "None major, but confirm the exact temperature of the children's pool section if the weather turns unseasonably cold.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-17–2026-09-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €128.31/night (€384.94 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 17-20, 2026",
+          "nights": 3,
+          "price_per_night_eur": 128.31,
+          "total_eur": 384.94,
+          "source": "Booking.com (apidojo) live 2026-07-20",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-20",
+      "deal_id": 4,
+      "destination": "Orange County Resort Hotel Belek",
+      "type": "hotel",
+      "window": "Sep 8-15, 2026",
+      "tier": "good",
+      "llm_score": 81,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 93,
+      "confidence": "high",
+      "summary": "I verified the Orange County Resort Hotel Belek for the dates of September 8-15, 2026. While the resort is fully available, the real-time pricing tracks at €215 per night (€1505 total for 7 nights), which corrects your initial estimate of €138/night. You can secure this stay via Booking.com or the official hotel website.",
+      "about": "Orange County Resort Belek is a vibrant 5-star all-inclusive property on the Turkish Riviera, designed specifically for comprehensive family entertainment. It features expansive pool landscapes, a dedicated children's aqua park, kids' clubs, and diverse dining options. For a 4-year-old, it is a non-stop aquatic playground, allowing parents to genuinely relax without needing to leave the resort grounds.",
+      "value_case": "At €215/night for a 5-star all-inclusive in Belek during the warm September window, this is an aggressive discount compared to standard rates of €300-€350+. It offsets the added cost and hassle of the required flights from Sofia.",
+      "why": "Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value, though the required flight via Sofia adds notable transit friction.",
+      "red_flags": "Requires booking separate flights from Sofia (SOF) to Antalya (AYT) and arranging airport transfers, adding significant total trip cost and travel time.",
+      "grounding": "Live search on Booking.com and other travel aggregators for September 2026 indicates that while the property is available, current market rates for the requested September 8-15 window are higher than the candidate's estimate of €138/night, averaging €215/night. The property operates as an 'Ultra All Inclusive' resort during this period.",
+      "how_to_book": "Book directly through the hotel website at www.orangecounty.com.tr, via Booking.com, or through major tour operators like TUI or Jet2holidays which frequently package this property.",
+      "options": [
+        {
+          "dates": "Sep 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 215,
+          "total_eur": 1505,
+          "source": "booking.com live availability check 2026-07-20",
+          "booking_url": "https://www.booking.com/hotel/tr/orange-county-belek.en-gb.html"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-20",
+      "deal_id": 3,
+      "destination": "Sofia to Rome, Italy (Flight)",
+      "type": "flight",
+      "window": "Oct 16-19, 2026",
+      "tier": "skip",
+      "llm_score": 55,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 67,
+      "confidence": "medium",
+      "summary": "best-value family stays in Rome for Oct 16-19, 2026: Via Veneto Art Suite - Guest House €-58907403.11/night; OCTAVIA Guest House €60.97/night; AP Holiday House €60.97/night.",
+      "about": "This itinerary involves a drive to Sofia and a direct flight to Rome, dropping you into one of Europe's most historic and vibrant capitals. While adults can revel in the world-class dining, architecture, and cultural landmarks, the city is heavily paved, crowded, and not inherently designed for toddlers. A family with a 4-year-old will need to focus on open parks like Villa Borghese, gelato stops, and simply soaking in the atmosphere rather than intense sightseeing.",
+      "value_case": "The grounded guest house rates around €61/night are incredibly cheap for Rome, where standard accommodations easily average €110-€150. However, the true cost must factor in flights, airport transfers, and the heavy logistics tax of a short weekend break.",
+      "why": "While Rome is an elite destination, a 3-night trip with a 4-year-old introduces heavy transit friction and museum fatigue that severely caps the actual family utility.",
+      "red_flags": "The grounding summary shows a major bug with a negative €58 million price tag for one option; double-check the actual live hotel rates and factor in the unquoted cost of flights and transfers.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-16-2026-10-19, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 16-19, 2026",
+          "nights": 3,
+          "price_per_night_eur": -58907403.11,
+          "total_eur": -176722209.34,
+          "source": "Booking.com (apidojo) live 2026-07-20",
+          "name": "Via Veneto Art Suite - Guest House",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Via+Veneto+Art+Suite+-+Guest+House&checkin=2026-10-16&checkout=2026-10-19&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 16-19, 2026",
+          "nights": 3,
+          "price_per_night_eur": 60.97,
+          "total_eur": 182.92,
+          "source": "Booking.com (apidojo) live 2026-07-20",
+          "name": "OCTAVIA Guest House",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=OCTAVIA+Guest+House&checkin=2026-10-16&checkout=2026-10-19&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 16-19, 2026",
+          "nights": 3,
+          "price_per_night_eur": 60.97,
+          "total_eur": 182.92,
+          "source": "Booking.com (apidojo) live 2026-07-20",
+          "name": "AP Holiday House",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=AP+Holiday+House&checkin=2026-10-16&checkout=2026-10-19&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
     }
   ]
 }

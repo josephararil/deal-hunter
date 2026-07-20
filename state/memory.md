@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-19
+# Diamond Finder Memory — updated 2026-07-20
 
-## Price Baselines (49 entries)
+## Price Baselines (52 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -112,6 +112,11 @@ _Source: booking.com live search 2026-07-10_
 Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
+### Laguna Park Hotel & Aqua Club|2026-09
+**Realistic:** ~€167.51/night &nbsp; **Updated:** 2026-07-20
+Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-20_
+
 ### Lake Garda (via PDV direct)|2026-08
 **Realistic:** ~€167/night &nbsp; **Updated:** 2026-07-03
 I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…
@@ -123,9 +128,9 @@ I have verified that Wizz Air operates direct flights from Plovdiv (PDV) to Lond
 _Source: Wizz Air live search 2026-07-15_
 
 ### Lucky Bansko Aparthotel SPA & Relax|2026-09
-**Realistic:** ~€101.87/night &nbsp; **Updated:** 2026-07-05
-Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-13, 2026: €101.87/night (€305.6 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-05_
+**Realistic:** ~€127.63/night &nbsp; **Updated:** 2026-07-20
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-20_
 
 ### Milan & Northern Italy City Break|2026-07
 **Realistic:** ~€142/night &nbsp; **Updated:** 2026-07-09
@@ -141,6 +146,16 @@ _Source: Market rate estimation for Novotel Milano Nord Ca Granda_
 **Realistic:** ~€108.0/night &nbsp; **Updated:** 2026-07-05
 Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
+
+### Orange County Resort Hotel Belek|2026-09
+**Realistic:** ~€215/night &nbsp; **Updated:** 2026-07-20
+I verified the Orange County Resort Hotel Belek for the dates of September 8-15, 2026. While the resort is fully available, the real-time pricing tracks at €215 per night (€1505 total for 7 nights),…
+_Source: booking.com live availability check 2026-07-20_
+
+### Park Hotel & SPA Vella Hills|2026-09
+**Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-07-20
+Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-20_
 
 ### Pirin Mountain Escape|2026-08
 **Realistic:** ~€103/night &nbsp; **Updated:** 2026-07-08
@@ -247,8 +262,13 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (82 entries)
+## Outcome Ledger (87 entries)
 
+- 💎 2026-07-20 | Lucky Bansko Aparthotel SPA & Relax | Sep 24-27, 2026 | diamond score=88->100 claimed=€127 actual=€127.63 — A straightforward 2.5-hour drive unlocks one of Bulgaria's best family hotels, offering massive…
+- 👍 2026-07-20 | Park Hotel & SPA Vella Hills | Sep 17-20, 2026 | good score=86->98 claimed=€100 actual=€128.31 — An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding…
+- · 2026-07-20 | Sofia to Rome, Italy (Flight) | Oct 16-19, 2026 | skip score=55->67 claimed=€38 actual=€-58907403.11 — While Rome is an elite destination, a 3-night trip with a 4-year-old introduces heavy transit…
+- 👍 2026-07-20 | Orange County Resort Hotel Belek | Sep 8-15, 2026 | good score=81->93 claimed=€138 actual=€215 — Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value,…
+- 👍 2026-07-20 | Laguna Park Hotel & Aqua Club | Sep 6-11, 2026 | good score=77->84 claimed=€65 actual=€167.51 — A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility,…
 - 👍 2026-07-19 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=85->95 claimed=€92 actual=€97.76 — An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering a high-utility,…
 - 👍 2026-07-19 | Bansko Mountain Escape | Sep 9-13, 2026 | good score=83->93 claimed=€45 actual=€151.8 — A straightforward 2.5-hour drive unlocks excellent 5-star resort utility with strong indoor kids'…
 - 👍 2026-07-19 | Velingrad Spa & Thermal Break | Sep 10-13, 2026 | good score=88->99 claimed=€151 actual=€151 — A highly manageable 1.5-hour drive provides outstanding family utility with perfectly heated…
@@ -294,9 +314,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - 💎 2026-07-07 | Velingrad Thermal Escape | 2026-07-14 to 2026-07-17 | diamond score=85->100 claimed=€102 actual=€70 — An ultra-short 1.5-hour drive from Plovdiv delivers a zero-friction, high-utility 3-night getaway…
 - · 2026-07-07 | Rome City Break | 2026-08-04 to 2026-08-09 | skip score=57->65 claimed=€75 actual=€85 — While the on-site pools offer decent toddler utility, the exhausting logistics of driving to Sofia…
 - 👍 2026-07-06 | Velingrad | 2026-08-01 - 2026-08-04 | good score=84->68 claimed=€77 actual=€151 — An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and…
-- 💎 2026-07-06 | Bansko | 2026-08-14 - 2026-08-17 | diamond score=82->97 claimed=€83 actual=€83 — A scenic 2.5-hour drive yields a highly relaxed premium mountain retreat with open spaces and…
-- ❌ 2026-07-06 | Nessebar | 2026-09-02 - 2026-09-07 | kill claimed=€120
-- · 2026-07-06 | Thassos Island | 2026-09-06 - 2026-09-11 | skip score=83->37 claimed=€140 actual=€218 — A manageable drive and short ferry ride unlock top-tier beach utility with a private shallow sandy…
-- 💎 2026-07-05 | Lucky Bansko Aparthotel SPA & Relax | Sep 10-13, 2026 | diamond score=82->89 claimed=€104 actual=€101.87 — An easy sub-3-hour drive and excellent 5-star kids' facilities deliver an ultra-low friction,…
-- · 2026-07-05 | Mövenpick Istanbul Golden Horn | Sep 14-19, 2026 | skip score=56->54 claimed=€80 actual=€108.0 — While the destination is exciting, the exhausting 5-hour drive with border delays or flight…
-_... and 32 earlier entries_
+_... and 37 earlier entries_

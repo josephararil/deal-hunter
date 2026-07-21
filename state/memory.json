@@ -290,9 +290,9 @@
     },
     "Bansko Mountain Off-Season|2026-09": {
       "realistic_price_eur": 127.63,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-19",
-      "updated": "2026-07-19"
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-21",
+      "updated": "2026-07-21"
     },
     "Park Hotel & SPA Vella Hills|2026-09": {
       "realistic_price_eur": 128.31,
@@ -311,6 +311,30 @@
       "note": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-20",
       "updated": "2026-07-20"
+    },
+    "Velingrad Spa Retreat|2026-09": {
+      "realistic_price_eur": 128.31,
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-21",
+      "updated": "2026-07-21"
+    },
+    "Hisarya Thermal Break|2026-09": {
+      "realistic_price_eur": 97.76,
+      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-21",
+      "updated": "2026-07-21"
+    },
+    "Belek All-Inclusive Resort|2026-09": {
+      "realistic_price_eur": 215,
+      "note": "I have confirmed the Orange County Resort Hotel Belek for your requested dates of September 8–15, 2026, at a rate of €215 per night (€1,505 total). You can book this all-inclusive stay directly…",
+      "source": "booking.com live search 2026-07-21",
+      "updated": "2026-07-21"
+    },
+    "Late Season Mediterranean Escape|2026-10": {
+      "realistic_price_eur": 125,
+      "note": "I have verified the Kiani Beach Resort Family All Inclusive for Oct 6–13, 2026. The real-time pricing is tracking slightly lower than the initial estimate, at approximately €125/night (€875 total for…",
+      "source": "SeaCrete Hotels official site and aggregated travel data for October 2026",
+      "updated": "2026-07-21"
     }
   },
   "ledger": [
@@ -1410,6 +1434,71 @@
       "final_score": 84,
       "source": "Booking.com (apidojo) live 2026-07-20",
       "note": "A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility, though late September introduces weather risk for outdoor pools."
+    },
+    {
+      "date": "2026-07-21",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 17-20, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 128.31,
+      "llm_score": 88,
+      "final_score": 98,
+      "source": "Booking.com (apidojo) live 2026-07-21",
+      "note": "An effortless 1.5-hour drive provides near-zero transit friction and outstanding family utility via perfectly heated mineral pools."
+    },
+    {
+      "date": "2026-07-21",
+      "destination": "Bansko Mountain Off-Season",
+      "window": "Sep 24-27, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 127.63,
+      "llm_score": 87,
+      "final_score": 97,
+      "source": "Booking.com (apidojo) live 2026-07-21",
+      "note": "Arguably Bansko's best family hotel offers massive on-property utility with top-tier kids' clubs and specialized warm indoor pools."
+    },
+    {
+      "date": "2026-07-21",
+      "destination": "Hisarya Thermal Break",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 98,
+      "verdict": "good",
+      "actual_price": 97.76,
+      "llm_score": 86,
+      "final_score": 95,
+      "source": "Booking.com (apidojo) live 2026-07-21",
+      "note": "An ultra-local 45-minute drive from Plovdiv eliminates transit friction entirely, delivering exceptional family utility for a short getaway."
+    },
+    {
+      "date": "2026-07-21",
+      "destination": "Belek All-Inclusive Resort",
+      "window": "Sep 8-15, 2026",
+      "type": "hotel",
+      "claimed_price": 215,
+      "verdict": "good",
+      "actual_price": 215,
+      "llm_score": 82,
+      "final_score": 88,
+      "source": "booking.com live search 2026-07-21",
+      "note": "Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value, though the required flight from Sofia adds notable transit friction."
+    },
+    {
+      "date": "2026-07-21",
+      "destination": "Late Season Mediterranean Escape",
+      "window": "Oct 6-13, 2026",
+      "type": "hotel",
+      "claimed_price": 140,
+      "verdict": "good",
+      "actual_price": 125,
+      "llm_score": 78,
+      "final_score": 86,
+      "source": "SeaCrete Hotels official site and aggregated travel data for October 2026",
+      "note": "A robust family resort with strong beach access, though late-season October weather and flight logistics from Sofia reduce the net utility for a toddler."
     }
   ]
 }

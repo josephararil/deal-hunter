@@ -58,11 +58,13 @@
     "regnumbanskomountainresort|2026-09|good": "2026-07-19",
     "luckybanskoaparthotelsparelax|2026-09|diamond": "2026-07-20",
     "parkhotelspavellahills|2026-09|good": "2026-07-20",
-    "orangecountyresorthotelbelek|2026-09|good": "2026-07-20",
-    "rome|2026-10|skip": "2026-07-20"
+    "orangecountyresorthotelbelek|2026-09|good": "2026-07-21",
+    "rome|2026-10|skip": "2026-07-20",
+    "parkhotelandspavellahills|2026-09|good": "2026-07-21",
+    "kianibeachresortfamilyallinclusive|2026-10|good": "2026-07-21"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 19
+    "2026-07": 20
   }
 }

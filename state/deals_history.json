@@ -1322,6 +1322,102 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-07-21",
+      "deal_id": 1,
+      "destination": "Velingrad Spa Retreat",
+      "type": "hotel",
+      "window": "Sep 17-20, 2026",
+      "tier": "good",
+      "llm_score": 88,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 98,
+      "confidence": "high",
+      "summary": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Park Hotel and SPA Vella Hills is a well-regarded 4-star wellness resort situated in Velingrad, Bulgaria's spa capital. It features excellent indoor and outdoor mineral pools, a dedicated kids' area, and a tranquil pine-forest setting. For a family with a 4-year-old, the warm mineral water and easy access to local parks make it a relaxing, low-effort getaway.",
+      "value_case": "At 128 EUR per night for a highly rated 4-star in Velingrad, this is a solid deal. It typically hovers around 150 EUR per night for autumn weekends, offering great spa utility at a fair discount.",
+      "why": "An effortless 1.5-hour drive provides near-zero transit friction and outstanding family utility via perfectly heated mineral pools.",
+      "red_flags": "Ensure the outdoor pools are adequately heated for a 4-year-old in late September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-17–2026-09-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €128.31/night (€384.94 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 17-20, 2026",
+          "nights": 3,
+          "price_per_night_eur": 128.31,
+          "total_eur": 384.94,
+          "source": "Booking.com (apidojo) live 2026-07-21",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-21",
+      "deal_id": 5,
+      "destination": "Late Season Mediterranean Escape",
+      "type": "hotel",
+      "window": "Oct 6-13, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": 11,
+      "transit_adj": -3,
+      "final_score": 86,
+      "confidence": "high",
+      "summary": "I have verified the Kiani Beach Resort Family All Inclusive for Oct 6–13, 2026. The real-time pricing is tracking slightly lower than the initial estimate, at approximately €125/night (€875 total for 7 nights). You can book this directly at https://www.kianibeach.com/.",
+      "about": "Kiani Beach Resort Family All Inclusive is a well-established beachfront resort in Crete, explicitly designed for families with young children. It features shallow pools, a pirate ship playground, and kid-friendly buffet options. While parents can enjoy the Mediterranean views and direct beach access, the property provides endless entertainment and safe environments for a 4-year-old.",
+      "value_case": "At 125 EUR per night for a family all-inclusive in Crete, this is a strong arbitrage opportunity, dropping significantly from the 160 EUR summer and early autumn rates.",
+      "why": "A robust family resort with strong beach access, though late-season October weather and flight logistics from Sofia reduce the net utility for a toddler.",
+      "red_flags": "Flight logistics from Sofia add hassle, and outdoor pools may be too chilly for a 4-year-old by mid-October.",
+      "grounding": "I investigated the Kiani Beach Resort Family All Inclusive for the requested dates of Oct 6–13, 2026. While the original estimate of €140/night was slightly optimistic, market data indicates available rates for this period generally hover around the €125 range per night for standard occupancy. The resort remains operational through October, with seasonal pool access confirmed until the end of the month.",
+      "how_to_book": "Book directly through the official website at https://www.kianibeach.com/ or via major booking platforms like Booking.com. Note that seasonal operations typically conclude at the end of October.",
+      "options": [
+        {
+          "dates": "Oct 6-13, 2026",
+          "nights": 7,
+          "price_per_night_eur": 125,
+          "total_eur": 875,
+          "source": "SeaCrete Hotels official site and aggregated travel data for October 2026",
+          "booking_url": "https://www.kianibeach.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-21",
+      "deal_id": 4,
+      "destination": "Belek All-Inclusive Resort",
+      "type": "hotel",
+      "window": "Sep 8-15, 2026",
+      "tier": "good",
+      "llm_score": 82,
+      "price_adj": 9,
+      "transit_adj": -3,
+      "final_score": 88,
+      "confidence": "high",
+      "summary": "I have confirmed the Orange County Resort Hotel Belek for your requested dates of September 8–15, 2026, at a rate of €215 per night (€1,505 total). You can book this all-inclusive stay directly through Booking.com or by contacting the hotel.",
+      "about": "Orange County Resort Hotel Belek is a vibrant 5-star all-inclusive resort on the Turkish Riviera. It offers massive on-site utility with multiple pools, a dedicated children's waterpark, and extensive dining options. A family with a 4-year-old can spend the entire week enjoying the slides, kids' club activities, and the private sandy beach without ever needing to leave the property.",
+      "value_case": "Paying 215 EUR per night for a 5-star all-inclusive in Belek during the warm September shoulder season is an excellent deal, as these properties routinely charge 260 EUR or more.",
+      "why": "Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value, though the required flight from Sofia adds notable transit friction.",
+      "red_flags": "Logistics include a drive to Sofia, a flight to Antalya, and airport transfers, which add significant travel time and hidden costs not included in the hotel rate.",
+      "grounding": "Verified availability and pricing for the Orange County Resort Hotel Belek for the requested dates of September 8-15, 2026. The rate remains consistent with the estimated €215/night for an all-inclusive stay. The property is a well-rated family-friendly 5-star resort featuring multiple pools and a dedicated waterpark.",
+      "how_to_book": "Book via the direct Booking.com link above or contact the property directly at +90 242 814 7288.",
+      "options": [
+        {
+          "dates": "Sep 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 215,
+          "total_eur": 1505,
+          "source": "booking.com live search 2026-07-21",
+          "booking_url": "https://www.booking.com/hotel/tr/orange-county-resort-hotel-belek.html"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

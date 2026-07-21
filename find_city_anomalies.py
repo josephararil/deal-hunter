@@ -109,6 +109,22 @@ def _score_breakdown_html(d):
     return f"<div style='font-size:12px;color:#888;margin:4px 0'>{txt}</div>"
 
 
+def _all_in_note(d):
+    """'All-in ~€267/night incl. €900 flight + €100 transfers (whole trip, family of 3)' —
+    shown only for a fly destination where the skeptic estimated a nonzero flight/ground cost
+    (the price_adj/discount above was computed against this figure, not the bare hotel rate)."""
+    eff = d.get("effective_ppn")
+    if not eff:
+        return ""
+    parts = []
+    if d.get("flight_cost_eur_total"):
+        parts.append(f"€{round(d['flight_cost_eur_total'])} flight")
+    if d.get("ground_transport_eur"):
+        parts.append(f"€{round(d['ground_transport_eur'])} transfers")
+    extra = " + ".join(parts)
+    return f"All-in ~€{round(eff)}/night incl. {extra} (whole trip, family of 3) — this is what the score above is based on."
+
+
 # --- stage correlation helper ---
 
 def _match_candidate(verdict, candidates):
@@ -142,7 +158,8 @@ def _identity(d):
     collapses the day-to-day label drift ('Velingrad Spa & Thermal Break' vs 'Velingrad SPA
     Retreat') that used to defeat the TTL and re-alert the same place under a new name."""
     ident = (d.get("hotel_name") or d.get("city") or d.get("destination") or "")
-    return re.sub(r'[^a-z0-9]+', '', ident.lower())
+    ident = ident.lower().replace("&", "and")  # "Park Hotel & SPA" and "... and SPA" must collapse to one identity
+    return re.sub(r'[^a-z0-9]+', '', ident)
 
 
 def seen_key(d):
@@ -259,6 +276,11 @@ def build_email_html(items, dropped, month_count, baselines):
         # Compact score breakdown so the reasoning behind the tier is visible — especially
         # useful on a skip (you see exactly why it fell short and could still override it).
         score_html = _score_breakdown_html(d)
+        all_in_note = _all_in_note(d)
+        all_in_html = (
+            f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{all_in_note}</div>"
+            if all_in_note else ""
+        )
 
         rows += (
             f"<tr><td style='padding:14px 0;border-bottom:1px solid #eee'>"
@@ -270,6 +292,7 @@ def build_email_html(items, dropped, month_count, baselines):
             f"{about_html}"
             f"{value_case_html}"
             f"{score_html}"
+            f"{all_in_html}"
             f"{base_html}"
             f"{opts_html}"
             f"{child_caveat_html}"
@@ -352,6 +375,9 @@ def build_history_entries(items, today, baselines):
             "price_adj": d.get("price_adj"),
             "transit_adj": d.get("transit_adj"),
             "final_score": d.get("final_score"),
+            "flight_cost_eur_total": d.get("flight_cost_eur_total"),
+            "ground_transport_eur": d.get("ground_transport_eur"),
+            "effective_ppn": d.get("effective_ppn"),
             "confidence": d.get("confidence", ""),
             "summary": d.get("assistant_summary") or d.get("reason", ""),
             "about": d.get("about", ""),
@@ -390,6 +416,9 @@ def build_email_text(items, dropped, baselines):
         score_note = _score_breakdown_text(d)
         if score_note:
             lines.append(score_note)
+        all_in_note = _all_in_note(d)
+        if all_in_note:
+            lines.append(all_in_note)
         base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
                                    d.get("grounded_price_per_night_eur"))
         if base_note:
@@ -477,6 +506,8 @@ def write_md(today, candidates, picks, grounding_results=None, scores=None):
                     f"_Score: LLM {s['llm']} {_sgn(s['price_adj'])} price "
                     f"{_sgn(s['transit_adj'])} transit = **{s['final']}** → {tier}_"
                 )
+                if s.get("effective_ppn"):
+                    lines.append(f"_{_all_in_note(s)}_")
                 if s.get("why"):
                     lines.append(f"_Scorer: {s['why']}_")
                 if s.get("about"):
@@ -805,18 +836,38 @@ def main():
             raw_normal = (v or {}).get("normal_price_eur")
             normal_price = raw_normal if isinstance(raw_normal, (int, float)) and raw_normal > 0 else None
             ppn     = c.get("grounded_price_per_night_eur")
+
+            # Fold the skeptic's estimated flight + ground-transport cost into an ALL-IN
+            # per-night price for fly destinations, so price_adj measures the real cost of
+            # the whole trip (hotel + getting there), not just the hotel rate. Leaves ppn
+            # unchanged for a straightforward drive (flight_cost/ground_cost are 0/absent).
+            raw_flight = (v or {}).get("flight_cost_eur_total")
+            raw_ground = (v or {}).get("ground_transport_eur")
+            flight_cost = raw_flight if isinstance(raw_flight, (int, float)) and raw_flight > 0 else 0
+            ground_cost = raw_ground if isinstance(raw_ground, (int, float)) and raw_ground > 0 else 0
+            extra_total = flight_cost + ground_cost
+            nights = c.get("grounded_nights")
+            effective_ppn = ppn
+            if extra_total and ppn and nights:
+                effective_ppn = ppn + extra_total / nights
+
             final, price_adj, transit_adj, discount = C.compute_final_score(
-                llm_val, ppn, _location(c), normal_price)
+                llm_val, effective_ppn, _location(c), normal_price)
             tier = C.tier_for(final, llm_val, discount)
             scores[did] = {"llm": llm_val, "price_adj": price_adj, "transit_adj": transit_adj,
                            "final": final, "tier": tier, "why": why, "discount": discount,
                            "normal_price_eur": normal_price,
+                           "flight_cost_eur_total": flight_cost or None,
+                           "ground_transport_eur": ground_cost or None,
+                           "effective_ppn": effective_ppn if extra_total else None,
                            "about": about, "value_case": value_case, "red_flags": red}
 
             label = {"diamond": "DIAMOND", "good": "GOOD", "skip": "SKIP"}[tier]
+            extra_note = (f" (all-in incl. €{round(extra_total)} flight/transfer -> "
+                          f"€{round(effective_ppn)}/night)" if extra_total else "")
             print(f"    [{label:<7}] #{did} {dest} — llm {llm_val} {_sgn(price_adj)} price "
                   f"{_sgn(transit_adj)} transit = {final} (disc {round(discount * 100)}% "
-                  f"vs €{normal_price or C.get_diamond_par(_location(c))}) -> {tier}")
+                  f"vs €{normal_price or C.get_diamond_par(_location(c))}){extra_note} -> {tier}")
             wl = M._clip(why, 150)
             if wl:
                 print(f"             {wl}")
@@ -824,6 +875,9 @@ def main():
             scored_item = {**c, "tier": tier, "final_score": final, "llm_score": llm_val,
                            "price_adj": price_adj, "transit_adj": transit_adj,
                            "discount": discount, "normal_price_eur": normal_price,
+                           "flight_cost_eur_total": flight_cost or None,
+                           "ground_transport_eur": ground_cost or None,
+                           "effective_ppn": effective_ppn if extra_total else None,
                            "why": why, "about": about, "value_case": value_case,
                            "red_flags": red}
             scored_all.append(scored_item)
@@ -905,6 +959,9 @@ def main():
             "price_adj": (scores.get(c.get("deal_id")) or {}).get("price_adj"),
             "transit_adj": (scores.get(c.get("deal_id")) or {}).get("transit_adj"),
             "normal_price_eur": (scores.get(c.get("deal_id")) or {}).get("normal_price_eur"),
+            "flight_cost_eur_total": (scores.get(c.get("deal_id")) or {}).get("flight_cost_eur_total"),
+            "ground_transport_eur": (scores.get(c.get("deal_id")) or {}).get("ground_transport_eur"),
+            "effective_ppn": (scores.get(c.get("deal_id")) or {}).get("effective_ppn"),
             "discount": (scores.get(c.get("deal_id")) or {}).get("discount"),
             "final_score": (scores.get(c.get("deal_id")) or {}).get("final"),
             "tier": (scores.get(c.get("deal_id")) or {}).get("tier"),

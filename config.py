@@ -408,7 +408,7 @@ Your scoring dictates the pipeline routing. A score of 80 or above means the dea
 
 1. Tier 1: Local High Utility (Drive <= 3 hours from Plovdiv OR flights from Plovdiv Airport [PDV])
    - Baseline: Low transit friction for a 4-year-old. 
-   - Evaluation: If an elite domestic spa resort (e.g., Velingrad, Bansko) or regional destination drops to entry-level pricing while keeping family infrastructure fully open, score it **80-95**.
+   - Evaluation: If an elite domestic spa resort or regional destination drops to entry-level pricing while keeping family infrastructure fully open, score it **80-95**. Don't over-index on the same one or two towns — the anchor list below spans dozens of options; actively vary which ones you surface run to run.
 
 2. Tier 2: High-Friction Transit (Flights from Sofia Airport [SOF] OR Drives > 3 hours)
    - Baseline: High transit friction for a 4-year-old. 
@@ -496,14 +496,28 @@ You return a single desirability `score` from 0-100 for each candidate. You do N
   → below that  is dropped (logged only).
 
 - `price_adjustment` is applied deterministically by the pipeline. It rewards a genuine
-  DISCOUNT — how far the grounded nightly HOTEL price sits below what THIS property normally
-  charges — and penalises a price at or above its normal rate. To make this computable you must
-  output `normal_price_eur` (see below). Because the pipeline already turns that discount into
-  the price_adjustment, treat the price as an input to your reasoning, not a scoring lever — do
-  NOT also inflate/deflate your desirability score for it (avoid double-counting).
-- `transit_adjustment` gives a small automatic nudge for drive-vs-fly. You should still reflect
-  SEVERE logistics (open-jaw itineraries, >4h drive with a 4-year-old vs nice flight out of PDV airport or a <3h drive) in your score,
-  but don't double-count ordinary "it's a flight away".
+  DISCOUNT — how far the ALL-IN nightly price sits below what THIS property normally charges —
+  and penalises a price at or above its normal rate. For a straightforward drive, "all-in" is
+  just the grounded hotel rate. For a destination that requires a FLIGHT (whether direct from
+  Plovdiv or via Sofia), the pipeline adds your `flight_cost_eur_total` and `ground_transport_eur`
+  estimates (see below) to the hotel total and divides by nights — so a cheap hotel reached by an
+  expensive flight is correctly measured as an expensive trip overall, not a cheap one. To make
+  this computable you must output `normal_price_eur` (see below). Because the pipeline already
+  turns that discount into the price_adjustment, treat the price as an input to your reasoning,
+  not a scoring lever — do NOT also inflate/deflate your desirability score for cost (avoid
+  double-counting) — see `flight_cost_eur_total` below for exactly what that means in practice.
+- `flight_cost_eur_total` / `ground_transport_eur` (fly destinations only — set both to 0 for a
+  straightforward drive from Plovdiv): your best estimate, in EUR, of what actually getting there
+  costs for the WHOLE PARTY (2 adults + 1 child) — round-trip flights (`flight_cost_eur_total`)
+  plus any other unavoidable extra cost such as driving to/parking at the departure airport or
+  destination transfers (`ground_transport_eur`). Because the pipeline folds these into the
+  all-in price used for `price_adjustment` above, do NOT also deduct your desirability score for
+  the MONEY a flight costs — that would double-count. You should still deduct for the
+  non-monetary friction of flying (time, transfers, jetlag with a toddler; see deductions below).
+- `transit_adjustment` gives a small automatic nudge for drive-vs-fly TIME/HASSLE only (the
+  money side is handled by price_adjustment above, via flight_cost_eur_total/ground_transport_eur).
+  You should still reflect SEVERE logistics (open-jaw itineraries, >4h drive with a 4-year-old,
+  multi-leg connections) in your score, but don't double-count ordinary "it's a flight away".
 
 ### WHAT YOUR SCORE MEASURES: VALUE DELIVERED, NOT LUXURY OR PRESTIGE
 Your score is the VALUE this delivers to THIS family — the numerator of value-for-money. The
@@ -518,41 +532,47 @@ A high score means high NET family utility:
 - How much genuine enjoyment/benefit does a family with a 4-year-old actually get here? (A
   4-year-old does not care about world-class museums — open pools, space, ease and fun do.)
 - PLUS how luxurious or comfortable the stay is for the adults (quiet, spacious, good food, spa, etc.).
-- MINUS logistics friction — a large deduction, not a footnote. A destination with no direct
-  Plovdiv flight means flying via Sofia with a toddler: transfers, lost travel days, and
-  FLIGHT COST that the hotel price does NOT include. Flights are out of scope for the pipeline,
-  so YOU are the only stage that can weigh their burden — do it heavily.
+- MINUS logistics friction — a large deduction, not a footnote, but a TIME/HASSLE deduction, not
+  a money one (the flight's actual cost is priced in separately via price_adjustment — see
+  flight_cost_eur_total above). Transfers, lost travel days, connections, jetlag with a toddler.
 - MINUS in-window utility loss (closed pools, dead resort town — see deductions).
 "Attraction"/excitement is ONE modest input for a 4-year-old, never the main factor.
 
-### WHAT DRIVES A HIGH SCORE (85-100)
-- High net family value delivered with LOW friction: the family genuinely enjoys it, getting
-  there is easy (ideally a short drive or direct PDV flight), and the amenities that make it
-  worthwhile are open in-window.
+### WHAT DRIVES A HIGH SCORE (85-100) — RESERVED FOR GENUINE STANDOUTS
+This band is NOT for "easy and available." Low friction and open amenities are a PREREQUISITE
+for this band, not what earns it — being a perfectly pleasant, nearby, unremarkable hotel does
+NOT belong here. To reach 85+, a property or experience needs to be one a well-travelled family
+would specifically remember: a flagship/standout property, materially better than the dozens of
+similar regional options, an unusually rich set of family amenities, or a genuinely rare
+experience.
 - Real, in-window utility: indoor/heated pools and kids' facilities actually OPEN during these
-  dates; comfortable and fun for a 4-year-old.
+  dates; comfortable and fun for a 4-year-old. (Necessary, not sufficient, for 85+.)
 - The stay length fits (a short 1-2 night break for a quiet town; longer only where there is
   genuinely a week of family value to extract).
-- A far-flight destination reaches this band ONLY if the family value is high enough to survive
-  the flight cost and hassle — otherwise it belongs lower.
+- A far-flight destination reaches this band on non-monetary friction alone ONLY if the family
+  value is high enough to survive the time/hassle of flying with a toddler — its actual cost is
+  priced in separately by the pipeline (flight_cost_eur_total/ground_transport_eur), not here.
 
 ### WHAT DRIVES A LOW SCORE (net-value deductions — NOT the nightly hotel price)
 1. Low-Season Utility Trap: amenities that make the place worth it are CLOSED in-window (outdoor-only pools in winter, shut kids' clubs, a dead resort town).
-2. Toddler Tax / Logistics: >4h door-to-door, flying via Sofia with a 4-year-old, open-jaw or multi-leg itineraries, plus flight cost/hassle the hotel price does not cover. Weigh heavily.
+2. Toddler Tax / Logistics (TIME AND HASSLE, NOT MONEY — the pipeline prices the flight's actual cost in separately, see flight_cost_eur_total above): >4h door-to-door, flying via Sofia with a 4-year-old, open-jaw or multi-leg itineraries, red-eye departures, tight connections. Weigh heavily.
 3. Prestige-without-value: a famous/luxury/exciting place whose real in-window benefit to a family with a 4-year-old is modest, or is eaten by travel friction. Do NOT score it high just because the destination is desirable in the abstract.
 4. Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do — score low unless the window is already a short 2-4 night break.
+5. "Nice and Nearby" Is Not "Great": a perfectly decent regional hotel — fine pools, fine rooms, nothing distinctive, one of dozens of near-identical options within a couple hours of Plovdiv — is NOT a high score just because it's easy and available. Ordinary, low-friction, and unremarkable should land in the 40s-50s, not the 80s. Reserve 80+ for something that would actually make a savvy traveller sit up.
 
-### CALIBRATION EXAMPLES (score = net family VALUE delivered; hold nightly hotel price neutral)
-- Nearby 4-star spa, easy <2h drive, pools + kids' area open, relaxed 3-night family weekend: **~82**. Modest place, but high net value — real family enjoyment, zero friction. (Low live price → pipeline lifts to diamond; high → it sinks. That's the pipeline's job, not yours.)
-- Antalya 5-star all-inclusive, mid-Jan, indoor pools + kids' club + dining all OPEN, one manageable flight: **~84**. High utility, but the flight burden keeps it off the very top.
-- Rome or Athens city trip via Sofia, 4 nights: **~58**. The city is exciting, but a 4-year-old gets modest benefit and the trip burns travel days + flight costs the hotel price ignores — net value is middling, so it only becomes a pick if the hotel is genuinely cheap.
-- Sunny Beach 4-star beachfront in OCTOBER, outdoor pools freezing, entertainment shut: **~30**. Utility collapses in-window regardless of how cheap it is.
-- 7-night Athens→Ravenna open-jaw cruise: **~20**. Logistics nightmare for a 4-year-old; the itinerary itself is the problem.
+### CALIBRATION EXAMPLES (score = net family VALUE delivered; hold ALL-IN price neutral — the pipeline handles cost, including flights, via price_adjustment; don't re-deduct for it here)
+- An unremarkable, perfectly fine regional 3/4-star spa hotel — decent pools, nothing distinctive, one of dozens of near-identical options within a couple hours of Plovdiv: **~45-55**. Comfortable and easy, but "close and available" is not, by itself, high value — a savvy traveller wouldn't call this a highlight.
+- A genuinely well-regarded regional spa/resort with real standout amenities (materially better kids' facilities, notably higher review scores than typical peers) and an easy <2h drive: **~65-75**. Solid and worth knowing about, but still a routine local weekend, not a highlight of the year.
+- A standout property that would impress a well-travelled family — a flagship 5-star, an unusually rich kids'-facility spa, or similar — with an easy/low-friction trip: **~80-90**. Reserved for places that are actually special, not merely nearby and open.
+- Antalya 5-star all-inclusive, mid-Jan, indoor pools + kids' club + dining all OPEN: **~75-80** on non-monetary friction alone (the flight's real cost is priced in separately, not deducted here — but the time/hassle of flying with a toddler still counts against it).
+- Rome or Athens city trip via Sofia, 4 nights: **~55-60**. The city is exciting, but a 4-year-old gets modest benefit from a museum-heavy destination, and connecting via Sofia burns travel days — non-monetary friction, judged independently of the flight's actual cost.
+- Sunny Beach 4-star beachfront in OCTOBER, outdoor pools freezing, entertainment shut: **~25-30**. Utility collapses in-window regardless of how cheap it is.
+- 7-night Athens→Ravenna open-jaw cruise: **~15-20**. Logistics nightmare for a 4-year-old; the itinerary itself is the problem, independent of ticket cost.
 
 ---
 
 Each input candidate carries LIVE grounded figures for context:
-- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable HOTEL price. Hold it neutral in your score (the pipeline handles it), except for a severe discrepancy as noted above. Note it does NOT include flights.
+- `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable HOTEL price. Hold it neutral in your score (the pipeline handles it), except for a severe discrepancy as noted above. Note it does NOT include flights — that's exactly what flight_cost_eur_total/ground_transport_eur are for.
 - `diamond_par_eur` — the region's neutral price point, shown so you understand what the pipeline will reward/penalise. Not for you to apply.
 - `grounding_summary` — the live verification note (often includes star rating and review score — DO use quality signals like stars/reviews).
 
@@ -571,9 +591,10 @@ The score routes the pipeline, but the email that reaches the user is a hand-off
 
 - `about`: 2-4 sentences describing the property AND its location for someone who has never heard of it. Cover: what tier/kind of place it is and its standing (a well-known flagship? a solid mid-range option? a basic one?), its standout amenities (spa, indoor/outdoor pools, dining, kids' facilities), and what a family with a 4-year-old can actually DO — both in the property and in the surrounding area. Use the star rating and review score in `grounding_summary` as anchors.
 - `value_case`: 1-3 sentences making the value case a savvy traveller would make out loud — how this grounded price compares to what this property (or this class of place, in this destination) normally costs, and to comparable alternatives, so the human can judge the deal at a glance. This is the "is this actually a good deal, and why?" line. E.g.: "€117/night for a genuine 5-star in Bansko is excellent — it usually trades nearer €150-200, and comparable 4-stars in town sit around €80, so you're paying a small premium for a full tier more hotel."
-- `normal_price_eur`: your single-number estimate (a plain number, not a range) of what THIS property (or, if you don't know it specifically, this exact class/star tier in this destination) TYPICALLY charges per night for a comparable stay in the same season — the "before" price the grounded rate should be compared against. The pipeline computes the discount as (normal_price_eur - grounded_price) / normal_price_eur, and a real discount is REQUIRED for a diamond. HONESTY IS CRITICAL: this directly gates the top tier, so do NOT inflate it to manufacture a discount. Base it on genuine knowledge and the star/review anchors in `grounding_summary`. If you cannot justify a higher normal rate, set it equal to (or below) the grounded price — that correctly yields no discount and no diamond. A fabricated "normal" rate is the one thing that will produce a false diamond.
+- `normal_price_eur`: your single-number estimate (a plain number, not a range) of what THIS property (or, if you don't know it specifically, this exact class/star tier in this destination) TYPICALLY charges per night for a comparable stay in the same season — the "before" price the (all-in) grounded rate should be compared against. The pipeline computes the discount as (normal_price_eur - all_in_price) / normal_price_eur, and a real discount is REQUIRED for a diamond. HONESTY IS CRITICAL: this directly gates the top tier, so do NOT inflate it to manufacture a discount. Base it on genuine knowledge and the star/review anchors in `grounding_summary`. If you cannot justify a higher normal rate, set it equal to (or below) the grounded price — that correctly yields no discount and no diamond. A fabricated "normal" rate is the one thing that will produce a false diamond.
+- `flight_cost_eur_total` / `ground_transport_eur`: see the HOW YOUR SCORE IS USED section above. Realistic round-trip cost estimates for the whole party of 3, for a destination that requires a flight (whether direct from Plovdiv or via Sofia). Set BOTH to 0 for a straightforward drive from Plovdiv. Base these on genuine knowledge of typical fares/routes for the season — a rough, honest estimate is fine; do not invent a specific airline or flight number.
 
-HONESTY (these fields must not become a source of hallucination): base both ONLY on what you genuinely know about this specific property or destination, anchored by the star / review-score / price signals you were given. If you do not recognise the specific property, describe the destination and what its class and review score imply, and say plainly that the specifics should be confirmed — do NOT invent named restaurants, amenities, or facts. These fields are DESCRIPTIVE ONLY: they must NOT change your numeric `score`, and you must NOT use them to keep, kill, or tier a deal.
+HONESTY (these fields must not become a source of hallucination): base `about`/`value_case`/`normal_price_eur` ONLY on what you genuinely know about this specific property or destination, anchored by the star / review-score / price signals you were given. If you do not recognise the specific property, describe the destination and what its class and review score imply, and say plainly that the specifics should be confirmed — do NOT invent named restaurants, amenities, or facts. `about`/`value_case` are DESCRIPTIVE ONLY: they must NOT change your numeric `score`, and you must NOT use them to keep, kill, or tier a deal. `normal_price_eur`, `flight_cost_eur_total`, and `ground_transport_eur` DO feed the deterministic price_adjustment math, so honesty there directly controls tiering — the same rule as normal_price_eur applies: when unsure, estimate conservatively rather than inflate/deflate to manufacture a result.
 
 ---
 
@@ -590,6 +611,8 @@ JSON Schema:
     "about": "2-4 sentences: what this property and its location are, its tier/standing, standout amenities, and what a family with a 4-year-old can do here and nearby. For someone who has never heard of it.",
     "value_case": "1-3 sentences: why this grounded price is (or isn't) a genuine deal vs this property's/area's usual rates and comparable alternatives — the 'is this a good deal?' line.",
     "normal_price_eur": 170,
+    "flight_cost_eur_total": 0,
+    "ground_transport_eur": 0,
     "red_flags": "Specific hidden cost or logistical risk to verify before booking."
   }}
 ]
@@ -692,9 +715,11 @@ STAGE2_RESPONSE_SCHEMA = {
             "about":       {"type": "string"},
             "value_case":  {"type": "string"},
             "normal_price_eur": {"type": "number"},
+            "flight_cost_eur_total": {"type": "number"},
+            "ground_transport_eur": {"type": "number"},
             "red_flags":   {"type": "string"},
         },
-        "required": ["deal_id", "destination", "score", "why", "about", "value_case", "normal_price_eur", "red_flags"],
+        "required": ["deal_id", "destination", "score", "why", "about", "value_case", "normal_price_eur", "flight_cost_eur_total", "ground_transport_eur", "red_flags"],
     },
 }
 

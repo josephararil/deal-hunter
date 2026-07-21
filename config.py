@@ -144,8 +144,10 @@ WEB_SEARCH_MAX_USES = 6
 STAGE1_MIN_SCORE = 80
 
 # Maximum number of diamonds included in the single email sent per run. Because
-# surviving Stage 2 is rare, this cap is almost never reached in practice.
-MAX_EMAILS_PER_RUN = 3
+# surviving Stage 2 is rare, this cap is almost never reached in practice. Raised
+# to 10 alongside the every-3-day schedule (fewer runs → each digest should
+# surface more of what it found).
+MAX_EMAILS_PER_RUN = 10
 
 # Days before the same property+season+tier can trigger another email. The anti-spam key
 # (find_city_anomalies.seen_key) is now keyed on the property identity + coarse season, so a

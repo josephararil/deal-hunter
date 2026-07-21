@@ -2,14 +2,14 @@
 
 Finds genuinely good-to-exceptional hotel travel windows for a family of 3 (2 adults + child
 aged 4) based near Plovdiv, Bulgaria. One script, three stages, live Booking.com rate
-verification, and a deterministic scoring model. Runs daily on free GitHub Actions and emails
-an honest daily digest of every scored candidate (💎 diamond / 👍 good / skip) whenever there's
+verification, and a deterministic scoring model. Runs every 3 days on free GitHub Actions and
+emails an honest digest of every scored candidate (💎 diamond / 👍 good / skip) whenever there's
 something new to see; silent otherwise.
 
 ## How it works
 
 ```
-find_city_anomalies.py   (daily, three-stage gate)
+find_city_anomalies.py   (every 3 days, three-stage gate)
    │
    ├─ Stage 1 — FIND (web search)
    │     Scores hotel/resort/flight/cruise candidates 0–100 with an est_price_eur.
@@ -25,7 +25,7 @@ find_city_anomalies.py   (daily, three-stage gate)
          The LLM returns a 0–100 desirability score (price held neutral). The pipeline then
          computes: final = llm_score + price_adj (vs regional par) + transit_adj (drive/fly).
          final ≥ 85 → 💎 diamond · ≥ 68 → 👍 good · below → skip.
-         The email is a daily digest of EVERY scored candidate (diamond/good/skip) with its
+         The email is a digest of EVERY scored candidate (diamond/good/skip) with its
          score breakdown, so you see what the pipeline weighed and why. Anti-spam TTL (keyed
          destination|window|tier) fires on any new/tier-changed item and stays quiet on
          repeats. Grounding kills/blocks ride along in a "seen & dropped" footer. Every score
@@ -89,7 +89,7 @@ HOTEL_PROVIDER="" python test_stub.py  # full pipeline: LLM-only, stub llm()
 | Knob | Default | Effect |
 |---|---|---|
 | `STAGE1_MIN_SCORE` | 80 | Minimum FIND score to forward a candidate to grounding (triage only; no price filter). |
-| `MAX_EMAILS_PER_RUN` | 3 | Cap on the actionable diamond/good picks shown (diamonds first); skips are context and always shown in full. |
+| `MAX_EMAILS_PER_RUN` | 10 | Cap on the actionable diamond/good picks shown (diamonds first); skips are context and always shown in full. |
 | `SIGNAL_TTL_DAYS` | 14 | Anti-spam TTL per destination+window+tier; a tier change re-notifies. |
 | `DIAMOND_PAR_EUR` | BG €80, TR €85, rest €110 | Per-night reference price. Below par → score bonus, above → penalty. Not a wall. |
 | `PRICE_SCORE_WEIGHT` / `PRICE_BONUS_CAP` | 50 / 15 | Strength of the price modifier; bonus capped, penalty uncapped. |

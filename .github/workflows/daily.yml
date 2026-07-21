@@ -6,7 +6,7 @@ name: daily
 
 on:
   schedule:
-    - cron: "0 6 * * *"     # 06:00 UTC daily
+    - cron: "0 6 */3 * *"   # 06:00 UTC every 3rd day-of-month (1,4,7,... not a rolling 72h clock)
   workflow_dispatch:
 
 permissions:

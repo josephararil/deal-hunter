@@ -5,7 +5,7 @@ Guidance for Claude Code when working in this repository.
 ## What this is
 
 A personal travel deal-finder for a family of 3 (2 adults + 4-year-old) based near Plovdiv,
-Bulgaria. It runs daily on free GitHub Actions, emails immediately when something genuinely
+Bulgaria. It runs every 3 days on free GitHub Actions, emails immediately when something genuinely
 exceptional is found, and is silent the rest of the time. No server, no real database — just
 JSON state files committed back by CI.
 
@@ -15,7 +15,7 @@ lines, it's probably wrong for this repo. One genuine find a year justifies the 
 
 ## Active product: the Diamond Finder
 
-`find_city_anomalies.py` is the only script that runs automatically (daily via `daily.yml`).
+`find_city_anomalies.py` is the only script that runs automatically (every 3 days via `daily.yml`).
 It is self-contained: no baseline data; Stage-3 grounding uses Booking.com (apidojo)
 live rates, falling back to LLM concierge on any failure.
 
@@ -112,9 +112,9 @@ find_city_anomalies.py
 | `config.py` | City list + diamond-finder knobs; per-stage model roles (`MODEL_FIND/SKEPTIC/VERIFY`); per-stage provider overrides; prompts |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
-| `find_city_anomalies.py` | The diamond finder — runs daily, emails a digest of every scored candidate (diamond/good/skip) + a dropped footer |
+| `find_city_anomalies.py` | The diamond finder — runs every 3 days, emails a digest of every scored candidate (diamond/good/skip) + a dropped footer |
 | `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
-| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC; commits `state/` |
+| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC every 3 days (`cron: "0 6 */3 * *"`); commits `state/` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
 | `state/signals_seen.json` | Anti-spam TTL memory: `property-identity\|season\|tier → date_emailed`, monthly count |

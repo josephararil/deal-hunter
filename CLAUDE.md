@@ -48,14 +48,25 @@ find_city_anomalies.py
   │    The LLM returns a 0–100 DESIRABILITY score per grounded candidate (price held
   │    neutral — it is told the pipeline handles price). It ALSO emits normal_price_eur —
   │    its honest estimate of the property's OWN typical rate — as the reference the discount
-  │    is measured against. The pipeline then applies deterministic modifiers
+  │    is measured against. For a destination that requires a FLIGHT, it additionally emits
+  │    flight_cost_eur_total + ground_transport_eur (round-trip, whole family of 3; 0 for a
+  │    straightforward drive) — find_city_anomalies.py folds these into an ALL-IN effective
+  │    per-night price (hotel total + flight + ground, divided by nights) BEFORE the discount
+  │    is computed, so a cheap hotel reached by an expensive flight is priced as an expensive
+  │    trip, not a cheap one. The scorer must NOT also deduct desirability for the flight's
+  │    MONEY cost (only for its non-monetary friction: time, transfers, jetlag with a toddler)
+  │    to avoid double-counting. The pipeline then applies deterministic modifiers
   │    (config.compute_final_score):
   │      final = clamp(0,100, llm_score + price_adj + transit_adj)
-  │      discount  = 1 - grounded_ppn/normal_price   (falls back to regional par if the LLM
-  │                  gave no usable normal_price_eur)
+  │      discount  = 1 - effective_ppn/normal_price   (effective_ppn = grounded_ppn for a drive;
+  │                  hotel+flight+ground all-in per night for a fly destination. Falls back to
+  │                  regional par if the LLM gave no usable normal_price_eur)
   │      price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*discount)
   │                  (bonus capped, penalty UNCAPPED — overpriced deals sink on their own)
-  │      transit_adj = ±TRANSIT_TIER1_BONUS (drivable Tier-1 vs fly Tier-2)
+  │      transit_adj = ±TRANSIT_TIER1_BONUS (drivable Tier-1 vs fly Tier-2) — a small TIME/HASSLE
+  │                  nudge only; the money cost of flying is now priced into price_adj above.
+  │    Desirability itself is calibrated so "nearby, easy, nothing special" lands ~45-55, not
+  │    ~80+ — 80+ is reserved for a genuine standout property/experience, not merely low friction.
   │    tier (config.tier_for): DIAMOND needs ALL of final>=DIAMOND_SCORE_THRESHOLD,
   │    llm_score>=DIAMOND_MIN_LLM_SCORE, AND discount>=DIAMOND_MIN_DISCOUNT — so an ordinary
   │    local weekend, however cheap, is at most GOOD (>=GOOD_SCORE_THRESHOLD), else skip.
@@ -225,7 +236,7 @@ ground_deal = _resolve_ground_deal()
   few diamonds per MONTH. Do not collapse this back to a single final-score threshold.
 - **The price modifier measures a real discount vs the property's OWN normal price, not distance
   from a flat regional par.** The LLM's `normal_price_eur` is the reference; `discount = 1 -
-  grounded_ppn/normal_price` and `price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*discount)`.
+  effective_ppn/normal_price` and `price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*discount)`.
   A flat par cannot express "a 5-star that normally costs €170 dropping to €110 is a steal even
   though €110 is above the €80 regional floor" — that's why the reference is per-property. This
   is a narrow, deliberate exception to "price held fully neutral by the LLM": the LLM supplies a
@@ -234,6 +245,30 @@ ground_deal = _resolve_ground_deal()
   false diamond; the prompt tells the LLM to set it at/below the grounded price when unsure.
   `DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR` remain ONLY as the fallback reference when the LLM
   gave no usable `normal_price_eur`.
+- **`effective_ppn` folds an LLM-estimated flight/ground-transport cost into the price used for
+  discount math, for any destination that requires a flight.** `find_city_anomalies.py` reads
+  the skeptic's `flight_cost_eur_total` + `ground_transport_eur` (round-trip, whole family of 3;
+  0 for a straightforward drive), adds them to `grounded_total_eur`, and divides by nights —
+  `effective_ppn = grounded_ppn` unchanged for a drive, `(hotel_total + flight + ground) / nights`
+  for a fly destination. This is what fixed the "cheap hotel, expensive flight" blind spot: a
+  €125/night Crete all-inclusive that actually costs the family ~€900 in flights becomes an
+  ALL-IN ~€267/night trip, and is scored (and tiered/diamond-gated) against that real figure, not
+  the bare hotel rate. `transit_adj` (±`TRANSIT_TIER1_BONUS`) is now a small TIME/HASSLE-only
+  nudge — the MONEY side of flying is `price_adj`'s job via `effective_ppn`, not `transit_adj`'s.
+  `SKEPTIC_PROMPT` explicitly tells the LLM not to also deduct desirability score for flight cost
+  (only for non-monetary friction), to avoid double-counting the same burden twice. These two new
+  fields are estimates, same honesty bar as `normal_price_eur` — this is still not live flight
+  data (that remains out of scope; see below), just a heuristic that stops a flight-heavy trip
+  from being scored as if it cost only the hotel rate.
+- **Desirability is calibrated so "nearby, easy, and available" is NOT a high score.**
+  `SKEPTIC_PROMPT`'s calibration anchors reserve 80+ desirability for a genuine standout property
+  or experience; an unremarkable-but-pleasant regional hotel — decent pools, nothing distinctive,
+  one of dozens of near-identical options — should land ~45-55, not ~80+. Before this, the prompt's
+  own calibration example ("nearby 4-star spa, easy drive, pools open: ~82") anchored EVERY
+  ordinary local weekend to a near-diamond-floor score regardless of how unremarkable the
+  property actually was. If you edit these anchors, keep the "easy + open is a prerequisite, not
+  what earns 80+" framing — the whole point is that low friction alone should not manufacture a
+  high tier.
 - **Par/transit lookups take a city+country string, never FIND's free-text label.**
   `find_city_anomalies._location(c)` builds `"City Country"` from FIND's structured fields;
   `get_diamond_par`/`transit_tier` substring-match country/city tokens. Passing the prose
@@ -408,7 +443,10 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
 
 ## Out of scope (do not start without an explicit request)
 
-- **Flight data integration** — surface a hotel only when a cheap flight exists in-window.
+- **Live flight data integration** — a real flight-price API/search, or surfacing a hotel only
+  when a cheap flight exists in-window. The skeptic's `flight_cost_eur_total`/`ground_transport_eur`
+  (see Stage 3 above) are an LLM *estimate* folded into scoring, not live flight data — that
+  distinction stays intentional; don't casually upgrade one into the other.
 - **Package operators** — scrape Bulgarian-market charter operators for unsold allocations.
 
 ## Style

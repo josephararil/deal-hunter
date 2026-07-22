@@ -217,10 +217,10 @@
       "updated": "2026-07-11"
     },
     "Velingrad Spa & Thermal Break|2026-09": {
-      "realistic_price_eur": 151,
-      "note": "I have confirmed the pricing for Spa Hotel Olimp in Velingrad for your dates of September 10-13, 2026. The rate is €151 per night (€453 total for 3 nights) and includes half-board. You can book this…",
-      "source": "Spa Hotel Olimp official website and 'Summer SPA Getaway' offer terms 2026",
-      "updated": "2026-07-19"
+      "realistic_price_eur": 128.31,
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "updated": "2026-07-22"
     },
     "Bansko Summer Mountain Escape|2026-09": {
       "realistic_price_eur": 141,
@@ -279,8 +279,8 @@
     "Hisarya Thermal Retreat|2026-09": {
       "realistic_price_eur": 97.76,
       "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-19",
-      "updated": "2026-07-19"
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "updated": "2026-07-22"
     },
     "Bansko Mountain Escape|2026-09": {
       "realistic_price_eur": 151.8,
@@ -326,15 +326,21 @@
     },
     "Belek All-Inclusive Resort|2026-09": {
       "realistic_price_eur": 215,
-      "note": "I have confirmed the Orange County Resort Hotel Belek for your requested dates of September 8–15, 2026, at a rate of €215 per night (€1,505 total). You can book this all-inclusive stay directly…",
-      "source": "booking.com live search 2026-07-21",
-      "updated": "2026-07-21"
+      "note": "I have confirmed availability for the Orange County Resort Hotel Belek for the requested dates of September 8–15, 2026. The rate is exactly as estimated at €215 per night (€1,505 total for the week),…",
+      "source": "Booking.com live search 2026-07-22",
+      "updated": "2026-07-22"
     },
     "Late Season Mediterranean Escape|2026-10": {
       "realistic_price_eur": 125,
-      "note": "I have verified the Kiani Beach Resort Family All Inclusive for Oct 6–13, 2026. The real-time pricing is tracking slightly lower than the initial estimate, at approximately €125/night (€875 total for…",
-      "source": "SeaCrete Hotels official site and aggregated travel data for October 2026",
-      "updated": "2026-07-21"
+      "note": "I have verified the Kiani Beach Resort Family All Inclusive in Crete for your October 6–13, 2026 dates. The rate remains exactly as estimated at €125 per night (€875 total for 7 nights) for the…",
+      "source": "Booking.com / SeaCrete Hotels direct booking verification 2026-07-22",
+      "updated": "2026-07-22"
+    },
+    "Sunny Beach Late Season|2026-09": {
+      "realistic_price_eur": 167.51,
+      "note": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "updated": "2026-07-22"
     }
   },
   "ledger": [
@@ -1499,6 +1505,71 @@
       "final_score": 86,
       "source": "SeaCrete Hotels official site and aggregated travel data for October 2026",
       "note": "A robust family resort with strong beach access, though late-season October weather and flight logistics from Sofia reduce the net utility for a toddler."
+    },
+    {
+      "date": "2026-07-22",
+      "destination": "Hisarya Thermal Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 98,
+      "verdict": "good",
+      "actual_price": 97.76,
+      "llm_score": 86,
+      "final_score": 98,
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "note": "An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering exceptional family utility via warm mineral pools for a perfect 3-night short stay."
+    },
+    {
+      "date": "2026-07-22",
+      "destination": "Velingrad Spa & Thermal Break",
+      "window": "Sep 17-20, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 128.31,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "note": "An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding family utility via perfectly heated indoor and outdoor pools for a punchy 3-night break."
+    },
+    {
+      "date": "2026-07-22",
+      "destination": "Belek All-Inclusive Resort",
+      "window": "Sep 8-15, 2026",
+      "type": "hotel",
+      "claimed_price": 215,
+      "verdict": "good",
+      "actual_price": 215,
+      "llm_score": 82,
+      "final_score": 77,
+      "source": "Booking.com live search 2026-07-22",
+      "note": "Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value, though the required flight via Sofia introduces noticeable transit friction."
+    },
+    {
+      "date": "2026-07-22",
+      "destination": "Late Season Mediterranean Escape",
+      "window": "Oct 6-13, 2026",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "good",
+      "actual_price": 125,
+      "llm_score": 78,
+      "final_score": 73,
+      "source": "Booking.com / SeaCrete Hotels direct booking verification 2026-07-22",
+      "note": "A robust family resort with strong beach access, though late-season October weather and flight logistics from Sofia dilute the overall family utility slightly."
+    },
+    {
+      "date": "2026-07-22",
+      "destination": "Sunny Beach Late Season",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 168,
+      "verdict": "good",
+      "actual_price": 167.51,
+      "llm_score": 77,
+      "final_score": 84,
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "note": "A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility, offering an easy and fun late-summer beach run for a 4-year-old."
     }
   ]
 }

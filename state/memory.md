@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-21
+# Diamond Finder Memory — updated 2026-07-22
 
-## Price Baselines (56 entries)
+## Price Baselines (57 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -73,9 +73,9 @@ I have confirmed the availability of the 83 EUR per night rate at the Premier Lu
 _Source: Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer_
 
 ### Belek All-Inclusive Resort|2026-09
-**Realistic:** ~€215/night &nbsp; **Updated:** 2026-07-21
-I have confirmed the Orange County Resort Hotel Belek for your requested dates of September 8–15, 2026, at a rate of €215 per night (€1,505 total). You can book this all-inclusive stay directly…
-_Source: booking.com live search 2026-07-21_
+**Realistic:** ~€215/night &nbsp; **Updated:** 2026-07-22
+I have confirmed availability for the Orange County Resort Hotel Belek for the requested dates of September 8–15, 2026. The rate is exactly as estimated at €215 per night (€1,505 total for the week),…
+_Source: Booking.com live search 2026-07-22_
 
 ### Black Sea Late Summer Off-Peak|2026-09
 **Realistic:** ~€186/night &nbsp; **Updated:** 2026-07-19
@@ -98,9 +98,9 @@ Verified Sana Spa Hotel, 3-star for Aug 14-17, 2026: €92.2/night (€276.59 to
 _Source: Booking.com (apidojo) live 2026-07-18_
 
 ### Hisarya Thermal Retreat|2026-09
-**Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-07-19
+**Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-07-22
 Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-19_
+_Source: Booking.com (apidojo) live 2026-07-22_
 
 ### Hisarya Ultra-Local Thermal Retreat|2026-08
 **Realistic:** ~€102/night &nbsp; **Updated:** 2026-07-14
@@ -133,9 +133,9 @@ I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct 
 _Source: Parc Hotel Peschiera del Garda official property site_
 
 ### Late Season Mediterranean Escape|2026-10
-**Realistic:** ~€125/night &nbsp; **Updated:** 2026-07-21
-I have verified the Kiani Beach Resort Family All Inclusive for Oct 6–13, 2026. The real-time pricing is tracking slightly lower than the initial estimate, at approximately €125/night (€875 total for…
-_Source: SeaCrete Hotels official site and aggregated travel data for October 2026_
+**Realistic:** ~€125/night &nbsp; **Updated:** 2026-07-22
+I have verified the Kiani Beach Resort Family All Inclusive in Crete for your October 6–13, 2026 dates. The rate remains exactly as estimated at €125 per night (€875 total for 7 nights) for the…
+_Source: Booking.com / SeaCrete Hotels direct booking verification 2026-07-22_
 
 ### London Direct Flight from PDV|2026-09
 **Realistic:** ~€21.0/night &nbsp; **Updated:** 2026-07-15
@@ -197,6 +197,11 @@ _Source: Booking.com (apidojo) live 2026-07-02_
 I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…
 _Source: hu openair official booking engine check 2026-07-01_
 
+### Sunny Beach Late Season|2026-09
+**Realistic:** ~€167.51/night &nbsp; **Updated:** 2026-07-22
+Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-22_
+
 ### Sunny Beach Post-Peak Value Play|2026-08
 **Realistic:** ~€165/night &nbsp; **Updated:** 2026-07-08
 I verified the Festa Panorama Hotel in Nessebar (near Sunny Beach). The deal is real and the hotel is operational for your requested dates, but the actual price is higher than estimated, currently…
@@ -248,9 +253,9 @@ Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/n
 _Source: Booking.com (apidojo) live 2026-07-17_
 
 ### Velingrad Spa & Thermal Break|2026-09
-**Realistic:** ~€151/night &nbsp; **Updated:** 2026-07-19
-I have confirmed the pricing for Spa Hotel Olimp in Velingrad for your dates of September 10-13, 2026. The rate is €151 per night (€453 total for 3 nights) and includes half-board. You can book this…
-_Source: Spa Hotel Olimp official website and 'Summer SPA Getaway' offer terms 2026_
+**Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-07-22
+Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-22_
 
 ### Velingrad Spa Retreat|2026-09
 **Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-07-21
@@ -282,8 +287,13 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (92 entries)
+## Outcome Ledger (97 entries)
 
+- 👍 2026-07-22 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=86->98 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering exceptional…
+- 👍 2026-07-22 | Velingrad Spa & Thermal Break | Sep 17-20, 2026 | good score=88->100 claimed=€128 actual=€128.31 — An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding…
+- 👍 2026-07-22 | Belek All-Inclusive Resort | Sep 8-15, 2026 | good score=82->77 claimed=€215 actual=€215 — Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value,…
+- 👍 2026-07-22 | Late Season Mediterranean Escape | Oct 6-13, 2026 | good score=78->73 claimed=€125 actual=€125 — A robust family resort with strong beach access, though late-season October weather and flight…
+- 👍 2026-07-22 | Sunny Beach Late Season | Sep 6-11, 2026 | good score=77->84 claimed=€168 actual=€167.51 — A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility,…
 - 👍 2026-07-21 | Velingrad Spa Retreat | Sep 17-20, 2026 | good score=88->98 claimed=€128 actual=€128.31 — An effortless 1.5-hour drive provides near-zero transit friction and outstanding family utility via…
 - 👍 2026-07-21 | Bansko Mountain Off-Season | Sep 24-27, 2026 | good score=87->97 claimed=€128 actual=€127.63 — Arguably Bansko's best family hotel offers massive on-property utility with top-tier kids' clubs…
 - 👍 2026-07-21 | Hisarya Thermal Break | Sep 18-21, 2026 | good score=86->95 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive from Plovdiv eliminates transit friction entirely, delivering…
@@ -329,9 +339,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - · 2026-07-10 | Bansko, Bulgaria | 2026-08-07 to 2026-08-10 | skip score=81->56 claimed=€104 actual=€124 — A straightforward 2.5-hour drive unlocks elite child-friendly infrastructure in a cooler mountain…
 - 👍 2026-07-09 | Velingrad Spa & Thermal Break | Jul 24 - Jul 27, 2026 | good score=82->77 claimed=€85 actual=€128 — An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and…
 - · 2026-07-09 | Milan & Northern Italy City Break | Jul 15 - Jul 20, 2026 | skip score=68->56 claimed=€115 actual=€142 — Direct flights from Plovdiv minimize transit friction, and the hotel's family infrastructure is…
-- 💎 2026-07-09 | Bansko Summer Mountain Escape | Aug 7 - Aug 10, 2026 | diamond score=81->87 claimed=€78 actual=€104 — A manageable 2.5-hour drive unlocks excellent summer mountain utility, featuring cooler…
-- 👍 2026-07-09 | Hisarya Ultra-Local Thermal Retreat | Aug 21 - Aug 24, 2026 | good score=76->73 claimed=€118 actual=€123 — An ultra-local 45-minute drive eliminates transit friction entirely, providing highly actionable,…
-- 💎 2026-07-08 | Velingrad SPA Retreat | 2026-08-18 to 2026-08-21 | diamond score=82->87 claimed=€72 actual=€105 — An effortless 1.5-hour drive delivers outstanding family utility with warm mineral pools and kids'…
-- 👍 2026-07-08 | Pirin Mountain Escape | 2026-08-13 to 2026-08-16 | good score=81->81 claimed=€69 actual=€103 — A highly manageable 2.5-hour drive provides immense safe, open-air utility in a cooler mountain…
-- · 2026-07-08 | Sunny Beach Post-Peak Value Play | 2026-08-30 to 2026-09-04 | skip score=76->48 claimed=€58 actual=€165 — A straightforward 3-hour highway drive offers solid late-summer beach utility with good pools,…
-_... and 42 earlier entries_
+_... and 47 earlier entries_

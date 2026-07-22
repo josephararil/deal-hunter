@@ -1418,6 +1418,41 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-22",
+      "deal_id": 5,
+      "destination": "Sunny Beach Late Season",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 77,
+      "price_adj": 10,
+      "transit_adj": -3,
+      "final_score": 84,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.",
+      "about": "Hotel Laguna Park & Aqua Club is a lively 4-star all-inclusive resort situated in the central part of Sunny Beach. Its massive standout feature is the on-site aqua park with numerous slides and dedicated children's splash zones that a 4-year-old will love. The resort is just a short walk from the wide sandy beaches, and while the town is bustling, the hotel provides a self-contained hub of family entertainment.",
+      "value_case": "At €168/night, this early September rate reflects a nice drop from peak August pricing, which typically exceeds €210/night. It's a competitive price for a highly-rated resort with a fully operational aqua park on site.",
+      "why": "A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility, offering an easy and fun late-summer beach run for a 4-year-old.",
+      "red_flags": "Being centrally located in Sunny Beach, there could be residual noise from the resort town, though early September is generally quieter than peak summer.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.7. Live rate: €167.51/night (€837.56 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Hotel+Laguna+Park+%26+Aqua+Club+-+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 167.51,
+          "total_eur": 837.56,
+          "source": "Booking.com (apidojo) live 2026-07-22",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Hotel+Laguna+Park+%26+Aqua+Club+-+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

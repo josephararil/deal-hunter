@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-22
+# Diamond Finder Memory — updated 2026-07-25
 
-## Price Baselines (57 entries)
+## Price Baselines (62 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -197,6 +197,16 @@ _Source: Booking.com (apidojo) live 2026-07-02_
 I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…
 _Source: hu openair official booking engine check 2026-07-01_
 
+### St. Constantine and Elena Premium Thermal Resort|2026-09
+**Realistic:** ~€218/night &nbsp; **Updated:** 2026-07-25
+I verified the availability of the Ensana Aquahouse Hotel & Spa for your requested dates (Sep 6–10, 2026). The current market rate is approximately €218 per night (€872 total for 4 nights), which…
+_Source: Ensana Hotels official booking engine_
+
+### Sunny Beach All-Inclusive Escape|2026-08
+**Realistic:** ~€210/night &nbsp; **Updated:** 2026-07-25
+I checked Asteria Family Sunny Beach for your dates. The property is currently accepting bookings for August 30–September 1, but the nightly rate is around €210 (€420 total for 2 nights), which is…
+_Source: booking.com live search 2026-07-25_
+
 ### Sunny Beach Late Season|2026-09
 **Realistic:** ~€167.51/night &nbsp; **Updated:** 2026-07-22
 Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.
@@ -212,10 +222,20 @@ _Source: Festa Hotels official site / Booking aggregators live check_
 Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-04_
 
+### Sveti Vlas Late Summer Break|2026-09
+**Realistic:** ~€101/night &nbsp; **Updated:** 2026-07-25
+I verified the Paradise Beach Residence for your requested dates of September 1–6, 2026. The rate is approximately €101 per night (€505 total for 5 nights), which is slightly lower than the initial…
+_Source: BeachBulgaria.com rack rates for Sep 2026_
+
 ### Thassos Island Beach Break|2026-07
 **Realistic:** ~€65/night &nbsp; **Updated:** 2026-07-07
 I have verified the Esperia Hotel deal in Pefkari, Thassos. Availability is confirmed for early to mid-July 2026 at approximately €65–€66/night for a room including breakfast. You can book this…
 _Source: Go-Thassos direct availability search 2026-07-07_
+
+### Thassos Island Getaway|2026-08
+**Realistic:** ~€250/night &nbsp; **Updated:** 2026-07-25
+I searched for availability at Votsalo Suites in Skala Potamia for August 24–28, 2026. The property is confirmed as open and bookable, with current market rates for this peak season period at €250…
+_Source: Votsalo Suites Official Booking Engine 2026-07-25_
 
 ### Thassos Island|2026-09
 **Realistic:** ~€218/night &nbsp; **Updated:** 2026-07-06
@@ -257,6 +277,11 @@ _Source: Booking.com (apidojo) live 2026-07-17_
 Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-22_
 
+### Velingrad Spa Retreat|2026-08
+**Realistic:** ~€166/night &nbsp; **Updated:** 2026-07-25
+I searched for the Spa Hotel Olymp for your August 15–18 window and found that the current rate for a double room is €166 per night, which is higher than the original €125 estimate (totaling €498 for…
+_Source: Spa Hotel Olymp official website 2026-07-25_
+
 ### Velingrad Spa Retreat|2026-09
 **Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-07-21
 Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
@@ -287,8 +312,13 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (97 entries)
+## Outcome Ledger (102 entries)
 
+- 👍 2026-07-25 | Velingrad Spa Retreat | Aug 15-18 | good score=68->76 claimed=€125 actual=€166 — Near-zero transit friction and reliable half-board amenities provide an effortless, though…
+- · 2026-07-25 | Sunny Beach All-Inclusive Escape | Aug 30-Sep 4 | skip score=55->44 claimed=€105 actual=€210 — A short 2-night stay barely justifies the 6-hour round-trip drive with a toddler, heavily diluting…
+- 👍 2026-07-25 | Thassos Island Getaway | Aug 24-28 | good score=72->77 claimed=€180 actual=€250 — The exceptionally shallow, toddler-friendly waters of Golden Beach provide memorable absolute…
+- 👍 2026-07-25 | Sveti Vlas Late Summer Break | Sep 1-6 | good score=78->90 claimed=€114 actual=€101 — A very manageable 3-hour drive unlocks excellent late-summer coastal air and immediate beach access…
+- 👍 2026-07-25 | St. Constantine and Elena Premium Thermal Resort | Sep 6-10 | good score=86->95 claimed=€151 actual=€218 — A true flagship 5-star experience with peerless thermal pools and kids' facilities that easily…
 - 👍 2026-07-22 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=86->98 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering exceptional…
 - 👍 2026-07-22 | Velingrad Spa & Thermal Break | Sep 17-20, 2026 | good score=88->100 claimed=€128 actual=€128.31 — An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding…
 - 👍 2026-07-22 | Belek All-Inclusive Resort | Sep 8-15, 2026 | good score=82->77 claimed=€215 actual=€215 — Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value,…
@@ -334,9 +364,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - · 2026-07-11 | Milan City Break via PDV | Sep 15-20, 2026 | skip score=58->41 claimed=€142 actual=€154 — Direct flights minimize travel friction, but a 5-night city break in Milan offers limited utility…
 - · 2026-07-10 | Antalya, Turkey | 2026-08-20 to 2026-08-27 | skip score=18->0 claimed=€95 actual=€215 — A mere 2-night stay requiring a drive to Sofia followed by an international flight is a logistical…
 - · 2026-07-10 | Hisarya, Bulgaria | 2026-08-21 to 2026-08-24 | skip score=78->54 claimed=€123 actual=€123 — An effortless 45-minute drive eliminates transit friction, offering high-value, low-stress…
-- · 2026-07-10 | Thassos, Greece | 2026-09-06 to 2026-09-11 | skip score=37->0 claimed=€135 actual=€218 — While the warm, shallow Aegean waters offer great beach utility, the exhausting 4.5-hour…
-- · 2026-07-10 | Velingrad, Bulgaria | 2026-07-24 to 2026-07-27 | skip score=77->50 claimed=€128 actual=€128 — A highly manageable 1.5-hour drive delivers outstanding family utility with warm thermal mineral…
-- · 2026-07-10 | Bansko, Bulgaria | 2026-08-07 to 2026-08-10 | skip score=81->56 claimed=€104 actual=€124 — A straightforward 2.5-hour drive unlocks elite child-friendly infrastructure in a cooler mountain…
-- 👍 2026-07-09 | Velingrad Spa & Thermal Break | Jul 24 - Jul 27, 2026 | good score=82->77 claimed=€85 actual=€128 — An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and…
-- · 2026-07-09 | Milan & Northern Italy City Break | Jul 15 - Jul 20, 2026 | skip score=68->56 claimed=€115 actual=€142 — Direct flights from Plovdiv minimize transit friction, and the hotel's family infrastructure is…
-_... and 47 earlier entries_
+_... and 52 earlier entries_

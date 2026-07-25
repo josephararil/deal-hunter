@@ -341,6 +341,36 @@
       "note": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-22",
       "updated": "2026-07-22"
+    },
+    "Velingrad Spa Retreat|2026-08": {
+      "realistic_price_eur": 166,
+      "note": "I searched for the Spa Hotel Olymp for your August 15–18 window and found that the current rate for a double room is €166 per night, which is higher than the original €125 estimate (totaling €498 for…",
+      "source": "Spa Hotel Olymp official website 2026-07-25",
+      "updated": "2026-07-25"
+    },
+    "Sunny Beach All-Inclusive Escape|2026-08": {
+      "realistic_price_eur": 210,
+      "note": "I checked Asteria Family Sunny Beach for your dates. The property is currently accepting bookings for August 30–September 1, but the nightly rate is around €210 (€420 total for 2 nights), which is…",
+      "source": "booking.com live search 2026-07-25",
+      "updated": "2026-07-25"
+    },
+    "Thassos Island Getaway|2026-08": {
+      "realistic_price_eur": 250,
+      "note": "I searched for availability at Votsalo Suites in Skala Potamia for August 24–28, 2026. The property is confirmed as open and bookable, with current market rates for this peak season period at €250…",
+      "source": "Votsalo Suites Official Booking Engine 2026-07-25",
+      "updated": "2026-07-25"
+    },
+    "Sveti Vlas Late Summer Break|2026-09": {
+      "realistic_price_eur": 101,
+      "note": "I verified the Paradise Beach Residence for your requested dates of September 1–6, 2026. The rate is approximately €101 per night (€505 total for 5 nights), which is slightly lower than the initial…",
+      "source": "BeachBulgaria.com rack rates for Sep 2026",
+      "updated": "2026-07-25"
+    },
+    "St. Constantine and Elena Premium Thermal Resort|2026-09": {
+      "realistic_price_eur": 218,
+      "note": "I verified the availability of the Ensana Aquahouse Hotel & Spa for your requested dates (Sep 6–10, 2026). The current market rate is approximately €218 per night (€872 total for 4 nights), which…",
+      "source": "Ensana Hotels official booking engine",
+      "updated": "2026-07-25"
     }
   },
   "ledger": [
@@ -1570,6 +1600,71 @@
       "final_score": 84,
       "source": "Booking.com (apidojo) live 2026-07-22",
       "note": "A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility, offering an easy and fun late-summer beach run for a 4-year-old."
+    },
+    {
+      "date": "2026-07-25",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Aug 15-18",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "good",
+      "actual_price": 166,
+      "llm_score": 68,
+      "final_score": 76,
+      "source": "Spa Hotel Olymp official website 2026-07-25",
+      "note": "Near-zero transit friction and reliable half-board amenities provide an effortless, though standard, regional spa weekend for a young family."
+    },
+    {
+      "date": "2026-07-25",
+      "destination": "Sunny Beach All-Inclusive Escape",
+      "window": "Aug 30-Sep 4",
+      "type": "hotel",
+      "claimed_price": 105,
+      "verdict": "skip",
+      "actual_price": 210,
+      "llm_score": 55,
+      "final_score": 44,
+      "source": "booking.com live search 2026-07-25",
+      "note": "A short 2-night stay barely justifies the 6-hour round-trip drive with a toddler, heavily diluting the otherwise strong family utility of this resort."
+    },
+    {
+      "date": "2026-07-25",
+      "destination": "Thassos Island Getaway",
+      "window": "Aug 24-28",
+      "type": "hotel",
+      "claimed_price": 180,
+      "verdict": "good",
+      "actual_price": 250,
+      "llm_score": 72,
+      "final_score": 77,
+      "source": "Votsalo Suites Official Booking Engine 2026-07-25",
+      "note": "The exceptionally shallow, toddler-friendly waters of Golden Beach provide memorable absolute family value, offset slightly by the added ferry crossing friction."
+    },
+    {
+      "date": "2026-07-25",
+      "destination": "Sveti Vlas Late Summer Break",
+      "window": "Sep 1-6",
+      "type": "hotel",
+      "claimed_price": 114,
+      "verdict": "good",
+      "actual_price": 101,
+      "llm_score": 78,
+      "final_score": 90,
+      "source": "BeachBulgaria.com rack rates for Sep 2026",
+      "note": "A very manageable 3-hour drive unlocks excellent late-summer coastal air and immediate beach access for a perfectly sized 5-night family break."
+    },
+    {
+      "date": "2026-07-25",
+      "destination": "St. Constantine and Elena Premium Thermal Resort",
+      "window": "Sep 6-10",
+      "type": "hotel",
+      "claimed_price": 151,
+      "verdict": "good",
+      "actual_price": 218,
+      "llm_score": 86,
+      "final_score": 95,
+      "source": "Ensana Hotels official booking engine",
+      "note": "A true flagship 5-star experience with peerless thermal pools and kids' facilities that easily justifies the 4-hour drive for a 4-night stay."
     }
   ]
 }

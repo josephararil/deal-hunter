@@ -1628,6 +1628,111 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-28",
+      "deal_id": 2,
+      "destination": "Sunny Beach Late Season Arbitrage",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 84,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 96,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €121.57/night (€607.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "about": "Galeon Residence & SPA is a premium 5-star resort located in the southern, quieter stretch of Sunny Beach near Nessebar. Earning a strong 9.0 review score, it features spacious accommodations and beautifully designed pool areas. In early September, families with a 4-year-old can still fully utilize the kids' facilities and nearby sandy beaches without the overwhelming peak summer crowds.",
+      "value_case": "At €121/night, this is an outstanding late-season arbitrage for a genuine 5-star resort on the coast. During the peak summer months, comparable properties of this caliber easily command €180 to €220 per night, offering significant tier-upgrade luxury for a fraction of the cost.",
+      "why": "A straightforward highway drive unlocks a strong 5-star experience, with fully open pools and coastal air offering excellent, low-friction family utility before the season closes.",
+      "red_flags": "Verify if the outdoor pools are heated, as the Black Sea coast can occasionally experience sudden temperature drops in early September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €121.57/night (€607.84 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 121.57,
+          "total_eur": 607.84,
+          "source": "Booking.com (apidojo) live 2026-07-28",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-28",
+      "deal_id": 1,
+      "destination": "Velingrad Spa Retreat",
+      "type": "hotel",
+      "window": "Sep 10-13, 2026",
+      "tier": "skip",
+      "llm_score": 68,
+      "price_adj": -13,
+      "transit_adj": 3,
+      "final_score": 58,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Family Hotel Iv, 2-star for Sep 10-13, 2026: €113.61/night (€340.84 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "about": "Family Hotel Iv is a modest, highly rated (9.0) 2-star property in Velingrad, ideal for a quiet and straightforward getaway. It lacks the expansive kids' clubs or massive thermal pools of the 4-star and 5-star resorts in town, but offers a very cozy, well-maintained base. Families can enjoy the town's fresh mountain air and local mineral baths at an unhurried pace.",
+      "value_case": "At €113/night, you are paying a noticeable premium for a 2-star property, which typically commands €70-€90. For context, many larger 4-star spa hotels in Velingrad sit in the €130-€150 range, making this less of a bargain and more of a standard convenience booking.",
+      "why": "A very easy 1.5-hour drive provides near-zero transit friction for a quiet weekend, but the basic 2-star amenities cap the overall excitement for a young child.",
+      "red_flags": "As a 2-star property, verify that it has adequate on-site entertainment or pool access for a 4-year-old, as these are often limited compared to larger resorts.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-10–2026-09-13, currency=EUR, adults=2, children=[4]. Property class: 2-star. Review score: 9.0. Live rate: €113.61/night (€340.84 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Family+Hotel+Iv&checkin=2026-09-10&checkout=2026-09-13&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 10-13, 2026",
+          "nights": 3,
+          "price_per_night_eur": 113.61,
+          "total_eur": 340.84,
+          "source": "Booking.com (apidojo) live 2026-07-28",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Family+Hotel+Iv&checkin=2026-09-10&checkout=2026-09-13&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€128.31/night here — this is 11% under.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-28",
+      "deal_id": 4,
+      "destination": "Paris Shoulder-Season Flights",
+      "type": "flight",
+      "window": "Sep 28 - Oct 5, 2026",
+      "tier": "skip",
+      "llm_score": 48,
+      "price_adj": 2,
+      "transit_adj": -3,
+      "final_score": 47,
+      "flight_cost_eur_total": 85,
+      "ground_transport_eur": 130,
+      "effective_ppn": 42.854285714285716,
+      "confidence": "high",
+      "summary": "I confirmed that budget airlines, particularly Wizz Air, offer round-trip flights from Sofia to Paris (Beauvais) for approximately €85 total for the September 28–October 5, 2026 window. You can book these fares directly on the Wizz Air website. Keep in mind that this is a base fare, so luggage and transit from Beauvais airport to central Paris will cost extra.",
+      "about": "This option leverages low-cost flights landing at Paris Beauvais, a budget airport located significantly north of Paris. While Paris offers world-class sights and the major family draw of Disneyland, the city itself requires heavy walking and metro navigation. The required shuttle bus from Beauvais adds a substantial logistical hurdle before reaching any accommodation.",
+      "value_case": "A base fare of €85 total for the family is a striking discount compared to the €300-€500 typically charged by legacy airlines. However, once you add mandatory luggage, seat selection, and the €100+ round-trip shuttle from Beauvais to Paris, the true transport cost easily triples.",
+      "why": "The grueling door-to-door logistics of driving to Sofia, flying into Beauvais, and taking a 1.5-hour shuttle heavily dilute the utility of an urban trip for a 4-year-old.",
+      "red_flags": "The Wizz Air base fare does not include cabin bags or seat selection, and the mandatory Beauvais airport shuttle will add over €100 and 3 hours of round-trip transit time.",
+      "grounding": "Live search data confirms that low-cost carriers like Wizz Air and Ryanair operate the Sofia-Paris (Beauvais) route with base fares in the €80–€90 range for round-trip tickets in the requested late-September/early-October window.",
+      "how_to_book": "Book directly through the Wizz Air or Ryanair websites for flights from Sofia (SOF) to Paris Beauvais (BVA). Prices fluctuate based on baggage and seat selection.",
+      "options": [
+        {
+          "dates": "Sep 28–Oct 5, 2026",
+          "nights": 7,
+          "price_per_night_eur": 12.14,
+          "total_eur": 85,
+          "source": "Wizz Air live search 2026-07-28",
+          "booking_url": "https://wizzair.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
     }
   ]
 }

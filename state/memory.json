@@ -313,10 +313,10 @@
       "updated": "2026-07-20"
     },
     "Velingrad Spa Retreat|2026-09": {
-      "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-21",
-      "updated": "2026-07-21"
+      "realistic_price_eur": 113.61,
+      "note": "Verified Family Hotel Iv, 2-star for Sep 10-13, 2026: €113.61/night (€340.84 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-28",
+      "updated": "2026-07-28"
     },
     "Hisarya Thermal Break|2026-09": {
       "realistic_price_eur": 97.76,
@@ -371,6 +371,18 @@
       "note": "I verified the availability of the Ensana Aquahouse Hotel & Spa for your requested dates (Sep 6–10, 2026). The current market rate is approximately €218 per night (€872 total for 4 nights), which…",
       "source": "Ensana Hotels official booking engine",
       "updated": "2026-07-25"
+    },
+    "Sunny Beach Late Season Arbitrage|2026-09": {
+      "realistic_price_eur": 121.57,
+      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €121.57/night (€607.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-28",
+      "updated": "2026-07-28"
+    },
+    "Paris Shoulder-Season Flights|2026-09": {
+      "realistic_price_eur": 12.14,
+      "note": "I confirmed that budget airlines, particularly Wizz Air, offer round-trip flights from Sofia to Paris (Beauvais) for approximately €85 total for the September 28–October 5, 2026 window. You can book…",
+      "source": "Wizz Air live search 2026-07-28",
+      "updated": "2026-07-28"
     }
   },
   "ledger": [
@@ -1665,6 +1677,58 @@
       "final_score": 95,
       "source": "Ensana Hotels official booking engine",
       "note": "A true flagship 5-star experience with peerless thermal pools and kids' facilities that easily justifies the 4-hour drive for a 4-night stay."
+    },
+    {
+      "date": "2026-07-28",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 10-13, 2026",
+      "type": "hotel",
+      "claimed_price": 52,
+      "verdict": "skip",
+      "actual_price": 113.61,
+      "llm_score": 68,
+      "final_score": 58,
+      "source": "Booking.com (apidojo) live 2026-07-28",
+      "note": "A very easy 1.5-hour drive provides near-zero transit friction for a quiet weekend, but the basic 2-star amenities cap the overall excitement for a young child."
+    },
+    {
+      "date": "2026-07-28",
+      "destination": "Sunny Beach Late Season Arbitrage",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "good",
+      "actual_price": 121.57,
+      "llm_score": 84,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-07-28",
+      "note": "A straightforward highway drive unlocks a strong 5-star experience, with fully open pools and coastal air offering excellent, low-friction family utility before the season closes."
+    },
+    {
+      "date": "2026-07-28",
+      "destination": "New All-Inclusive Family Resort",
+      "window": "Sep 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "kill",
+      "actual_price": null,
+      "llm_score": null,
+      "final_score": null,
+      "source": "",
+      "note": ""
+    },
+    {
+      "date": "2026-07-28",
+      "destination": "Paris Shoulder-Season Flights",
+      "window": "Sep 28 - Oct 5, 2026",
+      "type": "flight",
+      "claimed_price": 80,
+      "verdict": "skip",
+      "actual_price": 12.14,
+      "llm_score": 48,
+      "final_score": 47,
+      "source": "Wizz Air live search 2026-07-28",
+      "note": "The grueling door-to-door logistics of driving to Sofia, flying into Beauvais, and taking a 1.5-hour shuttle heavily dilute the utility of an urban trip for a 4-year-old."
     }
   ]
 }

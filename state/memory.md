@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-25
+# Diamond Finder Memory — updated 2026-07-28
 
-## Price Baselines (62 entries)
+## Price Baselines (64 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -167,6 +167,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 I verified the Orange County Resort Hotel Belek for the dates of September 8-15, 2026. While the resort is fully available, the real-time pricing tracks at €215 per night (€1505 total for 7 nights),…
 _Source: booking.com live availability check 2026-07-20_
 
+### Paris Shoulder-Season Flights|2026-09
+**Realistic:** ~€12.14/night &nbsp; **Updated:** 2026-07-28
+I confirmed that budget airlines, particularly Wizz Air, offer round-trip flights from Sofia to Paris (Beauvais) for approximately €85 total for the September 28–October 5, 2026 window. You can book…
+_Source: Wizz Air live search 2026-07-28_
+
 ### Park Hotel & SPA Vella Hills|2026-09
 **Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-07-20
 Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
@@ -206,6 +211,11 @@ _Source: Ensana Hotels official booking engine_
 **Realistic:** ~€210/night &nbsp; **Updated:** 2026-07-25
 I checked Asteria Family Sunny Beach for your dates. The property is currently accepting bookings for August 30–September 1, but the nightly rate is around €210 (€420 total for 2 nights), which is…
 _Source: booking.com live search 2026-07-25_
+
+### Sunny Beach Late Season Arbitrage|2026-09
+**Realistic:** ~€121.57/night &nbsp; **Updated:** 2026-07-28
+Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €121.57/night (€607.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-28_
 
 ### Sunny Beach Late Season|2026-09
 **Realistic:** ~€167.51/night &nbsp; **Updated:** 2026-07-22
@@ -283,9 +293,9 @@ I searched for the Spa Hotel Olymp for your August 15–18 window and found that
 _Source: Spa Hotel Olymp official website 2026-07-25_
 
 ### Velingrad Spa Retreat|2026-09
-**Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-07-21
-Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-21_
+**Realistic:** ~€113.61/night &nbsp; **Updated:** 2026-07-28
+Verified Family Hotel Iv, 2-star for Sep 10-13, 2026: €113.61/night (€340.84 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-28_
 
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
@@ -312,8 +322,12 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (102 entries)
+## Outcome Ledger (106 entries)
 
+- · 2026-07-28 | Velingrad Spa Retreat | Sep 10-13, 2026 | skip score=68->58 claimed=€52 actual=€113.61 — A very easy 1.5-hour drive provides near-zero transit friction for a quiet weekend, but the basic…
+- 👍 2026-07-28 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->96 claimed=€95 actual=€121.57 — A straightforward highway drive unlocks a strong 5-star experience, with fully open pools and…
+- ❌ 2026-07-28 | New All-Inclusive Family Resort | Sep 15-22, 2026 | kill claimed=€135
+- · 2026-07-28 | Paris Shoulder-Season Flights | Sep 28 - Oct 5, 2026 | skip score=48->47 claimed=€80 actual=€12.14 — The grueling door-to-door logistics of driving to Sofia, flying into Beauvais, and taking a…
 - 👍 2026-07-25 | Velingrad Spa Retreat | Aug 15-18 | good score=68->76 claimed=€125 actual=€166 — Near-zero transit friction and reliable half-board amenities provide an effortless, though…
 - · 2026-07-25 | Sunny Beach All-Inclusive Escape | Aug 30-Sep 4 | skip score=55->44 claimed=€105 actual=€210 — A short 2-night stay barely justifies the 6-hour round-trip drive with a toddler, heavily diluting…
 - 👍 2026-07-25 | Thassos Island Getaway | Aug 24-28 | good score=72->77 claimed=€180 actual=€250 — The exceptionally shallow, toddler-friendly waters of Golden Beach provide memorable absolute…
@@ -360,8 +374,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - · 2026-07-14 | Antalya Late Summer All-Inclusive | Sep 15 - Sep 22, 2026 | skip score=78->65 claimed=€210 actual=€131 — World-class resort utility and warm September seas provide massive family value, amortising the…
 - 👍 2026-07-11 | Hisarya Ultra-Local Thermal Retreat | Aug 28-31, 2026 | good score=74->81 claimed=€123 actual=€101.93 — An ultra-local 45-minute drive offers zero transit friction, delivering highly actionable,…
 - 👍 2026-07-11 | Velingrad Spa & Thermal Break | Aug 21-24, 2026 | good score=78->78 claimed=€128 actual=€116.39 — A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral…
-- 👍 2026-07-11 | Bansko Summer Mountain Escape | Aug 14-17, 2026 | good score=82->72 claimed=€115 actual=€139.59 — An easy 2.5-hour drive unlocks elite 5-star child-friendly infrastructure and a cool mountain…
-- · 2026-07-11 | Milan City Break via PDV | Sep 15-20, 2026 | skip score=58->41 claimed=€142 actual=€154 — Direct flights minimize travel friction, but a 5-night city break in Milan offers limited utility…
-- · 2026-07-10 | Antalya, Turkey | 2026-08-20 to 2026-08-27 | skip score=18->0 claimed=€95 actual=€215 — A mere 2-night stay requiring a drive to Sofia followed by an international flight is a logistical…
-- · 2026-07-10 | Hisarya, Bulgaria | 2026-08-21 to 2026-08-24 | skip score=78->54 claimed=€123 actual=€123 — An effortless 45-minute drive eliminates transit friction, offering high-value, low-stress…
-_... and 52 earlier entries_
+_... and 56 earlier entries_

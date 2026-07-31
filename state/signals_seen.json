@@ -68,12 +68,15 @@
     "votsalosuites|Aug 24-28|good": "2026-07-25",
     "spahotelolymp|Aug 15-18|good": "2026-07-25",
     "asteriafamilysunnybeach|Aug 30-Sep 4|skip": "2026-07-25",
-    "galeonresidenceandspa|2026-09|good": "2026-07-28",
+    "galeonresidenceandspa|2026-09|good": "2026-07-31",
     "hoteliv|2026-09|skip": "2026-07-28",
-    "paris|2026-09|skip": "2026-07-28"
+    "paris|2026-09|skip": "2026-07-28",
+    "premierluxurymountainresort|2026-09|good": "2026-07-31",
+    "milan|2026-09|skip": "2026-07-31",
+    "corfu|2026-09|skip": "2026-07-31"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 23
+    "2026-07": 24
   }
 }

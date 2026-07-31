@@ -1733,6 +1733,184 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-07-31",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Retreat",
+      "type": "hotel",
+      "window": "Sep 3-6, 2026",
+      "tier": "good",
+      "llm_score": 82,
+      "price_adj": 14,
+      "transit_adj": 3,
+      "final_score": 99,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €109.45/night (€328.34 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.",
+      "about": "Premier Luxury Mountain Resort is a well-regarded 5-star flagship property in Bansko, scoring a solid 8.7 in reviews. It offers excellent facilities for families, including heated indoor pools, spacious rooms, and dedicated play areas. While the town itself is quiet in September, the hotel provides enough contained luxury and nearby light mountain trails to keep a 4-year-old easily entertained.",
+      "value_case": "Securing a 5-star mountain resort for €109/night in September is a great shoulder-season bargain, as this property usually commands €150 or more. You are getting top-tier resort facilities for the price of a standard 4-star regional hotel.",
+      "why": "An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short active family break before the town gets too quiet.",
+      "red_flags": "Confirm the exact operating hours of the kids' club and pools during the shoulder season to ensure they haven't reduced services.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-03–2026-09-06, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.7. Live rate: €109.45/night (€328.34 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-03&checkout=2026-09-06&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 3-6, 2026",
+          "nights": 3,
+          "price_per_night_eur": 109.45,
+          "total_eur": 328.34,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-03&checkout=2026-09-06&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-07-31",
+      "deal_id": 4,
+      "destination": "Direct Flights to Milan (MXP)",
+      "type": "flight",
+      "window": "Sep 15-22, 2026",
+      "tier": "skip",
+      "llm_score": 55,
+      "price_adj": 0,
+      "transit_adj": 3,
+      "final_score": 58,
+      "flight_cost_eur_total": 250,
+      "ground_transport_eur": 120,
+      "effective_ppn": 100.82714285714286,
+      "confidence": "medium",
+      "summary": "best-value family stays in Milan for Sep 15-22, 2026: MilanoValery3 €47.97/night; Milano: accogliente appartamento in zona comoda €59.03/night; tHE Home Of Fame - Bosco Verticale View €178.54/night.",
+      "about": "This itinerary leverages budget apartments in Milan, which are basic but offer a base for exploration. Milan serves well as a transit hub, giving families access to city parks or regional train connections to the scenic Italian Lakes like Como or Maggiore. However, accommodations at this budget price point lack resort amenities like pools or kids' clubs, requiring parents to actively plan and manage daily entertainment.",
+      "value_case": "At roughly €48/night, this is an aggressive budget rate for Milan, where family-sized apartments typically run €100 or more even in the shoulder season. It is a genuine bargain for city access, provided you are comfortable with very basic self-catering.",
+      "why": "Direct flights from Plovdiv eliminate the Sofia drive, but a 7-night city trip centered around a basic apartment offers limited built-in utility for a 4-year-old.",
+      "red_flags": "Basic €48/night apartments in Milan are often very small, located in peripheral neighborhoods, or may lack essential family comforts like air conditioning or elevators.",
+      "grounding": "Booking.com (apidojo) city search 2026-09-15-2026-09-22, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 47.97,
+          "total_eur": 335.77,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "name": "MilanoValery3",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=MilanoValery3&checkin=2026-09-15&checkout=2026-09-22&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 59.03,
+          "total_eur": 413.23,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "name": "Milano: accogliente appartamento in zona comoda",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Milano%3A+accogliente+appartamento+in+zona+comoda&checkin=2026-09-15&checkout=2026-09-22&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 178.54,
+          "total_eur": 1249.79,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "name": "tHE Home Of Fame - Bosco Verticale View",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=tHE+Home+Of+Fame+-+Bosco+Verticale+View&checkin=2026-09-15&checkout=2026-09-22&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-07-31",
+      "deal_id": 5,
+      "destination": "Corfu Late Summer Escape",
+      "type": "flight",
+      "window": "Sep 8-15, 2026",
+      "tier": "skip",
+      "llm_score": 52,
+      "price_adj": -20,
+      "transit_adj": -3,
+      "final_score": 29,
+      "flight_cost_eur_total": 280,
+      "ground_transport_eur": 150,
+      "effective_ppn": 132.5885714285714,
+      "confidence": "medium",
+      "summary": "best-value family stays in Corfu for Sep 8-15, 2026: Jimmy's Cozy Apartment €71.16/night; Ipsos Apartment Mari €72.16/night; Loukia's Studios and Apartments €74.58/night.",
+      "about": "This deal points to budget-friendly, self-catering accommodations on the island of Corfu. Corfu in September is idyllic, offering warm, shallow, toddler-friendly waters and a relaxed atmosphere. However, the stays are basic residential apartments rather than resorts, meaning you will not have on-site pools, kids' clubs, or dining facilities to fall back on.",
+      "value_case": "Snagging a Corfu apartment for ~€71/night is a solid budget find, as similar properties typically average €95 in September. It helps offset the flight costs, though it trades resort convenience for a purely self-guided holiday.",
+      "why": "The high friction of driving to Sofia and flying with a toddler eats into the family value of a basic apartment stay, despite the beautiful island destination.",
+      "red_flags": "Driving to Sofia, navigating the airport, and flying burns almost an entire day each way, which is a tough logistical ask with a 4-year-old for a non-resort stay.",
+      "grounding": "Booking.com (apidojo) city search 2026-09-08-2026-09-15, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Sep 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 71.16,
+          "total_eur": 498.15,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "name": "Jimmy's Cozy Apartment",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Jimmy%27s+Cozy+Apartment&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Sep 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 72.16,
+          "total_eur": 505.11,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "name": "Ipsos Apartment Mari",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Ipsos+Apartment+Mari&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Sep 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 74.58,
+          "total_eur": 522.05,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "name": "Loukia's Studios and Apartments",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Loukia%27s+Studios+and+Apartments&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-07-31",
+      "deal_id": 3,
+      "destination": "Sunny Beach Late Season Arbitrage",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 84,
+      "price_adj": 13,
+      "transit_adj": -3,
+      "final_score": 94,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Galeon Residence & SPA is a standout 5-star property in Sunny Beach with an impressive 9.0 review score. It boasts large, active pool areas and is situated close enough to the beach for easy, toddler-friendly access. The resort offers spacious family accommodation and excellent spa facilities for adults, making it a well-rounded late-summer coastal escape.",
+      "value_case": "Paying ~€123/night for a top-rated 5-star resort that normally charges upwards of €165 in season is a stellar deal. It delivers premium coastal amenities at a price usually associated with standard 4-star properties.",
+      "why": "A straightforward 3-hour highway drive to a premium 5-star coastal property maximizes the last of the summer weather with massive toddler appeal.",
+      "red_flags": "Check if the outdoor pools are heated; if unheated, the early September sea breeze might make them too cold for a 4-year-old.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.91/night (€614.53 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 122.91,
+          "total_eur": 614.53,
+          "source": "Booking.com (apidojo) live 2026-07-31",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€121.57/night here — about the usual rate.",
+      "child_price_caveat": true
     }
   ]
 }

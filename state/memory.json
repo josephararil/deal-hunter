@@ -279,8 +279,8 @@
     "Hisarya Thermal Retreat|2026-09": {
       "realistic_price_eur": 97.76,
       "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-22",
-      "updated": "2026-07-22"
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "updated": "2026-07-31"
     },
     "Bansko Mountain Escape|2026-09": {
       "realistic_price_eur": 151.8,
@@ -373,16 +373,22 @@
       "updated": "2026-07-25"
     },
     "Sunny Beach Late Season Arbitrage|2026-09": {
-      "realistic_price_eur": 121.57,
-      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €121.57/night (€607.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-28",
-      "updated": "2026-07-28"
+      "realistic_price_eur": 122.91,
+      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "updated": "2026-07-31"
     },
     "Paris Shoulder-Season Flights|2026-09": {
       "realistic_price_eur": 12.14,
       "note": "I confirmed that budget airlines, particularly Wizz Air, offer round-trip flights from Sofia to Paris (Beauvais) for approximately €85 total for the September 28–October 5, 2026 window. You can book…",
       "source": "Wizz Air live search 2026-07-28",
       "updated": "2026-07-28"
+    },
+    "Bansko Mountain Retreat|2026-09": {
+      "realistic_price_eur": 109.45,
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €109.45/night (€328.34 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "updated": "2026-07-31"
     }
   },
   "ledger": [
@@ -1729,6 +1735,71 @@
       "final_score": 47,
       "source": "Wizz Air live search 2026-07-28",
       "note": "The grueling door-to-door logistics of driving to Sofia, flying into Beauvais, and taking a 1.5-hour shuttle heavily dilute the utility of an urban trip for a 4-year-old."
+    },
+    {
+      "date": "2026-07-31",
+      "destination": "Hisarya Thermal Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 98,
+      "verdict": "good",
+      "actual_price": 97.76,
+      "llm_score": 86,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "note": "An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a toddler on a short 3-night break."
+    },
+    {
+      "date": "2026-07-31",
+      "destination": "Bansko Mountain Retreat",
+      "window": "Sep 3-6, 2026",
+      "type": "hotel",
+      "claimed_price": 120,
+      "verdict": "good",
+      "actual_price": 109.45,
+      "llm_score": 82,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "note": "An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short active family break before the town gets too quiet."
+    },
+    {
+      "date": "2026-07-31",
+      "destination": "Sunny Beach Late Season Arbitrage",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "good",
+      "actual_price": 122.91,
+      "llm_score": 84,
+      "final_score": 94,
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "note": "A straightforward 3-hour highway drive to a premium 5-star coastal property maximizes the last of the summer weather with massive toddler appeal."
+    },
+    {
+      "date": "2026-07-31",
+      "destination": "Direct Flights to Milan (MXP)",
+      "window": "Sep 15-22, 2026",
+      "type": "flight",
+      "claimed_price": 18,
+      "verdict": "skip",
+      "actual_price": 47.97,
+      "llm_score": 55,
+      "final_score": 58,
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "note": "Direct flights from Plovdiv eliminate the Sofia drive, but a 7-night city trip centered around a basic apartment offers limited built-in utility for a 4-year-old."
+    },
+    {
+      "date": "2026-07-31",
+      "destination": "Corfu Late Summer Escape",
+      "window": "Sep 8-15, 2026",
+      "type": "flight",
+      "claimed_price": 20,
+      "verdict": "skip",
+      "actual_price": 71.16,
+      "llm_score": 52,
+      "final_score": 29,
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "note": "The high friction of driving to Sofia and flying with a toddler eats into the family value of a basic apartment stay, despite the beautiful island destination."
     }
   ]
 }

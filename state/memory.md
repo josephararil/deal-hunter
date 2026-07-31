@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-07-28
+# Diamond Finder Memory — updated 2026-07-31
 
-## Price Baselines (64 entries)
+## Price Baselines (65 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -41,6 +41,11 @@ _Source: Booking.com (apidojo) live 2026-07-15_
 **Realistic:** ~€127.63/night &nbsp; **Updated:** 2026-07-21
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-21_
+
+### Bansko Mountain Retreat|2026-09
+**Realistic:** ~€109.45/night &nbsp; **Updated:** 2026-07-31
+Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €109.45/night (€328.34 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-31_
 
 ### Bansko Summer Mountain Escape|2026-08
 **Realistic:** ~€139.59/night &nbsp; **Updated:** 2026-07-11
@@ -98,9 +103,9 @@ Verified Sana Spa Hotel, 3-star for Aug 14-17, 2026: €92.2/night (€276.59 to
 _Source: Booking.com (apidojo) live 2026-07-18_
 
 ### Hisarya Thermal Retreat|2026-09
-**Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-07-22
+**Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-07-31
 Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-22_
+_Source: Booking.com (apidojo) live 2026-07-31_
 
 ### Hisarya Ultra-Local Thermal Retreat|2026-08
 **Realistic:** ~€102/night &nbsp; **Updated:** 2026-07-14
@@ -213,9 +218,9 @@ I checked Asteria Family Sunny Beach for your dates. The property is currently a
 _Source: booking.com live search 2026-07-25_
 
 ### Sunny Beach Late Season Arbitrage|2026-09
-**Realistic:** ~€121.57/night &nbsp; **Updated:** 2026-07-28
-Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €121.57/night (€607.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-28_
+**Realistic:** ~€122.91/night &nbsp; **Updated:** 2026-07-31
+Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-07-31_
 
 ### Sunny Beach Late Season|2026-09
 **Realistic:** ~€167.51/night &nbsp; **Updated:** 2026-07-22
@@ -322,8 +327,13 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (106 entries)
+## Outcome Ledger (111 entries)
 
+- 👍 2026-07-31 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=86->100 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a…
+- 👍 2026-07-31 | Bansko Mountain Retreat | Sep 3-6, 2026 | good score=82->99 claimed=€120 actual=€109.45 — An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short…
+- 👍 2026-07-31 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->94 claimed=€122 actual=€122.91 — A straightforward 3-hour highway drive to a premium 5-star coastal property maximizes the last of…
+- · 2026-07-31 | Direct Flights to Milan (MXP) | Sep 15-22, 2026 | skip score=55->58 claimed=€18 actual=€47.97 — Direct flights from Plovdiv eliminate the Sofia drive, but a 7-night city trip centered around a…
+- · 2026-07-31 | Corfu Late Summer Escape | Sep 8-15, 2026 | skip score=52->29 claimed=€20 actual=€71.16 — The high friction of driving to Sofia and flying with a toddler eats into the family value of a…
 - · 2026-07-28 | Velingrad Spa Retreat | Sep 10-13, 2026 | skip score=68->58 claimed=€52 actual=€113.61 — A very easy 1.5-hour drive provides near-zero transit friction for a quiet weekend, but the basic…
 - 👍 2026-07-28 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->96 claimed=€95 actual=€121.57 — A straightforward highway drive unlocks a strong 5-star experience, with fully open pools and…
 - ❌ 2026-07-28 | New All-Inclusive Family Resort | Sep 15-22, 2026 | kill claimed=€135
@@ -369,9 +379,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - 💎 2026-07-15 | Velingrad Spa & Thermal Break | Sep 11-14, 2026 | diamond score=84->91 claimed=€93 actual=€101.71 — An effortless 1.5-hour drive provides nearly zero travel friction, unlocking fantastic thermal…
 - · 2026-07-15 | London Direct Flight from PDV | Sep 25 - Oct 2, 2026 | skip score=42->60 claimed=€30 actual=€21.0 — While the direct flight from Plovdiv is highly convenient, a 7-night dense city break in London…
 - 💎 2026-07-14 | Velingrad Spa & Thermal Break | Sep 1 - Sep 5, 2026 | diamond score=83->100 claimed=€72 actual=€72 — A completely frictionless 1.5-hour drive and excellent thermal children's pools provide outstanding…
-- 💎 2026-07-14 | Hisarya Ultra-Local Thermal Retreat | Aug 28 - Aug 31, 2026 | diamond score=81->88 claimed=€102 actual=€102 — An ultra-local 45-minute drive means zero transit exhaustion, offering a perfectly sized 3-night…
-- 👍 2026-07-14 | Bansko Summer Mountain Escape | Sep 4 - Sep 7, 2026 | good score=80->69 claimed=€125 actual=€141 — Elite 5-star kids' infrastructure and indoor pools offer fantastic on-property utility, easily…
-- · 2026-07-14 | Antalya Late Summer All-Inclusive | Sep 15 - Sep 22, 2026 | skip score=78->65 claimed=€210 actual=€131 — World-class resort utility and warm September seas provide massive family value, amortising the…
-- 👍 2026-07-11 | Hisarya Ultra-Local Thermal Retreat | Aug 28-31, 2026 | good score=74->81 claimed=€123 actual=€101.93 — An ultra-local 45-minute drive offers zero transit friction, delivering highly actionable,…
-- 👍 2026-07-11 | Velingrad Spa & Thermal Break | Aug 21-24, 2026 | good score=78->78 claimed=€128 actual=€116.39 — A highly manageable 1.5-hour drive provides outstanding family utility with warm thermal mineral…
-_... and 56 earlier entries_
+_... and 61 earlier entries_

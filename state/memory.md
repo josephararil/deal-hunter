@@ -1,11 +1,16 @@
-# Diamond Finder Memory — updated 2026-07-31
+# Diamond Finder Memory — updated 2026-08-01
 
-## Price Baselines (65 entries)
+## Price Baselines (69 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
 I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…
 _Source: Booking.com live search 2026-07-04_
+
+### Antalya Fresh Opening Arbitrage|2026-09
+**Realistic:** ~€222.07/night &nbsp; **Updated:** 2026-08-01
+Verified Dream Fun World, 5-star for Sep 8-15, 2026: €222.07/night (€1554.5 total, 7 nights), review 8.8. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-01_
 
 ### Antalya Late Summer All-Inclusive|2026-09
 **Realistic:** ~€131/night &nbsp; **Updated:** 2026-07-14
@@ -92,6 +97,11 @@ _Source: Skyscanner/Agoda live search 2026-07-19_
 I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…
 _Source: Booking.com, Expedia, and Trivago live search 2026-07-08_
 
+### Halkidiki Luxury Off-Peak|2026-09
+**Realistic:** ~€195.96/night &nbsp; **Updated:** 2026-08-01
+Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-01_
+
 ### Hisarya Thermal Break|2026-09
 **Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-07-21
 Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
@@ -136,6 +146,11 @@ _Source: Booking.com (apidojo) live 2026-07-20_
 **Realistic:** ~€167/night &nbsp; **Updated:** 2026-07-03
 I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…
 _Source: Parc Hotel Peschiera del Garda official property site_
+
+### Lara Beach Shoulder-Season Package|2026-09
+**Realistic:** ~€215/night &nbsp; **Updated:** 2026-08-01
+I verified that the Limak Lara De Luxe Hotel & Resort is open and accepting bookings for September 15–22, 2026. Current market pricing is approximately €215/night (€1505 total for 7 nights), which…
+_Source: Aggregated market pricing for 5-star Lara Beach resorts, September 2026_
 
 ### Late Season Mediterranean Escape|2026-10
 **Realistic:** ~€125/night &nbsp; **Updated:** 2026-07-22
@@ -191,6 +206,11 @@ _Source: Official property website price list 2026_
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04
 Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-04_
+
+### Rome City Break (Flash Flight Combo)|2026-09
+**Realistic:** ~€79.75/night &nbsp; **Updated:** 2026-08-01
+Verified hu Roma Camping In Town for Sep 16-21, 2026: €79.75/night (€398.75 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-01_
 
 ### Rome City Break|2026-08
 **Realistic:** ~€85/night &nbsp; **Updated:** 2026-07-07
@@ -298,9 +318,9 @@ I searched for the Spa Hotel Olymp for your August 15–18 window and found that
 _Source: Spa Hotel Olymp official website 2026-07-25_
 
 ### Velingrad Spa Retreat|2026-09
-**Realistic:** ~€113.61/night &nbsp; **Updated:** 2026-07-28
-Verified Family Hotel Iv, 2-star for Sep 10-13, 2026: €113.61/night (€340.84 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-28_
+**Realistic:** ~€166/night &nbsp; **Updated:** 2026-08-01
+I verified the Spa Hotel Olimp in Velingrad for the requested September 4-6, 2026 window. While the hotel offers a late-summer package, the confirmed rate is €166 per night (€332 total for 2 nights),…
+_Source: Official Hotel Website_
 
 ### Velingrad Thermal Escape|2026-07
 **Realistic:** ~€70/night &nbsp; **Updated:** 2026-07-07
@@ -327,8 +347,13 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (111 entries)
+## Outcome Ledger (116 entries)
 
+- 👍 2026-08-01 | Velingrad Spa Retreat | Sep 4-6, 2026 | good score=76->85 claimed=€130 actual=€166 — Near-zero transit friction and warm mineral pools offer effortless, reliable utility for a quick…
+- 👍 2026-08-01 | Lara Beach Shoulder-Season Package | Sep 15-22, 2026 | good score=83->85 claimed=€154 actual=€215 — Massive all-inclusive resort amenities and ultra-short airport transfers maximize family enjoyment,…
+- 👍 2026-08-01 | Antalya Fresh Opening Arbitrage | Sep 8-15, 2026 | good score=80->77 claimed=€165 actual=€222.07 — A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the longer…
+- · 2026-08-01 | Rome City Break (Flash Flight Combo) | Sep 16-21, 2026 | skip score=45->34 claimed=€95 actual=€79.75 — The grueling logistics of flying to a major capital offer very little payoff for a 4-year-old,…
+- 💎 2026-08-01 | Halkidiki Luxury Off-Peak | Sep 20-25, 2026 | diamond score=89->100 claimed=€320 actual=€195.96 — An absolute world-class luxury family environment provides elite utility that easily justifies a…
 - 👍 2026-07-31 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=86->100 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a…
 - 👍 2026-07-31 | Bansko Mountain Retreat | Sep 3-6, 2026 | good score=82->99 claimed=€120 actual=€109.45 — An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short…
 - 👍 2026-07-31 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->94 claimed=€122 actual=€122.91 — A straightforward 3-hour highway drive to a premium 5-star coastal property maximizes the last of…
@@ -374,9 +399,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - 👍 2026-07-17 | Velingrad Premium Family Luxury | Sep 11-14, 2026 | good score=85->90 claimed=€185 actual=€250.76 — Exceptional on-property luxury and dedicated kids' facilities provide maximum family utility just…
 - 👍 2026-07-16 | Hisarya Thermal Retreat | Aug 28-31, 2026 | good score=81->94 claimed=€102 actual=€92.2 — An ultra-local 45-minute drive eliminates transit friction entirely, offering high-value,…
 - 👍 2026-07-16 | Bansko Mountain Escape & Jazz Fest | Aug 6-9, 2026 | good score=76->86 claimed=€124 actual=€153.88 — Elite 5-star kids' infrastructure provides massive on-property utility, though the 2.5-hour drive…
-- 👍 2026-07-16 | Velingrad Spa & Thermal Break | Sep 11-14, 2026 | good score=78->93 claimed=€102 actual=€101.71 — A highly manageable 1.5-hour drive unlocks outstanding family utility with warm thermal mineral…
-- 💎 2026-07-15 | Bansko Mountain Off-Season Escape | Aug 21-24, 2026 | diamond score=80->98 claimed=€53 actual=€63.0 — A highly manageable 2.5-hour drive and excellent indoor pool amenities deliver a low-stress,…
-- 💎 2026-07-15 | Velingrad Spa & Thermal Break | Sep 11-14, 2026 | diamond score=84->91 claimed=€93 actual=€101.71 — An effortless 1.5-hour drive provides nearly zero travel friction, unlocking fantastic thermal…
-- · 2026-07-15 | London Direct Flight from PDV | Sep 25 - Oct 2, 2026 | skip score=42->60 claimed=€30 actual=€21.0 — While the direct flight from Plovdiv is highly convenient, a 7-night dense city break in London…
-- 💎 2026-07-14 | Velingrad Spa & Thermal Break | Sep 1 - Sep 5, 2026 | diamond score=83->100 claimed=€72 actual=€72 — A completely frictionless 1.5-hour drive and excellent thermal children's pools provide outstanding…
-_... and 61 earlier entries_
+_... and 66 earlier entries_

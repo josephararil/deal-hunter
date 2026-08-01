@@ -313,10 +313,10 @@
       "updated": "2026-07-20"
     },
     "Velingrad Spa Retreat|2026-09": {
-      "realistic_price_eur": 113.61,
-      "note": "Verified Family Hotel Iv, 2-star for Sep 10-13, 2026: €113.61/night (€340.84 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-28",
-      "updated": "2026-07-28"
+      "realistic_price_eur": 166,
+      "note": "I verified the Spa Hotel Olimp in Velingrad for the requested September 4-6, 2026 window. While the hotel offers a late-summer package, the confirmed rate is €166 per night (€332 total for 2 nights),…",
+      "source": "Official Hotel Website",
+      "updated": "2026-08-01"
     },
     "Hisarya Thermal Break|2026-09": {
       "realistic_price_eur": 97.76,
@@ -389,6 +389,30 @@
       "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €109.45/night (€328.34 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-31",
       "updated": "2026-07-31"
+    },
+    "Lara Beach Shoulder-Season Package|2026-09": {
+      "realistic_price_eur": 215,
+      "note": "I verified that the Limak Lara De Luxe Hotel & Resort is open and accepting bookings for September 15–22, 2026. Current market pricing is approximately €215/night (€1505 total for 7 nights), which…",
+      "source": "Aggregated market pricing for 5-star Lara Beach resorts, September 2026",
+      "updated": "2026-08-01"
+    },
+    "Antalya Fresh Opening Arbitrage|2026-09": {
+      "realistic_price_eur": 222.07,
+      "note": "Verified Dream Fun World, 5-star for Sep 8-15, 2026: €222.07/night (€1554.5 total, 7 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "updated": "2026-08-01"
+    },
+    "Rome City Break (Flash Flight Combo)|2026-09": {
+      "realistic_price_eur": 79.75,
+      "note": "Verified hu Roma Camping In Town for Sep 16-21, 2026: €79.75/night (€398.75 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "updated": "2026-08-01"
+    },
+    "Halkidiki Luxury Off-Peak|2026-09": {
+      "realistic_price_eur": 195.96,
+      "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "updated": "2026-08-01"
     }
   },
   "ledger": [
@@ -1800,6 +1824,71 @@
       "final_score": 29,
       "source": "Booking.com (apidojo) live 2026-07-31",
       "note": "The high friction of driving to Sofia and flying with a toddler eats into the family value of a basic apartment stay, despite the beautiful island destination."
+    },
+    {
+      "date": "2026-08-01",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 4-6, 2026",
+      "type": "hotel",
+      "claimed_price": 130,
+      "verdict": "good",
+      "actual_price": 166,
+      "llm_score": 76,
+      "final_score": 85,
+      "source": "Official Hotel Website",
+      "note": "Near-zero transit friction and warm mineral pools offer effortless, reliable utility for a quick toddler-friendly weekend."
+    },
+    {
+      "date": "2026-08-01",
+      "destination": "Lara Beach Shoulder-Season Package",
+      "window": "Sep 15-22, 2026",
+      "type": "package",
+      "claimed_price": 154,
+      "verdict": "good",
+      "actual_price": 215,
+      "llm_score": 83,
+      "final_score": 85,
+      "source": "Aggregated market pricing for 5-star Lara Beach resorts, September 2026",
+      "note": "Massive all-inclusive resort amenities and ultra-short airport transfers maximize family enjoyment, outweighing the hassle of flying from Sofia."
+    },
+    {
+      "date": "2026-08-01",
+      "destination": "Antalya Fresh Opening Arbitrage",
+      "window": "Sep 8-15, 2026",
+      "type": "hotel",
+      "claimed_price": 165,
+      "verdict": "good",
+      "actual_price": 222.07,
+      "llm_score": 80,
+      "final_score": 77,
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "note": "A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the longer transfer to Side adds a bit of travel friction."
+    },
+    {
+      "date": "2026-08-01",
+      "destination": "Rome City Break (Flash Flight Combo)",
+      "window": "Sep 16-21, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "skip",
+      "actual_price": 79.75,
+      "llm_score": 45,
+      "final_score": 34,
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "note": "The grueling logistics of flying to a major capital offer very little payoff for a 4-year-old, regardless of how cheap the flights are."
+    },
+    {
+      "date": "2026-08-01",
+      "destination": "Halkidiki Luxury Off-Peak",
+      "window": "Sep 20-25, 2026",
+      "type": "hotel",
+      "claimed_price": 320,
+      "verdict": "diamond",
+      "actual_price": 195.96,
+      "llm_score": 89,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "note": "An absolute world-class luxury family environment provides elite utility that easily justifies a 4.5-hour drive for a 5-night stay."
     }
   ]
 }

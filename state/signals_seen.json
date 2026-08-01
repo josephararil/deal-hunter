@@ -1,7 +1,5 @@
 {
   "seen": {
-    "Hisarya, Bulgaria|July 17-20, 2026": "2026-07-01",
-    "Bansko, Bulgaria|10 September 2026 - 13 September 2026": "2026-07-01",
     "Rome, Italy|Aug 6-10, 2026|good": "2026-07-02",
     "Velingrad, Bulgaria|Aug 14-17, 2026|skip": "2026-07-02",
     "Bansko, Bulgaria|Aug 6-9, 2026|skip": "2026-07-02",
@@ -73,10 +71,15 @@
     "paris|2026-09|skip": "2026-07-28",
     "premierluxurymountainresort|2026-09|good": "2026-07-31",
     "milan|2026-09|skip": "2026-07-31",
-    "corfu|2026-09|skip": "2026-07-31"
+    "corfu|2026-09|skip": "2026-07-31",
+    "saniresort|2026-09|diamond": "2026-08-01",
+    "limaklaradeluxehotelandresort|2026-09|good": "2026-08-01",
+    "dreamfunworld|2026-09|good": "2026-08-01",
+    "huromacampingintown|2026-09|skip": "2026-08-01"
   },
   "monthly_count": {
     "2026-06": 4,
-    "2026-07": 24
+    "2026-07": 24,
+    "2026-08": 1
   }
 }

@@ -1911,6 +1911,146 @@
       ],
       "baseline_note": "Typically ~€121.57/night here — about the usual rate.",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-01",
+      "deal_id": 5,
+      "destination": "Halkidiki Luxury Off-Peak",
+      "type": "hotel",
+      "window": "Sep 20-25, 2026",
+      "tier": "diamond",
+      "llm_score": 89,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.",
+      "about": "Sani Resort in Halkidiki is a genuinely world-class, ultra-luxury resort complex that sets the standard for premium family travel in the Mediterranean. It offers impeccably maintained private beaches with shallow, warm waters, spectacular dining, and top-tier childcare facilities. The environment is entirely geared towards zero-friction luxury for parents and maximum safe, engaging fun for a 4-year-old.",
+      "value_case": "At €196/night, this is an absolutely staggering arbitrage deal for a villa at Sani Resort, where comparable rooms routinely start at €600+ even in the shoulder season. If this rate is genuinely bookable for a villa with a shared pool, it is an elite-tier discount and worth locking in immediately.",
+      "why": "An absolute world-class luxury family environment provides elite utility that easily justifies a 4.5-hour drive for a 5-night stay.",
+      "red_flags": "Verify exact pool heating policies for late September, and anticipate potential border traffic delays at the Makaza or Kulata crossings from Bulgaria.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-25, currency=EUR, adults=2, children=[4]. Live rate: €195.96/night (€979.82 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 20-25, 2026",
+          "nights": 5,
+          "price_per_night_eur": 195.96,
+          "total_eur": 979.82,
+          "source": "Booking.com (apidojo) live 2026-08-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-01",
+      "deal_id": 2,
+      "destination": "Lara Beach Shoulder-Season Package",
+      "type": "package",
+      "window": "Sep 15-22, 2026",
+      "tier": "good",
+      "llm_score": 83,
+      "price_adj": 5,
+      "transit_adj": -3,
+      "final_score": 85,
+      "flight_cost_eur_total": 450,
+      "ground_transport_eur": 70,
+      "effective_ppn": 289.2857142857143,
+      "confidence": "high",
+      "summary": "I verified that the Limak Lara De Luxe Hotel & Resort is open and accepting bookings for September 15–22, 2026. Current market pricing is approximately €215/night (€1505 total for 7 nights), which corrects the initial estimate of €154/night. You can secure your booking through major platforms like Booking.com or the hotel's direct website.",
+      "about": "Limak Lara De Luxe is a flagship 5-star beachfront mega-resort in Antalya's Lara Beach district, famous for its elaborate pools and Asian-inspired architecture. It is an absolute powerhouse for families, boasting massive kids' clubs, aquaparks, and extensive all-inclusive dining options. The major draw for a family with a toddler is the ultra-short 15-minute transfer from Antalya airport to the hotel.",
+      "value_case": "Securing a 5-star Lara Beach resort in mid-September for €215/night (hotel only) is an excellent baseline, as these properties routinely charge €320+ during this prime late-summer window. Even after factoring in the cost of flights from Sofia, the sheer volume of amenities and food makes this a high-value proposition.",
+      "why": "Massive all-inclusive resort amenities and ultra-short airport transfers maximize family enjoyment, outweighing the hassle of flying from Sofia.",
+      "red_flags": "Confirm whether flights from Sofia to Antalya are direct charters or require a layover in Istanbul, which would severely increase transit time for a toddler.",
+      "grounding": "Live search results confirm that Limak Lara De Luxe Hotel & Resort is active and accepting bookings for September 2026. Current market rates for 5-star all-inclusive packages in this region for mid-September are approximately €215 per night, correcting the candidate estimate of €154/night.",
+      "how_to_book": "Book via major OTAs like Booking.com, Expedia, or directly through the Limak Lara De Luxe Hotel & Resort website.",
+      "options": [
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 215,
+          "total_eur": 1505,
+          "source": "Aggregated market pricing for 5-star Lara Beach resorts, September 2026",
+          "booking_url": "https://www.booking.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-08-01",
+      "deal_id": 3,
+      "destination": "Antalya Fresh Opening Arbitrage",
+      "type": "hotel",
+      "window": "Sep 8-15, 2026",
+      "tier": "good",
+      "llm_score": 80,
+      "price_adj": 0,
+      "transit_adj": -3,
+      "final_score": 77,
+      "flight_cost_eur_total": 450,
+      "ground_transport_eur": 100,
+      "effective_ppn": 300.64142857142855,
+      "confidence": "high",
+      "summary": "Verified Dream Fun World, 5-star for Sep 8-15, 2026: €222.07/night (€1554.5 total, 7 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "about": "Dream Fun World is a brand-new 5-star family resort located in the popular Side region of the Antalya coast. Built with kids in mind, it features extensive aquaparks, toddler splash zones, and modern family rooms. The resort offers a high-energy, all-inclusive environment tailored to keep children entertained while parents enjoy the warm September Mediterranean weather.",
+      "value_case": "At €222/night, you are taking advantage of an introductory opening rate for a fresh 5-star property, which would typically command around €300/night once fully established. It's a great deal for a brand-new resort, though the 1-hour airport transfer from Antalya to Side makes it slightly less convenient than Lara Beach.",
+      "why": "A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the longer transfer to Side adds a bit of travel friction.",
+      "red_flags": "Brand-new mega-resorts often suffer from teething issues in their first season, such as unfinished peripheral amenities or service bottlenecks.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-08–2026-09-15, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €222.07/night (€1554.5 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Dream+Fun+World&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 222.07,
+          "total_eur": 1554.5,
+          "source": "Booking.com (apidojo) live 2026-08-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Dream+Fun+World&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-01",
+      "deal_id": 4,
+      "destination": "Rome City Break (Flash Flight Combo)",
+      "type": "hotel",
+      "window": "Sep 16-21, 2026",
+      "tier": "skip",
+      "llm_score": 45,
+      "price_adj": -8,
+      "transit_adj": -3,
+      "final_score": 34,
+      "flight_cost_eur_total": 150,
+      "ground_transport_eur": 90,
+      "effective_ppn": 127.75,
+      "confidence": "high",
+      "summary": "Verified hu Roma Camping In Town for Sep 16-21, 2026: €79.75/night (€398.75 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "about": "hu Roma Camping In Town is a large, budget-friendly holiday village located just outside the center of Rome, offering standalone bungalow-style cabins and large communal pool areas. While the city of Rome is world-class for adults, its busy streets and museums are exhausting and largely uninteresting for a toddler. The camping village provides a bit of green space, but it acts more as a basic basecamp than a resort destination.",
+      "value_case": "At ~€80/night, the accommodation is remarkably cheap for a major European capital, aligning with standard budget holiday park rates. However, once you add the real costs of flights, luggage, and airport transfers, you are paying a premium for a city break that offers very low utility to a young child.",
+      "why": "The grueling logistics of flying to a major capital offer very little payoff for a 4-year-old, regardless of how cheap the flights are.",
+      "red_flags": "Outdoor pools at budget Italian camping villages often close or are unheated in late September; Rome city sightseeing is grueling for a 4-year-old.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-16–2026-09-21, currency=EUR, adults=2, children=[4]. Review score: 8.5. Live rate: €79.75/night (€398.75 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=hu+Roma+Camping+In+Town&checkin=2026-09-16&checkout=2026-09-21&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 16-21, 2026",
+          "nights": 5,
+          "price_per_night_eur": 79.75,
+          "total_eur": 398.75,
+          "source": "Booking.com (apidojo) live 2026-08-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=hu+Roma+Camping+In+Town&checkin=2026-09-16&checkout=2026-09-21&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

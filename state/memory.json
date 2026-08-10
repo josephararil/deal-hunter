@@ -1,438 +1,365 @@
 {
   "baselines": {
-    "Lucky Bansko Aparthotel SPA & Relax|2026-09": {
-      "realistic_price_eur": 127.63,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-20",
-      "updated": "2026-07-20"
-    },
-    "Bansko, Lucky Bansko Aparthotel SPA & Relax|2026-09": {
-      "realistic_price_eur": 104.57,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-06-30",
-      "updated": "2026-06-30"
-    },
-    "Hisarya, Bulgaria|2026-07": {
-      "realistic_price_eur": 103.67,
-      "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.",
-      "source": "Booking.com (apidojo) live 2026-07-01",
-      "updated": "2026-07-01"
-    },
-    "Bansko, Bulgaria|2026-09": {
-      "realistic_price_eur": 104,
-      "note": "I have verified the Lucky Bansko Aparthotel SPA & Relax pricing for your dates of September 10-13, 2026. The rate is confirmed at approximately 104 EUR per night (312 EUR total), which perfectly…",
-      "source": "Lucky Bansko official website booking portal",
-      "updated": "2026-07-01"
-    },
-    "Rome, Italy|2026-09": {
-      "realistic_price_eur": 85,
-      "note": "I have confirmed the deal for hu Roma Camping In Town for September 15–20, 2026. The price is €85 per night (€425 total for 5 nights) for a bungalow, which is currently bookable through their…",
-      "source": "hu openair official booking engine check 2026-07-01",
-      "updated": "2026-07-01"
-    },
-    "Rome, Italy|2026-08": {
-      "realistic_price_eur": 63.89,
-      "note": "Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-02",
-      "updated": "2026-07-02"
-    },
-    "Bansko, Bulgaria|2026-08": {
-      "realistic_price_eur": 124,
-      "note": "I verified availability at Lucky Bansko Aparthotel SPA & Relax for August 7–10, 2026; the current bookable rate for a Junior Suite is €124 per night (€372 total for 3 nights). You can book this stay…",
-      "source": "Lucky Bansko Aparthotel SPA & Relax official booking engine 2026-07-10",
-      "updated": "2026-07-10"
-    },
-    "Velingrad, Bulgaria|2026-08": {
-      "realistic_price_eur": 127,
-      "note": "I have verified that Spa Hotel Olimp in Velingrad is available for August 14–17, 2026. The corrected price is approximately €127/night (total €381 for 3 nights), which includes half-board and spa…",
-      "source": "Spa Hotel Olimp official website price list 2026",
-      "updated": "2026-07-02"
-    },
-    "Lake Garda (via PDV direct)|2026-08": {
-      "realistic_price_eur": 167,
-      "note": "I have verified the Parc Hotel Peschiera del Garda and the Plovdiv-Milan direct flight route. While the hotel is available for your requested dates of August 8-13, 2026, the current real-time pricing…",
-      "source": "Parc Hotel Peschiera del Garda official property site",
-      "updated": "2026-07-03"
-    },
-    "Turkish Aegean Coast|2026-08": {
-      "realistic_price_eur": 386.21,
-      "note": "Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-03",
-      "updated": "2026-07-03"
-    },
-    "Rhodes, Greece|2026-09": {
-      "realistic_price_eur": 426.0,
-      "note": "Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-04",
-      "updated": "2026-07-04"
-    },
-    "Sunny Beach, Bulgaria|2026-08": {
-      "realistic_price_eur": 215.0,
-      "note": "Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-04",
-      "updated": "2026-07-04"
-    },
-    "Antalya All-Inclusive via SunExpress|2026-08": {
-      "realistic_price_eur": 380,
-      "note": "I have verified that the IC Hotels Green Palace is available for the requested dates of August 26–September 2, 2026, though the pricing is significantly higher than the initial estimate, at…",
-      "source": "Booking.com live search 2026-07-04",
-      "updated": "2026-07-04"
-    },
-    "Mövenpick Istanbul Golden Horn|2026-09": {
-      "realistic_price_eur": 108.0,
-      "note": "Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "updated": "2026-07-05"
-    },
-    "Hissar Spa Hotel|2026-09": {
-      "realistic_price_eur": 122.94,
-      "note": "Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "updated": "2026-07-05"
-    },
-    "hu Roma Camping In Town|2026-09": {
-      "realistic_price_eur": 57.72,
-      "note": "Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "updated": "2026-07-05"
-    },
-    "Velingrad|2026-08": {
-      "realistic_price_eur": 151,
-      "note": "I verified the 'Summer SPA Getaway' at Spa Hotel Olymp for your dates (Aug 1–4). The actual price is €151 per night (€453 total for 3 nights), which includes half-board and spa access. You can book…",
-      "source": "Official Hotel Website - Summer SPA Getaway offer",
-      "updated": "2026-07-06"
-    },
-    "Bansko|2026-08": {
-      "realistic_price_eur": 83,
-      "note": "I have confirmed the availability of the 83 EUR per night rate at the Premier Luxury Mountain Resort for your requested dates of August 14-17, 2026. This price is accessible through the property's…",
-      "source": "Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer",
-      "updated": "2026-07-06"
-    },
-    "Thassos Island|2026-09": {
-      "realistic_price_eur": 218,
-      "note": "I verified availability at Makryammos Bungalows for September 6–11, 2026. The price is currently €218/night (€1,090 total), which is higher than the initial estimate of €140/night due to its recent…",
-      "source": "Official Hotel Booking Engine 2026-07-06",
-      "updated": "2026-07-06"
-    },
-    "Thassos Island Beach Break|2026-07": {
-      "realistic_price_eur": 65,
-      "note": "I have verified the Esperia Hotel deal in Pefkari, Thassos. Availability is confirmed for early to mid-July 2026 at approximately €65–€66/night for a room including breakfast. You can book this…",
-      "source": "Go-Thassos direct availability search 2026-07-07",
-      "updated": "2026-07-07"
-    },
-    "Velingrad Thermal Escape|2026-07": {
-      "realistic_price_eur": 70,
-      "note": "I verified the availability at Balneo Complex & Spa Aquatonik for July 14–17, 2026. While the original estimate was €102/night, the current promotional package rate is approximately €70/night (€210…",
-      "source": "Official hotel offer site (profi tours) valid 26.05.2026 - 16.07.2026",
-      "updated": "2026-07-07"
-    },
-    "Rome City Break|2026-08": {
-      "realistic_price_eur": 85,
-      "note": "I have verified the availability of hu Roma Camping In Town for your requested dates of August 4–9, 2026. The current nightly rate is approximately €85, totaling €425 for the 5-night stay. The flight…",
-      "source": "booking.com live search 2026-07-07",
-      "updated": "2026-07-07"
-    },
-    "Velingrad SPA Retreat|2026-08": {
-      "realistic_price_eur": 105,
-      "note": "I verified the Park Hotel & SPA Vella Hills for your requested August 18–21, 2026 window. Current rates are approximately €105 per night (total €315 for the 3-night stay), which is higher than the…",
-      "source": "Official hotel website and market aggregators (KAYAK/Booking.com) as of 2026-07-08",
-      "updated": "2026-07-08"
-    },
-    "Pirin Mountain Escape|2026-08": {
-      "realistic_price_eur": 103,
-      "note": "I have verified that the Pirin Golf & Country Club is available for your dates of August 13–16, 2026, but the price is higher than the initial estimate. The current realistic rate for a studio is…",
-      "source": "Official property website price list 2026",
-      "updated": "2026-07-08"
-    },
-    "Sunny Beach Post-Peak Value Play|2026-08": {
-      "realistic_price_eur": 165,
-      "note": "I verified the Festa Panorama Hotel in Nessebar (near Sunny Beach). The deal is real and the hotel is operational for your requested dates, but the actual price is higher than estimated, currently…",
-      "source": "Festa Hotels official site / Booking aggregators live check",
-      "updated": "2026-07-08"
-    },
-    "Corfu Late Summer Beach Break|2026-09": {
-      "realistic_price_eur": 218,
-      "note": "I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…",
-      "source": "Booking.com, Expedia, and Trivago live search 2026-07-08",
-      "updated": "2026-07-08"
-    },
-    "Velingrad Spa & Thermal Break|2026-07": {
-      "realistic_price_eur": 128,
-      "note": "I searched for Balneo Complex & Spa Aquatonik for July 24-27, 2026, and found rooms available at approximately 128 EUR per night (384 EUR total). While higher than your initial estimate, this remains…",
-      "source": "booking.com live search 2026-07-09",
-      "updated": "2026-07-09"
-    },
-    "Milan & Northern Italy City Break|2026-07": {
-      "realistic_price_eur": 142,
-      "note": "I verified the Novotel Milano Nord Ca Granda for your July 15–20, 2026 window; while the hotel is available, the nightly rate is approximately €142 (total €710), which is higher than the original…",
-      "source": "Accor official website dynamic check 2026-07-09",
-      "updated": "2026-07-09"
-    },
-    "Bansko Summer Mountain Escape|2026-08": {
-      "realistic_price_eur": 139.59,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 14-17, 2026: €139.59/night (€418.76 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-11",
-      "updated": "2026-07-11"
-    },
-    "Hisarya Ultra-Local Thermal Retreat|2026-08": {
-      "realistic_price_eur": 102,
-      "note": "I have verified the availability of the Sana Spa Hotel in Hisarya for August 28–31, 2026. The nightly rate is approximately €102, totaling €306 for the 3-night stay. You can book this through various…",
-      "source": "KAYAK live search 2026-07-14",
-      "updated": "2026-07-14"
-    },
-    "Antalya, Turkey|2026-08": {
-      "realistic_price_eur": 215,
-      "note": "I verified that Dream Fun World in Side, Antalya is a real and popular 5-star all-inclusive resort, but the claimed €95/night introductory price is incorrect for late August 2026. Current market…",
-      "source": "Booking.com live search 2026-07-10",
-      "updated": "2026-07-10"
-    },
-    "Hisarya, Bulgaria|2026-08": {
-      "realistic_price_eur": 123,
-      "note": "I have verified the availability of the Sana Spa Hotel in Hisarya for August 21-24, 2026. The rate is confirmed at approximately €123 per night (€369 total for 3 nights). You can book your stay via…",
-      "source": "booking.com live search 2026-07-10",
-      "updated": "2026-07-10"
-    },
-    "Thassos, Greece|2026-09": {
-      "realistic_price_eur": 218,
-      "note": "I have verified the Atrium Hotel Thassos for your requested dates of September 6–11, 2026. While the hotel is available, the current realistic price is approximately €218 per night (€1,090 total for…",
-      "source": "booking.com live search 2026-07-10",
-      "updated": "2026-07-10"
-    },
-    "Velingrad, Bulgaria|2026-07": {
-      "realistic_price_eur": 128,
-      "note": "I have verified the availability of Balneo Complex & Spa Aquatonik for your requested dates of July 24–27, 2026. The nightly rate is €128, totaling €384 for the 3-night stay. You can book this stay…",
-      "source": "Booking.com live search 2026-07-10",
-      "updated": "2026-07-10"
-    },
-    "Velingrad Spa & Thermal Break|2026-08": {
-      "realistic_price_eur": 116.39,
-      "note": "Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-17",
-      "updated": "2026-07-17"
-    },
-    "Milan City Break via PDV|2026-09": {
-      "realistic_price_eur": 154,
-      "note": "I have verified the Novotel Milano Nord Ca Granda for your dates of September 15–20, 2026. While the hotel is available, the nightly rate is approximately €154 (total €770 for 5 nights). Direct…",
-      "source": "Market rate estimation for Novotel Milano Nord Ca Granda",
-      "updated": "2026-07-11"
-    },
-    "Velingrad Spa & Thermal Break|2026-09": {
-      "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-22",
-      "updated": "2026-07-22"
-    },
-    "Bansko Summer Mountain Escape|2026-09": {
-      "realistic_price_eur": 141,
-      "note": "I have verified availability for the Lucky Bansko Aparthotel SPA & Relax for your requested dates of September 4-7, 2026. While the property remains an excellent 5-star option for families, the…",
-      "source": "Aggregated live search data for September 2026 dates",
-      "updated": "2026-07-14"
-    },
-    "Antalya Late Summer All-Inclusive|2026-09": {
-      "realistic_price_eur": 131,
-      "note": "I have verified the Fame Residence Lara & Spa as a real, bookable destination for your dates of September 15–22, 2026. While the original estimate of €210/night was higher than current market…",
-      "source": "Fame Residence Lara & Spa official site / aggregator market data July 2026",
-      "updated": "2026-07-14"
-    },
-    "Bansko Mountain Off-Season Escape|2026-08": {
-      "realistic_price_eur": 63.0,
-      "note": "Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-15",
-      "updated": "2026-07-15"
-    },
-    "London Direct Flight from PDV|2026-09": {
-      "realistic_price_eur": 21.0,
-      "note": "I have verified that Wizz Air operates direct flights from Plovdiv (PDV) to London Luton (LTN) for your travel window. The original estimate of €30 total was a promotional minimum; the flights are…",
-      "source": "Wizz Air live search 2026-07-15",
-      "updated": "2026-07-15"
-    },
-    "Hisarya Thermal Retreat|2026-08": {
-      "realistic_price_eur": 92.2,
-      "note": "Verified Sana Spa Hotel, 3-star for Aug 14-17, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-18",
-      "updated": "2026-07-18"
-    },
-    "Bansko Mountain Escape & Jazz Fest|2026-08": {
-      "realistic_price_eur": 153.88,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-17",
-      "updated": "2026-07-17"
-    },
-    "Black Sea Late Summer Off-Peak|2026-09": {
-      "realistic_price_eur": 186,
-      "note": "I have verified the Festa Panorama Hotel in Nessebar for September 6–11, 2026. The real-time pricing tracks at approximately €186/night (totaling €930 for the 5-night stay), which closely aligns with…",
-      "source": "Skyscanner/Agoda live search 2026-07-19",
-      "updated": "2026-07-19"
-    },
-    "Velingrad Premium Family Luxury|2026-09": {
-      "realistic_price_eur": 250.76,
-      "note": "Verified Hotel Arte SPA & Park, 5-star for Sep 11-14, 2026: €250.76/night (€752.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-17",
-      "updated": "2026-07-17"
-    },
-    "Bansko Mountain Escape|2026-08": {
-      "realistic_price_eur": 167.72,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Aug 20-23, 2026: €167.72/night (€503.17 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-18",
-      "updated": "2026-07-18"
-    },
-    "Hisarya Thermal Retreat|2026-09": {
-      "realistic_price_eur": 97.76,
-      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-31",
-      "updated": "2026-07-31"
-    },
-    "Bansko Mountain Escape|2026-09": {
-      "realistic_price_eur": 151.8,
-      "note": "Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-19",
-      "updated": "2026-07-19"
-    },
-    "Bansko Mountain Off-Season|2026-09": {
+    "luckybanskoaparthotelspaandrelax|2026-09": {
+      "samples": [
+        {
+          "price": 127.63,
+          "date": "2026-07-20",
+          "source": "Booking.com (apidojo) live 2026-07-20"
+        },
+        {
+          "price": 104.57,
+          "date": "2026-06-30",
+          "source": "Booking.com (apidojo) live 2026-06-30"
+        },
+        {
+          "price": 127.63,
+          "date": "2026-07-21",
+          "source": "Booking.com (apidojo) live 2026-07-21"
+        }
+      ],
       "realistic_price_eur": 127.63,
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-07-21",
       "updated": "2026-07-21"
     },
-    "Park Hotel & SPA Vella Hills|2026-09": {
-      "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-20",
-      "updated": "2026-07-20"
+    "hissarspahotel|2026-07": {
+      "samples": [
+        {
+          "price": 103.67,
+          "date": "2026-07-01",
+          "source": "Booking.com (apidojo) live 2026-07-01"
+        }
+      ],
+      "realistic_price_eur": 103.67,
+      "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling.",
+      "source": "Booking.com (apidojo) live 2026-07-01",
+      "updated": "2026-07-01"
     },
-    "Orange County Resort Hotel Belek|2026-09": {
-      "realistic_price_eur": 215,
-      "note": "I verified the Orange County Resort Hotel Belek for the dates of September 8-15, 2026. While the resort is fully available, the real-time pricing tracks at €215 per night (€1505 total for 7 nights),…",
-      "source": "booking.com live availability check 2026-07-20",
-      "updated": "2026-07-20"
+    "huromacampingintown|2026-08": {
+      "samples": [
+        {
+          "price": 63.89,
+          "date": "2026-07-02",
+          "source": "Booking.com (apidojo) live 2026-07-02"
+        }
+      ],
+      "realistic_price_eur": 63.89,
+      "note": "Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-02",
+      "updated": "2026-07-02"
     },
-    "Laguna Park Hotel & Aqua Club|2026-09": {
-      "realistic_price_eur": 167.51,
-      "note": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-20",
-      "updated": "2026-07-20"
+    "aquafantasyaquaparkhotelandspaultraallinclusive|2026-08": {
+      "samples": [
+        {
+          "price": 386.21,
+          "date": "2026-07-03",
+          "source": "Booking.com (apidojo) live 2026-07-03"
+        }
+      ],
+      "realistic_price_eur": 386.21,
+      "note": "Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-03",
+      "updated": "2026-07-03"
     },
-    "Velingrad Spa Retreat|2026-09": {
-      "realistic_price_eur": 166,
-      "note": "I verified the Spa Hotel Olimp in Velingrad for the requested September 4-6, 2026 window. While the hotel offers a late-summer package, the confirmed rate is €166 per night (€332 total for 2 nights),…",
-      "source": "Official Hotel Website",
-      "updated": "2026-08-01"
+    "princessandrianaresortandspaultraallinclusive|2026-09": {
+      "samples": [
+        {
+          "price": 426.0,
+          "date": "2026-07-04",
+          "source": "Booking.com (apidojo) live 2026-07-04"
+        }
+      ],
+      "realistic_price_eur": 426.0,
+      "note": "Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "updated": "2026-07-04"
     },
-    "Hisarya Thermal Break|2026-09": {
-      "realistic_price_eur": 97.76,
-      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-21",
-      "updated": "2026-07-21"
+    "hihotelsimperialresortultraallinclusivefreeparking|2026-08": {
+      "samples": [
+        {
+          "price": 215.0,
+          "date": "2026-07-04",
+          "source": "Booking.com (apidojo) live 2026-07-04"
+        }
+      ],
+      "realistic_price_eur": 215.0,
+      "note": "Verified HI Hotels Imperial Resort - Ultra All Inclusive, FREE PARKING, 4-star for Aug 10-15, 2026: €215.0/night (€1075.02 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-04",
+      "updated": "2026-07-04"
     },
-    "Belek All-Inclusive Resort|2026-09": {
-      "realistic_price_eur": 215,
-      "note": "I have confirmed availability for the Orange County Resort Hotel Belek for the requested dates of September 8–15, 2026. The rate is exactly as estimated at €215 per night (€1,505 total for the week),…",
-      "source": "Booking.com live search 2026-07-22",
-      "updated": "2026-07-22"
+    "mvenpickistanbulhotelgoldenhorn|2026-09": {
+      "samples": [
+        {
+          "price": 108.0,
+          "date": "2026-07-05",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        }
+      ],
+      "realistic_price_eur": 108.0,
+      "note": "Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "updated": "2026-07-05"
     },
-    "Late Season Mediterranean Escape|2026-10": {
-      "realistic_price_eur": 125,
-      "note": "I have verified the Kiani Beach Resort Family All Inclusive in Crete for your October 6–13, 2026 dates. The rate remains exactly as estimated at €125 per night (€875 total for 7 nights) for the…",
-      "source": "Booking.com / SeaCrete Hotels direct booking verification 2026-07-22",
-      "updated": "2026-07-22"
+    "hissarspahotel|2026-09": {
+      "samples": [
+        {
+          "price": 122.94,
+          "date": "2026-07-05",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        }
+      ],
+      "realistic_price_eur": 122.94,
+      "note": "Verified Hissar Spa Hotel, 4-star for Sep 17-20, 2026: €122.94/night (€368.81 total, 3 nights), review 8.4. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-05",
+      "updated": "2026-07-05"
     },
-    "Sunny Beach Late Season|2026-09": {
-      "realistic_price_eur": 167.51,
-      "note": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-22",
-      "updated": "2026-07-22"
-    },
-    "Velingrad Spa Retreat|2026-08": {
-      "realistic_price_eur": 166,
-      "note": "I searched for the Spa Hotel Olymp for your August 15–18 window and found that the current rate for a double room is €166 per night, which is higher than the original €125 estimate (totaling €498 for…",
-      "source": "Spa Hotel Olymp official website 2026-07-25",
-      "updated": "2026-07-25"
-    },
-    "Sunny Beach All-Inclusive Escape|2026-08": {
-      "realistic_price_eur": 210,
-      "note": "I checked Asteria Family Sunny Beach for your dates. The property is currently accepting bookings for August 30–September 1, but the nightly rate is around €210 (€420 total for 2 nights), which is…",
-      "source": "booking.com live search 2026-07-25",
-      "updated": "2026-07-25"
-    },
-    "Thassos Island Getaway|2026-08": {
-      "realistic_price_eur": 250,
-      "note": "I searched for availability at Votsalo Suites in Skala Potamia for August 24–28, 2026. The property is confirmed as open and bookable, with current market rates for this peak season period at €250…",
-      "source": "Votsalo Suites Official Booking Engine 2026-07-25",
-      "updated": "2026-07-25"
-    },
-    "Sveti Vlas Late Summer Break|2026-09": {
-      "realistic_price_eur": 101,
-      "note": "I verified the Paradise Beach Residence for your requested dates of September 1–6, 2026. The rate is approximately €101 per night (€505 total for 5 nights), which is slightly lower than the initial…",
-      "source": "BeachBulgaria.com rack rates for Sep 2026",
-      "updated": "2026-07-25"
-    },
-    "St. Constantine and Elena Premium Thermal Resort|2026-09": {
-      "realistic_price_eur": 218,
-      "note": "I verified the availability of the Ensana Aquahouse Hotel & Spa for your requested dates (Sep 6–10, 2026). The current market rate is approximately €218 per night (€872 total for 4 nights), which…",
-      "source": "Ensana Hotels official booking engine",
-      "updated": "2026-07-25"
-    },
-    "Sunny Beach Late Season Arbitrage|2026-09": {
-      "realistic_price_eur": 122.91,
-      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-31",
-      "updated": "2026-07-31"
-    },
-    "Paris Shoulder-Season Flights|2026-09": {
-      "realistic_price_eur": 12.14,
-      "note": "I confirmed that budget airlines, particularly Wizz Air, offer round-trip flights from Sofia to Paris (Beauvais) for approximately €85 total for the September 28–October 5, 2026 window. You can book…",
-      "source": "Wizz Air live search 2026-07-28",
-      "updated": "2026-07-28"
-    },
-    "Bansko Mountain Retreat|2026-09": {
-      "realistic_price_eur": 117.4,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "updated": "2026-08-10"
-    },
-    "Lara Beach Shoulder-Season Package|2026-09": {
-      "realistic_price_eur": 215,
-      "note": "I verified that the Limak Lara De Luxe Hotel & Resort is open and accepting bookings for September 15–22, 2026. Current market pricing is approximately €215/night (€1505 total for 7 nights), which…",
-      "source": "Aggregated market pricing for 5-star Lara Beach resorts, September 2026",
-      "updated": "2026-08-01"
-    },
-    "Antalya Fresh Opening Arbitrage|2026-09": {
-      "realistic_price_eur": 222.07,
-      "note": "Verified Dream Fun World, 5-star for Sep 8-15, 2026: €222.07/night (€1554.5 total, 7 nights), review 8.8. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-01",
-      "updated": "2026-08-01"
-    },
-    "Rome City Break (Flash Flight Combo)|2026-09": {
-      "realistic_price_eur": 79.75,
+    "huromacampingintown|2026-09": {
+      "samples": [
+        {
+          "price": 57.72,
+          "date": "2026-07-05",
+          "source": "Booking.com (apidojo) live 2026-07-05"
+        },
+        {
+          "price": 79.75,
+          "date": "2026-08-01",
+          "source": "Booking.com (apidojo) live 2026-08-01"
+        }
+      ],
+      "realistic_price_eur": 68.73,
       "note": "Verified hu Roma Camping In Town for Sep 16-21, 2026: €79.75/night (€398.75 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-01",
       "updated": "2026-08-01"
     },
-    "Halkidiki Luxury Off-Peak|2026-09": {
-      "realistic_price_eur": 195.96,
-      "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-01",
-      "updated": "2026-08-01"
+    "luckybanskoaparthotelspaandrelax|2026-08": {
+      "samples": [
+        {
+          "price": 139.59,
+          "date": "2026-07-11",
+          "source": "Booking.com (apidojo) live 2026-07-11"
+        },
+        {
+          "price": 153.88,
+          "date": "2026-07-17",
+          "source": "Booking.com (apidojo) live 2026-07-17"
+        }
+      ],
+      "realistic_price_eur": 146.74,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.88/night (€461.65 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
     },
-    "Hisarya Thermal Spa|2026-09": {
+    "balneocomplexandspaaquatonik|2026-08": {
+      "samples": [
+        {
+          "price": 116.39,
+          "date": "2026-07-17",
+          "source": "Booking.com (apidojo) live 2026-07-17"
+        }
+      ],
+      "realistic_price_eur": 116.39,
+      "note": "Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
+    },
+    "parkhotelandspavellahills|2026-09": {
+      "samples": [
+        {
+          "price": 128.31,
+          "date": "2026-07-22",
+          "source": "Booking.com (apidojo) live 2026-07-22"
+        },
+        {
+          "price": 128.31,
+          "date": "2026-07-20",
+          "source": "Booking.com (apidojo) live 2026-07-20"
+        }
+      ],
+      "realistic_price_eur": 128.31,
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "updated": "2026-07-22"
+    },
+    "gardeniaparkhotel|2026-08": {
+      "samples": [
+        {
+          "price": 63.0,
+          "date": "2026-07-15",
+          "source": "Booking.com (apidojo) live 2026-07-15"
+        }
+      ],
+      "realistic_price_eur": 63.0,
+      "note": "Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-15",
+      "updated": "2026-07-15"
+    },
+    "sanaspahotel|2026-08": {
+      "samples": [
+        {
+          "price": 92.2,
+          "date": "2026-07-18",
+          "source": "Booking.com (apidojo) live 2026-07-18"
+        }
+      ],
+      "realistic_price_eur": 92.2,
+      "note": "Verified Sana Spa Hotel, 3-star for Aug 14-17, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-18",
+      "updated": "2026-07-18"
+    },
+    "hotelartespaandpark|2026-09": {
+      "samples": [
+        {
+          "price": 250.76,
+          "date": "2026-07-17",
+          "source": "Booking.com (apidojo) live 2026-07-17"
+        }
+      ],
+      "realistic_price_eur": 250.76,
+      "note": "Verified Hotel Arte SPA & Park, 5-star for Sep 11-14, 2026: €250.76/night (€752.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-17",
+      "updated": "2026-07-17"
+    },
+    "premierluxurymountainresort|2026-08": {
+      "samples": [
+        {
+          "price": 167.72,
+          "date": "2026-07-18",
+          "source": "Booking.com (apidojo) live 2026-07-18"
+        }
+      ],
+      "realistic_price_eur": 167.72,
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Aug 20-23, 2026: €167.72/night (€503.17 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-18",
+      "updated": "2026-07-18"
+    },
+    "sanaspahotel|2026-09": {
+      "samples": [
+        {
+          "price": 97.76,
+          "date": "2026-07-31",
+          "source": "Booking.com (apidojo) live 2026-07-31"
+        },
+        {
+          "price": 97.76,
+          "date": "2026-07-21",
+          "source": "Booking.com (apidojo) live 2026-07-21"
+        },
+        {
+          "price": 97.76,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
+        }
+      ],
       "realistic_price_eur": 97.76,
       "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-10",
       "updated": "2026-08-10"
     },
-    "Velingrad Spa Escape|2026-09": {
+    "regnumbanskomountainresort|2026-09": {
+      "samples": [
+        {
+          "price": 151.8,
+          "date": "2026-07-19",
+          "source": "Booking.com (apidojo) live 2026-07-19"
+        }
+      ],
+      "realistic_price_eur": 151.8,
+      "note": "Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-19",
+      "updated": "2026-07-19"
+    },
+    "hotellagunaparkandaquacluballinclusive|2026-09": {
+      "samples": [
+        {
+          "price": 167.51,
+          "date": "2026-07-20",
+          "source": "Booking.com (apidojo) live 2026-07-20"
+        },
+        {
+          "price": 167.51,
+          "date": "2026-07-22",
+          "source": "Booking.com (apidojo) live 2026-07-22"
+        }
+      ],
+      "realistic_price_eur": 167.51,
+      "note": "Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-22",
+      "updated": "2026-07-22"
+    },
+    "galeonresidenceandspa|2026-09": {
+      "samples": [
+        {
+          "price": 122.91,
+          "date": "2026-07-31",
+          "source": "Booking.com (apidojo) live 2026-07-31"
+        }
+      ],
+      "realistic_price_eur": 122.91,
+      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-07-31",
+      "updated": "2026-07-31"
+    },
+    "premierluxurymountainresort|2026-09": {
+      "samples": [
+        {
+          "price": 117.4,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
+        }
+      ],
+      "realistic_price_eur": 117.4,
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
+    },
+    "dreamfunworld|2026-09": {
+      "samples": [
+        {
+          "price": 222.07,
+          "date": "2026-08-01",
+          "source": "Booking.com (apidojo) live 2026-08-01"
+        }
+      ],
+      "realistic_price_eur": 222.07,
+      "note": "Verified Dream Fun World, 5-star for Sep 8-15, 2026: €222.07/night (€1554.5 total, 7 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "updated": "2026-08-01"
+    },
+    "saniresortvillawithsharedpool|2026-09": {
+      "samples": [
+        {
+          "price": 195.96,
+          "date": "2026-08-01",
+          "source": "Booking.com (apidojo) live 2026-08-01"
+        }
+      ],
+      "realistic_price_eur": 195.96,
+      "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-01",
+      "updated": "2026-08-01"
+    },
+    "spahotelolymp|2026-09": {
+      "samples": [
+        {
+          "price": 246.41,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
+        }
+      ],
       "realistic_price_eur": 246.41,
       "note": "Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-10",
       "updated": "2026-08-10"
     },
-    "Antalya Shoulder-Season Ultra All-Inclusive|2026-09": {
-      "realistic_price_eur": 215,
-      "note": "I have confirmed that the Limak Lara De Luxe Hotel & Resort is available for your requested September 15–22, 2026 dates at a rate of approximately €215 per night, totaling €1505. You can book this…",
-      "source": "Booking.com live availability check 2026-08-10",
-      "updated": "2026-08-10"
-    },
-    "Crete New Opening Arbitrage|2026-09": {
+    "hiltonchaniaoldtownresortandspa|2026-09": {
+      "samples": [
+        {
+          "price": 475.81,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
+        }
+      ],
       "realistic_price_eur": 475.81,
       "note": "Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65 total, 7 nights), review 8.6. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-10",
@@ -1913,71 +1840,6 @@
       "final_score": 100,
       "source": "Booking.com (apidojo) live 2026-08-01",
       "note": "An absolute world-class luxury family environment provides elite utility that easily justifies a 4.5-hour drive for a 5-night stay."
-    },
-    {
-      "date": "2026-08-10",
-      "destination": "Hisarya Thermal Spa",
-      "window": "Sep 18-21, 2026",
-      "type": "hotel",
-      "claimed_price": 97.76,
-      "verdict": "skip",
-      "actual_price": 97.76,
-      "llm_score": 0,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate."
-    },
-    {
-      "date": "2026-08-10",
-      "destination": "Bansko Mountain Retreat",
-      "window": "Sep 3-6, 2026",
-      "type": "hotel",
-      "claimed_price": 109.45,
-      "verdict": "skip",
-      "actual_price": 117.4,
-      "llm_score": 0,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate."
-    },
-    {
-      "date": "2026-08-10",
-      "destination": "Velingrad Spa Escape",
-      "window": "Sep 4-6, 2026",
-      "type": "hotel",
-      "claimed_price": 166.0,
-      "verdict": "skip",
-      "actual_price": 246.41,
-      "llm_score": 0,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "note": "Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate."
-    },
-    {
-      "date": "2026-08-10",
-      "destination": "Antalya Shoulder-Season Ultra All-Inclusive",
-      "window": "Sep 15-22, 2026",
-      "type": "hotel",
-      "claimed_price": 215.0,
-      "verdict": "skip",
-      "actual_price": 215,
-      "llm_score": 0,
-      "final_score": 0,
-      "source": "Booking.com live availability check 2026-08-10",
-      "note": "I have confirmed that the Limak Lara De Luxe Hotel & Resort is available for your requested September 15–22, 2026 dates at a rate of approximately €215 per night, totaling €1505. You can book this…"
-    },
-    {
-      "date": "2026-08-10",
-      "destination": "Crete New Opening Arbitrage",
-      "window": "Sep 22-29, 2026",
-      "type": "hotel",
-      "claimed_price": 145.0,
-      "verdict": "skip",
-      "actual_price": 475.81,
-      "llm_score": 0,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "note": "Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65 total, 7 nights), review 8.6. Price corrected from the Stage-1 estimate."
     }
   ]
 }

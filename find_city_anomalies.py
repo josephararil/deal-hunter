@@ -67,14 +67,15 @@ TIER_RANK = {"diamond": 0, "good": 1, "skip": 2, "unscored": 3}
 TIER_COLOR = {"diamond": "#0a7d2e", "good": "#8a6d00", "skip": "#777", "unscored": "#a15c00"}
 
 
-def _baseline_note(baselines, destination, window, grounded_ppn):
+def _baseline_note(baselines, d, grounded_ppn):
     """Short 'typically ~€X/night — N% under/over' note if a baseline exists for this
-    destination+season, else ''. `baselines` must be the PRIOR-run snapshot (taken before
-    this run recorded its own prices), else a deal compares against itself."""
+    property+season, else ''. `baselines` must be the PRIOR-run snapshot (taken before this
+    run recorded its own prices), else a deal compares against itself. Looked up via
+    memory.baseline_key(d) — the SAME identity+season key record_baseline writes under
+    (not FIND's free-text destination label, which record_baseline no longer keys by)."""
     if grounded_ppn is None:
         return ""
-    season = M.season_key(window or "")
-    b = (baselines or {}).get(f"{destination}|{season}")
+    b = (baselines or {}).get(M.baseline_key(d))
     base = b.get("realistic_price_eur") if b else None
     if not base:
         return ""
@@ -415,8 +416,7 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
         )
 
         # "typically ~€X/night — N% under" comparison from prior-run baselines, if any.
-        base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
-                                   d.get("grounded_price_per_night_eur"))
+        base_note = _baseline_note(baselines, d, d.get("grounded_price_per_night_eur"))
         base_html = (
             f"<div style='font-size:13px;color:#555;margin:4px 0'>{base_note}</div>"
             if base_note else ""
@@ -621,9 +621,7 @@ def build_history_entries(items, today, baselines):
             "grounding": d.get("grounding", ""),
             "how_to_book": d.get("how_to_book", ""),
             "options": d.get("options", []),
-            "baseline_note": _baseline_note(baselines, d.get("destination", ""),
-                                            d.get("window", ""),
-                                            d.get("grounded_price_per_night_eur")),
+            "baseline_note": _baseline_note(baselines, d, d.get("grounded_price_per_night_eur")),
             "child_price_caveat": d.get("type") == "hotel",
         })
     return entries
@@ -656,8 +654,7 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest):
         all_in_note = _all_in_note(d)
         if all_in_note:
             lines.append(all_in_note)
-        base_note = _baseline_note(baselines, d.get("destination", ""), d.get("window", ""),
-                                   d.get("grounded_price_per_night_eur"))
+        base_note = _baseline_note(baselines, d, d.get("grounded_price_per_night_eur"))
         if base_note:
             lines.append(base_note)
         lines.extend(_options_text(d))

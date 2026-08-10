@@ -39,13 +39,11 @@ os.chdir(sandbox)
 
 # Seed a prior Antalya baseline so the email "typically ~€X/night" line renders.
 with open("state/memory.json", "w", encoding="utf-8") as f:
-    # NOTE: keyed by FIND's free-text "destination|season" label, NOT memory.baseline_key
-    # (identity+season) — this is what _baseline_note's read path in find_city_anomalies.py
-    # actually looks up (destination + season_key(window)), even though the pipeline's own
-    # M.record_baseline write path (find_city_anomalies.py ~line 1268) now uses the
-    # identity-based M.baseline_key. That read/write key mismatch is a discrepancy in the
-    # live source, not this fixture — see the test_stub.py task report for detail.
-    json.dump({"baselines": {"Antalya 5-Star All-Inclusive|2027-01": {
+    # Keyed by memory.baseline_key (identity+season) — matching both _baseline_note's read
+    # path and M.record_baseline's write path in find_city_anomalies.py. Antalya's
+    # hotel_name is "Rixos Premium Antalya" (see _STAGE1 below), so its identity is
+    # "rixospremiumantalya" (memory.identity lowercases + strips punctuation).
+    json.dump({"baselines": {"rixospremiumantalya|2027-01": {
         "realistic_price_eur": 100, "note": "seeded",
         "source": "Booking.com (apidojo) live 2026-06-01",
         "updated": "2026-12-01"}}, "ledger": []}, f)

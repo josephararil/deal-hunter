@@ -33,6 +33,7 @@ except ImportError:
 import config as C
 import common as X
 import memory as M
+import trips as T
 
 
 # --- run-log helpers ---
@@ -152,14 +153,8 @@ def prune_seen(state):
     return state
 
 
-def _identity(d):
-    """Stable property identity for anti-spam: the hotel name if FIND gave one, else the
-    city, else the free-text label — lowercased with punctuation/spaces stripped. This
-    collapses the day-to-day label drift ('Velingrad Spa & Thermal Break' vs 'Velingrad SPA
-    Retreat') that used to defeat the TTL and re-alert the same place under a new name."""
-    ident = (d.get("hotel_name") or d.get("city") or d.get("destination") or "")
-    ident = ident.lower().replace("&", "and")  # "Park Hotel & SPA" and "... and SPA" must collapse to one identity
-    return re.sub(r'[^a-z0-9]+', '', ident)
+# Moved to memory.py so baselines and anti-spam share one identity derivation (Invariant S).
+_identity = M.identity
 
 
 def seen_key(d):
@@ -189,6 +184,13 @@ def monthly_email_count(state):
 
 def increment_monthly(state):
     state.setdefault("monthly_count", {})[this_month()] = monthly_email_count(state) + 1
+
+
+def increment_degraded(state):
+    """Separate counter for sends that were (wholly or partly) unscored, so the >=8/month
+    conscience note in the digest never counts a degraded send as a genuine pick alarm."""
+    d = state.setdefault("degraded_count", {})
+    d[this_month()] = d.get(this_month(), 0) + 1
 
 
 # --- email builders ---
@@ -472,6 +474,8 @@ def write_md(today, candidates, picks, grounding_results=None, scores=None):
     scores = scores or {}
     n_diamond = sum(1 for s in scores.values() if s.get("tier") == "diamond")
     n_good = sum(1 for s in scores.values() if s.get("tier") == "good")
+    n_unscored = sum(1 for s in scores.values() if s.get("tier") == "unscored")
+    n_scored = len(scores) - n_unscored
 
     def _sgn(n):
         return f"+{n}" if n is not None and n >= 0 else (f"{n}" if n is not None else "?")
@@ -482,7 +486,7 @@ def write_md(today, candidates, picks, grounding_results=None, scores=None):
     else:
         lines.append(
             f"_Stage 1: {len(candidates)} candidate(s). "
-            f"{len(grounding_results)} grounded · {len(scores)} scored. "
+            f"{len(grounding_results)} grounded · {n_scored} scored · {n_unscored} unscored. "
             f"{n_diamond} diamond · {n_good} good._"
         )
         lines.append("")
@@ -501,11 +505,13 @@ def write_md(today, candidates, picks, grounding_results=None, scores=None):
                 f"**Type:** {c.get('type', '?')} &nbsp; **Window:** {c.get('window', '?')}"
             )
             lines.append(f"{c.get('reason', '')}")
-            if s:
+            if s and s.get("final") is not None:
                 lines.append(
                     f"_Score: LLM {s['llm']} {_sgn(s['price_adj'])} price "
                     f"{_sgn(s['transit_adj'])} transit = **{s['final']}** → {tier}_"
                 )
+            elif s and tier == "unscored":
+                lines.append("_Grounded but not scored — Stage 3 returned no score this run._")
                 if s.get("effective_ppn"):
                     lines.append(f"_{_all_in_note(s)}_")
                 if s.get("why"):
@@ -530,7 +536,8 @@ def write_md(today, candidates, picks, grounding_results=None, scores=None):
             dest3 = r.get("destination", c.get("destination", "?"))
             conf3 = r.get("confidence", "?")
             s = scores.get(did)
-            score_str = f" → final **{s['final']}** ({s['tier']})" if s else ""
+            score_str = (f" → final **{s['final']}** ({s['tier']})"
+                         if s and s.get("final") is not None else " → (unscored)" if s else "")
             lines.append(f"### {icon} {dest3} — {verdict3.upper()} (confidence: {conf3}){score_str}")
             if r.get("assistant_summary"):
                 lines.append(f"**Summary:** {r['assistant_summary']}")
@@ -587,7 +594,9 @@ def _ground_llm(diamond, mem_text, today):
         response_schema=C.STAGE3_RESPONSE_SCHEMA,
         provider=C.PROVIDER_VERIFY,
     )
-    return X.parse_json_block(raw3) or {}
+    result = X.parse_json_block(raw3) or {}
+    result["grounding_method"] = "llm"
+    return result
 
 
 # ── GROUNDING SEAM ──────────────────────────────────────────────────────────
@@ -611,6 +620,8 @@ ground_deal = _resolve_ground_deal()
 
 def main():
     today = X.today_iso()
+    run_start = dt.datetime.now()
+    X.set_run_deadline(C.RUN_BUDGET_SECONDS)
     _section(f"DIAMOND FINDER · {today} · provider={X.PROVIDER}")
     print(f"  models:  find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}")
     print(f"  gate:    FIND score>={C.STAGE1_MIN_SCORE} -> ground · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
@@ -624,6 +635,16 @@ def main():
     mem = M.load()
     prior_baselines = {**mem.get("baselines", {})}
     mem_text = M.summarize_for_prompt(mem)
+
+    # Trips are read-only (Invariant T) — a hand-maintained log of what this family has
+    # actually booked. Real bookings are the strongest calibration signal available, so
+    # they replace baseline lines in mem_text and feed both prompts directly.
+    valid_trips = T.valid_trips(T.load())
+    trip_anchors = T.price_anchors(valid_trips)
+    mem_text = M.summarize_for_prompt(mem, trip_anchors=trip_anchors)
+    trips_block = T.summarize_for_prompt(valid_trips)
+    backtest = T.backtest(valid_trips, mem) if valid_trips else None
+    print(f"  trips:   {len(valid_trips)} logged trip(s), {len(trip_anchors)} price anchor(s)")
     print(f"  memory:  {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) loaded")
 
     # Stage 1: find candidates with web search
@@ -637,7 +658,7 @@ def main():
         raw1 = X.llm(
             messages=[{"role": "user", "content": C.FIND_PROMPT.format(
                 today=today, cities=C.cities_prompt_text(), memory=mem_text,
-                search_directive=find_directive
+                search_directive=find_directive, trips=trips_block
             )}],
             model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,
@@ -645,7 +666,9 @@ def main():
             search_prompt=C.SEARCH_PROMPT.format(today=today, cities=C.cities_prompt_text()),
         )
         candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
+        stage1_failed, stage1_fail_reason = False, ""
     except Exception as e:
+        stage1_failed, stage1_fail_reason = True, f"{type(e).__name__}: {e}"
         print(f"  [FAIL] Stage 1 LLM/parse error: {type(e).__name__}: {e} — treating as 0 candidates (silent day)")
         candidates = []
     candidates = [c for c in candidates if isinstance(c, dict)]
@@ -764,8 +787,11 @@ def main():
     # candidate so no signal is lost and the LLM's judgment stays visible for tuning.
     _section("STAGE 3 · SCORE — desirability + deterministic modifiers")
     scored_all = []  # every scored candidate (diamond/good/skip) — the full digest set
+    unscored = []    # candidates the scorer returned no usable score for (Invariant Z: never 0)
     picks = []       # diamond/good subset — the actionable "act now" finds
     scores = {}      # deal_id -> {llm, price_adj, transit_adj, final, tier, why, red_flags}
+    scorer_stage_failed = False   # True when the whole Stage-3 call failed or returned nothing usable
+    scorer_fail_reason = ""
     if not grounded:
         print("  nothing to score — no candidate survived grounding")
     else:
@@ -792,6 +818,7 @@ def main():
             diamond_min_discount_pct=round(C.DIAMOND_MIN_DISCOUNT * 100),
             candidates=json.dumps(scorer_input, ensure_ascii=False, indent=2),
             memory=mem_text,
+            trips=trips_block,
         )
         try:
             raw2 = X.llm(
@@ -802,10 +829,17 @@ def main():
             )
             verdicts = X.parse_json_block(raw2) or []
         except Exception as e:
-            print(f"  [FAIL] Stage 3 scorer LLM/parse error: {type(e).__name__}: {e} — treating as 0 scores (silent day)")
+            scorer_stage_failed = True
+            scorer_fail_reason = f"{type(e).__name__}: {e}"
+            print(f"  [FAIL] Stage 3 scorer LLM/parse error: {scorer_fail_reason} — "
+                  f"no scores available this run; pipeline is DEGRADED, not silent")
             verdicts = []
         if not isinstance(verdicts, list):
             verdicts = []
+        if not verdicts and not scorer_stage_failed:
+            scorer_stage_failed = True
+            scorer_fail_reason = "scorer returned no usable scores"
+            print(f"  [FAIL] Stage 3 scorer returned no usable scores — pipeline is DEGRADED, not silent")
         # Index the LLM scores by deal_id (robust to paraphrased destinations).
         llm_by_id = {}
         for v in verdicts:
@@ -825,10 +859,30 @@ def main():
             did  = c.get("deal_id")
             dest = c.get("destination", "?")
             v    = llm_by_id.get(did)
-            if v is None:
-                print(f"    [WARN  ] #{did} {dest} — no score returned; treating as 0")
             raw_llm = (v or {}).get("score")
-            llm_val = raw_llm if isinstance(raw_llm, (int, float)) else 0
+            llm_val = raw_llm if isinstance(raw_llm, (int, float)) else None   # NEVER 0 (Invariant Z)
+
+            # est-gap flag: the live grounded price is far above FIND's estimate — flag the
+            # estimate as unreliable for this destination rather than letting the gap pass
+            # silently. Applies to scored AND unscored items alike (Invariant P: display-only).
+            est_raw = c.get("est_price_eur")
+            ppn_raw = c.get("grounded_price_per_night_eur")
+            est_gap_flag = bool(isinstance(est_raw, (int, float)) and est_raw > 0
+                                 and ppn_raw is not None and ppn_raw >= est_raw * C.EST_GAP_FLAG_MULTIPLE)
+            if est_gap_flag:
+                print(f"    [EST-GAP] #{did} {dest} — grounded €{ppn_raw} is "
+                      f"{round(ppn_raw / est_raw, 1)}x FIND's €{est_raw} estimate")
+
+            if llm_val is None:
+                print(f"    [UNSCORED] #{did} {dest} — no score returned ({scorer_fail_reason})")
+                unscored.append({**c, "tier": "unscored", "final_score": None, "llm_score": None,
+                                 "price_adj": None, "transit_adj": None, "discount": None,
+                                 "normal_price_eur": None, "flight_cost_eur_total": None,
+                                 "ground_transport_eur": None, "effective_ppn": None,
+                                 "why": "", "about": "", "value_case": "", "red_flags": "",
+                                 "est_gap_flag": est_gap_flag})
+                continue
+
             why     = (v or {}).get("why", "")
             about   = (v or {}).get("about", "")
             value_case = (v or {}).get("value_case", "")
@@ -879,7 +933,7 @@ def main():
                            "ground_transport_eur": ground_cost or None,
                            "effective_ppn": effective_ppn if extra_total else None,
                            "why": why, "about": about, "value_case": value_case,
-                           "red_flags": red}
+                           "red_flags": red, "est_gap_flag": est_gap_flag}
             scored_all.append(scored_item)
             if tier in ("diamond", "good"):
                 picks.append(scored_item)
@@ -887,12 +941,26 @@ def main():
         n_diamond = sum(1 for p in picks if p["tier"] == "diamond")
         n_good    = len(picks) - n_diamond
         n_skip    = len(scored_all) - len(picks)
-        print(f"  -> {n_diamond} diamond · {n_good} good · {n_skip} skip")
+        print(f"  -> {n_diamond} diamond · {n_good} good · {n_skip} skip · {len(unscored)} unscored")
+
+    # Tier-mix diagnostics — gathered evidence for a future decision on Tier-2 variety
+    # (out of scope for this change; see CLAUDE.md). Computed here so it reflects exactly
+    # what was scored this run, before any anti-spam suppression.
+    tier_mix = {"tier1": {"diamond": 0, "good": 0, "skip": 0},
+                "tier2": {"diamond": 0, "good": 0, "skip": 0}}
+    for d in scored_all:
+        tkey = "tier1" if C.transit_tier(_location(d)) == 1 else "tier2"
+        tier_mix[tkey][d["tier"]] += 1
+    print(f"  tier 1: {tier_mix['tier1']['diamond']} diamond · {tier_mix['tier1']['good']} good · "
+          f"{tier_mix['tier1']['skip']} skip")
+    print(f"  tier 2: {tier_mix['tier2']['diamond']} diamond · {tier_mix['tier2']['good']} good · "
+          f"{tier_mix['tier2']['skip']} skip")
 
     # Record outcomes + baselines for every gate survivor that reached grounding.
     # Every candidate's score breakdown is stored (final_score/llm_score) so memory keeps
     # the full signal — a good deal that scored 69 today may score 74 next week at a lower
     # price, and that history is now visible rather than thrown away by a veto.
+    unscored_ids = {u.get("deal_id") for u in unscored}
     for c in gate_survivors:
         did       = c.get("deal_id")
         r3        = grounding_results.get(did) or {}
@@ -900,15 +968,20 @@ def main():
         options   = r3.get("options") or []
         actual_price = options[0].get("price_per_night_eur") if options else None
         source3   = (options[0].get("source", "") if options else r3.get("grounding", ""))
-        sc        = scores.get(did)            # None if killed or guard-blocked before scoring
+        sc        = scores.get(did)            # None if killed, guard-blocked, or unscored
         summary   = M._clip(r3.get("assistant_summary") or "", 200)
 
         # Ledger verdict captures where the candidate ended up:
         #   scored → its tier (diamond/good/skip); grounding kill → "kill";
-        #   grounded but guard-blocked before scoring → "blocked".
+        #   grounded but guard-blocked before scoring → "blocked";
+        #   grounded and forwarded but the scorer returned no usable score → "unscored"
+        #   (never coerced into a fabricated "skip" — Invariant Z).
         if sc:
             ledger_verdict = sc["tier"]
             note = M._clip(sc.get("why") or summary, 200)
+        elif did in unscored_ids:
+            ledger_verdict = "unscored"
+            note = scorer_fail_reason or summary
         elif g_verdict == "kill":
             ledger_verdict = "kill"
             note = summary
@@ -926,21 +999,36 @@ def main():
             llm_score=(sc["llm"] if sc else None),
             final_score=(sc["final"] if sc else None),
         )
-        # Baseline whenever grounding is confirm/correct, high-confidence, in-window —
-        # the live price is real regardless of the desirability tier (even a skip).
+        # Baseline whenever grounding is confirm/correct, APIDOJO-sourced, high-confidence,
+        # in-window — the live price is real regardless of the desirability tier (even a
+        # skip or unscored). Fail closed on grounding_method (Invariant B): a missing or
+        # unknown provenance (e.g. the LLM concierge fallback) never earns a baseline —
+        # only a live Booking.com lookup does.
         conf3 = r3.get("confidence", "low")
         first_dates = options[0].get("dates", "") if options else ""
         if (g_verdict in ("confirm", "correct") and actual_price
                 and conf3 == "high"
+                and r3.get("grounding_method", "llm") == "apidojo"
                 and _dates_in_window(first_dates, c.get("window", ""))):
-            season = M.season_key(first_dates or c.get("window", ""))
-            M.record_baseline(mem, c.get("destination", ""), season, actual_price,
+            M.record_baseline(mem, M.baseline_key(c), actual_price,
                               note=M._clip(summary, 300), source=source3)
 
     M.prune(mem)
     M.save(mem)
     _section("MEMORY + OUTPUTS")
     print(f"  memory written: {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) (pruned)")
+
+    # scores_display merges the scored breakdown with unscored entries (tier "unscored",
+    # every numeric field None) so city_signals.json/md and the run log show unscored
+    # candidates explicitly rather than as an absent/misleading tier.
+    scores_display = dict(scores)
+    for u in unscored:
+        scores_display[u.get("deal_id")] = {
+            "llm": None, "price_adj": None, "transit_adj": None, "final": None,
+            "tier": "unscored", "why": "", "discount": None, "normal_price_eur": None,
+            "flight_cost_eur_total": None, "ground_transport_eur": None, "effective_ppn": None,
+            "about": "", "value_case": "", "red_flags": "",
+        }
 
     # Write city_signals.json — hunt=False always; field kept for schema compatibility.
     # "anomaly" only for deals that reached a diamond/good pick. The full score breakdown
@@ -955,16 +1043,16 @@ def main():
             "type": "anomaly" if c.get("deal_id") in pick_ids else "reminder",
             "confidence": c.get("confidence", "low"),
             "find_score": c.get("score"),
-            "llm_score": (scores.get(c.get("deal_id")) or {}).get("llm"),
-            "price_adj": (scores.get(c.get("deal_id")) or {}).get("price_adj"),
-            "transit_adj": (scores.get(c.get("deal_id")) or {}).get("transit_adj"),
-            "normal_price_eur": (scores.get(c.get("deal_id")) or {}).get("normal_price_eur"),
-            "flight_cost_eur_total": (scores.get(c.get("deal_id")) or {}).get("flight_cost_eur_total"),
-            "ground_transport_eur": (scores.get(c.get("deal_id")) or {}).get("ground_transport_eur"),
-            "effective_ppn": (scores.get(c.get("deal_id")) or {}).get("effective_ppn"),
-            "discount": (scores.get(c.get("deal_id")) or {}).get("discount"),
-            "final_score": (scores.get(c.get("deal_id")) or {}).get("final"),
-            "tier": (scores.get(c.get("deal_id")) or {}).get("tier"),
+            "llm_score": (scores_display.get(c.get("deal_id")) or {}).get("llm"),
+            "price_adj": (scores_display.get(c.get("deal_id")) or {}).get("price_adj"),
+            "transit_adj": (scores_display.get(c.get("deal_id")) or {}).get("transit_adj"),
+            "normal_price_eur": (scores_display.get(c.get("deal_id")) or {}).get("normal_price_eur"),
+            "flight_cost_eur_total": (scores_display.get(c.get("deal_id")) or {}).get("flight_cost_eur_total"),
+            "ground_transport_eur": (scores_display.get(c.get("deal_id")) or {}).get("ground_transport_eur"),
+            "effective_ppn": (scores_display.get(c.get("deal_id")) or {}).get("effective_ppn"),
+            "discount": (scores_display.get(c.get("deal_id")) or {}).get("discount"),
+            "final_score": (scores_display.get(c.get("deal_id")) or {}).get("final"),
+            "tier": (scores_display.get(c.get("deal_id")) or {}).get("tier"),
             "hunt": False,
         }
         for c in candidates
@@ -972,18 +1060,20 @@ def main():
     X.save_json("city_signals.json", {"generated": today, "signals": signals})
 
     # Write markdown every run regardless of email outcome
-    write_md(today, candidates, picks, grounding_results, scores)
+    write_md(today, candidates, picks, grounding_results, scores_display)
     n_anom = sum(1 for s in signals if s["type"] == "anomaly")
     print(f"  wrote state/city_signals.json ({len(signals)} signal(s), {n_anom} anomaly) + city_signals.md")
 
     # "Seen & dropped" footer: gate survivors that reached grounding but were killed
     # (hallucination / no availability) or blocked (data-quality guard) before scoring.
     # Shown so the digest reflects everything the pipeline looked at, not just survivors.
+    # Unscored candidates are NOT dropped — grounding succeeded, only scoring failed — so
+    # they're excluded here and shown in their own unscored section instead.
     dropped = []
     for c in gate_survivors:
         did = c.get("deal_id")
-        if did in scores:
-            continue  # scored → shown in the digest body, not the footer
+        if did in scores or did in unscored_ids:
+            continue  # scored/unscored → shown in the digest body, not the footer
         r3 = grounding_results.get(did) or {}
         if r3.get("_block_reason"):
             kind, reason = "blocked", r3["_block_reason"]
@@ -1007,6 +1097,9 @@ def main():
                                                       -(p.get("final_score") or 0)))
     new_scored = [d for d in scored_sorted
                   if not is_already_seen(seen_state, d)]
+    # Unscored candidates key as "...|unscored" for free (seen_key reads d["tier"]) — same
+    # TTL machinery, no special-casing needed.
+    new_unscored = [d for d in unscored if not is_already_seen(seen_state, d)]
     suppressed = len(scored_all) - len(new_scored)
     emailed = 0
 
@@ -1020,7 +1113,7 @@ def main():
     wildcard = max((d for d in scored_all if _is_wildcard(d)),
                    key=lambda d: d.get("final_score") or 0, default=None)
 
-    if new_scored:
+    if new_scored or new_unscored:
         actionable = [d for d in new_scored if d.get("tier") in ("diamond", "good")]
         skips      = [d for d in new_scored if d.get("tier") == "skip"]
         shown_actionable = actionable[:C.MAX_EMAILS_PER_RUN]
@@ -1031,24 +1124,72 @@ def main():
             wildcard["is_wildcard"] = True
             if wildcard not in to_email:
                 to_email.append(wildcard)
+        # Unscored items are always shown in full, like skips — no MAX_EMAILS_PER_RUN cap
+        # (that cap applies only to actionable diamond/good picks).
+        unscored_to_email = new_unscored
         month_count = monthly_email_count(seen_state)
         n_d = sum(1 for d in to_email if d.get("tier") == "diamond")
         n_g = sum(1 for d in to_email if d.get("tier") == "good")
         n_s = sum(1 for d in to_email if d.get("tier") == "skip")
+        n_u = len(unscored_to_email)
         print(f"  {len(new_scored)} new/changed scored ({n_d} diamond · {n_g} good · {n_s} skip) · "
-              f"{suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL · {capped} good/diamond over cap · "
-              f"{len(dropped)} in dropped footer")
-        if n_d:
-            subject = f"Diamond Finder: {n_d} diamond + {len(to_email) - n_d} more — {today}"
-        elif n_g:
-            subject = f"Diamond Finder: {n_g} good find(s) + {n_s} logged — {today}"
+              f"{n_u} new unscored · {suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL · "
+              f"{capped} good/diamond over cap · {len(dropped)} in dropped footer")
+
+        # Subject line (C9): an all-unscored send is flagged as a degraded run, never
+        # dressed up as a verdict. A partially-degraded scored send still names the best
+        # pick, but gets an "⚠ " prefix so the reader knows some prices went unjudged.
+        def _best_label(d):
+            name  = d.get("hotel_name") or d.get("destination", "")
+            place = d.get("city") or d.get("destination", "")
+            return f"{name}, {place}" if place and place != name else name
+
+        if n_d == 0 and n_g == 0 and n_s == 0 and n_u > 0:
+            subject = f"⚠ Diamond Finder: pipeline degraded — {n_u} priced but unscored — {today}"
         else:
-            subject = f"Diamond Finder: {n_s} logged travel find(s) — {today}"
+            if n_d:
+                best = max((d for d in to_email if d.get("tier") == "diamond"),
+                           key=lambda d: d.get("final_score") or 0)
+                subject = (f"💎 Diamond Finder: {n_d} diamond — {_best_label(best)} "
+                           f"€{best.get('grounded_price_per_night_eur')}/night — {today}")
+            elif n_g:
+                best = max((d for d in to_email if d.get("tier") == "good"),
+                           key=lambda d: d.get("final_score") or 0)
+                subject = (f"👍 Diamond Finder: {n_g} good find(s) — {_best_label(best)} "
+                           f"€{best.get('grounded_price_per_night_eur')}/night — {today}")
+            else:
+                subject = f"Diamond Finder: no picks — {n_s} logged — {today}"
+            if n_u > 0:
+                subject = f"⚠ {subject}"
+
+        # Run-health footer (C9) — always present, so a degraded run never reads as an
+        # ordinary verdict-bearing digest.
+        if scorer_stage_failed:
+            stage3_status = "failed"
+        elif unscored:
+            stage3_status = "partial"
+        else:
+            stage3_status = "ok"
+        health = {
+            "provider": X.PROVIDER,
+            "models": f"find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}",
+            "stage1": "failed" if stage1_failed else "ok",
+            "stage2": f"{len(grounded)} grounded of {len(gate_survivors)} gate survivor(s)",
+            "stage3": stage3_status,
+            "reason": scorer_fail_reason or stage1_fail_reason or "",
+            "counts": {"found": len(candidates), "grounded": len(grounded),
+                       "scored": len(scored_all), "unscored": len(unscored),
+                       "dropped": len(dropped), "emailed": len(to_email) + n_u},
+            "tier_mix": tier_mix,
+            "budget_used_s": int((dt.datetime.now() - run_start).total_seconds()),
+        }
+
         html = build_email_html(to_email, dropped, month_count, prior_baselines)
         text = build_email_text(to_email, dropped, prior_baselines)
 
         # Persist everything that made it into this digest for the browsable UI —
-        # independent of whether the SMTP send below succeeds.
+        # independent of whether the SMTP send below succeeds. Unscored items are
+        # deliberately excluded (Invariant H) — to_email only ever holds scored candidates.
         hist = load_deals_history()
         hist["entries"].extend(build_history_entries(to_email, today, prior_baselines))
         X.save_json("deals_history.json", prune_deals_history(hist))
@@ -1057,13 +1198,19 @@ def main():
             X.send_email(subject, html, text)
             for d in to_email:
                 mark_seen(seen_state, d)
-            increment_monthly(seen_state)
-            emailed = len(to_email)
-            print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email)}")
+            for d in unscored_to_email:
+                mark_seen(seen_state, d)
+            if to_email:
+                increment_monthly(seen_state)
+            if n_u:
+                increment_degraded(seen_state)
+            emailed = len(to_email) + n_u
+            print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email + unscored_to_email)}")
         except Exception as e:
             print(f"  [FAIL] email send error: {type(e).__name__}: {e} (state not marked seen)")
-    elif scored_all:
-        print(f"  {len(scored_all)} scored but all suppressed by {C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
+    elif scored_all or unscored:
+        print(f"  {len(scored_all) + len(unscored)} scored/unscored but all suppressed by "
+              f"{C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
     else:
         print("  no email — nothing reached scoring today")
 
@@ -1071,7 +1218,7 @@ def main():
 
     _section("RUN COMPLETE")
     print(f"  {len(candidates)} found -> {len(gate_survivors)} to grounding -> {len(grounded)} grounded "
-          f"-> {len(scored_all)} scored ({len(picks)} pick(s)) -> {emailed} emailed")
+          f"-> {len(scored_all)} scored + {len(unscored)} unscored ({len(picks)} pick(s)) -> {emailed} emailed")
 
 
 if __name__ == "__main__":

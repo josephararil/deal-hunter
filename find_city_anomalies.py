@@ -58,11 +58,13 @@ def _location(c):
 
 
 # Tier labels for the email/markdown (emoji ok in HTML/MD — never in console prints).
+# "unscored" is deliberately absent — an unscored item must never render a tier badge
+# (it renders exclusively via the separate unscored-section path, which emits no badge).
 TIER_LABEL = {"diamond": "💎 Diamond", "good": "👍 Good find", "skip": "· Skipped"}
-# Sort/priority rank for tiers in the digest (diamonds first, skips last).
-TIER_RANK = {"diamond": 0, "good": 1, "skip": 2}
+# Sort/priority rank for tiers in the digest (diamonds first, skips last; unscored last of all).
+TIER_RANK = {"diamond": 0, "good": 1, "skip": 2, "unscored": 3}
 # Badge colour per tier.
-TIER_COLOR = {"diamond": "#0a7d2e", "good": "#8a6d00", "skip": "#777"}
+TIER_COLOR = {"diamond": "#0a7d2e", "good": "#8a6d00", "skip": "#777", "unscored": "#a15c00"}
 
 
 def _baseline_note(baselines, destination, window, grounded_ppn):
@@ -92,12 +94,17 @@ def _sgn_str(n):
 
 
 def _score_breakdown_text(d):
-    """'Score: 58 desirability +11 price -3 transit = 66/100 (skip)' or '' if unscored."""
+    """'Desirability 58/100 · price +11 · transit -3 → 66/100 (skip)' or '' if unscored.
+    Names the score components in words instead of raw arithmetic, so the reasoning behind
+    the tier is legible without deciphering signed deltas."""
     final = d.get("final_score"); llm = d.get("llm_score")
     if final is None or llm is None:
         return ""
-    return (f"Score: {llm} desirability {_sgn_str(d.get('price_adj'))} price "
-            f"{_sgn_str(d.get('transit_adj'))} transit = {final}/100 ({d.get('tier', '?')})")
+    price_adj = d.get("price_adj") or 0
+    transit_adj = d.get("transit_adj") or 0
+    return (f"Desirability {llm}/100 · price {'+' if price_adj >= 0 else ''}{price_adj} · "
+            f"transit {'+' if transit_adj >= 0 else ''}{transit_adj} "
+            f"→ {final}/100 ({d.get('tier', '?')})")
 
 
 def _score_breakdown_html(d):
@@ -106,7 +113,7 @@ def _score_breakdown_html(d):
         return ""
     # Bold the final number for scanability.
     final = d.get("final_score")
-    txt = txt.replace(f"= {final}/100", f"= <b>{final}</b>/100")
+    txt = txt.replace(f"→ {final}/100", f"→ <b>{final}</b>/100")
     return f"<div style='font-size:12px;color:#888;margin:4px 0'>{txt}</div>"
 
 
@@ -195,16 +202,203 @@ def increment_degraded(state):
 
 # --- email builders ---
 
-def build_email_html(items, dropped, month_count, baselines):
+def _card_headline(d):
+    """(headline1, headline2) — leads with the property + price context (name · place),
+    not marketing prose. FIND's free-text `destination` label is shown as extra context on
+    line 2 only when it's not redundant with the hotel name already shown on line 1."""
+    name = d.get("hotel_name") or d.get("destination", "")
+    city = d.get("city", "")
+    country = d.get("country", "")
+    if city and country:
+        place = f"{city}, {country}"
+    elif city:
+        place = city
+    else:
+        place = ""
+    headline1 = f"{name} · {place}" if place else name
+    type_label = d.get("type", "").replace("_", " ").title()
+    dest = d.get("destination", "")
+    headline2 = f"{type_label} · {d.get('window', '')}"
+    if dest and dest != name:
+        headline2 += f" · {dest}"
+    return headline1, headline2
+
+
+def _price_line(d):
+    """Price-first line: '€ppn/night · €total for N nights [· ~X% below its usual €normal]'.
+    Omits any part whose figure is missing rather than showing a broken sentence."""
+    ppn = d.get("grounded_price_per_night_eur")
+    total = d.get("grounded_total_eur")
+    nights = d.get("grounded_nights")
+    parts = []
+    if ppn is not None:
+        parts.append(f"€{ppn}/night")
+    if total is not None:
+        parts.append(f"€{total} for {nights} nights" if nights is not None else f"€{total} total")
+    line = " · ".join(parts)
+    discount = d.get("discount")
+    normal = d.get("normal_price_eur")
+    if isinstance(discount, (int, float)) and discount >= 0.05 and normal is not None:
+        line += f" · ~{round(discount * 100)}% below its usual €{normal}"
+    return line
+
+
+def _options_html(d):
+    """Options list — each with dates, price, and a booking link or how-to-book text.
+    Shared by scored items and unscored items so the rendering never diverges."""
+    options = d.get("options") or []
+    if options:
+        opt_items = ""
+        for opt in options:
+            dates = opt.get("dates", "")
+            pn = opt.get("price_per_night_eur")
+            total = opt.get("total_eur")
+            url = opt.get("booking_url") or ""
+            source = opt.get("source", "")
+            price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
+            if url:
+                book_part = f"<a href='{url}' style='color:#1a56db;text-decoration:none'>Book now</a>"
+                src_note = (
+                    f" &nbsp;<span style='color:#999;font-size:12px'>({source})</span>"
+                    if source else ""
+                )
+            else:
+                how = d.get("how_to_book") or source or "see grounding below"
+                book_part = f"<span style='color:#555'>{how}</span>"
+                src_note = ""
+            cells = " &nbsp;·&nbsp; ".join(p for p in [dates, price_str, book_part + src_note] if p)
+            opt_items += f"<li style='margin:5px 0;font-size:14px'>{cells}</li>"
+        return f"<ul style='margin:6px 0 6px 20px;padding:0'>{opt_items}</ul>"
+    if d.get("how_to_book"):
+        return (
+            f"<div style='font-size:14px;color:#444;margin:6px 0'>"
+            f"<b>How to book:</b> {d['how_to_book']}</div>"
+        )
+    return ""
+
+
+def _options_text(d):
+    """Plain-text equivalent of _options_html — same source of truth, same field reads."""
+    lines = []
+    options = d.get("options") or []
+    if options:
+        lines.append("Options:")
+        for opt in options:
+            dates = opt.get("dates", "")
+            pn = opt.get("price_per_night_eur")
+            total = opt.get("total_eur")
+            url = opt.get("booking_url") or ""
+            source = opt.get("source", "")
+            price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
+            if url:
+                book_str = url
+                src_note = f" ({source})" if source else ""
+            else:
+                book_str = d.get("how_to_book") or source or ""
+                src_note = ""
+            cells = " · ".join(p for p in [dates, price_str, book_str + src_note] if p)
+            lines.append(f"  - {cells}")
+    elif d.get("how_to_book"):
+        lines.append(f"How to book: {d['how_to_book']}")
+    return lines
+
+
+def _est_gap_note(d):
+    """Warning when the live grounded price is far above FIND's original estimate — flags
+    the estimate as unreliable rather than silently trusting it. Guarded against
+    ZeroDivisionError/TypeError by requiring both figures present and truthy."""
+    if d.get("est_gap_flag") and d.get("grounded_price_per_night_eur") and d.get("est_price_eur"):
+        ratio = round(d["grounded_price_per_night_eur"] / d["est_price_eur"], 1)
+        return (f"⚠ Live price is {ratio}× FIND's €{d['est_price_eur']} estimate — "
+                f"treat the estimate as unreliable here.")
+    return ""
+
+
+def _trip_snippet_html(d):
+    if d.get("grounded_dates") and (d.get("options") or []):
+        snippet = T.paste_snippet(d)
+        return (
+            f"<div style='font-size:12px;color:#555;margin:6px 0'>Booked it? Paste into "
+            f"state/trips.json:<pre style='background:#f5f5f5;padding:6px 8px;font-size:11px;"
+            f"overflow-x:auto;margin:4px 0'>{snippet}</pre></div>"
+        )
+    return ""
+
+
+def _trip_snippet_text(d):
+    if d.get("grounded_dates") and (d.get("options") or []):
+        return f"Booked it? Paste into state/trips.json:\n  {T.paste_snippet(d)}"
+    return ""
+
+
+def _backtest_note(backtest):
+    """'Of N trip(s) you've logged, the pipeline had scored P as diamond/good, S as skip,
+    and never saw U.' — '' when there are no valid logged trips to cross-reference."""
+    if backtest is None:
+        return ""
+    return (f"Of {backtest['total']} trip(s) you've logged, the pipeline had scored "
+            f"{backtest['picked']} as diamond/good, {backtest['skipped']} as skip, and "
+            f"never saw {backtest['unseen']}.")
+
+
+def _health_footer_html(health):
+    """Always-present run-health footer so a degraded run never reads as an ordinary
+    verdict-bearing digest. Diagnostic/trust information, kept visually unobtrusive."""
+    counts = health.get("counts", {})
+    tier_mix = health.get("tier_mix", {})
+    t1 = tier_mix.get("tier1", {})
+    t2 = tier_mix.get("tier2", {})
+    stage_bits = [f"stage1 {health.get('stage1', '?')}", f"stage2 {health.get('stage2', '?')}",
+                  f"stage3 {health.get('stage3', '?')}"]
+    reason_bit = f" — {health['reason']}" if health.get("reason") else ""
+    return (
+        f"<div style='color:#999;font-size:11px;margin-top:12px;line-height:1.6;"
+        f"border-top:1px solid #eee;padding-top:8px'>"
+        f"<p style='margin:2px 0'><b>Run health:</b> {health.get('provider', '')} "
+        f"({health.get('models', '')}) · {' · '.join(stage_bits)}{reason_bit}</p>"
+        f"<p style='margin:2px 0'>Found {counts.get('found', 0)} · grounded {counts.get('grounded', 0)} "
+        f"· scored {counts.get('scored', 0)} · unscored {counts.get('unscored', 0)} · "
+        f"dropped {counts.get('dropped', 0)} · emailed {counts.get('emailed', 0)}</p>"
+        f"<p style='margin:2px 0'>Tier mix — local: {t1.get('diamond', 0)} diamond/"
+        f"{t1.get('good', 0)} good/{t1.get('skip', 0)} skip · far: {t2.get('diamond', 0)} diamond/"
+        f"{t2.get('good', 0)} good/{t2.get('skip', 0)} skip</p>"
+        f"<p style='margin:2px 0'>{health.get('budget_used_s', 0)}s of LLM budget used.</p>"
+        f"</div>"
+    )
+
+
+def _health_footer_text(health):
+    counts = health.get("counts", {})
+    tier_mix = health.get("tier_mix", {})
+    t1 = tier_mix.get("tier1", {})
+    t2 = tier_mix.get("tier2", {})
+    stage_bits = [f"stage1 {health.get('stage1', '?')}", f"stage2 {health.get('stage2', '?')}",
+                  f"stage3 {health.get('stage3', '?')}"]
+    reason_bit = f" — {health['reason']}" if health.get("reason") else ""
+    return "\n".join([
+        f"Run health: {health.get('provider', '')} ({health.get('models', '')}) · "
+        + " · ".join(stage_bits) + reason_bit,
+        f"Found {counts.get('found', 0)} · grounded {counts.get('grounded', 0)} · "
+        f"scored {counts.get('scored', 0)} · unscored {counts.get('unscored', 0)} · "
+        f"dropped {counts.get('dropped', 0)} · emailed {counts.get('emailed', 0)}",
+        f"Tier mix — local: {t1.get('diamond', 0)} diamond/{t1.get('good', 0)} good/"
+        f"{t1.get('skip', 0)} skip · far: {t2.get('diamond', 0)} diamond/{t2.get('good', 0)} good/"
+        f"{t2.get('skip', 0)} skip",
+        f"{health.get('budget_used_s', 0)}s of LLM budget used.",
+    ])
+
+
+def build_email_html(items, unscored, dropped, month_count, baselines, health, backtest):
     rows = ""
     for d in items:
-        type_label = d.get("type", "").replace("_", " ").title()
         summary = d.get("assistant_summary") or d.get("reason", "")
         tier = d.get("tier", "good")
         tier_badge = TIER_LABEL.get(tier, "👍 Good find")
         badge_color = TIER_COLOR.get(tier, "#8a6d00")
         if d.get("is_wildcard"):
             tier_badge = f"🃏 Wildcard · {tier_badge}"
+        headline1, headline2 = _card_headline(d)
+        price_line = _price_line(d)
 
         # Scorer dossier — what the place IS and why the price is a deal. This is the
         # context a human needs to judge an unfamiliar property; without it the email is
@@ -229,35 +423,7 @@ def build_email_html(items, dropped, month_count, baselines):
         )
 
         # Options list — each with dates, price, and a booking link or how-to-book text
-        opts_html = ""
-        options = d.get("options") or []
-        if options:
-            opt_items = ""
-            for opt in options:
-                dates = opt.get("dates", "")
-                pn = opt.get("price_per_night_eur")
-                total = opt.get("total_eur")
-                url = opt.get("booking_url") or ""
-                source = opt.get("source", "")
-                price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
-                if url:
-                    book_part = f"<a href='{url}' style='color:#1a56db;text-decoration:none'>Book now</a>"
-                    src_note = (
-                        f" &nbsp;<span style='color:#999;font-size:12px'>({source})</span>"
-                        if source else ""
-                    )
-                else:
-                    how = d.get("how_to_book") or source or "see grounding below"
-                    book_part = f"<span style='color:#555'>{how}</span>"
-                    src_note = ""
-                cells = " &nbsp;·&nbsp; ".join(p for p in [dates, price_str, book_part + src_note] if p)
-                opt_items += f"<li style='margin:5px 0;font-size:14px'>{cells}</li>"
-            opts_html = f"<ul style='margin:6px 0 6px 20px;padding:0'>{opt_items}</ul>"
-        elif d.get("how_to_book"):
-            opts_html = (
-                f"<div style='font-size:14px;color:#444;margin:6px 0'>"
-                f"<b>How to book:</b> {d['how_to_book']}</div>"
-            )
+        opts_html = _options_html(d)
 
         # Family-price caveat for hotel deals: apidojo's live rate can under-report the
         # child surcharge (the exact trap that made a €103/night rate become €340 on click).
@@ -283,13 +449,19 @@ def build_email_html(items, dropped, month_count, baselines):
             f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{all_in_note}</div>"
             if all_in_note else ""
         )
+        est_gap_note = _est_gap_note(d)
+        est_gap_html = (
+            f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{est_gap_note}</div>"
+            if est_gap_note else ""
+        )
+        trip_html = _trip_snippet_html(d)
 
         rows += (
             f"<tr><td style='padding:14px 0;border-bottom:1px solid #eee'>"
             f"<div style='font-size:12px;font-weight:bold;color:{badge_color};margin-bottom:2px'>{tier_badge}</div>"
-            f"<div style='font-size:17px;font-weight:bold'>{d['destination']}</div>"
-            f"<div style='font-size:13px;color:#777;margin:3px 0'>"
-            f"{type_label} &nbsp;·&nbsp; {d.get('window', '')}</div>"
+            f"<div style='font-size:17px;font-weight:bold'>{headline1}</div>"
+            f"<div style='font-size:13px;color:#777;margin:3px 0'>{headline2}</div>"
+            f"<div style='font-size:15px;color:#222;margin:4px 0'>{price_line}</div>"
             f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
             f"{about_html}"
             f"{value_case_html}"
@@ -300,6 +472,8 @@ def build_email_html(items, dropped, month_count, baselines):
             f"{child_caveat_html}"
             f"{grounding_html}"
             f"{red_flags_html}"
+            f"{est_gap_html}"
+            f"{trip_html}"
             f"</td></tr>"
         )
 
@@ -328,6 +502,54 @@ def build_email_html(items, dropped, month_count, baselines):
             f"<ul style='margin:0 0 0 18px;padding:0'>{drop_items}</ul></div>"
         )
 
+    # Unscored section — priced (live, real) but never judged by Stage 3, kept entirely
+    # separate from the scored-items table above. Never passes through the scored-items
+    # loop (no tier badge, no TIER_LABEL lookup — that's the whole point).
+    unscored_html = ""
+    if unscored:
+        u_rows = ""
+        for d in unscored:
+            headline1, headline2 = _card_headline(d)
+            price_line = _price_line(d)
+            opts_html_u = _options_html(d)
+            child_caveat_html_u = (
+                f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>"
+                f"⚠ Live rate is a base room price — reconfirm the 4-year-old is included at "
+                f"this price on Booking before booking; child surcharges aren't always reflected.</div>"
+                if d.get("type") == "hotel" else ""
+            )
+            grounding_html_u = (
+                f"<div style='font-size:12px;color:#777;margin:4px 0'>Source: {d['grounding']}</div>"
+                if d.get("grounding") else ""
+            )
+            est_gap_note_u = _est_gap_note(d)
+            est_gap_html_u = (
+                f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{est_gap_note_u}</div>"
+                if est_gap_note_u else ""
+            )
+            trip_html_u = _trip_snippet_html(d)
+            u_rows += (
+                f"<div style='padding:12px 0;border-bottom:1px solid #eee'>"
+                f"<div style='font-size:17px;font-weight:bold'>{headline1}</div>"
+                f"<div style='font-size:13px;color:#777;margin:3px 0'>{headline2}</div>"
+                f"<div style='font-size:15px;color:#222;margin:4px 0'>{price_line}</div>"
+                f"{opts_html_u}"
+                f"{child_caveat_html_u}"
+                f"{grounding_html_u}"
+                f"{est_gap_html_u}"
+                f"{trip_html_u}"
+                f"</div>"
+            )
+        unscored_html = (
+            f"<div style='margin-top:18px;padding-top:12px;border-top:1px solid #eee'>"
+            f"<div style='font-size:14px;font-weight:bold;color:#a15c00;margin-bottom:4px'>"
+            f"Priced but not scored (pipeline degraded)</div>"
+            f"<div style='font-size:12px;color:#777;margin-bottom:8px'>"
+            f"Stage 3 could not score these: {health.get('reason', '')}. Prices below are live "
+            f"and real; the ranking is not — nothing here has been judged yet.</div>"
+            f"{u_rows}</div>"
+        )
+
     conscience = ""
     if month_count >= 8:
         conscience = (
@@ -335,13 +557,23 @@ def build_email_html(items, dropped, month_count, baselines):
             f"Note: {month_count} email(s) sent this month — firing more than usual. "
             f"All are genuine finds, but worth checking if the tier bands need tuning.</p>"
         )
+
+    bt_note = _backtest_note(backtest)
+    backtest_html = (
+        f"<p style='color:#999;font-size:12px;margin-top:16px'>{bt_note}</p>" if bt_note else ""
+    )
+    health_html = _health_footer_html(health)
+
     return (
         f"<div style='font-family:system-ui,sans-serif;max-width:640px;padding:8px'>"
         f"<h2 style='margin-bottom:4px'>Diamond Finder</h2>"
         f"<p style='color:#555;margin:0 0 16px'>Today's digest — {headline}</p>"
         f"<table style='width:100%;border-collapse:collapse'>{rows}</table>"
+        f"{unscored_html}"
         f"{dropped_html}"
         f"{conscience}"
+        f"{backtest_html}"
+        f"{health_html}"
         f"<p style='color:#bbb;font-size:11px;margin-top:16px'>"
         f"Prices are live from Booking.com at send time. 💎 diamonds are rare grab-it finds; "
         f"👍 good finds are solid but not urgent; skipped items are shown so you see what the "
@@ -397,7 +629,7 @@ def build_history_entries(items, today, baselines):
     return entries
 
 
-def build_email_text(items, dropped, baselines):
+def build_email_text(items, unscored, dropped, baselines, health, backtest):
     parts = []
     _text_tier = {"diamond": "DIAMOND", "good": "GOOD FIND", "skip": "SKIPPED"}
     for d in items:
@@ -406,9 +638,12 @@ def build_email_text(items, dropped, baselines):
         tier_label = _text_tier.get(tier, "GOOD FIND")
         if d.get("is_wildcard"):
             tier_label = f"WILDCARD · {tier_label}"
+        headline1, headline2 = _card_headline(d)
+        price_line = _price_line(d)
         lines = [
-            f"[{tier_label}] {d['destination']} ({d.get('type', '')})",
-            f"Window: {d.get('window', '')}",
+            f"[{tier_label}] {headline1}",
+            headline2,
+            price_line,
             summary,
         ]
         if d.get("about"):
@@ -425,26 +660,7 @@ def build_email_text(items, dropped, baselines):
                                    d.get("grounded_price_per_night_eur"))
         if base_note:
             lines.append(base_note)
-        options = d.get("options") or []
-        if options:
-            lines.append("Options:")
-            for opt in options:
-                dates = opt.get("dates", "")
-                pn = opt.get("price_per_night_eur")
-                total = opt.get("total_eur")
-                url = opt.get("booking_url") or ""
-                source = opt.get("source", "")
-                price_str = f"€{pn}/night · €{total} total" if (pn is not None and total is not None) else ""
-                if url:
-                    book_str = url
-                    src_note = f" ({source})" if source else ""
-                else:
-                    book_str = d.get("how_to_book") or source or ""
-                    src_note = ""
-                cells = " · ".join(p for p in [dates, price_str, book_str + src_note] if p)
-                lines.append(f"  - {cells}")
-        elif d.get("how_to_book"):
-            lines.append(f"How to book: {d['how_to_book']}")
+        lines.extend(_options_text(d))
         if d.get("type") == "hotel":
             lines.append("Note: live rate is a base room price — reconfirm the 4-year-old "
                          "is included at this price on Booking before booking.")
@@ -452,8 +668,42 @@ def build_email_text(items, dropped, baselines):
             lines.append(f"Source: {d['grounding']}")
         if d.get("red_flags"):
             lines.append(f"Red flags: {d['red_flags']}")
+        est_gap_note = _est_gap_note(d)
+        if est_gap_note:
+            lines.append(est_gap_note)
+        trip_note = _trip_snippet_text(d)
+        if trip_note:
+            lines.append(trip_note)
         parts.append("\n".join(lines))
     body = "\n\n---\n\n".join(parts)
+
+    # Unscored section — priced (live, real) but never judged by Stage 3, kept entirely
+    # separate from the scored digest above (no tier label rendered for these at all).
+    if unscored:
+        u_parts = [
+            "Priced but not scored (pipeline degraded)",
+            f"Stage 3 could not score these: {health.get('reason', '')}. Prices below are live "
+            f"and real; the ranking is not — nothing here has been judged yet.",
+        ]
+        for d in unscored:
+            headline1, headline2 = _card_headline(d)
+            price_line = _price_line(d)
+            u_lines = [headline1, headline2, price_line]
+            u_lines.extend(_options_text(d))
+            if d.get("type") == "hotel":
+                u_lines.append("Note: live rate is a base room price — reconfirm the 4-year-old "
+                               "is included at this price on Booking before booking.")
+            if d.get("grounding"):
+                u_lines.append(f"Source: {d['grounding']}")
+            est_gap_note = _est_gap_note(d)
+            if est_gap_note:
+                u_lines.append(est_gap_note)
+            trip_note = _trip_snippet_text(d)
+            if trip_note:
+                u_lines.append(trip_note)
+            u_parts.append("\n".join(u_lines))
+        body += "\n\n===\n\n" + "\n\n---\n\n".join(u_parts)
+
     if dropped:
         drop_lines = ["Also seen & dropped before scoring:"]
         drop_lines += [
@@ -461,6 +711,11 @@ def build_email_text(items, dropped, baselines):
             for x in dropped
         ]
         body += "\n\n===\n\n" + "\n".join(drop_lines)
+
+    bt_note = _backtest_note(backtest)
+    if bt_note:
+        body += "\n\n" + bt_note
+    body += "\n\n" + _health_footer_text(health)
     return body
 
 
@@ -1184,8 +1439,10 @@ def main():
             "budget_used_s": int((dt.datetime.now() - run_start).total_seconds()),
         }
 
-        html = build_email_html(to_email, dropped, month_count, prior_baselines)
-        text = build_email_text(to_email, dropped, prior_baselines)
+        html = build_email_html(to_email, unscored_to_email, dropped, month_count,
+                                prior_baselines, health, backtest)
+        text = build_email_text(to_email, unscored_to_email, dropped, prior_baselines,
+                                health, backtest)
 
         # Persist everything that made it into this digest for the browsable UI —
         # independent of whether the SMTP send below succeeds. Unscored items are

@@ -520,6 +520,7 @@ def _to_stage3(rate, verdict, confidence, ref, today, mode="verified"):
         "grounding":         " ".join(grounding_parts),
         "assistant_summary": summary,
         "confidence":        confidence,
+        "grounding_method":  "apidojo",
     }
 
 
@@ -581,6 +582,7 @@ def _to_stage3_alternatives(rates, ref, today):
         ),
         "assistant_summary": summary,
         "confidence":        "medium",
+        "grounding_method":  "apidojo",
     }
 
 

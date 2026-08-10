@@ -43,16 +43,11 @@
     "saniresort|2026-09|diamond": "2026-08-01",
     "limaklaradeluxehotelandresort|2026-09|good": "2026-08-01",
     "dreamfunworld|2026-09|good": "2026-08-01",
-    "huromacampingintown|2026-09|skip": "2026-08-01",
-    "sanaspahotel|2026-09|skip": "2026-08-10",
-    "premierluxurymountainresort|2026-09|skip": "2026-08-10",
-    "spahotelolymp|2026-09|skip": "2026-08-10",
-    "limaklaradeluxehotelandresort|2026-09|skip": "2026-08-10",
-    "hiltonchaniaoldtownresortandspa|2026-09|skip": "2026-08-10"
+    "huromacampingintown|2026-09|skip": "2026-08-01"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
-    "2026-08": 2
+    "2026-08": 1
   }
 }

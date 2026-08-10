@@ -60,6 +60,38 @@ State files (`state/`) are committed back by CI after each run — no external d
 
 3. Enable Actions. Test via *Actions → daily → Run workflow*.
 
+## Trip log (`state/trips.json`)
+
+An optional, personal log of trips this family has actually booked. It's used to calibrate
+the pipeline against real bookings — a real paid price is stronger evidence than any LLM
+guess, so it feeds the prompts as a price anchor and preference signal.
+
+It's read-only from the pipeline's side: you edit it by hand, the pipeline never writes to
+it. Each digest email includes a ready-to-paste snippet for a deal you just booked, so
+logging one is copy/paste/edit-the-total.
+
+Required fields: `hotel_name`, `city`, `country`, `checkin`/`checkout` (ISO dates),
+`total_paid` (total for the stay, not per-night), `currency`.
+
+```json
+{
+  "trips": [
+    {
+      "hotel_name": "Sana Spa Hotel",
+      "city": "Hisarya",
+      "country": "Bulgaria",
+      "checkin": "2026-06-12",
+      "checkout": "2026-06-15",
+      "total_paid": 240,
+      "currency": "EUR",
+      "booked_via": "booking.com",
+      "rating": 4,
+      "notes": "Good pool, small rooms"
+    }
+  ]
+}
+```
+
 > **LLM web search:** with `LLM_PROVIDER=anthropic`, Stage 1 and the LLM fallback use the
 > Anthropic `web_search` tool — enable it in the console if needed. With `LLM_PROVIDER=gemini`
 > it uses `google_search`; if Gemini rejects the tool, the call retries without search.

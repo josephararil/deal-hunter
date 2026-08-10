@@ -26,6 +26,14 @@ find_city_anomalies.py
   │    Baselines (realistic prices from past verifications) + outcome ledger
   │    (past corrections and kills). Injected as {memory} into all three stage prompts.
   │
+  ├─ Trips load — state/trips.json (read-only; see "Trip log" below)
+  │    trips.load() + trips.valid_trips() parse and validate the user's hand-maintained
+  │    booking log. trips.price_anchors() (keyed via memory.baseline_key) REPLACES the
+  │    matching baseline line in the memory summary with a "PAID €X/night" line — a real
+  │    booking is stronger evidence than any past LLM verification. trips.summarize_for_prompt()
+  │    renders a bounded trips block injected into both FIND_PROMPT and SKEPTIC_PROMPT so the
+  │    scorer can calibrate against what this family actually pays and chooses.
+  │
   ├─ Stage 1 · FIND (llm, want_search=True, model=MODEL_FIND)
   │    Score candidates 0–100. Each candidate includes est_price_eur (structured number —
   │    NOT extracted from prose). Anchored to CITIES but can extend to nearby destinations.
@@ -59,8 +67,9 @@ find_city_anomalies.py
   │    (config.compute_final_score):
   │      final = clamp(0,100, llm_score + price_adj + transit_adj)
   │      discount  = 1 - effective_ppn/normal_price   (effective_ppn = grounded_ppn for a drive;
-  │                  hotel+flight+ground all-in per night for a fly destination. Falls back to
-  │                  regional par if the LLM gave no usable normal_price_eur)
+  │                  hotel+flight+ground all-in per night for a fly destination. If the LLM gave
+  │                  no usable normal_price_eur the pipeline stays NEUTRAL — discount=0.0,
+  │                  price_adj=0 — it no longer substitutes the regional par; see Invariant P)
   │      price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT*discount)
   │                  (bonus capped, penalty UNCAPPED — overpriced deals sink on their own)
   │      transit_adj = ±TRANSIT_TIER1_BONUS (drivable Tier-1 vs fly Tier-2) — a small TIME/HASSLE
@@ -78,11 +87,25 @@ find_city_anomalies.py
   │    surfaced verbatim in the email so a human can judge an unfamiliar property. Descriptive
   │    only — must not move the score.
   │
+  │    SCORED/UNSCORED SPLIT (Invariant Z): if the Stage-3 call fails outright, or returns
+  │    with no usable numeric score for a given grounded candidate, that candidate becomes an
+  │    `unscored` entry — tier "unscored", every numeric field (llm_score, final_score,
+  │    price_adj, transit_adj, discount, normal_price_eur) explicitly None — instead of a
+  │    fabricated score. It still carries its real grounded price (grounding already
+  │    succeeded); only the judgement is missing. `scored_all` (diamond/good/skip) and
+  │    `unscored` are tracked as separate lists throughout `main()` and both flow to the
+  │    email, city_signals.json/md, and the ledger — never merged into one silently-degraded
+  │    "scored" bucket.
+  │
   ├─ Memory write — state/memory.json + state/memory.md
   │    Every run: record_outcome per gate survivor with llm_score + final_score and a verdict
-  │    of its tier (diamond/good/skip), or "kill" (grounding kill) / "blocked" (guard).
-  │    record_baseline for every grounded confirm/correct that is high-confidence + in-window
-  │    (even skips — the price is real). prune() + save().
+  │    of its tier (diamond/good/skip), or "kill" (grounding kill) / "blocked" (guard) /
+  │    "unscored" (grounded fine, Stage 3 gave no usable score — never coerced to "skip").
+  │    record_baseline for every grounded confirm/correct that is high-confidence, in-window,
+  │    AND apidojo-sourced (Invariant B) — even skips/unscored, since the live price is real
+  │    regardless of the desirability verdict. Keeps a rolling median of up to
+  │    MAX_BASELINE_SAMPLES real samples per property+season key rather than overwriting on
+  │    every verification. prune() + save().
   │
   ├─ Anti-spam gate — state/signals_seen.json
   │    Keyed by PROPERTY-IDENTITY (hotel_name→city→label, punctuation-stripped) + coarse
@@ -107,6 +130,17 @@ find_city_anomalies.py
   │    guard blocks (destination + reason) so the digest reflects everything the pipeline
   │    looked at. Conscience note if monthly count >= 8.
   │
+  │    DEGRADED PATH: whenever ANY candidate is unscored, the digest gets a separate "Priced
+  │    but not scored (pipeline degraded)" section — no tier badge, no score, just the live
+  │    grounded price and options — kept entirely apart from the scored table so an unscored
+  │    entry can never be mistaken for a judged one. The subject line is prefixed "⚠ " (or, if
+  │    nothing scored at all, replaced outright with "pipeline degraded — N priced but
+  │    unscored"). A run-health footer is now ALWAYS present in every email (not only degraded
+  │    ones) — provider/models, per-stage status (stage1/2/3 ok/failed/partial + reason),
+  │    found/grounded/scored/unscored/dropped/emailed counts, tier-mix by transit tier, and
+  │    LLM budget seconds used — so a quiet day and a degraded day are never visually
+  │    indistinguishable.
+  │
   └─ Always writes
        state/city_signals.json  — all Stage 1 candidates + full score breakdown (hunt: false)
        state/city_signals.md    — human-readable log with grounding + score/tier breakdown
@@ -123,9 +157,12 @@ find_city_anomalies.py
 | `config.py` | City list + diamond-finder knobs; per-stage model roles (`MODEL_FIND/SKEPTIC/VERIFY`); per-stage provider overrides; prompts |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
-| `find_city_anomalies.py` | The diamond finder — runs every 3 days, emails a digest of every scored candidate (diamond/good/skip) + a dropped footer |
+| `find_city_anomalies.py` | The diamond finder — runs every 3 days, emails a digest of every scored candidate (diamond/good/skip) + unscored/dropped sections |
 | `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
-| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC every 3 days (`cron: "0 6 */3 * *"`); commits `state/` |
+| `trips.py` | Read-only user-maintained trip log: `load()`/`valid_trips()`/`price_anchors()`/`summarize_for_prompt()`/`backtest()`/`paste_snippet()` — see "Trip log" below |
+| `state/trips.json` | Hand-edited by the user (booked trips); the pipeline reads it but never writes it (Invariant T) |
+| `tools/migrate_memory.py` | One-off, already-run, idempotent migration script — the reviewable record of the 2026-08-10 state repair (baseline provenance purge, re-key, ledger revert, `trips.json` seed) |
+| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC every 3 days (`cron: "0 6 */3 * *"`); commits `state/`; `timeout-minutes: 20` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
 | `state/signals_seen.json` | Anti-spam TTL memory: `property-identity\|season\|tier → date_emailed`, monthly count |
@@ -203,6 +240,65 @@ ground_deal = _resolve_ground_deal()
 `ground_deal(diamond, mem_text, today)` is called once per Stage-1 gate survivor
 (before the skeptic). Both providers return the same grounding result schema.
 
+## Run health and degraded runs
+
+The pipeline bounds its own wall-clock time and degrades explicitly rather than either
+outlasting CI's job timeout or silently pretending a bad run was a quiet one.
+
+- `common.set_run_deadline(C.RUN_BUDGET_SECONDS)` (660s) is called once at the top of
+  `main()`; `common._budget_left()` returns the seconds remaining against that deadline.
+- `common._post_with_retry` checks the budget before every attempt and before every sleep
+  between retries, and stops early — rather than sleeping/retrying past the point where the
+  run could still finish inside CI's own `timeout-minutes` (now **20**, raised from 15,
+  because the old retry schedule could already exceed 15 minutes on its own on a slow day).
+- `common._gemini` does a one-shot fallback to `GEMINI_FALLBACK_MODEL_MAP[gmodel]` if the
+  primary Gemini model is unavailable after retries, rather than giving up outright.
+- Every email — not only degraded ones — now carries a permanent health footer
+  (`_health_footer_html`/`_health_footer_text`): provider + models, per-stage status
+  (`stage1`/`stage2`/`stage3` → ok/failed/partial + a `reason` string when something went
+  wrong), found/grounded/scored/unscored/dropped/emailed counts, tier-mix by transit tier
+  (Tier-1 local vs Tier-2 fly), and LLM budget seconds used. This is what makes a degraded run
+  visibly different from an ordinary quiet day, which was exactly the blind spot the
+  2026-08-10 outage exploited.
+
+## Trip log
+
+`state/trips.json` is a personal, hand-maintained log of trips this family has actually
+booked — the strongest calibration signal available, stronger than any LLM guess, because
+it's a real paid price and a real choice made.
+
+- **Schema** — each entry needs `hotel_name`, `city`, `country`, `checkin`/`checkout` (ISO
+  dates), `total_paid` (the TOTAL for the whole stay, not per-night), `currency`. Optional:
+  `party`, `booked_via`, `rating`, `notes`.
+- **Read-only from the pipeline's side (Invariant T).** The user edits this file by hand; no
+  pipeline code ever writes it. Each digest email includes a ready-to-paste JSON snippet
+  (`trips.paste_snippet(item)`) for any priced item with grounded dates and options, so
+  logging a booking after the fact is low-friction — copy, paste, edit the total once you
+  know it, done.
+- **`trips.py` functions** (read the file for exact behavior before changing any of it):
+  - `load()` — reads `state/trips.json`, never raises; missing file or malformed JSON both
+    quietly fall back to `{"trips": []}` (a warning is printed for malformed JSON only).
+  - `valid_trips(data)` — validates each entry against the required fields above, drops
+    invalid entries with a one-line warning, and derives `nights` and (EUR only)
+    `price_per_night_eur`.
+  - `price_anchors(trips)` — for EUR trips only, maps `memory.baseline_key`-compatible keys
+    to `{price_per_night_eur, hotel_name, checkin}`; these REPLACE the matching baseline line
+    in `memory.summarize_for_prompt`'s output with a "PAID" line.
+  - `summarize_for_prompt(trips)` — a compact, bounded (`MAX_TRIPS_IN_PROMPT`) text block,
+    most-recent-first, injected into `FIND_PROMPT` and `SKEPTIC_PROMPT` as `{trips}`.
+  - `backtest(trips, memory)` — cross-references logged trips against the outcome ledger and
+    returns counts of `picked` (pipeline had scored it diamond/good), `skipped` (seen but not
+    surfaced), and `unseen` (never appeared in the ledger at all).
+  - `paste_snippet(item)` — the ready-to-paste JSON snippet described above.
+- **No FX conversion.** A non-EUR trip still contributes preference/novelty context via
+  `summarize_for_prompt` (the LLM sees what was booked, where, and for how much in its own
+  currency) but produces no price anchor — `price_anchors` only emits an anchor when
+  `currency == "EUR"`.
+- **Back-test line in the digest.** When there is at least one valid logged trip, the email
+  includes a one-line summary (`_backtest_note`) — "Of N trip(s) you've logged, the pipeline
+  had scored P as diamond/good, S as skip, and never saw U." — comparing what the pipeline
+  actually scored those properties against what the user booked.
+
 ## Critical invariants — do not break these
 
 - **All LLM calls go through `common.llm()`.** Abstracts Anthropic vs Gemini via
@@ -212,10 +308,21 @@ ground_deal = _resolve_ground_deal()
   `signals_seen.json`, `memory.json`, `memory.md`, `deals_history.json` are committed after
   each run. They are real state, not scratch. Seed values: `{}` / `{"seen":{}, "monthly_count":{}}` /
   `{"baselines": {}, "ledger": []}` / `{"entries": []}`.
+- **(T, trips are user-owned) No code path writes, creates, reorders, or reformats
+  `state/trips.json` after it's seeded.** `trips.py` reads it via `common.load_json` and never
+  calls `save_json` (or anything else that writes the path) — the whole module docstring says
+  so. The pipeline already commits everything under `state/` every run, so a write here would
+  silently persist and could clobber a hand edit the user made between runs. If you ever need
+  the pipeline to record something trip-related, put it in `memory.json`, not `trips.json`.
 - **`deals_history.json` is appended to, never overwritten, and only from `to_email`** (the
   exact list the digest renders) — so it stays an honest "everything that made it to the
   email" record for `web/`. Do not populate it from `scored_all` or any pre-anti-spam-gate
   list; that would show deals the user was never actually notified about.
+- **(H, history is what was actually judged) `deals_history.json` entries are only ever built
+  from scored tiers (diamond/good/skip) — never `unscored`.** An unscored entry has a `tier`
+  string (`"unscored"`) and would render in the web UI exactly like a real judged deal, just
+  with a missing score — indistinguishable from data loss to anyone browsing `web/`. Keep
+  `unscored`/`unscored_to_email` out of `build_history_entries` input.
 - **Grounding runs BEFORE scoring.** Stage 2 grounds live prices; Stage 3 scores those live
   prices. Core design decision — the scorer must never grade a Stage-1 *estimate*. Preserve
   this if you touch the pipeline order.
@@ -228,6 +335,19 @@ ground_deal = _resolve_ground_deal()
   veto — that was deliberately removed so scores stay comparable and every one is recorded for
   tuning. The descriptive fields (`about` = what the place is; `value_case` = why the price is
   a deal) must NEVER influence the numeric score or gate a deal — the prompt says so explicitly.
+- **(Z, zero-is-not-missing) A missing LLM score must never become `0`, and a missing
+  `normal_price_eur` must never fall back to a regional par.** Both substitutions used to
+  produce a well-formed number that flowed through the rest of the pipeline as if it were a
+  real judgement — that is exactly how the 2026-08-10 outage turned five good hotels into
+  fabricated "skip" verdicts (llm_score coerced to 0) and produced a −166 penalty on a 5-star
+  Hilton. The fix: `llm_val` is `None` unless the scorer returned an actual number
+  (`find_city_anomalies.py`), and a candidate with no score becomes an explicit `unscored`
+  entry (see the Stage 3 diagram above) rather than a fake tier. `compute_final_score` treats
+  a missing/unusable `normal_price_eur` as NEUTRAL (`discount=0.0`, `price_adj=0`), not a par
+  substitution (see Invariant P). `memory.summarize_for_prompt` also excludes any ledger row
+  shaped exactly like the old bug (`llm_score == 0 and final_score == 0`) from the "recent
+  outcomes" calibration text, so a pre-fix poisoned row can't keep teaching the model the same
+  lie even if one somehow survives.
 - **DIAMOND is a multi-gate, deliberately-rare tier.** `tier_for` promotes to diamond ONLY when
   all three hold: `final >= DIAMOND_SCORE_THRESHOLD`, `llm_score >= DIAMOND_MIN_LLM_SCORE` (a
   standout property, above the ~82 ordinary-local baseline), AND `discount >= DIAMOND_MIN_DISCOUNT`
@@ -243,8 +363,20 @@ ground_deal = _resolve_ground_deal()
   *reference* price (an input, like `est_price_eur` upstream) but still does NOT tier or apply
   the modifier. `normal_price_eur` MUST be honest — a fabricated high "normal" manufactures a
   false diamond; the prompt tells the LLM to set it at/below the grounded price when unsure.
-  `DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR` remain ONLY as the fallback reference when the LLM
-  gave no usable `normal_price_eur`.
+  `DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR` are now INFORMATIONAL ONLY — skeptic-prompt
+  context plus log/digest display — and are never substituted into the scoring math. When the
+  LLM gives no usable `normal_price_eur`, `compute_final_score` stays NEUTRAL (`discount=0.0`,
+  `price_adj=0`) rather than falling back to par; substituting a regional budget floor for a
+  specific property's normal rate was a category error that produced a −166 penalty on a
+  5-star Hilton at €475.81 vs the €110 par (see Invariant Z above).
+- **(B, baselines are evidence-only) `record_baseline` may be called only when the grounding
+  result's `grounding_method == "apidojo"`, in addition to high confidence + in-window.**
+  Never from the LLM concierge fallback, never from a missing/unknown provenance — fails
+  closed. Before this, an LLM concierge could restate FIND's own price estimate back with
+  false confidence, and it would be trusted as a real verified price; that is how 40 of 73
+  baselines ended up unverified before the 2026-08-10 migration purged them. See
+  `find_city_anomalies.main()`'s baseline-write call, which checks
+  `r3.get("grounding_method", "llm") == "apidojo"` before ever calling `M.record_baseline`.
 - **`effective_ppn` folds an LLM-estimated flight/ground-transport cost into the price used for
   discount math, for any destination that requires a flight.** `find_city_anomalies.py` reads
   the skeptic's `flight_cost_eur_total` + `ground_transport_eur` (round-trip, whole family of 3;
@@ -280,11 +412,16 @@ ground_deal = _resolve_ground_deal()
   are out of scope and NOT in the grounded hotel price, the scorer is the only stage that can
   weigh flight cost/hassle — so a no-direct-PDV destination is penalised in the score itself,
   not just by the small transit nudge. If you ever add flight data, revisit this.
-- **The scoring knobs live in config, nowhere else** (`DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR`
-  [fallback reference only], `PRICE_SCORE_WEIGHT`, `PRICE_BONUS_CAP`, `TRANSIT_TIER1_BONUS`/`TIER2`,
+- **(P) The scoring knobs live in config, nowhere else** (`DIAMOND_PAR_EUR`/`DEFAULT_DIAMOND_PAR_EUR`
+  [informational only — prompt context/display, never substituted into scoring math],
+  `PRICE_SCORE_WEIGHT`, `PRICE_BONUS_CAP`, `TRANSIT_TIER1_BONUS`/`TIER2`,
   `DIAMOND_SCORE_THRESHOLD`, `GOOD_SCORE_THRESHOLD`, `DIAMOND_MIN_LLM_SCORE`, `DIAMOND_MIN_DISCOUNT`).
   The price bonus is capped; the penalty is UNCAPPED, which is *why there is no hard price ceiling* —
-  overpriced deals sink to skip on their own.
+  overpriced deals sink to skip on their own. The est-price-gap flag (`EST_GAP_FLAG_MULTIPLE`,
+  new) is part of this same invariant: when the live grounded price is far above FIND's
+  original estimate, `est_gap_flag` is set and shown to the reader (`_est_gap_note`) — it never
+  gates or drops a candidate on price, purely a display-only heads-up that the estimate was
+  unreliable for this one.
 - **`STAGE1_MIN_SCORE = 80`** is the gate into grounding — pure triage on FIND's estimate to
   bound grounding cost. NO price filter at the gate.
 - **FIND scoring is triage; the scorer is authoritative.** FIND's score only decides who gets
@@ -319,10 +456,15 @@ ground_deal = _resolve_ground_deal()
   ledger, `city_signals.json`, and the run log — deliberately, so a deal that scored 69 at €86
   and 74 at €79 keeps its history rather than being lost to a veto. Ledger verdicts:
   diamond/good/skip (scored), `kill` (grounding kill), `blocked` (guard).
-- **Baselines are only written** when grounding confidence is "high" AND the grounded option
-  dates fall within the candidate window (rough season_key match) — recorded for every such
-  grounded confirm/correct regardless of the tier (even a skip: the price is real).
-  Low-confidence or out-of-window verifications produce unreliable data — never stored.
+- **Baselines are only written** when grounding confidence is "high", the grounded option
+  dates fall within the candidate window (rough season_key match), AND
+  `grounding_method == "apidojo"` (Invariant B) — recorded for every such grounded
+  confirm/correct regardless of the tier (even a skip or unscored: the price is real).
+  Low-confidence, out-of-window, or non-apidojo (LLM concierge) verifications produce
+  unreliable or self-referential data — never stored. `record_baseline` takes a pre-built
+  `key` from `memory.baseline_key(candidate)` (property identity + season), not raw
+  destination/season args, and keeps a rolling median of up to `MAX_BASELINE_SAMPLES` real
+  samples rather than overwriting on every verification.
 - **The email's price comparison uses the PRIOR-run baseline snapshot** (`prior_baselines`,
   captured right after `M.load()`), not the live `mem` — otherwise a deal is compared against
   the very price this run just recorded for it ("about the usual" for everything).
@@ -351,6 +493,14 @@ ground_deal = _resolve_ground_deal()
   kills / guard blocks appear in a
   compact "seen & dropped" footer (no email is sent purely for a kill). A day with nothing
   new (or nothing found) still sends nothing.
+- **(S, identity keys stay byte-stable) `memory.identity()` reproduces the original
+  `find_city_anomalies._identity()` byte-for-byte** — it was moved verbatim into `memory.py`,
+  not reimplemented, including its `"&"` → `"and"` normalization. `find_city_anomalies.py`
+  now aliases `_identity = M.identity` so baselines and anti-spam share one derivation
+  (`_identity = M.identity` near the top of the file). A behavioral drift here would break
+  every existing `signals_seen` key and reset the whole `SIGNAL_TTL_DAYS`-day anti-spam TTL
+  into a spam burst — do not "clean up" this function's body without checking every existing
+  key still matches.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger
   hotel crawls. The field exists for schema compatibility only.
 - **Memory is written every run**, including silent days. `memory.py` functions must
@@ -440,6 +590,15 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
   the first email. Acceptable given the "rare, act-now" framing.
 - **Family-only scope.** Destinations that require arduous travel or are poor fits for a
   4-year-old are excluded by the skeptic prompt. This is intentional, not a filter bug.
+- **Tier-2 (fly-from-SOF / long-drive) variety was investigated and deliberately deferred, not
+  fixed.** Measured over 95 historical scored ledger rows: Tier-2's median `price_adj` was
+  actually HIGHER than Tier-1's (+9 vs +3) — so Tier-2 is not losing on the price modifier.
+  It loses because 12 of 18 Tier-2 skips already scored below the GOOD threshold on
+  desirability (`llm_score`) alone, before any price/transit modifier — i.e. the effect is
+  prompt-driven (the skeptic's calibration), not a price-modifier bug. This is why no scoring
+  weights were touched in this change — the diagnosis pointed at the skeptic prompt's
+  calibration, and changing `PRICE_SCORE_WEIGHT`/`TRANSIT_TIER2_BONUS`/etc. would have
+  disturbed the working Tier-1 path based on a false diagnosis.
 
 ## Out of scope (do not start without an explicit request)
 

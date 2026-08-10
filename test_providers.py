@@ -290,6 +290,8 @@ try:
         "2026" in opt_dates, f"dates={opt_dates!r}")
     chk("_to_stage3 verified: dates passes _dates_in_window",
         fa._dates_in_window(opt_dates, "Aug 2026"), f"dates={opt_dates!r} vs 'Aug 2026'")
+    chk("_to_stage3 verified: grounding_method == 'apidojo'",
+        r.get("grounding_method") == "apidojo", f"got: {r.get('grounding_method')!r}")
 
     # ── 14. _price_alternatives: filters review>=8.0 only (no price cap) → 3 results
     P._get = _make_get(_AC_BANSKO_CITY_ONLY, _PROPS_CITY_BANSKO)
@@ -321,6 +323,8 @@ try:
         and "Couldn't confirm Regnum Hotel" in alts_r.get("assistant_summary", ""),
         f"got: verdict={alts_r.get('verdict')!r}, conf={alts_r.get('confidence')!r}, "
         f"n_opts={len(alts_r.get('options',[]))}, summary={alts_r.get('assistant_summary','')[:60]!r}")
+    chk("_to_stage3_alternatives: grounding_method == 'apidojo'",
+        alts_r.get("grounding_method") == "apidojo", f"got: {alts_r.get('grounding_method')!r}")
 
     P._get = _make_get(_AC_KEMPINSKI, _PROPS_KEMPINSKI_UNDER)
 
@@ -445,7 +449,7 @@ try:
         f"opt0={ (result.get('options') or [{}])[0] }")
 
     # ── Summary ───────────────────────────────────────────────────────────────
-    total = 28
+    total = 30
     passed = total - len(_failed)
     print(f"\n{passed}/{total} tests passed.")
     if _failed:

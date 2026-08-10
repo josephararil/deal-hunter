@@ -1,6 +1,6 @@
 """Shared helpers for the diamond-finder pipeline."""
 
-import os, json, ssl, smtplib, datetime as dt, time
+import os, json, ssl, smtplib, datetime as dt, time, random
 from email.message import EmailMessage
 import requests
 import config as C
@@ -14,26 +14,57 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 STATE_DIR = "state"
 
 _RETRY_STATUSES = {429, 500, 502, 503, 504}
-_MAX_RETRIES = 4
-_RETRY_DELAYS = [2, 4, 8]  # seconds between attempts
+_MAX_RETRIES = 3
+_RETRY_DELAYS = [5, 15]  # seconds between attempts
+
+RUN_DEADLINE = None                 # module global, epoch seconds; set once by find_city_anomalies.main()
+
+
+def set_run_deadline(seconds_from_now):
+    global RUN_DEADLINE
+    RUN_DEADLINE = time.time() + seconds_from_now
+
+
+def _budget_left():
+    if RUN_DEADLINE is None:
+        return float("inf")
+    return RUN_DEADLINE - time.time()
 
 
 def _post_with_retry(url, headers, json_body, timeout=180):
     """POST with exponential backoff on transient errors (5xx, 429, network).
-    Auth failures (401, 403) and client errors (400, 422) are returned immediately."""
+    Auth failures (401, 403) and client errors (400, 422) are returned immediately.
+    Retries stop early if the run's wall-clock budget (set_run_deadline) can't cover
+    another attempt or the planned sleep — a slow-network day should fail fast rather
+    than outlast the CI job's own timeout."""
+    last_exc = None
     for attempt in range(_MAX_RETRIES):
+        if attempt > 0 and _budget_left() < timeout:
+            print(f"  [budget] {int(_budget_left())}s left — not retrying")
+            if last_exc is not None:
+                raise last_exc
+            return r
         try:
             r = requests.post(url, headers=headers, json=json_body, timeout=timeout)
             if r.status_code not in _RETRY_STATUSES or attempt == _MAX_RETRIES - 1:
                 return r
             delay = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
-            print(f"  [retry {attempt + 1}/{_MAX_RETRIES}] HTTP {r.status_code}, retrying in {delay}s")
+            if _budget_left() < delay:
+                print(f"  [budget] {int(_budget_left())}s left — not retrying")
+                return r
+            delay *= random.uniform(0.8, 1.2)
+            print(f"  [retry {attempt + 1}/{_MAX_RETRIES}] HTTP {r.status_code}, retrying in {delay:.1f}s")
             time.sleep(delay)
         except requests.exceptions.RequestException as exc:
+            last_exc = exc
             if attempt == _MAX_RETRIES - 1:
                 raise
             delay = _RETRY_DELAYS[min(attempt, len(_RETRY_DELAYS) - 1)]
-            print(f"  [retry {attempt + 1}/{_MAX_RETRIES}] {type(exc).__name__}: {exc}, retrying in {delay}s")
+            if _budget_left() < delay:
+                print(f"  [budget] {int(_budget_left())}s left — not retrying")
+                raise
+            delay *= random.uniform(0.8, 1.2)
+            print(f"  [retry {attempt + 1}/{_MAX_RETRIES}] {type(exc).__name__}: {exc}, retrying in {delay:.1f}s")
             time.sleep(delay)
 
 
@@ -148,6 +179,12 @@ def _gemini(messages, model, max_tokens, want_search, response_schema=None, sear
         body["generationConfig"]["responseSchema"] = response_schema
 
     r = _post_with_retry(url, headers=headers, json_body=body)
+    if not r.ok:
+        fallback = C.GEMINI_FALLBACK_MODEL_MAP.get(gmodel)
+        if fallback and _budget_left() > 0:
+            print(f"  [gemini] {gmodel} unavailable — one retry on {fallback}")
+            fallback_url = f"https://generativelanguage.googleapis.com/v1beta/models/{fallback}:generateContent"
+            r = requests.post(fallback_url, headers=headers, json=body, timeout=180)
     if not r.ok:
         print(f"  [gemini error] HTTP {r.status_code}: {r.text[:1000]}")
     r.raise_for_status()

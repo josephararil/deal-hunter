@@ -186,14 +186,18 @@ DEALS_HISTORY_MAX_ENTRIES = 1000
 # a flat par would wrongly penalise it. Measuring the discount against the property's own
 # normal rate is what makes "I'd be an idiot not to book this" computable.
 #
+# With no normal_price_eur at all, the pipeline stays NEUTRAL rather than comparing against a
+# regional floor — that comparison is a category error (it once produced a -166 penalty on a
+# 5-star Hilton grounded at €475.81 against the €110 par).
+#
 # DIAMOND is deliberately rare — reserved for a standout property AT a genuine discount. It
 # requires ALL of: a high desirability score (DIAMOND_MIN_LLM_SCORE, above the ordinary
 # ~82 local baseline), a real discount (DIAMOND_MIN_DISCOUNT below normal), and the overall
 # DIAMOND_SCORE_THRESHOLD. Everything solid-but-ordinary lands in "good", not "diamond".
 
-# Per-night "par" price: a coarse regional reference used ONLY as a FALLBACK when the skeptic
-# did not return a usable normal_price_eur for the property. The primary reference is the
-# property's own normal rate. Tune freely.
+# Per-night "par" price: a coarse regional reference. INFORMATIONAL ONLY — shown to the skeptic
+# as context and used in log/digest display. It is no longer used by compute_final_score; with no
+# property normal_price_eur the pipeline stays neutral rather than falling back to this. Tune freely.
 DIAMOND_PAR_EUR = {"Bulgaria": 80, "Turkey": 85}
 DEFAULT_DIAMOND_PAR_EUR = 110  # rest of Europe
 
@@ -210,12 +214,38 @@ GOOD_SCORE_THRESHOLD    = 68
 DIAMOND_MIN_LLM_SCORE   = 85    # desirability floor for a diamond (ordinary local ≈ 82)
 DIAMOND_MIN_DISCOUNT    = 0.25  # grounded price must be >= 25% below the property's normal rate
 
+# ── Run resilience ───────────────────────────────────────────────────────────
+RUN_BUDGET_SECONDS = 660  # wall-clock ceiling for all LLM calls in one run (see common.py)
+
+# One-shot fallback model per primary Gemini model, tried once if the primary is unavailable
+# after retries are exhausted (see common._gemini). Shares Google's grounding gateway with the
+# primary, so this is a capacity hedge, not a different provider.
+GEMINI_FALLBACK_MODEL_MAP = {
+    "gemini-pro-latest":   "gemini-flash-latest",
+    "gemini-flash-latest": "gemini-3.1-flash-lite",
+}
+
+# ── Baselines ────────────────────────────────────────────────────────────────
+MAX_BASELINE_SAMPLES = 5    # rolling price samples kept per baseline key (median of these)
+MAX_BASELINE_DAYS     = 180  # baseline TTL, mirrors memory.MAX_LEDGER_DAYS
+
+# Ratio (grounded price / FIND's est_price_eur) at or above which the digest flags the estimate
+# as unreliable for that destination. Chosen to flag exactly the two cases that motivated it and
+# nothing else: Sana Spa 97.76/97.76=1.000, Premier Luxury 117.4/109.45=1.073, Limak Lara
+# 215/215=1.000 (all below threshold); SPA Olymp 246.41/166.0=1.484 and Hilton Chania
+# 475.81/145.0=3.281 (both flag). At 1.5 or 2.0 only the Chania case would flag.
+EST_GAP_FLAG_MULTIPLE = 1.4
+
+# Most-recent trips injected into the FIND/SKEPTIC prompts (see trips.py).
+MAX_TRIPS_IN_PROMPT = 12
+
 
 def get_diamond_par(destination):
-    """Return the per-night 'par' price (EUR) for a destination — the FALLBACK price
-    reference used when no property normal_price_eur is available. Substring-matches country
-    names; falls back to the default. Pass a string containing the country (e.g. 'Bansko
-    Bulgaria'), not FIND's free-text label, or it will wrongly default to the €110 tier."""
+    """Return the per-night 'par' price (EUR) for a destination — INFORMATIONAL ONLY (scorer
+    context and log/digest display). No longer used by compute_final_score as a fallback
+    reference. Substring-matches country names; falls back to the default. Pass a string
+    containing the country (e.g. 'Bansko Bulgaria'), not FIND's free-text label, or it will
+    wrongly default to the €110 tier."""
     dest_lower = (destination or "").lower()
     for country, par in DIAMOND_PAR_EUR.items():
         if country.lower() in dest_lower:
@@ -245,17 +275,21 @@ def transit_tier(destination):
 def compute_final_score(llm_score, grounded_ppn, location, normal_price_eur=None):
     """Apply the deterministic modifiers to an LLM desirability score.
 
-    `location` is matched for par-fallback and transit tier, so pass a string containing the
-    city AND country (e.g. 'Bansko Bulgaria'), not FIND's free-text label.
+    `location` is matched for transit tier, so pass a string containing the city AND country
+    (e.g. 'Bansko Bulgaria'), not FIND's free-text label.
     `normal_price_eur` is the skeptic's estimate of the property's own typical rate; the price
-    modifier measures the discount against it. When absent/unusable, falls back to the coarse
-    regional par so scoring still runs.
+    modifier measures the discount against it. When absent/unusable, the pipeline stays NEUTRAL
+    — discount=0.0, price_adj=0. Par is no longer used as a scoring reference: substituting a
+    regional budget floor for a specific property's normal rate is a category error (it produced
+    a -166 penalty on a 5-star Hilton at €475.81 vs the €110 par). Without a reference price the
+    honest discount is zero, which also means the deal can reach "good" but never "diamond" (the
+    diamond gate requires discount >= DIAMOND_MIN_DISCOUNT) — exactly right: you cannot claim a
+    steal with no reference to measure it against.
 
     Returns (final_score, price_adj, transit_adj, discount) — scores rounded ints, discount a
     float in (-inf, 1]. `discount` is what the diamond gate checks (see tier_for)."""
     base = llm_score if isinstance(llm_score, (int, float)) else 0
-    ref = (normal_price_eur if isinstance(normal_price_eur, (int, float)) and normal_price_eur > 0
-           else get_diamond_par(location))
+    ref = normal_price_eur if isinstance(normal_price_eur, (int, float)) and normal_price_eur > 0 else None
     if grounded_ppn and ref:
         discount = 1 - grounded_ppn / ref
         price_adj = min(PRICE_BONUS_CAP, PRICE_SCORE_WEIGHT * discount)  # bonus capped, penalty uncapped
@@ -302,8 +336,9 @@ HOTEL_MAPPING = {
 # Placeholders filled at runtime by find_city_anomalies.py / common.py:
 #   SEARCH_PROMPT          → {today}, {cities}   (Gemini search step — lead generation)
 #   SEARCH_RESULTS_PREAMBLE→ {leads}             (Gemini reasoning step — injected ahead of FIND/VERIFY)
-#   FIND_PROMPT            → {today}, {cities}, {memory}, {search_directive}
-#   SKEPTIC_PROMPT         → {today}, {min_score}, {candidates}, {memory}
+#   FIND_PROMPT            → {today}, {cities}, {memory}, {search_directive}, {trips}
+#   SKEPTIC_PROMPT         → {today}, {diamond_threshold}, {good_threshold}, {diamond_min_llm},
+#                            {diamond_min_discount_pct}, {candidates}, {memory}, {trips}
 #   VERIFY_PROMPT          → {today}, {candidate}, {memory}
 # Use {{...}} for literal braces in the JSON schema examples (Python .format() escaping).
 
@@ -390,6 +425,14 @@ Your objective is to find high-utility value plays where a premium experience or
 
 ### PRIOR CORRECTIONS (from past pipeline runs — treat as ground truth; do not repeat past hallucinations)
 {memory}
+
+---
+
+### TRIPS THIS FAMILY HAS ACTUALLY BOOKED (revealed preference — the strongest signal you have)
+These are real bookings, not estimates — they show what this family actually pays and chooses.
+A destination they have already visited twice is worth less to surface again than an equally
+good new one; use these to vary what you find, not repeat it.
+{trips}
 
 ---
 
@@ -560,6 +603,15 @@ experience.
 4. Stay-Length Mismatch: a long stay (5+ nights) in a low-excitement local town (Bansko, Pamporovo, Velingrad, Hisarya, Sandanski) where an active family runs out of things to do — score low unless the window is already a short 2-4 night break.
 5. "Nice and Nearby" Is Not "Great": a perfectly decent regional hotel — fine pools, fine rooms, nothing distinctive, one of dozens of near-identical options within a couple hours of Plovdiv — is NOT a high score just because it's easy and available. Ordinary, low-friction, and unremarkable should land in the 40s-50s, not the 80s. Reserve 80+ for something that would actually make a savvy traveller sit up.
 
+### TRIPS THIS FAMILY HAS ACTUALLY BOOKED (revealed preference)
+These are real bookings, not hypotheticals. Where they conflict with the illustrative
+calibration examples below, the real bookings win — they are direct evidence of what this
+family actually pays and chooses. The examples below remain the only calibration available
+until enough trips accumulate.
+{trips}
+
+---
+
 ### CALIBRATION EXAMPLES (score = net family VALUE delivered; hold ALL-IN price neutral — the pipeline handles cost, including flights, via price_adjustment; don't re-deduct for it here)
 - An unremarkable, perfectly fine regional 3/4-star spa hotel — decent pools, nothing distinctive, one of dozens of near-identical options within a couple hours of Plovdiv: **~45-55**. Comfortable and easy, but "close and available" is not, by itself, high value — a savvy traveller wouldn't call this a highlight.
 - A genuinely well-regarded regional spa/resort with real standout amenities (materially better kids' facilities, notably higher review scores than typical peers) and an easy <2h drive: **~65-75**. Solid and worth knowing about, but still a routine local weekend, not a highlight of the year.
@@ -573,7 +625,7 @@ experience.
 
 Each input candidate carries LIVE grounded figures for context:
 - `grounded_price_per_night_eur` / `grounded_total_eur` / `grounded_nights` / `grounded_dates` — the real, bookable HOTEL price. Hold it neutral in your score (the pipeline handles it), except for a severe discrepancy as noted above. Note it does NOT include flights — that's exactly what flight_cost_eur_total/ground_transport_eur are for.
-- `diamond_par_eur` — the region's neutral price point, shown so you understand what the pipeline will reward/penalise. Not for you to apply.
+- `diamond_par_eur` — regional context only; the pipeline no longer uses it to reward or penalise anything. Not for you to apply.
 - `grounding_summary` — the live verification note (often includes star rating and review score — DO use quality signals like stars/reviews).
 
 Input Candidates (each has a numeric deal_id you must echo back):
@@ -591,7 +643,7 @@ The score routes the pipeline, but the email that reaches the user is a hand-off
 
 - `about`: 2-4 sentences describing the property AND its location for someone who has never heard of it. Cover: what tier/kind of place it is and its standing (a well-known flagship? a solid mid-range option? a basic one?), its standout amenities (spa, indoor/outdoor pools, dining, kids' facilities), and what a family with a 4-year-old can actually DO — both in the property and in the surrounding area. Use the star rating and review score in `grounding_summary` as anchors.
 - `value_case`: 1-3 sentences making the value case a savvy traveller would make out loud — how this grounded price compares to what this property (or this class of place, in this destination) normally costs, and to comparable alternatives, so the human can judge the deal at a glance. This is the "is this actually a good deal, and why?" line. E.g.: "€117/night for a genuine 5-star in Bansko is excellent — it usually trades nearer €150-200, and comparable 4-stars in town sit around €80, so you're paying a small premium for a full tier more hotel."
-- `normal_price_eur`: your single-number estimate (a plain number, not a range) of what THIS property (or, if you don't know it specifically, this exact class/star tier in this destination) TYPICALLY charges per night for a comparable stay in the same season — the "before" price the (all-in) grounded rate should be compared against. The pipeline computes the discount as (normal_price_eur - all_in_price) / normal_price_eur, and a real discount is REQUIRED for a diamond. HONESTY IS CRITICAL: this directly gates the top tier, so do NOT inflate it to manufacture a discount. Base it on genuine knowledge and the star/review anchors in `grounding_summary`. If you cannot justify a higher normal rate, set it equal to (or below) the grounded price — that correctly yields no discount and no diamond. A fabricated "normal" rate is the one thing that will produce a false diamond.
+- `normal_price_eur`: your single-number estimate (a plain number, not a range) of what THIS property (or, if you don't know it specifically, this exact class/star tier in this destination) TYPICALLY charges per night for a comparable stay in the same season — the "before" price the (all-in) grounded rate should be compared against. The pipeline computes the discount as (normal_price_eur - all_in_price) / normal_price_eur, and a real discount is REQUIRED for a diamond. HONESTY IS CRITICAL: this directly gates the top tier, so do NOT inflate it to manufacture a discount. Base it on genuine knowledge and the star/review anchors in `grounding_summary`. If you cannot justify a higher normal rate, set it equal to (or below) the grounded price — that correctly yields no discount and no diamond. A fabricated "normal" rate is the one thing that will produce a false diamond. Omitting this field entirely, or giving a value at or below the grounded price, means the pipeline computes NO discount — and a deal with no discount can never be a diamond.
 - `flight_cost_eur_total` / `ground_transport_eur`: see the HOW YOUR SCORE IS USED section above. Realistic round-trip cost estimates for the whole party of 3, for a destination that requires a flight (whether direct from Plovdiv or via Sofia). Set BOTH to 0 for a straightforward drive from Plovdiv. Base these on genuine knowledge of typical fares/routes for the season — a rough, honest estimate is fine; do not invent a specific airline or flight number.
 
 HONESTY (these fields must not become a source of hallucination): base `about`/`value_case`/`normal_price_eur` ONLY on what you genuinely know about this specific property or destination, anchored by the star / review-score / price signals you were given. If you do not recognise the specific property, describe the destination and what its class and review score imply, and say plainly that the specifics should be confirmed — do NOT invent named restaurants, amenities, or facts. `about`/`value_case` are DESCRIPTIVE ONLY: they must NOT change your numeric `score`, and you must NOT use them to keep, kill, or tier a deal. `normal_price_eur`, `flight_cost_eur_total`, and `ground_transport_eur` DO feed the deterministic price_adjustment math, so honesty there directly controls tiering — the same rule as normal_price_eur applies: when unsure, estimate conservatively rather than inflate/deflate to manufacture a result.

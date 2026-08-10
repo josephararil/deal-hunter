@@ -174,12 +174,17 @@
           "price": 128.31,
           "date": "2026-07-20",
           "source": "Booking.com (apidojo) live 2026-07-20"
+        },
+        {
+          "price": 128.31,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
         }
       ],
       "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-22",
-      "updated": "2026-07-22"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -249,6 +254,11 @@
           "price": 97.76,
           "date": "2026-08-10",
           "source": "Booking.com (apidojo) live 2026-08-10"
+        },
+        {
+          "price": 97.76,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
         }
       ],
       "realistic_price_eur": 97.76,
@@ -293,15 +303,25 @@
           "price": 122.91,
           "date": "2026-07-31",
           "source": "Booking.com (apidojo) live 2026-07-31"
+        },
+        {
+          "price": 133.61,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
         }
       ],
-      "realistic_price_eur": 122.91,
-      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-31",
-      "updated": "2026-07-31"
+      "realistic_price_eur": 128.26,
+      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €133.61/night (€668.07 total, 5 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
     },
     "premierluxurymountainresort|2026-09": {
       "samples": [
+        {
+          "price": 117.4,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
+        },
         {
           "price": 117.4,
           "date": "2026-08-10",
@@ -319,12 +339,17 @@
           "price": 222.07,
           "date": "2026-08-01",
           "source": "Booking.com (apidojo) live 2026-08-01"
+        },
+        {
+          "price": 202.09,
+          "date": "2026-08-10",
+          "source": "Booking.com (apidojo) live 2026-08-10"
         }
       ],
-      "realistic_price_eur": 222.07,
-      "note": "Verified Dream Fun World, 5-star for Sep 8-15, 2026: €222.07/night (€1554.5 total, 7 nights), review 8.8. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-01",
-      "updated": "2026-08-01"
+      "realistic_price_eur": 212.08,
+      "note": "Verified Dream Fun World, 5-star for Sep 8-15, 2026: €202.09/night (€1414.6 total, 7 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
     },
     "saniresortvillawithsharedpool|2026-09": {
       "samples": [
@@ -1840,6 +1865,71 @@
       "final_score": 100,
       "source": "Booking.com (apidojo) live 2026-08-01",
       "note": "An absolute world-class luxury family environment provides elite utility that easily justifies a 4.5-hour drive for a 5-night stay."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Velingrad, Bulgaria",
+      "window": "Sep 17-20, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 128.31,
+      "llm_score": 86,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "Near-zero transit friction and warm mineral pools offer effortless, reliable utility for a quick toddler-friendly weekend getaway."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Sunny Beach, Bulgaria",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 123,
+      "verdict": "diamond",
+      "actual_price": 133.61,
+      "llm_score": 92,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "A straightforward highway drive to a premium 5-star coastal property maximizes the last of the summer weather with low friction and great resort amenities."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Bansko, Bulgaria",
+      "window": "Sep 3-6, 2026",
+      "type": "hotel",
+      "claimed_price": 117,
+      "verdict": "diamond",
+      "actual_price": 117.4,
+      "llm_score": 95,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short active family break with negligible transit hassle."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Antalya, Turkey",
+      "window": "Sep 8-15, 2026",
+      "type": "hotel",
+      "claimed_price": 222,
+      "verdict": "good",
+      "actual_price": 202.09,
+      "llm_score": 78,
+      "final_score": 73,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the transit via Sofia adds a moderate layer of travel friction."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Hisarya, Bulgaria",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 98,
+      "verdict": "good",
+      "actual_price": 97.76,
+      "llm_score": 96,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a toddler on a short weekend break."
     }
   ]
 }

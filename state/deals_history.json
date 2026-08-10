@@ -2051,6 +2051,76 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-10",
+      "deal_id": 2,
+      "destination": "Sunny Beach, Bulgaria",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "diamond",
+      "llm_score": 92,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €133.61/night (€668.07 total, 5 nights), review 8.9. Price matches the Stage-1 estimate.",
+      "about": "Galeon Residence & SPA is a premium 5-star complex located just a short walk from the shores of Sunny Beach. The property boasts spacious rooms, a large outdoor pool, and a dedicated kids' area, ensuring plenty of entertainment for a 4-year-old. Early September offers the perfect balance of warm weather and fewer crowds.",
+      "value_case": "Securing a 5-star property of this caliber for €133/night in early September is a strong value play, as peak summer rates often exceed €200. It offers luxury amenities at a price comparable to standard 4-star options in the area.",
+      "why": "A straightforward highway drive to a premium 5-star coastal property maximizes the last of the summer weather with low friction and great resort amenities.",
+      "red_flags": "Check if all kids' entertainment and outdoor pool heating are fully operational in early September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.9. Live rate: €133.61/night (€668.07 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 133.61,
+          "total_eur": 668.07,
+          "source": "Booking.com (apidojo) live 2026-08-10",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€122.91/night here — this is 9% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-10",
+      "deal_id": 3,
+      "destination": "Bansko, Bulgaria",
+      "type": "hotel",
+      "window": "Sep 3-6, 2026",
+      "tier": "diamond",
+      "llm_score": 95,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "about": "Premier Luxury Mountain Resort is a standout 5-star hotel located at the foothills of the Pirin Mountains in Bansko. It offers excellent family amenities, including indoor pools, a spa, and spacious rooms tailored for comfort. Families can enjoy easy nature walks nearby, making it an ideal short mountain getaway for a toddler.",
+      "value_case": "At €117/night, you are accessing a genuine 5-star flagship property for the price of a mid-range hotel. This resort normally trades closer to €160-180, representing exceptional value for a premium mountain break.",
+      "why": "An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short active family break with negligible transit hassle.",
+      "red_flags": "Mountain weather in September can be unpredictable; ensure the indoor spa facilities are fully accessible to children.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-03–2026-09-06, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €117.4/night (€352.21 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-03&checkout=2026-09-06&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 3-6, 2026",
+          "nights": 3,
+          "price_per_night_eur": 117.4,
+          "total_eur": 352.21,
+          "source": "Booking.com (apidojo) live 2026-08-10",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-03&checkout=2026-09-06&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€117.4/night here — about the usual rate.",
+      "child_price_caveat": true
     }
   ]
 }

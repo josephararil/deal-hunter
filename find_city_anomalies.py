@@ -25,7 +25,7 @@ Anti-spam TTL (destination|window|tier) keeps repeats quiet; a day with nothing 
 (or nothing found) sends nothing.
 """
 
-import json, re, datetime as dt
+import json, re, datetime as dt, copy
 try:
     from dotenv import load_dotenv; load_dotenv()
 except ImportError:
@@ -883,9 +883,13 @@ def main():
 
     # Load memory once; inject into all three stage prompts. Snapshot the baselines as
     # they were BEFORE this run so the email's "typically ~€X/night" comparison reflects
-    # prior normals, not the prices this same run is about to record.
+    # prior normals, not the prices this same run is about to record. Must be a DEEP copy:
+    # record_baseline (memory.py) mutates each baseline entry's dict in place via
+    # setdefault(), so a shallow {**...} copy would still share the same nested dict
+    # objects and silently corrupt this snapshot mid-run, comparing a deal against the
+    # very price this run just recorded for it.
     mem = M.load()
-    prior_baselines = {**mem.get("baselines", {})}
+    prior_baselines = copy.deepcopy(mem.get("baselines", {}))
     mem_text = M.summarize_for_prompt(mem)
 
     # Trips are read-only (Invariant T) — a hand-maintained log of what this family has

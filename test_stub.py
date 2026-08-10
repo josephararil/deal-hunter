@@ -678,4 +678,72 @@ finally:
     shutil.rmtree(sandbox8, ignore_errors=True)
 
 
+# ── Case 9: prior_baselines must be a deep, not shallow, snapshot ──────────────────────────
+# record_baseline (memory.py) mutates each baseline entry's dict IN PLACE via setdefault(),
+# so a shallow {**mem["baselines"]} copy still shares the same nested dict objects — this
+# run's own write would silently corrupt "prior_baselines" mid-run, comparing a deal against
+# the very price it just recorded (self-comparison) instead of the real prior normal.
+sandbox9 = tempfile.mkdtemp(prefix="dh_stub_")
+os.makedirs(os.path.join(sandbox9, "state"))
+os.chdir(sandbox9)
+try:
+    with open("state/memory.json", "w", encoding="utf-8") as f:
+        json.dump({"baselines": {"hotelc9|2027-01": {
+            "samples": [{"price": 100, "date": "2026-07-01",
+                        "source": "Booking.com (apidojo) live 2026-07-01"}],
+            "realistic_price_eur": 100, "note": "seeded",
+            "source": "Booking.com (apidojo) live 2026-07-01",
+            "updated": "2026-07-01"}}, "ledger": []}, f)
+    for _name, _seed in [("signals_seen.json", {"seen": {}, "monthly_count": {}}),
+                         ("city_signals.json", {})]:
+        with open(f"state/{_name}", "w", encoding="utf-8") as f:
+            json.dump(_seed, f)
+
+    _STAGE1_C9 = {"candidates": [
+        {"destination": "Case9 Hotel Deal", "hotel_name": "Hotel C9", "city": "Antalya",
+         "country": "Turkey", "score": 88, "type": "hotel", "window": "Jan 10-14, 2027",
+         "est_price_eur": 98, "reason": "x", "confidence": "high"},
+    ]}
+    _SCORES_C9 = [{"deal_id": 1, "destination": "Case9 Hotel Deal", "score": 90, "why": "x",
+                   "about": "x", "value_case": "x", "normal_price_eur": 150, "red_flags": ""}]
+
+    def _stub_llm_c9(messages, model, max_tokens=2000, want_search=False, response_schema=None,
+                      provider=None, search_prompt=None):
+        if response_schema is C.STAGE1_RESPONSE_SCHEMA:
+            return json.dumps(_STAGE1_C9)
+        if response_schema is C.STAGE2_RESPONSE_SCHEMA:
+            return json.dumps(_SCORES_C9)
+        raise AssertionError(f"unexpected llm schema={response_schema}")
+
+    # Same identity ("hotelc9") re-grounds THIS run at a much lower price (70 vs the seeded
+    # 100) — the exact shape that exposed the in-place-mutation bug.
+    def _stub_ground_c9(diamond, mem_text, today):
+        return {"destination": "Hotel C9", "verdict": "confirm", "confidence": "high",
+                "grounding_method": "apidojo", "how_to_book": "Book at booking.com",
+                "grounding": "apidojo live", "assistant_summary": "Hotel C9: €70/night.",
+                "options": [_opt(70, 280, "Jan 10-14, 2027", 4)]}
+
+    _email_c9 = {}
+    def _stub_send_c9(subject, html, text):
+        _email_c9["html"] = html
+
+    X.llm = _stub_llm_c9
+    fa.ground_deal = _stub_ground_c9
+    X.send_email = _stub_send_c9
+
+    fa.main()
+
+    assert _email_c9, "email should have been sent"
+    assert "30% under" in _email_c9["html"], (
+        "prior_baselines was corrupted mid-run (self-comparison bug): the email should "
+        "compare €70 against the PRIOR €100 baseline (-30%), not the price this same run "
+        "just wrote"
+    )
+    print("Case 9: prior_baselines snapshot survives this run's own record_baseline call "
+          "(no self-comparison) [OK]")
+finally:
+    os.chdir(_cwd)
+    shutil.rmtree(sandbox9, ignore_errors=True)
+
+
 print("\nAll assertions passed (Part 1 + Part 2).")

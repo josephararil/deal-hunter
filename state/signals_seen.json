@@ -1,18 +1,5 @@
 {
   "seen": {
-    "Velingrad SPA Retreat|2026-08-18 to 2026-08-21|diamond": "2026-07-08",
-    "Pirin Mountain Escape|2026-08-13 to 2026-08-16|good": "2026-07-08",
-    "Sunny Beach Post-Peak Value Play|2026-08-30 to 2026-09-04|skip": "2026-07-08",
-    "Corfu Late Summer Beach Break|2026-09-08 to 2026-09-13|skip": "2026-07-08",
-    "Bansko Summer Mountain Escape|Aug 7 - Aug 10, 2026|diamond": "2026-07-09",
-    "Velingrad Spa & Thermal Break|Jul 24 - Jul 27, 2026|good": "2026-07-09",
-    "Hisarya Ultra-Local Thermal Retreat|Aug 21 - Aug 24, 2026|good": "2026-07-09",
-    "Milan & Northern Italy City Break|Jul 15 - Jul 20, 2026|skip": "2026-07-09",
-    "Bansko, Bulgaria|2026-08-07 to 2026-08-10|skip": "2026-07-10",
-    "Hisarya, Bulgaria|2026-08-21 to 2026-08-24|skip": "2026-07-10",
-    "Velingrad, Bulgaria|2026-07-24 to 2026-07-27|skip": "2026-07-10",
-    "Antalya, Turkey|2026-08-20 to 2026-08-27|skip": "2026-07-10",
-    "Thassos, Greece|2026-09-06 to 2026-09-11|skip": "2026-07-10",
     "Hisarya Ultra-Local Thermal Retreat|Aug 28-31, 2026|good": "2026-07-11",
     "Velingrad Spa & Thermal Break|Aug 21-24, 2026|good": "2026-07-11",
     "Bansko Summer Mountain Escape|Aug 14-17, 2026|good": "2026-07-11",
@@ -56,11 +43,16 @@
     "saniresort|2026-09|diamond": "2026-08-01",
     "limaklaradeluxehotelandresort|2026-09|good": "2026-08-01",
     "dreamfunworld|2026-09|good": "2026-08-01",
-    "huromacampingintown|2026-09|skip": "2026-08-01"
+    "huromacampingintown|2026-09|skip": "2026-08-01",
+    "sanaspahotel|2026-09|skip": "2026-08-10",
+    "premierluxurymountainresort|2026-09|skip": "2026-08-10",
+    "spahotelolymp|2026-09|skip": "2026-08-10",
+    "limaklaradeluxehotelandresort|2026-09|skip": "2026-08-10",
+    "hiltonchaniaoldtownresortandspa|2026-09|skip": "2026-08-10"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
-    "2026-08": 1
+    "2026-08": 2
   }
 }

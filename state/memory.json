@@ -385,10 +385,10 @@
       "updated": "2026-07-28"
     },
     "Bansko Mountain Retreat|2026-09": {
-      "realistic_price_eur": 109.45,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €109.45/night (€328.34 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-31",
-      "updated": "2026-07-31"
+      "realistic_price_eur": 117.4,
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
     },
     "Lara Beach Shoulder-Season Package|2026-09": {
       "realistic_price_eur": 215,
@@ -413,6 +413,30 @@
       "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-01",
       "updated": "2026-08-01"
+    },
+    "Hisarya Thermal Spa|2026-09": {
+      "realistic_price_eur": 97.76,
+      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
+    },
+    "Velingrad Spa Escape|2026-09": {
+      "realistic_price_eur": 246.41,
+      "note": "Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
+    },
+    "Antalya Shoulder-Season Ultra All-Inclusive|2026-09": {
+      "realistic_price_eur": 215,
+      "note": "I have confirmed that the Limak Lara De Luxe Hotel & Resort is available for your requested September 15–22, 2026 dates at a rate of approximately €215 per night, totaling €1505. You can book this…",
+      "source": "Booking.com live availability check 2026-08-10",
+      "updated": "2026-08-10"
+    },
+    "Crete New Opening Arbitrage|2026-09": {
+      "realistic_price_eur": 475.81,
+      "note": "Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65 total, 7 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "updated": "2026-08-10"
     }
   },
   "ledger": [
@@ -1889,6 +1913,71 @@
       "final_score": 100,
       "source": "Booking.com (apidojo) live 2026-08-01",
       "note": "An absolute world-class luxury family environment provides elite utility that easily justifies a 4.5-hour drive for a 5-night stay."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Hisarya Thermal Spa",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 97.76,
+      "verdict": "skip",
+      "actual_price": 97.76,
+      "llm_score": 0,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Bansko Mountain Retreat",
+      "window": "Sep 3-6, 2026",
+      "type": "hotel",
+      "claimed_price": 109.45,
+      "verdict": "skip",
+      "actual_price": 117.4,
+      "llm_score": 0,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Velingrad Spa Escape",
+      "window": "Sep 4-6, 2026",
+      "type": "hotel",
+      "claimed_price": 166.0,
+      "verdict": "skip",
+      "actual_price": 246.41,
+      "llm_score": 0,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate."
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Antalya Shoulder-Season Ultra All-Inclusive",
+      "window": "Sep 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 215.0,
+      "verdict": "skip",
+      "actual_price": 215,
+      "llm_score": 0,
+      "final_score": 0,
+      "source": "Booking.com live availability check 2026-08-10",
+      "note": "I have confirmed that the Limak Lara De Luxe Hotel & Resort is available for your requested September 15–22, 2026 dates at a rate of approximately €215 per night, totaling €1505. You can book this…"
+    },
+    {
+      "date": "2026-08-10",
+      "destination": "Crete New Opening Arbitrage",
+      "window": "Sep 22-29, 2026",
+      "type": "hotel",
+      "claimed_price": 145.0,
+      "verdict": "skip",
+      "actual_price": 475.81,
+      "llm_score": 0,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-08-10",
+      "note": "Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65 total, 7 nights), review 8.6. Price corrected from the Stage-1 estimate."
     }
   ]
 }

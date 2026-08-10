@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-08-07
+# Diamond Finder Memory — updated 2026-08-10
 
-## Price Baselines (69 entries)
+## Price Baselines (73 entries)
 
 ### Antalya All-Inclusive via SunExpress|2026-08
 **Realistic:** ~€380/night &nbsp; **Updated:** 2026-07-04
@@ -16,6 +16,11 @@ _Source: Booking.com (apidojo) live 2026-08-01_
 **Realistic:** ~€131/night &nbsp; **Updated:** 2026-07-14
 I have verified the Fame Residence Lara & Spa as a real, bookable destination for your dates of September 15–22, 2026. While the original estimate of €210/night was higher than current market…
 _Source: Fame Residence Lara & Spa official site / aggregator market data July 2026_
+
+### Antalya Shoulder-Season Ultra All-Inclusive|2026-09
+**Realistic:** ~€215/night &nbsp; **Updated:** 2026-08-10
+I have confirmed that the Limak Lara De Luxe Hotel & Resort is available for your requested September 15–22, 2026 dates at a rate of approximately €215 per night, totaling €1505. You can book this…
+_Source: Booking.com live availability check 2026-08-10_
 
 ### Antalya, Turkey|2026-08
 **Realistic:** ~€215/night &nbsp; **Updated:** 2026-07-10
@@ -48,9 +53,9 @@ Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127
 _Source: Booking.com (apidojo) live 2026-07-21_
 
 ### Bansko Mountain Retreat|2026-09
-**Realistic:** ~€109.45/night &nbsp; **Updated:** 2026-07-31
-Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €109.45/night (€328.34 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-07-31_
+**Realistic:** ~€117.4/night &nbsp; **Updated:** 2026-08-10
+Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-10_
 
 ### Bansko Summer Mountain Escape|2026-08
 **Realistic:** ~€139.59/night &nbsp; **Updated:** 2026-07-11
@@ -97,6 +102,11 @@ _Source: Skyscanner/Agoda live search 2026-07-19_
 I verified the availability of the Aqualand Resort in Corfu for your requested dates of September 8–13, 2026. While the resort is fully operational and remains an excellent choice for a family break,…
 _Source: Booking.com, Expedia, and Trivago live search 2026-07-08_
 
+### Crete New Opening Arbitrage|2026-09
+**Realistic:** ~€475.81/night &nbsp; **Updated:** 2026-08-10
+Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65 total, 7 nights), review 8.6. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-10_
+
 ### Halkidiki Luxury Off-Peak|2026-09
 **Realistic:** ~€195.96/night &nbsp; **Updated:** 2026-08-01
 Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night (€979.82 total, 5 nights). Price matches the Stage-1 estimate.
@@ -116,6 +126,11 @@ _Source: Booking.com (apidojo) live 2026-07-18_
 **Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-07-31
 Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-31_
+
+### Hisarya Thermal Spa|2026-09
+**Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-08-10
+Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-10_
 
 ### Hisarya Ultra-Local Thermal Retreat|2026-08
 **Realistic:** ~€102/night &nbsp; **Updated:** 2026-07-14
@@ -312,6 +327,11 @@ _Source: Booking.com (apidojo) live 2026-07-17_
 Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-22_
 
+### Velingrad Spa Escape|2026-09
+**Realistic:** ~€246.41/night &nbsp; **Updated:** 2026-08-10
+Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-10_
+
 ### Velingrad Spa Retreat|2026-08
 **Realistic:** ~€166/night &nbsp; **Updated:** 2026-07-25
 I searched for the Spa Hotel Olymp for your August 15–18 window and found that the current rate for a double room is €166 per night, which is higher than the original €125 estimate (totaling €498 for…
@@ -347,8 +367,13 @@ _Source: Official Hotel Website - Summer SPA Getaway offer_
 Verified hu Roma Camping In Town for Sep 21-26, 2026: €57.72/night (€288.59 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
-## Outcome Ledger (116 entries)
+## Outcome Ledger (121 entries)
 
+- · 2026-08-10 | Hisarya Thermal Spa | Sep 18-21, 2026 | skip score=0->0 claimed=€97.76 actual=€97.76 — Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review…
+- · 2026-08-10 | Bansko Mountain Retreat | Sep 3-6, 2026 | skip score=0->0 claimed=€109.45 actual=€117.4 — Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3…
+- · 2026-08-10 | Velingrad Spa Escape | Sep 4-6, 2026 | skip score=0->0 claimed=€166.0 actual=€246.41 — Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review…
+- · 2026-08-10 | Antalya Shoulder-Season Ultra All-Inclusive | Sep 15-22, 2026 | skip score=0->0 claimed=€215.0 actual=€215 — I have confirmed that the Limak Lara De Luxe Hotel & Resort is available for your requested…
+- · 2026-08-10 | Crete New Opening Arbitrage | Sep 22-29, 2026 | skip score=0->0 claimed=€145.0 actual=€475.81 — Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65…
 - 👍 2026-08-01 | Velingrad Spa Retreat | Sep 4-6, 2026 | good score=76->85 claimed=€130 actual=€166 — Near-zero transit friction and warm mineral pools offer effortless, reliable utility for a quick…
 - 👍 2026-08-01 | Lara Beach Shoulder-Season Package | Sep 15-22, 2026 | good score=83->85 claimed=€154 actual=€215 — Massive all-inclusive resort amenities and ultra-short airport transfers maximize family enjoyment,…
 - 👍 2026-08-01 | Antalya Fresh Opening Arbitrage | Sep 8-15, 2026 | good score=80->77 claimed=€165 actual=€222.07 — A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the longer…
@@ -394,9 +419,4 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 - 👍 2026-07-18 | Black Sea Late Summer Off-Peak | Sep 6-11, 2026 | good score=78->83 claimed=€128 actual=€188 — A direct highway drive to Nessebar offers strong all-inclusive utility for families, though late…
 - 👍 2026-07-17 | Hisarya Thermal Retreat | Aug 28-31, 2026 | good score=81->85 claimed=€92.2 actual=€92.2 — An effortless 45-minute drive from Plovdiv delivers an incredibly relaxed, low-friction spa weekend…
 - 👍 2026-07-17 | Velingrad Spa & Thermal Break | Aug 21-24, 2026 | good score=81->87 claimed=€116.39 actual=€116.39 — A manageable 1.5-hour drive unlocks excellent family utility with warm thermal mineral pools and…
-- 👍 2026-07-17 | Bansko Mountain Escape & Jazz Fest | Aug 6-9, 2026 | good score=78->83 claimed=€153.88 actual=€153.88 — Elite 5-star kids' infrastructure provides massive on-property utility and a cool mountain climate,…
-- 👍 2026-07-17 | Black Sea Late Summer Off-Peak | Sep 6-11, 2026 | good score=75->84 claimed=€115 actual=€128 — A 2.5-hour highway drive to Nessebar offers strong all-inclusive utility, though late September…
-- 👍 2026-07-17 | Velingrad Premium Family Luxury | Sep 11-14, 2026 | good score=85->90 claimed=€185 actual=€250.76 — Exceptional on-property luxury and dedicated kids' facilities provide maximum family utility just…
-- 👍 2026-07-16 | Hisarya Thermal Retreat | Aug 28-31, 2026 | good score=81->94 claimed=€102 actual=€92.2 — An ultra-local 45-minute drive eliminates transit friction entirely, offering high-value,…
-- 👍 2026-07-16 | Bansko Mountain Escape & Jazz Fest | Aug 6-9, 2026 | good score=76->86 claimed=€124 actual=€153.88 — Elite 5-star kids' infrastructure provides massive on-property utility, though the 2.5-hour drive…
-_... and 66 earlier entries_
+_... and 71 earlier entries_

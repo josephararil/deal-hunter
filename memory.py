@@ -9,7 +9,9 @@ Ledger is capped to MAX_LEDGER_ENTRIES entries and MAX_LEDGER_DAYS days.
 summarize_for_prompt() produces a compact, bounded text block for prompt injection.
 """
 
-import json, datetime as dt, os, re
+import json, datetime as dt, os, re, statistics
+
+import config as C
 
 STATE_DIR = "state"
 _MEMORY_FILE = "memory.json"
@@ -56,6 +58,26 @@ def season_key(text):
             if re.search(rf'\b{re.escape(name)}\b', tl):
                 return f"{yr.group(1)}-{num}"
     return t
+
+
+def identity(d):
+    """Stable property identity for anti-spam and baselines: the hotel name if FIND gave one,
+    else the city, else the free-text label — lowercased with punctuation/spaces stripped. This
+    collapses the day-to-day label drift ('Velingrad Spa & Thermal Break' vs 'Velingrad SPA
+    Retreat') that used to defeat the TTL and re-alert the same place under a new name.
+
+    MOVED VERBATIM from find_city_anomalies._identity (Invariant S) — find_city_anomalies now
+    aliases `_identity = M.identity` so baselines and anti-spam share one derivation. Do not
+    change this body without checking every existing signals_seen key still matches."""
+    ident = (d.get("hotel_name") or d.get("city") or d.get("destination") or "")
+    ident = ident.lower().replace("&", "and")  # "Park Hotel & SPA" and "... and SPA" must collapse to one identity
+    return re.sub(r'[^a-z0-9]+', '', ident)
+
+
+def baseline_key(d):
+    """Baseline key: property identity + coarse season, so the same property re-verified under
+    a drifting FIND label still updates one rolling baseline instead of fragmenting into many."""
+    return f"{identity(d)}|{season_key(d.get('window', '') or '')}"
 
 
 def _clip(text, limit):
@@ -108,15 +130,27 @@ def save(memory):
 
 # ── write ──────────────────────────────────────────────────────────────────────
 
-def record_baseline(memory, destination, season, realistic_price_eur, note="", source=""):
-    """Upsert a realistic price baseline for a destination/season pair."""
-    key = f"{destination}|{season}"
-    memory["baselines"][key] = {
-        "realistic_price_eur": realistic_price_eur,
-        "note": note,
+def record_baseline(memory, key, price_eur, note="", source="", date=None):
+    """Upsert a realistic price baseline for a pre-built identity+season `key` (see
+    baseline_key). Keeps a rolling sample of at most MAX_BASELINE_SAMPLES real prices and
+    reports their median as realistic_price_eur, so one bad grounding can't singlehandedly
+    define "realistic" and repeated verifications of the same property converge on a stable
+    figure.
+
+    The caller is responsible for gating this call to real evidence (Invariant B): only call
+    this when grounding_method == "apidojo" AND confidence == "high" AND the grounded dates
+    fall in the candidate window. This function does not re-check that."""
+    entry = memory["baselines"].setdefault(key, {"samples": []})
+    entry.setdefault("samples", []).append({
+        "price": price_eur,
+        "date": date or dt.date.today().isoformat(),
         "source": source,
-        "updated": dt.date.today().isoformat(),
-    }
+    })
+    entry["samples"] = entry["samples"][-C.MAX_BASELINE_SAMPLES:]
+    entry["realistic_price_eur"] = round(statistics.median(s["price"] for s in entry["samples"]), 2)
+    entry["note"] = note
+    entry["source"] = source
+    entry["updated"] = date or dt.date.today().isoformat()
 
 
 def record_outcome(memory, destination, window, type_, claimed_price, verdict,
@@ -143,38 +177,53 @@ def record_outcome(memory, destination, window, type_, claimed_price, verdict,
 
 
 def prune(memory):
-    """Drop ledger entries older than MAX_LEDGER_DAYS or beyond MAX_LEDGER_ENTRIES."""
+    """Drop ledger entries older than MAX_LEDGER_DAYS or beyond MAX_LEDGER_ENTRIES, and
+    baselines not updated within MAX_BASELINE_DAYS (a baseline that old is stale evidence)."""
     cutoff = (dt.date.today() - dt.timedelta(days=MAX_LEDGER_DAYS)).isoformat()
     memory["ledger"] = [e for e in memory["ledger"] if e.get("date", "") >= cutoff]
     if len(memory["ledger"]) > MAX_LEDGER_ENTRIES:
         memory["ledger"] = memory["ledger"][-MAX_LEDGER_ENTRIES:]
+
+    baseline_cutoff = (dt.date.today() - dt.timedelta(days=C.MAX_BASELINE_DAYS)).isoformat()
+    memory["baselines"] = {
+        k: b for k, b in memory.get("baselines", {}).items()
+        if b.get("updated", "") >= baseline_cutoff
+    }
     return memory
 
 
 # ── prompt summary ─────────────────────────────────────────────────────────────
 
-def summarize_for_prompt(memory, cities=None):
+def summarize_for_prompt(memory, cities=None, trip_anchors=None):
     """Return a compact text block for injection into FIND/SKEPTIC/VERIFY prompts.
 
     cities: optional list of city/destination strings; when given, only baselines
     whose key contains one of these strings are included (case-insensitive).
+    trip_anchors: optional {baseline_key: {"price_per_night_eur", "hotel_name", "checkin"}} —
+    a key present here renders as a "PAID" line (an actual booking) instead of a baseline line.
     Result is intentionally capped so prompt size stays controlled."""
     lines = []
+    trip_anchors = trip_anchors or {}
 
-    # --- Baselines ---
+    # --- Baselines (a trip anchor for the same key replaces the baseline line) ---
     baselines = memory.get("baselines", {})
-    if baselines:
+    if baselines or trip_anchors:
         relevant = []
         for key, b in sorted(baselines.items(), key=lambda kv: kv[1].get("updated", ""), reverse=True):
             if cities:
                 dest_part = key.split("|")[0]
                 if not any(c.lower() in dest_part.lower() for c in cities):
                     continue
-            price = b.get("realistic_price_eur")
-            note  = b.get("note", "").strip()
-            entry = f"  {key}: realistic ~€{price}/night"
-            if note:
-                entry += f" — {note}"
+            anchor = trip_anchors.get(key)
+            if anchor:
+                entry = (f"  {key}: PAID €{anchor.get('price_per_night_eur')}/night "
+                         f"(actually booked {anchor.get('checkin')})")
+            else:
+                price = b.get("realistic_price_eur")
+                note  = b.get("note", "").strip()
+                entry = f"  {key}: realistic ~€{price}/night"
+                if note:
+                    entry += f" — {note}"
             relevant.append(entry)
             if len(relevant) >= MAX_PROMPT_BASELINES:
                 break
@@ -184,10 +233,14 @@ def summarize_for_prompt(memory, cities=None):
 
     # --- Recent outcomes that carry calibration signal (skip its confirms/diamonds — a
     # diamond needs no warning; the misses, corrections and mediocre scores teach the most).
+    # Excludes "unscored" (a missing score is not a judgement) and any zero-zero row (that
+    # shape is only ever produced by the coercion bug this rule replaces — re-poisoning the
+    # ledger with a fabricated 0 would be expensive and invisible).
     ledger = memory.get("ledger", [])
     recent_bad = sorted(
         [e for e in ledger if e.get("verdict") in
-         ("correct", "kill", "hallucinated", "skeptic_kill", "skip", "blocked", "good")],
+         ("correct", "kill", "hallucinated", "skeptic_kill", "skip", "blocked", "good")
+         and not (e.get("llm_score") == 0 and e.get("final_score") == 0)],
         key=lambda e: e.get("date", ""),
         reverse=True,
     )[:MAX_PROMPT_OUTCOMES]
@@ -233,8 +286,10 @@ def _write_md(memory):
             note    = b.get("note", "")
             updated = b.get("updated", "?")
             src     = b.get("source", "")
+            samples = b.get("samples")
+            samples_str = f" &nbsp; **Samples:** {len(samples)}" if samples else ""
             lines.append(f"### {key}")
-            lines.append(f"**Realistic:** ~€{price}/night &nbsp; **Updated:** {updated}")
+            lines.append(f"**Realistic:** ~€{price}/night &nbsp; **Updated:** {updated}{samples_str}")
             if note:
                 lines.append(note)
             if src:

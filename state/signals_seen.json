@@ -1,9 +1,5 @@
 {
   "seen": {
-    "Hisarya Ultra-Local Thermal Retreat|Aug 28-31, 2026|good": "2026-07-11",
-    "Velingrad Spa & Thermal Break|Aug 21-24, 2026|good": "2026-07-11",
-    "Bansko Summer Mountain Escape|Aug 14-17, 2026|good": "2026-07-11",
-    "Milan City Break via PDV|Sep 15-20, 2026|skip": "2026-07-11",
     "Velingrad Spa & Thermal Break|Sep 1 - Sep 5, 2026|diamond": "2026-07-14",
     "Hisarya Ultra-Local Thermal Retreat|Aug 28 - Aug 31, 2026|diamond": "2026-07-14",
     "Bansko Summer Mountain Escape|Sep 4 - Sep 7, 2026|good": "2026-07-14",
@@ -40,16 +36,17 @@
     "premierluxurymountainresort|2026-09|good": "2026-07-31",
     "milan|2026-09|skip": "2026-07-31",
     "corfu|2026-09|skip": "2026-07-31",
-    "saniresort|2026-09|diamond": "2026-08-01",
+    "saniresort|2026-09|diamond": "2026-08-13",
     "limaklaradeluxehotelandresort|2026-09|good": "2026-08-01",
     "dreamfunworld|2026-09|good": "2026-08-01",
     "huromacampingintown|2026-09|skip": "2026-08-01",
     "galeonresidenceandspa|2026-09|diamond": "2026-08-10",
-    "premierluxurymountainresort|2026-09|diamond": "2026-08-10"
+    "premierluxurymountainresort|2026-09|diamond": "2026-08-10",
+    "aparthotelluckybanskospaandrelax|2026-09|good": "2026-08-13"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
-    "2026-08": 2
+    "2026-08": 3
   }
 }

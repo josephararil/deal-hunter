@@ -179,12 +179,17 @@
           "price": 128.31,
           "date": "2026-08-10",
           "source": "Booking.com (apidojo) live 2026-08-10"
+        },
+        {
+          "price": 108.77,
+          "date": "2026-08-13",
+          "source": "Booking.com (apidojo) live 2026-08-13"
         }
       ],
       "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "updated": "2026-08-10"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €108.77/night (€326.31 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "updated": "2026-08-13"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -308,12 +313,17 @@
           "price": 133.61,
           "date": "2026-08-10",
           "source": "Booking.com (apidojo) live 2026-08-10"
+        },
+        {
+          "price": 122.91,
+          "date": "2026-08-13",
+          "source": "Booking.com (apidojo) live 2026-08-13"
         }
       ],
-      "realistic_price_eur": 128.26,
-      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €133.61/night (€668.07 total, 5 nights), review 8.9. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "updated": "2026-08-10"
+      "realistic_price_eur": 122.91,
+      "note": "Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "updated": "2026-08-13"
     },
     "premierluxurymountainresort|2026-09": {
       "samples": [
@@ -389,6 +399,32 @@
       "note": "Verified Hilton Chania Old Town Resort & Spa, 5-star for Sep 22-29, 2026: €475.81/night (€3330.65 total, 7 nights), review 8.6. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-10",
       "updated": "2026-08-10"
+    },
+    "saniresort|2026-09": {
+      "samples": [
+        {
+          "price": 194.38,
+          "date": "2026-08-13",
+          "source": "Booking.com (apidojo) live 2026-08-13"
+        }
+      ],
+      "realistic_price_eur": 194.38,
+      "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "updated": "2026-08-13"
+    },
+    "aparthotelluckybanskospaandrelax|2026-09": {
+      "samples": [
+        {
+          "price": 144.27,
+          "date": "2026-08-13",
+          "source": "Booking.com (apidojo) live 2026-08-13"
+        }
+      ],
+      "realistic_price_eur": 144.27,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 4-7, 2026: €144.27/night (€432.8 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "updated": "2026-08-13"
     }
   },
   "ledger": [
@@ -1930,6 +1966,58 @@
       "final_score": 100,
       "source": "Booking.com (apidojo) live 2026-08-10",
       "note": "An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a toddler on a short weekend break."
+    },
+    {
+      "date": "2026-08-13",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 15-18, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 108.77,
+      "llm_score": 85,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "note": "Near-zero transit friction and reliable warm mineral pools offer effortless, high-utility enjoyment for a toddler on a perfectly sized short break."
+    },
+    {
+      "date": "2026-08-13",
+      "destination": "Sani Resort Premium Arbitrage",
+      "window": "Sep 20-25, 2026",
+      "type": "hotel",
+      "claimed_price": 196,
+      "verdict": "diamond",
+      "actual_price": 194.38,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "note": "Europe's premier family resort provides world-class toddler amenities and luxury, easily overcoming the non-monetary friction of a 4.5-hour drive."
+    },
+    {
+      "date": "2026-08-13",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 4-7, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "good",
+      "actual_price": 144.27,
+      "llm_score": 82,
+      "final_score": 91,
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "note": "An easy 2.5-hour drive unlocks a high-end mountain property with extensive family-friendly bio pools, ideal for a short, active family weekend."
+    },
+    {
+      "date": "2026-08-13",
+      "destination": "Sunny Beach Late Season Coast",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 133,
+      "verdict": "good",
+      "actual_price": 122.91,
+      "llm_score": 84,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-08-13",
+      "note": "A straightforward highway drive to a premium coastal property maximizes the final days of summer weather and outdoor pool utility."
     }
   ]
 }

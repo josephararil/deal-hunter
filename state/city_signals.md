@@ -1,65 +1,57 @@
-# Diamond Finder — 2026-08-10
+# Diamond Finder — 2026-08-13
 
-_Stage 1: 5 candidate(s). 5 grounded · 5 scored · 0 unscored. 2 diamond · 3 good._
+_Stage 1: 5 candidate(s). 4 grounded · 4 scored · 0 unscored. 1 diamond · 3 good._
 
-### Hisarya, Bulgaria 👍 — FIND 95/100 (high) · est €98/night
-**Type:** hotel &nbsp; **Window:** Sep 18-21, 2026
-An ultra-local 45-minute drive provides near-zero transit friction. This property offers reliable thermal pools and perfectly matches the ideal short 3-night window for a toddler, delivering exceptional utility and ease at a highly attractive off-peak price.
-_Score: LLM 96 +7 price +3 transit = **100** → good_
+### Sani Resort Premium Arbitrage 💎 — FIND 96/100 (high) · est €196/night
+**Type:** hotel &nbsp; **Window:** Sep 20-25, 2026
+While a 4.5-hour drive places this in Tier 2, securing a Villa with a Shared Pool at Europe's premier family resort for under €200/night (down from massive summer peaks) is an elite arbitrage opportunity. The staggering price drop and world-class kid infrastructure completely offset the longer drive.
+_Score: LLM 88 +15 price -3 transit = **100** → diamond_
 
-### Sunny Beach, Bulgaria 💎 — FIND 92/100 (high) · est €123/night
+### Velingrad Spa Retreat 👍 — FIND 95/100 (high) · est €128/night
+**Type:** hotel &nbsp; **Window:** Sep 15-18, 2026
+An ultra-local 1.5-hour drive from Plovdiv offers near-zero transit friction for a 4-year-old. Ground truth prices place this 4-star property at ~€128/night. The warm mineral pools and dedicated kids' areas offer effortless, reliable utility for a perfectly sized 3-night autumn break.
+_Score: LLM 85 +11 price +3 transit = **99** → good_
+
+### Bansko Mountain & SPA Break 👍 — FIND 92/100 (high) · est €115/night
+**Type:** hotel &nbsp; **Window:** Sep 4-7, 2026
+A 2.5-hour Tier 1 drive unlocks a 5-star mountain property actively promoting its 'Family SPA holiday' with BIO pools and specialized children's facilities as it transitions out of peak summer. The €115/night estimate reflects late-season value, ideal for a short 3-night weekend trip before boredom sets in.
+_Score: LLM 82 +6 price +3 transit = **91** → good_
+
+### Sunny Beach Late Season Coast 👍 — FIND 89/100 (high) · est €133/night
 **Type:** hotel &nbsp; **Window:** Sep 6-11, 2026
-A straightforward 3-hour highway drive unlocks this 5-star coastal property just as peak summer rates drop, while the weather remains warm. A 5-night stay maximizes beach and pool time for a toddler without the hassle of airport transit.
-_Score: LLM 92 +15 price -3 transit = **100** → diamond_
+A straightforward 2.5-hour highway drive from Plovdiv to a premium 5-star coastal property. Verified past rates of ~€133/night make this a highly actionable Tier 1 play to maximize the final reliable days of summer beach weather over an optimal 5-night stretch.
+_Score: LLM 84 +15 price -3 transit = **96** → good_
 
-### Bansko, Bulgaria 💎 — FIND 90/100 (high) · est €117/night
-**Type:** hotel &nbsp; **Window:** Sep 3-6, 2026
-An easy 2.5-hour drive unlocks a high-end 5-star mountain property with extensive amenities, ideal for a short active family break. The early September pricing provides a premium off-season trough value with negligible transit friction.
-_Score: LLM 95 +15 price +3 transit = **100** → diamond_
-
-### Velingrad, Bulgaria 👍 — FIND 88/100 (high) · est €128/night
-**Type:** hotel &nbsp; **Window:** Sep 17-20, 2026
-A highly accessible 1.5-hour drive from Plovdiv to a premium 4-star spa resort. The short 3-night window is perfect for a 4-year-old before boredom sets in, offering warm mineral pools and zero flight friction at a proven off-peak September rate.
-_Score: LLM 86 +12 price +3 transit = **100** → good_
-
-### Antalya, Turkey 👍 — FIND 83/100 (medium) · est €222/night
+### Antalya Mega-Resort Play — FIND 79/100 (high) · est €202/night
 **Type:** hotel &nbsp; **Window:** Sep 8-15, 2026
-While flying from Sofia adds some transit friction, this brand-new 5-star mega-resort brings incredible aquatic and toddler amenities. The massive price drop in September makes it a high-value play for a 7-night holiday in a high-excitement destination.
-_Score: LLM 78 -2 price -3 transit = **73** → good_
+A brand-new mega-resort drops to a verified ~€202/night, offering incredible aquatic amenities and entertainment for a 4-year-old. However, the requirement to transit via Sofia (SOF) adds moderate logistical friction, keeping the score just below the immediate-alert threshold despite the 7-night value.
 
 ## Grounding & scoring
 
-### ✅ Sana Spa Hotel — CONFIRM (confidence: high) → final **100** (good)
-**Summary:** Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.
+### ✅ Sani Resort Villa with Shared Pool — CONFIRM (confidence: high) → final **100** (diamond)
+**Summary:** Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.
 **Options:**
-  - Sep 18-21, 2026 · €97.76/night · €293.28 total · [book](https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-10_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-18–2026-09-21, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.7. Live rate: €97.76/night (€293.28 total).
+  - Sep 20-25, 2026 · €194.38/night · €971.89 total · [book](https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-13_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-25, currency=EUR, adults=2, children=[4]. Live rate: €194.38/night (€971.89 total).
 
-### ✅ Galeon Residence & SPA — CONFIRM (confidence: high) → final **100** (diamond)
-**Summary:** Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €133.61/night (€668.07 total, 5 nights), review 8.9. Price matches the Stage-1 estimate.
+### ✅ Park Hotel and SPA Vella Hills — CONFIRM (confidence: high) → final **99** (good)
+**Summary:** Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €108.77/night (€326.31 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.
 **Options:**
-  - Sep 6-11, 2026 · €133.61/night · €668.07 total · [book](https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-10_
+  - Sep 15-18, 2026 · €108.77/night · €326.31 total · [book](https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-15&checkout=2026-09-18&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-13_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-15&checkout=2026-09-18&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-15–2026-09-18, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.3. Live rate: €108.77/night (€326.31 total).
+
+### 🔧 Lucky Bansko Aparthotel SPA & Relax — CORRECT (confidence: high) → final **91** (good)
+**Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 4-7, 2026: €144.27/night (€432.8 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.
+**Options:**
+  - Sep 4-7, 2026 · €144.27/night · €432.8 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-04&checkout=2026-09-07&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-13_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-04&checkout=2026-09-07&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-04–2026-09-07, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €144.27/night (€432.8 total).
+
+### ✅ Galeon Residence & SPA — CONFIRM (confidence: high) → final **96** (good)
+**Summary:** Verified Galeon Residence & SPA, 5-star for Sep 6-11, 2026: €122.91/night (€614.53 total, 5 nights), review 9.0. Price matches the Stage-1 estimate.
+**Options:**
+  - Sep 6-11, 2026 · €122.91/night · €614.53 total · [book](https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-13_
 **How to book:** Book at https://www.booking.com/searchresults.html?ss=Galeon+Residence+%26+SPA&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.9. Live rate: €133.61/night (€668.07 total).
-
-### ✅ Premier Luxury Mountain Resort — CONFIRM (confidence: high) → final **100** (diamond)
-**Summary:** Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-**Options:**
-  - Sep 3-6, 2026 · €117.4/night · €352.21 total · [book](https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-03&checkout=2026-09-06&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-10_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-03&checkout=2026-09-06&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-03–2026-09-06, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €117.4/night (€352.21 total).
-
-### ✅ Park Hotel and SPA Vella Hills — CONFIRM (confidence: high) → final **100** (good)
-**Summary:** Verified Park Hotel and SPA Vella Hills, 4-star for Sep 17-20, 2026: €128.31/night (€384.94 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.
-**Options:**
-  - Sep 17-20, 2026 · €128.31/night · €384.94 total · [book](https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-10_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-17&checkout=2026-09-20&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-17–2026-09-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.3. Live rate: €128.31/night (€384.94 total).
-
-### ✅ Dream Fun World — CONFIRM (confidence: high) → final **73** (good)
-**Summary:** Verified Dream Fun World, 5-star for Sep 8-15, 2026: €202.09/night (€1414.6 total, 7 nights), review 8.8. Price matches the Stage-1 estimate.
-**Options:**
-  - Sep 8-15, 2026 · €202.09/night · €1414.6 total · [book](https://www.booking.com/searchresults.html?ss=Dream+Fun+World&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-08-10_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Dream+Fun+World&checkin=2026-09-08&checkout=2026-09-15&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-08–2026-09-15, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €202.09/night (€1414.6 total).
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.91/night (€614.53 total).

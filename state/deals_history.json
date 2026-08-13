@@ -2121,6 +2121,76 @@
       ],
       "baseline_note": "Typically ~€117.4/night here — about the usual rate.",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-13",
+      "deal_id": 3,
+      "destination": "Bansko Mountain & SPA Break",
+      "type": "hotel",
+      "window": "Sep 4-7, 2026",
+      "tier": "good",
+      "llm_score": 82,
+      "price_adj": 6,
+      "transit_adj": 3,
+      "final_score": 91,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 4-7, 2026: €144.27/night (€432.8 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is a standout 5-star property in the Pirin Mountains, uniquely focused on family wellness. It boasts excellent BIO indoor pools, specialized children's playrooms, and spacious apartment-style lodging. A 4-year-old will love the dedicated kids' water zones, while parents can alternate between the expansive spa and mountain strolls.",
+      "value_case": "At ~€144/night, this is a fair and attractive rate for a genuinely premium 5-star family stay in Bansko. While basic 4-stars in the area can be found for €80, you are paying a reasonable premium over those for vastly superior pools, kids' facilities, and a 9.0-rated luxury standard (which often trades nearer €165).",
+      "why": "An easy 2.5-hour drive unlocks a high-end mountain property with extensive family-friendly bio pools, ideal for a short, active family weekend.",
+      "red_flags": "Mountain weather in September can turn chilly quickly, limiting outdoor activities; confirm that all indoor children's entertainment spaces are fully operational during the shoulder season.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-04–2026-09-07, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €144.27/night (€432.8 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-04&checkout=2026-09-07&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 4-7, 2026",
+          "nights": 3,
+          "price_per_night_eur": 144.27,
+          "total_eur": 432.8,
+          "source": "Booking.com (apidojo) live 2026-08-13",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-04&checkout=2026-09-07&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-13",
+      "deal_id": 2,
+      "destination": "Sani Resort Premium Arbitrage",
+      "type": "hotel",
+      "window": "Sep 20-25, 2026",
+      "tier": "diamond",
+      "llm_score": 88,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
+      "about": "Located in Halkidiki, Greece, Sani Resort is arguably Europe's finest luxury family destination, featuring pristine beaches, private marinas, and pine forests. Securing a Villa with a Shared Pool means a 4-year-old gets immediate access to splashing fun, while parents enjoy world-class dining, elite kids' clubs, and impeccable service in a stunning Mediterranean setting.",
+      "value_case": "Booking a villa with a shared pool at Sani for under €200/night is a spectacular late-season arbitrage. These premium units regularly command €400 to €600+ during the peak summer months, meaning you are getting an ultra-luxury flagship experience for the price of a standard regional 5-star.",
+      "why": "Europe's premier family resort provides world-class toddler amenities and luxury, easily overcoming the non-monetary friction of a 4.5-hour drive.",
+      "red_flags": "The 4.5-hour drive includes a border crossing into Greece, which can occasionally experience delays; plan your travel times carefully with a toddler in the car.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-25, currency=EUR, adults=2, children=[4]. Live rate: €194.38/night (€971.89 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 20-25, 2026",
+          "nights": 5,
+          "price_per_night_eur": 194.38,
+          "total_eur": 971.89,
+          "source": "Booking.com (apidojo) live 2026-08-13",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

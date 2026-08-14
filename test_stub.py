@@ -54,8 +54,36 @@ for _name, _seed in [("signals_seen.json", {"seen": {}, "monthly_count": {}}),
 
 import config as C
 import common as X
+import llm_chain as L
 import memory as M
 import find_city_anomalies as fa
+
+
+def _as_chain(fn):
+    """Adapt an old-style common.llm stub (messages -> str, or raise) to the
+    llm_chain.call_llm contract (prompt -> LLMResult, never raises on a provider failure).
+
+    A stub that raises RuntimeError stands for a provider outage, which under the new
+    contract is LLMResult(ok=False), NOT an exception -- so the degraded-run assertions
+    keep testing the same behaviour they always did. AssertionError still propagates:
+    that means the test itself is wrong, not the provider."""
+    def _call(prompt, *, stage="", max_tokens=4000, want_search=False, search_prompt=None,
+              search_preamble=None, response_schema=None, provider=None,
+              web_search_max_uses=6):
+        messages = [{"role": "user", "content": prompt}]
+        try:
+            text = fn(messages, "stub-model", max_tokens, want_search, response_schema,
+                      provider, search_prompt)
+        except AssertionError:
+            raise
+        except Exception as exc:
+            return L.LLMResult(text="", ok=False, model="stub-model", provider="stub",
+                               fell_back=True, grounded=False, truncated=False,
+                               attempts=3, error=f"{type(exc).__name__}: {exc}")
+        return L.LLMResult(text=text, ok=True, model="stub-model", provider="stub",
+                           fell_back=False, grounded=False, truncated=False,
+                           attempts=1, error="")
+    return _call
 
 # ── Canned Stage 1 (FIND) ─────────────────────────────────────────────────────
 _STAGE1 = {"candidates": [
@@ -170,7 +198,7 @@ _email = {}
 def _stub_send(subject, html, text):
     _email["subject"], _email["html"], _email["text"] = subject, html, text
 
-X.llm = _stub_llm
+L.call_llm = _as_chain(_stub_llm)
 fa.ground_deal = _stub_ground
 X.send_email = _stub_send
 
@@ -272,7 +300,7 @@ finally:
 #
 # Each case below gets its own fresh sandbox (tempfile.mkdtemp + chdir + freshly seeded
 # state/*.json) so state never leaks between passes. config/common/find_city_anomalies/
-# memory are reused (already imported above) — only X.llm / fa.ground_deal / X.send_email
+# memory are reused (already imported above) — only L.call_llm / fa.ground_deal / X.send_email
 # and the seed files are swapped per pass.
 
 def _seed_empty_state():
@@ -322,7 +350,7 @@ try:
     def _stub_send_c1(subject, html, text):
         _email_c1["subject"], _email_c1["html"], _email_c1["text"] = subject, html, text
 
-    X.llm = _stub_llm_c1
+    L.call_llm = _as_chain(_stub_llm_c1)
     fa.ground_deal = _stub_ground_c1
     X.send_email = _stub_send_c1
 
@@ -418,7 +446,7 @@ try:
     def _stub_send_c2(subject, html, text):
         _email_c2["subject"], _email_c2["html"], _email_c2["text"] = subject, html, text
 
-    X.llm = _stub_llm_c2
+    L.call_llm = _as_chain(_stub_llm_c2)
     fa.ground_deal = _stub_ground_c2
     X.send_email = _stub_send_c2
 
@@ -509,7 +537,7 @@ try:
     def _stub_send_c4(subject, html, text):
         _email_c4["subject"], _email_c4["html"], _email_c4["text"] = subject, html, text
 
-    X.llm = _stub_llm_c4
+    L.call_llm = _as_chain(_stub_llm_c4)
     fa.ground_deal = _stub_ground_c4
     X.send_email = _stub_send_c4
 
@@ -574,7 +602,7 @@ try:
     def _stub_send_c7(subject, html, text):
         _email_c7["subject"], _email_c7["html"], _email_c7["text"] = subject, html, text
 
-    X.llm = _stub_llm_c7
+    L.call_llm = _as_chain(_stub_llm_c7)
     fa.ground_deal = _stub_ground_c7
     X.send_email = _stub_send_c7
 
@@ -651,7 +679,7 @@ try:
     def _stub_send_c8(subject, html, text):
         _email_c8["subject"], _email_c8["html"], _email_c8["text"] = subject, html, text
 
-    X.llm = _stub_llm_c8
+    L.call_llm = _as_chain(_stub_llm_c8)
     fa.ground_deal = _stub_ground_c8
     X.send_email = _stub_send_c8
 
@@ -727,7 +755,7 @@ try:
     def _stub_send_c9(subject, html, text):
         _email_c9["html"] = html
 
-    X.llm = _stub_llm_c9
+    L.call_llm = _as_chain(_stub_llm_c9)
     fa.ground_deal = _stub_ground_c9
     X.send_email = _stub_send_c9
 
@@ -744,6 +772,41 @@ try:
 finally:
     os.chdir(_cwd)
     shutil.rmtree(sandbox9, ignore_errors=True)
+
+
+# ── Case 10: STAGE_RESULTS is shared across BOTH module copies ────────────────
+# CI runs `python find_city_anomalies.py`, so that module is __main__, while providers.py
+# does a lazy `import find_city_anomalies as fa` to reach _ground_llm. Python therefore
+# builds TWO module objects with separate globals. If STAGE_RESULTS lived in
+# find_city_anomalies, FIND/SKEPTIC would land in one copy and every VERIFY in the other,
+# and the email's run-health footer would silently under-report which models served the run.
+# It lives in `common` (imported under the same name by both copies) to prevent that.
+import types as _types
+_src = open(os.path.join(REPO, "find_city_anomalies.py"), encoding="utf-8").read()
+_src = _src.replace('if __name__ == "__main__":\n    main()', '')
+_as_main = _types.ModuleType("__main__")
+_as_main.__dict__.update({"__name__": "__main__",
+                          "__file__": os.path.join(REPO, "find_city_anomalies.py")})
+try:
+    import dotenv as _dotenv
+    _dotenv.load_dotenv = lambda *a, **k: None   # its stack-walk breaks under exec()
+except ImportError:
+    pass
+exec(compile(_src, "find_city_anomalies.py", "exec"), _as_main.__dict__)
+
+assert _as_main is not fa, "expected two distinct module objects to reproduce the CI shape"
+_probe = L.LLMResult(text="x", ok=True, model="probe", provider="stub", fell_back=False,
+                     grounded=False, truncated=False, attempts=1, error="")
+X.STAGE_RESULTS.clear()
+_as_main._stage_llm("FIND", _probe)   # the __main__ copy
+fa._stage_llm("VERIFY", _probe)       # the copy providers.py lazy-imports
+_names = [n for n, _ in X.STAGE_RESULTS]
+assert _names == ["FIND", "VERIFY"], (
+    f"STAGE_RESULTS is not shared across module copies: got {_names}. VERIFY outcomes "
+    f"would be missing from the run-health footer in production.")
+assert _as_main.STAGE_RESULTS is fa.STAGE_RESULTS is X.STAGE_RESULTS
+X.STAGE_RESULTS.clear()
+print("Case 10: STAGE_RESULTS shared across __main__ and imported module copies [OK]")
 
 
 print("\nAll assertions passed (Part 1 + Part 2).")

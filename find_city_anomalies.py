@@ -32,8 +32,39 @@ except ImportError:
     pass
 import config as C
 import common as X
+import llm_chain as L
 import memory as M
 import trips as T
+
+
+# Every LLM outcome this run, as (stage_name, LLMResult). Printed at RUN COMPLETE so the log
+# names the model that actually served each stage.
+#
+# A stage that FELL BACK to a later model in the chain SUCCEEDED — that is the chain doing
+# its job, and it must never be reported as failure or degradation. Only LLMResult.ok is
+# False feeds the existing degraded-run machinery (stage1_failed / scorer_stage_failed).
+#
+# The list itself is owned by `common` so that this module and the copy providers.py
+# lazy-imports both append to the SAME list — see the comment on common.STAGE_RESULTS.
+STAGE_RESULTS = X.STAGE_RESULTS
+
+
+def _stage_llm(name, res):
+    """Log one stage's LLM outcome, record it, and return it unchanged."""
+    STAGE_RESULTS.append((name, res))
+    if res.ok:
+        bits = [res.model]
+        if res.fell_back:
+            bits.append(f"fell back after {res.attempts} attempt(s)")
+        if res.grounded:
+            bits.append("grounded")
+        if res.truncated:
+            bits.append("TRUNCATED — raise MAX_TOKENS")
+        print(f"  [{name}] served by {' · '.join(bits)}")
+    else:
+        print(f"  [{name}] no usable answer from any model after {res.attempts} "
+              f"attempt(s): {res.error}")
+    return res
 
 
 # --- run-log helpers ---
@@ -840,13 +871,17 @@ def _ground_llm(diamond, mem_text, today):
         candidate=candidate_json,
         memory=mem_text,
     )
-    raw3 = X.llm(
-        messages=[{"role": "user", "content": verify_prompt}],
-        model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
+    res = _stage_llm("VERIFY", L.call_llm(
+        verify_prompt,
+        stage="VERIFY", max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
         response_schema=C.STAGE3_RESPONSE_SCHEMA,
+        search_preamble=C.SEARCH_RESULTS_PREAMBLE,
         provider=C.PROVIDER_VERIFY,
-    )
-    result = X.parse_json_block(raw3) or {}
+        web_search_max_uses=C.WEB_SEARCH_MAX_USES,
+    ))
+    # No usable answer from any model in the chain: return {} so the caller treats this
+    # candidate as ungrounded, exactly as a parse miss did before.
+    result = (X.parse_json_block(res.text) or {}) if res.ok else {}
     result["grounding_method"] = "llm"
     return result
 
@@ -873,9 +908,18 @@ ground_deal = _resolve_ground_deal()
 def main():
     today = X.today_iso()
     run_start = dt.datetime.now()
-    X.set_run_deadline(C.RUN_BUDGET_SECONDS)
-    _section(f"DIAMOND FINDER · {today} · provider={X.PROVIDER}")
-    print(f"  models:  find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}")
+    # llm_chain's budget clock starts at the first call_llm, not at import, so the harvest
+    # and state IO above no longer eat into it. Reset here so a repeated in-process run
+    # (tests) gets a fresh window instead of inheriting a spent one.
+    L.reset_budget()
+    # Module-level, so clear it per run — otherwise a second main() in the same process
+    # (the test suite does this) would report models from the previous run in the footer.
+    STAGE_RESULTS.clear()
+    _section(f"DIAMOND FINDER · {today} · provider={L.resolved_provider()}")
+    # Every effective LLM knob and where it came from. A repo variable that silently failed
+    # to reach the job is indistinguishable from a correct default without this.
+    for _k, _info in L.resolved_config().items():
+        print(f"  {_k:<26} {_info['value']}   [{_info['source']}]")
     print(f"  gate:    FIND score>={C.STAGE1_MIN_SCORE} -> ground · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
     print(f"  scoring: par={C.DIAMOND_PAR_EUR} default €{C.DEFAULT_DIAMOND_PAR_EUR} · "
           f"price x{C.PRICE_SCORE_WEIGHT} (bonus<={C.PRICE_BONUS_CAP}) · transit +/-{C.TRANSIT_TIER1_BONUS} · "
@@ -910,18 +954,24 @@ def main():
         # model has no tool — its leads come via SEARCH_RESULTS_PREAMBLE — so the
         # tool-use directive is Anthropic-only. Keeps FIND_PROMPT honest per provider.
         find_directive = (C.SEARCH_DIRECTIVE_ANTHROPIC
-                          if X.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
-        raw1 = X.llm(
-            messages=[{"role": "user", "content": C.FIND_PROMPT.format(
+                          if L.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
+        res1 = _stage_llm("FIND", L.call_llm(
+            C.FIND_PROMPT.format(
                 today=today, cities=C.cities_prompt_text(), memory=mem_text,
                 search_directive=find_directive, trips=trips_block
-            )}],
-            model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+            ),
+            stage="FIND", max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,
-            provider=C.PROVIDER_FIND,
             search_prompt=C.SEARCH_PROMPT.format(today=today, cities=C.cities_prompt_text()),
-        )
-        candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
+            search_preamble=C.SEARCH_RESULTS_PREAMBLE,
+            provider=C.PROVIDER_FIND,
+            web_search_max_uses=C.WEB_SEARCH_MAX_USES,
+        ))
+        # call_llm does not raise on a provider failure, so an exhausted chain is an
+        # explicit failure here rather than an exception. Falling back is NOT a failure.
+        if not res1.ok:
+            raise RuntimeError(f"FIND chain exhausted: {res1.error}")
+        candidates = (X.parse_json_block(res1.text) or {}).get("candidates", [])
         stage1_failed, stage1_fail_reason = False, ""
     except Exception as e:
         stage1_failed, stage1_fail_reason = True, f"{type(e).__name__}: {e}"
@@ -1077,13 +1127,17 @@ def main():
             trips=trips_block,
         )
         try:
-            raw2 = X.llm(
-                messages=[{"role": "user", "content": scorer}],
-                model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            res2 = _stage_llm("SKEPTIC", L.call_llm(
+                scorer,
+                stage="SKEPTIC", max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
                 response_schema=C.STAGE2_RESPONSE_SCHEMA,
                 provider=C.PROVIDER_SKEPTIC,
-            )
-            verdicts = X.parse_json_block(raw2) or []
+            ))
+            # An exhausted chain is a DEGRADED run, not a silent one — same contract as
+            # before, so the existing scorer_stage_failed machinery still drives the digest.
+            if not res2.ok:
+                raise RuntimeError(f"SKEPTIC chain exhausted: {res2.error}")
+            verdicts = X.parse_json_block(res2.text) or []
         except Exception as e:
             scorer_stage_failed = True
             scorer_fail_reason = f"{type(e).__name__}: {e}"
@@ -1426,9 +1480,17 @@ def main():
             stage3_status = "partial"
         else:
             stage3_status = "ok"
+        # Report the models that ACTUALLY served this run, not a static config string —
+        # with a fallback chain the two can differ, and the footer exists to be honest
+        # about what happened. Deduped, in first-use order.
+        _served = []
+        for _n, _r in STAGE_RESULTS:
+            _m = _r.model if _r.ok else f"{_r.model}(failed)"
+            if _m not in _served:
+                _served.append(_m)
         health = {
-            "provider": X.PROVIDER,
-            "models": f"find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}",
+            "provider": L.resolved_provider(),
+            "models": " · ".join(_served) or "none",
             "stage1": "failed" if stage1_failed else "ok",
             "stage2": f"{len(grounded)} grounded of {len(gate_survivors)} gate survivor(s)",
             "stage3": stage3_status,
@@ -1477,6 +1539,17 @@ def main():
     _section("RUN COMPLETE")
     print(f"  {len(candidates)} found -> {len(gate_survivors)} to grounding -> {len(grounded)} grounded "
           f"-> {len(scored_all)} scored + {len(unscored)} unscored ({len(picks)} pick(s)) -> {emailed} emailed")
+    # Which model actually served each stage. "fell back" is the chain working as designed,
+    # NOT degradation — only a stage with no usable answer from any model is a failure.
+    for _name, _res in STAGE_RESULTS:
+        if _res.ok:
+            print(f"  llm {_name:<8} ok      {_res.model}"
+                  + ("  (advanced down the chain)" if _res.fell_back else ""))
+        else:
+            print(f"  llm {_name:<8} FAILED  chain exhausted: {_res.error}")
+    _advanced = sum(1 for _, r in STAGE_RESULTS if r.ok and r.fell_back)
+    if _advanced:
+        print(f"  {_advanced} stage(s) completed on a fallback model — chain worked, run is NOT degraded")
 
 
 if __name__ == "__main__":

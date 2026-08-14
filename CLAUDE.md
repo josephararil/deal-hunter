@@ -34,7 +34,7 @@ find_city_anomalies.py
   │    renders a bounded trips block injected into both FIND_PROMPT and SKEPTIC_PROMPT so the
   │    scorer can calibrate against what this family actually pays and chooses.
   │
-  ├─ Stage 1 · FIND (llm, want_search=True, model=MODEL_FIND)
+  ├─ Stage 1 · FIND (L.call_llm, want_search=True)
   │    Score candidates 0–100. Each candidate includes est_price_eur (structured number —
   │    NOT extracted from prose). Anchored to CITIES but can extend to nearby destinations.
   │
@@ -43,7 +43,7 @@ find_city_anomalies.py
   │
   ├─ Stage 2 · GROUND (ground_deal seam) — one call per gate survivor (BEFORE scoring)
   │    Primary: `providers.ground_api()` — Booking.com (apidojo) live rates, no LLM call.
-  │    Fallback: `_ground_llm` (want_search=True, model=MODEL_VERIFY) — LLM concierge.
+  │    Fallback: `_ground_llm` (L.call_llm, want_search=True) — LLM concierge.
   │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
   │    assistant_summary, confidence. A kill drops the candidate here. A confirm/correct
   │    merges the REAL price onto the candidate and forwards it to the scorer — UNLESS a
@@ -52,7 +52,7 @@ find_city_anomalies.py
   │    Grounding is swappable: `HOTEL_PROVIDER=""` forces LLM-only. Same
   │    `ground_deal(diamond, mem_text, today)` signature.
   │
-  ├─ Stage 3 · SCORE (llm scorer + deterministic modifiers, model=MODEL_SKEPTIC)
+  ├─ Stage 3 · SCORE (L.call_llm scorer + deterministic modifiers)
   │    The LLM returns a 0–100 DESIRABILITY score per grounded candidate (price held
   │    neutral — it is told the pipeline handles price). It ALSO emits normal_price_eur —
   │    its honest estimate of the property's OWN typical rate — as the reference the discount
@@ -154,7 +154,7 @@ find_city_anomalies.py
 
 | File | Role |
 |---|---|
-| `config.py` | City list + diamond-finder knobs; per-stage model roles (`MODEL_FIND/SKEPTIC/VERIFY`); per-stage provider overrides; prompts |
+| `config.py` | City list + diamond-finder knobs; per-stage provider overrides; token budgets; prompts. **Names no model** — the `LLM models` and `Run resilience` blocks are deliberately empty and point at the `llm-chain` package |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
 | `find_city_anomalies.py` | The diamond finder — runs every 3 days, emails a digest of every scored candidate (diamond/good/skip) + unscored/dropped sections |
@@ -245,16 +245,34 @@ ground_deal = _resolve_ground_deal()
 The pipeline bounds its own wall-clock time and degrades explicitly rather than either
 outlasting CI's job timeout or silently pretending a bad run was a quiet one.
 
-- `common.set_run_deadline(C.RUN_BUDGET_SECONDS)` (660s) is called once at the top of
-  `main()`; `common._budget_left()` returns the seconds remaining against that deadline.
-- `common._post_with_retry` checks the budget before every attempt and before every sleep
-  between retries, and stops early — rather than sleeping/retrying past the point where the
-  run could still finish inside CI's own `timeout-minutes` (now **20**, raised from 15,
-  because the old retry schedule could already exceed 15 minutes on its own on a slow day).
-- `common._gemini` does a one-shot fallback to `GEMINI_FALLBACK_MODEL_MAP[gmodel]` if the
-  primary Gemini model is unavailable after retries, rather than giving up outright.
+- **The wall-clock budget is `LLM_TOTAL_BUDGET_SECONDS` (660s), enforced inside `llm_chain`**
+  and set in `daily.yml`. It replaces `common.set_run_deadline(C.RUN_BUDGET_SECONDS)`; the
+  660 figure is deliberately kept rather than taking `llm_chain`'s own 1200 default, which
+  would exceed CI's `timeout-minutes: 20` on its own. `main()` calls `L.reset_budget()` at the
+  top. One real improvement: the clock now starts at the **first `call_llm`** rather than at
+  import, so state loading and apidojo grounding no longer eat into the LLM budget.
+- **The one-shot `GEMINI_FALLBACK_MODEL_MAP` hop is now a full chain**, `LLM_MODEL_CHAIN`.
+  Same `pro-latest → flash-latest → 3.1-flash-lite` ladder, but `llm_chain` retries the
+  current model on a transient status and then *advances*, repeatedly, instead of hopping
+  once and giving up. `LLM_ATTEMPTS_PER_MODEL=3` + `LLM_BACKOFF_SECONDS=5,15` reproduce the
+  old `_MAX_RETRIES`/`_RETRY_DELAYS` policy exactly. The old retry **jitter** was dropped
+  deliberately: jitter desynchronises many concurrent clients backing off in lockstep, and
+  this is a single serial job with one caller.
+- **`STAGE_RESULTS` lives in `common.py`, not `find_city_anomalies.py`.** CI runs
+  `python find_city_anomalies.py`, so that module is `__main__`, while `providers.py` does a
+  lazy `import find_city_anomalies as fa` to reach `_ground_llm` — Python therefore builds
+  **two module objects with separate globals**. A list defined in `find_city_anomalies` would
+  collect FIND/SKEPTIC in one copy and every VERIFY in the other, and the health footer would
+  silently under-report. `common` is imported under the same name by both copies, so the list
+  there is genuinely shared. Regression test: Case 10 in `test_stub.py`.
+- **Falling back is not degrading.** `LLMResult.fell_back=True` with `ok=True` means the
+  chain advanced past a shedding model and got a real answer — the run is healthy. Only
+  `ok=False` (chain exhausted) feeds `stage1_failed`/`scorer_stage_failed`. Never report a
+  fallback as a warning in the email.
 - Every email — not only degraded ones — now carries a permanent health footer
-  (`_health_footer_html`/`_health_footer_text`): provider + models, per-stage status
+  (`_health_footer_html`/`_health_footer_text`): provider + the models that **actually
+  served** this run (read from `STAGE_RESULTS`, not a static config string — with a chain the
+  two can differ), per-stage status
   (`stage1`/`stage2`/`stage3` → ok/failed/partial + a `reason` string when something went
   wrong), found/grounded/scored/unscored/dropped/emailed counts, tier-mix by transit tier
   (Tier-1 local vs Tier-2 fly), and LLM budget seconds used. This is what makes a degraded run
@@ -301,8 +319,18 @@ it's a real paid price and a real choice made.
 
 ## Critical invariants — do not break these
 
-- **All LLM calls go through `common.llm()`.** Abstracts Anthropic vs Gemini via
-  `LLM_PROVIDER`. Do not call provider HTTP endpoints directly.
+- **All LLM calls go through `llm_chain.call_llm()`** (`import llm_chain as L`), from the
+  `llm-chain` package pinned at `@v1` in `requirements.txt`. Do not call provider HTTP
+  endpoints directly, and do not reintroduce an LLM path in `common.py` — its LLM half was
+  deleted precisely to remove the duplicated plumbing. `call_llm` takes a plain **string**
+  prompt (not a messages list), returns `LLMResult`, and **never raises on a provider
+  failure**; callers branch on `.ok`.
+- **No model name appears in this repo's Python.** `grep -rn "claude-\|gemini-" --include=*.py .`
+  must return nothing. Model names live only in `LLM_MODEL_CHAIN`/`LLM_SEARCH_MODEL_CHAIN`.
+  Those two carry an explicit `|| '<default>'` in `daily.yml` rather than falling through to
+  `llm_chain`'s own defaults, which are flash-based and tuned for a different repo — falling
+  through would silently move every reasoning stage off `gemini-pro-latest`. That is the one
+  place a model name is written down, and it is YAML, not code.
 - **All email goes through `common.send_email()`.** Single SMTP path. No duplication.
 - **State files in `state/` are CI-managed.** `city_signals.json`, `city_signals.md`,
   `signals_seen.json`, `memory.json`, `memory.md`, `deals_history.json` are committed after
@@ -430,7 +458,7 @@ it's a real paid price and a real choice made.
 - **Gemini token budgets carry thinking-token headroom.** `maxOutputTokens` caps hidden
   thinking + visible output combined; if it runs out mid-answer the JSON truncates
   (`finishReason=MAX_TOKENS`) and parses to nothing — indistinguishable from a quiet day.
-  `common._gemini` warns on any non-STOP finishReason; `MAX_TOKENS_FIND/SKEPTIC/VERIFY`
+  `llm_chain` flags it as `LLMResult.truncated`; `MAX_TOKENS_FIND/SKEPTIC/VERIFY`
   are set well above observed thinking usage (~3-4k). If you see the warning, raise them.
 - **Grounding (Stage 2) only removes candidates, never adds them.** A grounding kill means the
   deal is NOT REAL (hallucinated property, no availability in-window, no supporting evidence) —
@@ -506,43 +534,63 @@ it's a real paid price and a real choice made.
 - **Memory is written every run**, including silent days. `memory.py` functions must
   not be called with None memory dict; always `M.load()` first.
 
-## Providers
+## The LLM layer (`llm-chain`)
 
-`common.llm(messages, model, max_tokens, want_search, provider=None)` — single entry point.
+All LLM calls go through the **`llm-chain`** package — `import llm_chain as L; L.call_llm(...)`.
+It is a shared dependency (`llm-chain @ git+https://github.com/josephararil/llm-chain@v1`),
+also used by the sibling `weekly-concierge` repo. It is **not a file in this repo**.
 
-- `LLM_PROVIDER=anthropic` (default): Messages API; `want_search` → `web_search` tool.
-- `LLM_PROVIDER=gemini`: `generateContent` API. When `want_search=True`, search and
-  reasoning are **split across two calls** (`_gemini` / `_gemini_search` in `common.py`):
-  1. **Search** runs on `GEMINI_SEARCH_MODEL` (config; default `gemini-3.1-flash-lite`)
-     with the `{"google_search": {}}` tool. This is the only Gemini tier that survives
-     Google's grounding gateway — flagship models (`flash-latest`/`pro-latest`) time out
-     ~99% of the time when `google_search` is attached. The search step optimizes for
-     **fresh, varied leads, not accuracy**: Stage 1 passes a dedicated `SEARCH_PROMPT`
-     (lead-generation brief) via the `search_prompt` arg; other stages fall back to
-     wrapping the stage text in a generic search directive.
-  2. **Reasoning** runs on the mapped flagship model with **no tools** (and the
-     `responseSchema`, if any). The grounded leads from step 1 are framed by
-     `SEARCH_RESULTS_PREAMBLE` (injected via `.replace`, so leads with braces are safe)
-     and prepended to the stage prompt. The preamble treats the leads as a **seed, not a
-     fence** — the reasoner also draws on its own knowledge and must not return an empty
-     answer just because leads are thin. If the search call fails it returns `""` and
-     reasoning proceeds knowledge-only — graceful degradation.
-  This split also keeps `responseSchema` off the search call (the two features conflict).
-  `SEARCH_PROMPT` / `SEARCH_RESULTS_PREAMBLE` are Gemini-only; on Anthropic the flagship
-  searches inline via `FIND_PROMPT`. `FIND_PROMPT`'s `{search_directive}` slot keeps it
-  honest per provider: Anthropic gets `SEARCH_DIRECTIVE_ANTHROPIC` (forceful "use your
-  web_search tool"); Gemini gets `""` (the preamble owns its framing), so no model ever
-  reads a tool instruction that is false for it. Filled in `find_city_anomalies.py` via
-  `common.resolved_provider(C.PROVIDER_FIND)`.
-- Per-stage model roles are in `config.py` as `MODEL_FIND`, `MODEL_SKEPTIC`, `MODEL_VERIFY`.
-  Gemini equivalents are mapped in `GEMINI_MODEL_MAP`; the search model is
-  `GEMINI_SEARCH_MODEL`. Three Gemini models total — search (lite), Find (`flash-latest`),
-  Skeptic+Verify (`pro-latest`). Add new roles there, never as literals in pipeline code.
-- Optional per-stage provider overrides: `PROVIDER_FIND / PROVIDER_SKEPTIC / PROVIDER_VERIFY`
-  (all default to `None` = use global `LLM_PROVIDER`).
-- `response_schema` (Gemini only): JSON Schema passed as `response_format` to constrain
-  output to valid JSON. Schemas for all three stages live in `config.py` as
-  `STAGE1/2/3_RESPONSE_SCHEMA`. Anthropic path ignores these (prompt engineering suffices).
+```python
+L.call_llm(prompt, *, stage="", max_tokens=4000, want_search=False,
+           search_prompt=None, search_preamble=None, response_schema=None,
+           provider=None, web_search_max_uses=6) -> LLMResult
+```
+
+`prompt` is a plain **string**, not a messages list. Returns
+`LLMResult(text, ok, model, provider, fell_back, grounded, truncated, attempts, error)`
+and **never raises on a provider failure** — callers branch on `.ok`.
+
+**Why.** `common.llm()` retried one model with no cross-model fallback. On 2026-08-14
+`weekly-concierge` emailed a blank report because a model returned 503 on 13 of 14 calls
+while another served 3/3 on the same key in the same window. `llm_chain` retries the same
+model on a transient status, then **advances to the next model in the chain**. This repo's
+own one-shot `GEMINI_FALLBACK_MODEL_MAP` hop was a partial version of the same idea.
+
+- **Chain, not per-stage pinning.** Every stage starts at `LLM_MODEL_CHAIN[0]` and advances
+  on failure; no model is bound to a task. `MODEL_FIND/SKEPTIC/VERIFY` are gone — all three
+  held the same value, so they expressed a distinction that did not exist.
+- **No name mapping.** Names reach the API verbatim. The old `GEMINI_MODEL_MAP` used
+  `.get(model, <fallback>)`, so a typo'd name silently resolved to a different model and the
+  log named one that never served the call. Now a wrong name 404s and advances, visibly.
+- **Every knob is an `LLM_*` env var read at call time**, so the chain is retuned from repo
+  variables with no code change. `daily.yml` passes all eleven through; a knob **missing**
+  from that env block fails **silently**.
+- **401/403 fail fast** without trying another model, by design — retrying an auth error
+  across N models yields a long run reporting "all models unavailable", indistinguishable
+  from a real outage. **400 advances but is never retried**: a malformed `response_schema`
+  returns 400 deterministically on every model.
+- `python -m llm_chain` prints the resolved config, every model the key can list, and a ping.
+
+**Call sites** (all in `find_city_anomalies.py`): FIND, SKEPTIC, and VERIFY inside
+`_ground_llm`. Each is wrapped in `_stage_llm(name, res)`, which records `(stage, LLMResult)`
+into `STAGE_RESULTS` (cleared per run) and logs the serving model. An exhausted chain is
+raised as a `RuntimeError` into the **existing** `stage1_failed`/`scorer_stage_failed`
+machinery rather than a parallel reporting path — so the degraded-email behaviour built in
+PR #17 is unchanged.
+
+**Gemini search/reasoning split** (behaviour unchanged, now inside `llm_chain`):
+`want_search=True` runs two calls. Search runs on `LLM_SEARCH_MODEL_CHAIN` (lite tier) with
+`google_search` — the only tier that survives Google's grounding gateway; flagships time out
+~99% of the time with it attached. Reasoning then runs on `LLM_MODEL_CHAIN` with **no tools**
+and the `responseSchema` (the two conflict, the other reason for the split). Stage 1 passes
+`SEARCH_PROMPT` via `search_prompt=`; `SEARCH_RESULTS_PREAMBLE` goes via `search_preamble=`
+and frames leads as a **seed, not a fence**. If search fails, reasoning proceeds
+knowledge-only. On Anthropic the flagship searches inline via `FIND_PROMPT`, whose
+`{search_directive}` slot is filled from `L.resolved_provider(C.PROVIDER_FIND)`.
+
+- Per-stage provider overrides `PROVIDER_FIND/SKEPTIC/VERIFY` in `config.py` (all `None`)
+  pass through as `provider=`.
+- `response_schema` (Gemini only): `STAGE1/2/3_RESPONSE_SCHEMA` in `config.py`.
 
 ## Required secrets / variables
 
@@ -551,6 +599,16 @@ it's a real paid price and a real choice made.
 | `ANTHROPIC_API_KEY` | secret | Anthropic LLM calls |
 | `GEMINI_API_KEY` | secret | Gemini LLM calls |
 | `LLM_PROVIDER` | repo variable | `"anthropic"` or `"gemini"` |
+| `LLM_MODEL_CHAIN` | repo variable | Reasoning fallback chain, comma-separated. **Defaults in `daily.yml`** to `gemini-pro-latest,gemini-flash-latest,gemini-3.1-flash-lite` — do NOT let this fall through to the package default |
+| `LLM_SEARCH_MODEL_CHAIN` | repo variable | Search chain (lite tier only). Defaults to `gemini-3.1-flash-lite,gemini-flash-latest` |
+| `LLM_ATTEMPTS_PER_MODEL` | repo variable | Retries per model before advancing. Default 3. Prefer LOW — the chain is the resilience mechanism, the retry loop is only for a genuine blip |
+| `LLM_BACKOFF_SECONDS` | repo variable | Backoff ladder. Default `5,15` |
+| `LLM_TOTAL_BUDGET_SECONDS` | repo variable | Wall-clock ceiling across all LLM calls. Default **660**, not the package's 1200 — 1200 exceeds `timeout-minutes: 20` |
+| `LLM_TIMEOUT_SECONDS` | repo variable | Per-request HTTP timeout |
+| `LLM_RETRY_STATUSES` | repo variable | Statuses retried on the same model |
+| `LLM_ADVANCE_STATUSES` | repo variable | Statuses that advance to the next model. 401/403 in neither — auth errors fail fast |
+| `LLM_RETRY_AFTER_CAP` | repo variable | Cap on an honoured `Retry-After` |
+| `LLM_ANTHROPIC_MODEL` | repo variable | Model used when `LLM_PROVIDER=anthropic` |
 | `SMTP_HOST` | secret | Email delivery |
 | `SMTP_PORT` | secret | Email delivery (default 587) |
 | `SMTP_USER` | secret | Email delivery |
@@ -573,7 +631,8 @@ python find_city_anomalies.py   # writes state/; emails if diamonds found + SMTP
 To test without sending email, leave SMTP vars unset — the `try/except` around the send
 catches the `KeyError` and prints the error without crashing.
 
-To test the three-stage gate offline: stub `common.llm` to return canned JSON for each
+To test the three-stage gate offline: stub `llm_chain.call_llm` (see `_as_chain` in
+`test_stub.py`, which adapts an old-style string-returning stub into an `LLMResult`) for each
 stage (including a `correct` and a `kill` case for Stage 3), then run the script and
 inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.json`.
 
@@ -583,7 +642,7 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
   deals that don't appear in search results, and can hallucinate if search is weak. The
   three-stage gate and self-improving memory exist to compensate.
 - **Gemini + search:** `google_search` quality and behaviour differ from Anthropic's
-  `web_search`, and grounding runs on a separate lite model (`GEMINI_SEARCH_MODEL`) because
+  `web_search`, and grounding runs on a separate lite chain (`LLM_SEARCH_MODEL_CHAIN`) because
   flagship models time out on Google's grounding gateway. If the search call fails, the
   flagship reasoning step still runs — just from prior knowledge rather than live data.
 - **30-day TTL:** a great deal that persists for more than a month will be suppressed after

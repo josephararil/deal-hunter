@@ -54,8 +54,36 @@ for _name, _seed in [("signals_seen.json", {"seen": {}, "monthly_count": {}}),
 
 import config as C
 import common as X
+import llm_chain as L
 import memory as M
 import find_city_anomalies as fa
+
+
+def _as_chain(fn):
+    """Adapt an old-style common.llm stub (messages -> str, or raise) to the
+    llm_chain.call_llm contract (prompt -> LLMResult, never raises on a provider failure).
+
+    A stub that raises RuntimeError stands for a provider outage, which under the new
+    contract is LLMResult(ok=False), NOT an exception -- so the degraded-run assertions
+    keep testing the same behaviour they always did. AssertionError still propagates:
+    that means the test itself is wrong, not the provider."""
+    def _call(prompt, *, stage="", max_tokens=4000, want_search=False, search_prompt=None,
+              search_preamble=None, response_schema=None, provider=None,
+              web_search_max_uses=6):
+        messages = [{"role": "user", "content": prompt}]
+        try:
+            text = fn(messages, "stub-model", max_tokens, want_search, response_schema,
+                      provider, search_prompt)
+        except AssertionError:
+            raise
+        except Exception as exc:
+            return L.LLMResult(text="", ok=False, model="stub-model", provider="stub",
+                               fell_back=True, grounded=False, truncated=False,
+                               attempts=3, error=f"{type(exc).__name__}: {exc}")
+        return L.LLMResult(text=text, ok=True, model="stub-model", provider="stub",
+                           fell_back=False, grounded=False, truncated=False,
+                           attempts=1, error="")
+    return _call
 
 # ── Canned Stage 1 (FIND) ─────────────────────────────────────────────────────
 _STAGE1 = {"candidates": [
@@ -170,7 +198,7 @@ _email = {}
 def _stub_send(subject, html, text):
     _email["subject"], _email["html"], _email["text"] = subject, html, text
 
-X.llm = _stub_llm
+L.call_llm = _as_chain(_stub_llm)
 fa.ground_deal = _stub_ground
 X.send_email = _stub_send
 
@@ -272,7 +300,7 @@ finally:
 #
 # Each case below gets its own fresh sandbox (tempfile.mkdtemp + chdir + freshly seeded
 # state/*.json) so state never leaks between passes. config/common/find_city_anomalies/
-# memory are reused (already imported above) — only X.llm / fa.ground_deal / X.send_email
+# memory are reused (already imported above) — only L.call_llm / fa.ground_deal / X.send_email
 # and the seed files are swapped per pass.
 
 def _seed_empty_state():
@@ -322,7 +350,7 @@ try:
     def _stub_send_c1(subject, html, text):
         _email_c1["subject"], _email_c1["html"], _email_c1["text"] = subject, html, text
 
-    X.llm = _stub_llm_c1
+    L.call_llm = _as_chain(_stub_llm_c1)
     fa.ground_deal = _stub_ground_c1
     X.send_email = _stub_send_c1
 
@@ -418,7 +446,7 @@ try:
     def _stub_send_c2(subject, html, text):
         _email_c2["subject"], _email_c2["html"], _email_c2["text"] = subject, html, text
 
-    X.llm = _stub_llm_c2
+    L.call_llm = _as_chain(_stub_llm_c2)
     fa.ground_deal = _stub_ground_c2
     X.send_email = _stub_send_c2
 
@@ -509,7 +537,7 @@ try:
     def _stub_send_c4(subject, html, text):
         _email_c4["subject"], _email_c4["html"], _email_c4["text"] = subject, html, text
 
-    X.llm = _stub_llm_c4
+    L.call_llm = _as_chain(_stub_llm_c4)
     fa.ground_deal = _stub_ground_c4
     X.send_email = _stub_send_c4
 
@@ -574,7 +602,7 @@ try:
     def _stub_send_c7(subject, html, text):
         _email_c7["subject"], _email_c7["html"], _email_c7["text"] = subject, html, text
 
-    X.llm = _stub_llm_c7
+    L.call_llm = _as_chain(_stub_llm_c7)
     fa.ground_deal = _stub_ground_c7
     X.send_email = _stub_send_c7
 
@@ -651,7 +679,7 @@ try:
     def _stub_send_c8(subject, html, text):
         _email_c8["subject"], _email_c8["html"], _email_c8["text"] = subject, html, text
 
-    X.llm = _stub_llm_c8
+    L.call_llm = _as_chain(_stub_llm_c8)
     fa.ground_deal = _stub_ground_c8
     X.send_email = _stub_send_c8
 
@@ -727,7 +755,7 @@ try:
     def _stub_send_c9(subject, html, text):
         _email_c9["html"] = html
 
-    X.llm = _stub_llm_c9
+    L.call_llm = _as_chain(_stub_llm_c9)
     fa.ground_deal = _stub_ground_c9
     X.send_email = _stub_send_c9
 

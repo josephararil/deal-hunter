@@ -1,2 +1,3 @@
 requests>=2.31
 python-dotenv>=1.0
+llm-chain @ git+https://github.com/josephararil/llm-chain@v1

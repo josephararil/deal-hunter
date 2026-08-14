@@ -19,6 +19,19 @@ from email.message import EmailMessage
 
 STATE_DIR = "state"
 
+# Per-run LLM telemetry: (stage_name, LLMResult) appended by
+# find_city_anomalies._stage_llm, read for the RUN COMPLETE summary and the email's
+# run-health footer. Cleared at the top of each main().
+#
+# It lives HERE, not in find_city_anomalies, for a non-obvious reason: CI runs
+# `python find_city_anomalies.py`, so that module is `__main__`, and providers.py does a
+# lazy `import find_city_anomalies as fa` to reach _ground_llm. That import creates a
+# SECOND module object, with its own module-level globals -- so a list defined there would
+# collect the FIND/SKEPTIC results in one copy and the VERIFY results in the other, and the
+# footer would silently under-report. `common` is imported under the same name by both
+# copies, so a list here is genuinely shared.
+STAGE_RESULTS = []
+
 
 # ------------------------------ Email ------------------------------
 

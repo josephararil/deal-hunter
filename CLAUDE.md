@@ -258,6 +258,13 @@ outlasting CI's job timeout or silently pretending a bad run was a quiet one.
   old `_MAX_RETRIES`/`_RETRY_DELAYS` policy exactly. The old retry **jitter** was dropped
   deliberately: jitter desynchronises many concurrent clients backing off in lockstep, and
   this is a single serial job with one caller.
+- **`STAGE_RESULTS` lives in `common.py`, not `find_city_anomalies.py`.** CI runs
+  `python find_city_anomalies.py`, so that module is `__main__`, while `providers.py` does a
+  lazy `import find_city_anomalies as fa` to reach `_ground_llm` — Python therefore builds
+  **two module objects with separate globals**. A list defined in `find_city_anomalies` would
+  collect FIND/SKEPTIC in one copy and every VERIFY in the other, and the health footer would
+  silently under-report. `common` is imported under the same name by both copies, so the list
+  there is genuinely shared. Regression test: Case 10 in `test_stub.py`.
 - **Falling back is not degrading.** `LLMResult.fell_back=True` with `ok=True` means the
   chain advanced past a shedding model and got a real answer — the run is healthy. Only
   `ok=False` (chain exhausted) feeds `stage1_failed`/`scorer_stage_failed`. Never report a

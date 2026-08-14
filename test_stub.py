@@ -774,4 +774,39 @@ finally:
     shutil.rmtree(sandbox9, ignore_errors=True)
 
 
+# ── Case 10: STAGE_RESULTS is shared across BOTH module copies ────────────────
+# CI runs `python find_city_anomalies.py`, so that module is __main__, while providers.py
+# does a lazy `import find_city_anomalies as fa` to reach _ground_llm. Python therefore
+# builds TWO module objects with separate globals. If STAGE_RESULTS lived in
+# find_city_anomalies, FIND/SKEPTIC would land in one copy and every VERIFY in the other,
+# and the email's run-health footer would silently under-report which models served the run.
+# It lives in `common` (imported under the same name by both copies) to prevent that.
+import types as _types
+_src = open(os.path.join(REPO, "find_city_anomalies.py"), encoding="utf-8").read()
+_src = _src.replace('if __name__ == "__main__":\n    main()', '')
+_as_main = _types.ModuleType("__main__")
+_as_main.__dict__.update({"__name__": "__main__",
+                          "__file__": os.path.join(REPO, "find_city_anomalies.py")})
+try:
+    import dotenv as _dotenv
+    _dotenv.load_dotenv = lambda *a, **k: None   # its stack-walk breaks under exec()
+except ImportError:
+    pass
+exec(compile(_src, "find_city_anomalies.py", "exec"), _as_main.__dict__)
+
+assert _as_main is not fa, "expected two distinct module objects to reproduce the CI shape"
+_probe = L.LLMResult(text="x", ok=True, model="probe", provider="stub", fell_back=False,
+                     grounded=False, truncated=False, attempts=1, error="")
+X.STAGE_RESULTS.clear()
+_as_main._stage_llm("FIND", _probe)   # the __main__ copy
+fa._stage_llm("VERIFY", _probe)       # the copy providers.py lazy-imports
+_names = [n for n, _ in X.STAGE_RESULTS]
+assert _names == ["FIND", "VERIFY"], (
+    f"STAGE_RESULTS is not shared across module copies: got {_names}. VERIFY outcomes "
+    f"would be missing from the run-health footer in production.")
+assert _as_main.STAGE_RESULTS is fa.STAGE_RESULTS is X.STAGE_RESULTS
+X.STAGE_RESULTS.clear()
+print("Case 10: STAGE_RESULTS shared across __main__ and imported module copies [OK]")
+
+
 print("\nAll assertions passed (Part 1 + Part 2).")

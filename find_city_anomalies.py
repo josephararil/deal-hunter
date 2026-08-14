@@ -43,7 +43,10 @@ import trips as T
 # A stage that FELL BACK to a later model in the chain SUCCEEDED — that is the chain doing
 # its job, and it must never be reported as failure or degradation. Only LLMResult.ok is
 # False feeds the existing degraded-run machinery (stage1_failed / scorer_stage_failed).
-STAGE_RESULTS = []
+#
+# The list itself is owned by `common` so that this module and the copy providers.py
+# lazy-imports both append to the SAME list — see the comment on common.STAGE_RESULTS.
+STAGE_RESULTS = X.STAGE_RESULTS
 
 
 def _stage_llm(name, res):

@@ -78,32 +78,21 @@ def cities_prompt_text():
 
 
 # ── LLM models ──────────────────────────────────────────────────────────────
-# Per-stage model roles. Values are canonical Anthropic model names; Gemini
-# equivalents are looked up in GEMINI_MODEL_MAP below.
-MODEL_FIND    = "claude-sonnet-4-6"  # Stage 1: fast + web-search capable
-MODEL_SKEPTIC = "claude-sonnet-4-6"          # Stage 2: stronger reasoning
-MODEL_VERIFY  = "claude-sonnet-4-6"          # Stage 3: strong + search-capable
-
-# Maps Anthropic model names (canonical keys) to Gemini equivalents.
-# Used when LLM_PROVIDER=gemini. Add a new entry here whenever a new model role
-# is added; never hard-code Gemini model names anywhere else.
+# Deliberately empty. No model name appears anywhere in this repo any more.
 #
-# On Gemini, search and reasoning are split across THREE models (see common._gemini):
-#   1. GEMINI_SEARCH_MODEL below — does the live google_search grounding only.
-#   2. gemini-flash-latest        — Stage 1 Find: parses grounding, scores candidates.
-#   3. gemini-pro-latest          — Stage 2/3 Skeptic + Verify: filters and verifies.
-# Only model #1 ever carries the google_search tool; #2 and #3 run tools-free.
-GEMINI_MODEL_MAP = {
-    "claude-haiku-4-5-20251001": "gemini-flash-latest",   # Stage 1 Find reasoning
-    "claude-sonnet-4-6":         "gemini-pro-latest",      # Stage 2/3 Skeptic + Verify reasoning
-}
-
-# Model that performs the live web-search grounding (google_search tool).
-# Flagship models (flash-latest / pro-latest) time out ~99% of the time when
-# google_search is attached — Google's grounding gateway is capacity-starved for
-# them. The lite tier survives it reliably. Change this freely; it is the only
-# place the search model is named.
-GEMINI_SEARCH_MODEL = "gemini-3.1-flash-lite"
+# Model selection, the cross-model fallback chain, the retry policy and the
+# wall-clock budget all live in the `llm-chain` package (llm_chain.py), and every
+# one of its knobs is an LLM_* environment variable read at CALL time — so the
+# chain is tuned from GitHub repo variables with no code change here. See
+# LLM_MODEL_CHAIN / LLM_SEARCH_MODEL_CHAIN in .github/workflows/daily.yml, which
+# passes all eleven through whether or not the variable is set.
+#
+# There is deliberately no name-mapping dict. The old per-stage map resolved an unknown
+# key to a default via .get(model, <fallback>), so a typo'd model still ran — and the log
+# named a model that never served the call. llm_chain sends names to the API verbatim: a
+# wrong name 404s and advances down the chain, visibly.
+#
+# `python -m llm_chain` prints the resolved config plus every model the key can list.
 
 # Optional per-stage provider overrides. None = use the global LLM_PROVIDER env var.
 # Set to "anthropic" or "gemini" to run a specific stage on a different provider.
@@ -116,8 +105,8 @@ PROVIDER_VERIFY  = None
 # visible answer combined. A heavy reasoning pass can burn several thousand hidden
 # thinking tokens, and if the budget runs out mid-answer the JSON is truncated
 # (finishReason=MAX_TOKENS) — which parses to nothing and looks like a quiet day.
-# common._gemini now warns on that, but these budgets are set with generous headroom
-# above observed thinking usage (~3-4k) so it shouldn't happen in practice.
+# llm_chain flags that case as LLMResult.truncated, but these budgets are set with
+# generous headroom above observed thinking usage (~3-4k) so it shouldn't happen.
 
 # Stage 1 (find): most output-heavy — multiple full candidate objects with long
 # reason fields, on top of the thinking pass over the grounded leads.
@@ -307,7 +296,7 @@ HOTEL_MAPPING = {
 #   VERIFY_PROMPT          → {today}, {candidate}, {memory}
 # Use {{...}} for literal braces in the JSON schema examples (Python .format() escaping).
 
-# ── Gemini search/reasoning split (see common._gemini) ───────────────────────
+# ── Gemini search/reasoning split (implemented in llm_chain) ─────────────────
 # On Gemini, want_search calls run in two steps. SEARCH_PROMPT drives step 1 (lead
 # generation on the lite model with google_search); SEARCH_RESULTS_PREAMBLE frames
 # step 1's output for step 2 (the flagship reasoner, which has no live search tool).

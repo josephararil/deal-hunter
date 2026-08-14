@@ -2,7 +2,7 @@
 Stub verification for the diamond finder pipeline (deterministic scoring model).
 
 Runs the real pipeline in a throwaway temp directory (non-destructive) with:
-  - common.llm stubbed by response_schema — Stage 1 FIND candidates, Stage 3 scorer scores.
+  - llm_chain.call_llm stubbed by response_schema — Stage 1 FIND candidates, Stage 3 scorer scores.
   - find_city_anomalies.ground_deal stubbed per destination — live grounding results.
 
 Coverage:
@@ -48,6 +48,7 @@ for _name, _seed in [("signals_seen.json", {"seen": {}, "monthly_count": {}}),
 
 import config as C
 import common as X
+import llm_chain as L
 import find_city_anomalies as fa
 
 # ── Canned Stage 1 (FIND) ─────────────────────────────────────────────────────
@@ -113,15 +114,21 @@ _SCORES = [
      "red_flags": "Confirm child pool hours."},
 ]
 
-def _stub_llm(messages, model, max_tokens=2000, want_search=False, response_schema=None,
-              provider=None, search_prompt=None):
+def _result(text, model):
+    """A successful LLMResult, as llm_chain.call_llm would return from chain position 0."""
+    return L.LLMResult(text=text, ok=True, model=model, provider="stub",
+                       fell_back=False, grounded=False, truncated=False, attempts=1, error="")
+
+def _stub_llm(prompt, *, stage="", max_tokens=4000, want_search=False, search_prompt=None,
+              search_preamble=None, response_schema=None, provider=None,
+              web_search_max_uses=6):
     if response_schema is C.STAGE1_RESPONSE_SCHEMA:
-        print("  [stub] llm: Stage 1 FIND")
-        return json.dumps(_STAGE1)
+        print("  [stub] call_llm: Stage 1 FIND")
+        return _result(json.dumps(_STAGE1), "stub-find")
     if response_schema is C.STAGE2_RESPONSE_SCHEMA:
-        print("  [stub] llm: Stage 3 SCORER")
-        return json.dumps(_SCORES)
-    raise AssertionError(f"unexpected llm schema={response_schema}")
+        print("  [stub] call_llm: Stage 3 SCORER")
+        return _result(json.dumps(_SCORES), "stub-scorer")
+    raise AssertionError(f"unexpected call_llm schema={response_schema}")
 
 def _opt(ppn, total, dates, nights):
     return {"dates": dates, "nights": nights, "price_per_night_eur": ppn, "total_eur": total,
@@ -163,7 +170,8 @@ _email = {}
 def _stub_send(subject, html, text):
     _email["subject"], _email["html"], _email["text"] = subject, html, text
 
-X.llm = _stub_llm
+L.call_llm = _stub_llm
+fa.L.call_llm = _stub_llm
 fa.ground_deal = _stub_ground
 X.send_email = _stub_send
 

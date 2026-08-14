@@ -3,13 +3,13 @@ find_city_anomalies.py  —  Diamond Finder (daily; apidojo grounding with LLM f
 
 Three-stage gate (grounding runs BEFORE the skeptic, so desirability is judged on the
 real bookable price rather than the Stage-1 estimate):
-  Stage 1 (find):    one llm() call with web search. Asks for travel-arbitrage
+  Stage 1 (find):    one L.call_llm() call with web search. Asks for travel-arbitrage
                      candidates scored 0-100 across hotels, cruises, flight fares,
                      packages, and currency plays reachable from Plovdiv.
   Stage 2 (ground):  one ground_deal() call per gate survivor. Fetches live Booking.com
                      prices at bookable dates; drops hallucinations/over-ceiling deals and
                      merges the real price onto the survivors. (verdict: confirm/correct/kill)
-  Stage 3 (skeptic): one llm() call, no search. Judges the LIVE price against absolute
+  Stage 3 (skeptic): one L.call_llm() call, no search. Judges the LIVE price against absolute
                      per-country bands and assigns a tier (diamond / good / skip).
 
 Outputs every run:
@@ -32,7 +32,27 @@ except ImportError:
     pass
 import config as C
 import common as X
+import llm_chain as L
 import memory as M
+
+
+# Accumulates (stage_name, LLMResult) at each call site so the run can report which
+# model actually served each stage, and distinguish a stage that FAILED (no usable
+# answer from any model in the chain) from one that merely FELL BACK to a later model.
+# Falling back is the chain doing its job and is never reported as degradation.
+STAGE_RESULTS = []
+
+
+def _record_stage(name, res):
+    """Log one stage's LLM outcome and keep it for the end-of-run summary."""
+    STAGE_RESULTS.append((name, res))
+    if res.ok:
+        note = f" (fell back from {res.attempts} attempt(s))" if res.fell_back else ""
+        print(f"  [{name}] served by {res.model}{note}"
+              f"{' · grounded' if res.grounded else ''}{' · TRUNCATED' if res.truncated else ''}")
+    else:
+        print(f"  [{name}] FAILED after {res.attempts} attempt(s) across the chain: {res.error}")
+    return res
 
 
 # --- run-log helpers ---
@@ -581,13 +601,17 @@ def _ground_llm(diamond, mem_text, today):
         candidate=candidate_json,
         memory=mem_text,
     )
-    raw3 = X.llm(
-        messages=[{"role": "user", "content": verify_prompt}],
-        model=C.MODEL_VERIFY, max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
+    res = _record_stage("VERIFY", L.call_llm(
+        verify_prompt,
+        stage="VERIFY", max_tokens=C.MAX_TOKENS_VERIFY, want_search=True,
         response_schema=C.STAGE3_RESPONSE_SCHEMA,
+        search_preamble=C.SEARCH_RESULTS_PREAMBLE,
         provider=C.PROVIDER_VERIFY,
-    )
-    return X.parse_json_block(raw3) or {}
+        web_search_max_uses=C.WEB_SEARCH_MAX_USES,
+    ))
+    if not res.ok:
+        return {}
+    return X.parse_json_block(res.text) or {}
 
 
 # ── GROUNDING SEAM ──────────────────────────────────────────────────────────
@@ -611,8 +635,15 @@ ground_deal = _resolve_ground_deal()
 
 def main():
     today = X.today_iso()
-    _section(f"DIAMOND FINDER · {today} · provider={X.PROVIDER}")
-    print(f"  models:  find={C.MODEL_FIND} · skeptic={C.MODEL_SKEPTIC} · verify={C.MODEL_VERIFY}")
+    # The budget clock starts at the first call_llm, not at import, so state loading and
+    # hotel grounding do not eat the LLM budget. Reset it here so a long-lived or repeated
+    # in-process run (tests) gets a fresh window rather than inheriting a spent one.
+    L.reset_budget()
+    _section(f"DIAMOND FINDER · {today} · provider={L.resolved_provider()}")
+    # Print every effective LLM knob with its source. A repo variable that silently failed
+    # to reach the job is indistinguishable from a correct default without this line.
+    for name, info in L.resolved_config().items():
+        print(f"  {name:<26} {info['value']}   [{info['source']}]")
     print(f"  gate:    FIND score>={C.STAGE1_MIN_SCORE} -> ground · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
     print(f"  scoring: par={C.DIAMOND_PAR_EUR} default €{C.DEFAULT_DIAMOND_PAR_EUR} · "
           f"price x{C.PRICE_SCORE_WEIGHT} (bonus<={C.PRICE_BONUS_CAP}) · transit +/-{C.TRANSIT_TIER1_BONUS} · "
@@ -633,18 +664,21 @@ def main():
         # model has no tool — its leads come via SEARCH_RESULTS_PREAMBLE — so the
         # tool-use directive is Anthropic-only. Keeps FIND_PROMPT honest per provider.
         find_directive = (C.SEARCH_DIRECTIVE_ANTHROPIC
-                          if X.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
-        raw1 = X.llm(
-            messages=[{"role": "user", "content": C.FIND_PROMPT.format(
+                          if L.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
+        res1 = _record_stage("FIND", L.call_llm(
+            C.FIND_PROMPT.format(
                 today=today, cities=C.cities_prompt_text(), memory=mem_text,
                 search_directive=find_directive
-            )}],
-            model=C.MODEL_FIND, max_tokens=C.MAX_TOKENS_FIND, want_search=True,
+            ),
+            stage="FIND", max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,
-            provider=C.PROVIDER_FIND,
             search_prompt=C.SEARCH_PROMPT.format(today=today, cities=C.cities_prompt_text()),
-        )
-        candidates = (X.parse_json_block(raw1) or {}).get("candidates", [])
+            search_preamble=C.SEARCH_RESULTS_PREAMBLE,
+            provider=C.PROVIDER_FIND,
+            web_search_max_uses=C.WEB_SEARCH_MAX_USES,
+        ))
+        candidates = ((X.parse_json_block(res1.text) or {}).get("candidates", [])
+                      if res1.ok else [])
     except Exception as e:
         print(f"  [FAIL] Stage 1 LLM/parse error: {type(e).__name__}: {e} — treating as 0 candidates (silent day)")
         candidates = []
@@ -794,13 +828,13 @@ def main():
             memory=mem_text,
         )
         try:
-            raw2 = X.llm(
-                messages=[{"role": "user", "content": scorer}],
-                model=C.MODEL_SKEPTIC, max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
+            res2 = _record_stage("SKEPTIC", L.call_llm(
+                scorer,
+                stage="SKEPTIC", max_tokens=C.MAX_TOKENS_SKEPTIC, want_search=False,
                 response_schema=C.STAGE2_RESPONSE_SCHEMA,
                 provider=C.PROVIDER_SKEPTIC,
-            )
-            verdicts = X.parse_json_block(raw2) or []
+            ))
+            verdicts = (X.parse_json_block(res2.text) or []) if res2.ok else []
         except Exception as e:
             print(f"  [FAIL] Stage 3 scorer LLM/parse error: {type(e).__name__}: {e} — treating as 0 scores (silent day)")
             verdicts = []
@@ -1072,6 +1106,19 @@ def main():
     _section("RUN COMPLETE")
     print(f"  {len(candidates)} found -> {len(gate_survivors)} to grounding -> {len(grounded)} grounded "
           f"-> {len(scored_all)} scored ({len(picks)} pick(s)) -> {emailed} emailed")
+    # Which model actually served each stage. A stage that fell back to a later model in
+    # the chain succeeded — that is the chain working, and is deliberately NOT reported as
+    # degradation. Only a stage with no usable answer from any model is a failure.
+    for name, res in STAGE_RESULTS:
+        if res.ok:
+            print(f"  llm {name:<8} ok      {res.model}"
+                  + (f"  (advanced down the chain after {res.attempts} attempt(s))"
+                     if res.fell_back else ""))
+        else:
+            print(f"  llm {name:<8} FAILED  no usable answer from any model: {res.error}")
+    failed = [n for n, r in STAGE_RESULTS if not r.ok]
+    if failed:
+        print(f"  [DEGRADED] stage(s) with no LLM answer: {', '.join(failed)}")
 
 
 if __name__ == "__main__":

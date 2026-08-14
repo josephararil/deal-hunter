@@ -19,12 +19,31 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 30 minutes: llm_chain's LLM_TOTAL_BUDGET_SECONDS default is 1200 (20 min), and the
+    # run still has to do apidojo hotel grounding (one HTTP round-trip per gate survivor)
+    # and SMTP after the LLM work finishes. 15 minutes was shorter than the LLM budget
+    # alone, so a chain exhaustion would have been killed by the job timeout instead of
+    # returning a clean degraded run.
+    timeout-minutes: 30
     env:
       PYTHONUNBUFFERED: "1"
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       GEMINI_API_KEY:    ${{ secrets.GEMINI_API_KEY }}
       LLM_PROVIDER:      ${{ vars.LLM_PROVIDER }}
+      # Every llm_chain knob, passed through whether or not the repo variable exists: an
+      # unset variable expands to "", which llm_chain resolves to its own default. All ten
+      # are listed so any can be set from the Actions UI with no code change -- and because
+      # a knob MISSING from this block fails SILENTLY: set in the UI, no effect on the run.
+      LLM_MODEL_CHAIN:          ${{ vars.LLM_MODEL_CHAIN }}
+      LLM_SEARCH_MODEL_CHAIN:   ${{ vars.LLM_SEARCH_MODEL_CHAIN }}
+      LLM_ATTEMPTS_PER_MODEL:   ${{ vars.LLM_ATTEMPTS_PER_MODEL }}
+      LLM_BACKOFF_SECONDS:      ${{ vars.LLM_BACKOFF_SECONDS }}
+      LLM_TIMEOUT_SECONDS:      ${{ vars.LLM_TIMEOUT_SECONDS }}
+      LLM_RETRY_STATUSES:       ${{ vars.LLM_RETRY_STATUSES }}
+      LLM_ADVANCE_STATUSES:     ${{ vars.LLM_ADVANCE_STATUSES }}
+      LLM_TOTAL_BUDGET_SECONDS: ${{ vars.LLM_TOTAL_BUDGET_SECONDS }}
+      LLM_RETRY_AFTER_CAP:      ${{ vars.LLM_RETRY_AFTER_CAP }}
+      LLM_ANTHROPIC_MODEL:      ${{ vars.LLM_ANTHROPIC_MODEL }}
       SMTP_HOST:         ${{ secrets.SMTP_HOST }}
       SMTP_PORT:         ${{ secrets.SMTP_PORT }}
       SMTP_USER:         ${{ secrets.SMTP_USER }}

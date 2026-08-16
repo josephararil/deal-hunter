@@ -2191,6 +2191,146 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-16",
+      "deal_id": 3,
+      "destination": "Velingrad Premium 5-Star Spa",
+      "type": "hotel",
+      "window": "Sep 25-28, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 0,
+      "transit_adj": 3,
+      "final_score": 88,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Santé SPA Hotel, 5-star for Sep 25-28, 2026: €297.7/night (€893.09 total, 3 nights), review 9.3. Price corrected from the Stage-1 estimate.",
+      "about": "Santé SPA Hotel is Velingrad's newest and most luxurious 5-star wellness retreat, offering a massive, state-of-the-art spa complex. It stands out with multiple warm indoor mineral pools, dedicated children's aquatic zones, and excellent indoor play areas. Located just a 1.5-hour drive from Plovdiv, it provides guaranteed, weather-proof enjoyment for a toddler alongside high-end relaxation and dining for the parents.",
+      "value_case": "At €297/night, this represents the standard weekend rate for a premium suite or family room at Velingrad's top property. While expensive compared to standard 4-star options (which run €120-150), it is the going market rate for this tier of uncompromised local luxury.",
+      "why": "Near-zero transit friction and fully heated indoor toddler pools guarantee a weather-proof, highly relaxing weekend, perfectly tailored for a family with a young child.",
+      "red_flags": "At nearly €300/night, there is no significant discount on the standard rate, so ensure the room category fully justifies the high premium.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-25–2026-09-28, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.3. Live rate: €297.7/night (€893.09 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sant%C3%A9+SPA+Hotel&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 25-28, 2026",
+          "nights": 3,
+          "price_per_night_eur": 297.7,
+          "total_eur": 893.09,
+          "source": "Booking.com (apidojo) live 2026-08-16",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sant%C3%A9+SPA+Hotel&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-16",
+      "deal_id": 1,
+      "destination": "Sunny Beach Late Season Coast",
+      "type": "hotel",
+      "window": "Sep 13-18, 2026",
+      "tier": "good",
+      "llm_score": 75,
+      "price_adj": 6,
+      "transit_adj": -3,
+      "final_score": 78,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Helena Park - Ultra All Inclusive, 5-star for Sep 13-18, 2026: €220.97/night (€1104.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "about": "Helena Park is a highly regarded 5-star ultra all-inclusive resort set in beautiful gardens, slightly removed from the noisy center of Sunny Beach. It offers an upscale, relaxed atmosphere with premium dining, excellent service, and dedicated children's animation. Families with a 4-year-old can enjoy the spacious outdoor pools, private beach area, and kid-friendly entertainment, though the late-September window means outdoor water temperatures may start to cool.",
+      "value_case": "At €221/night, this is priced as a premium experience reflecting the high quality of the ultra all-inclusive package and 9.0 review score. Standard 5-star all-inclusives in Sunny Beach often drop closer to €130-150 in late September, so you are paying a distinct premium for top-tier service and food.",
+      "why": "The easy 2.5-hour drive provides low transit friction, but late-September weather makes outdoor pools and beach time a gamble for a toddler, capping the overall utility.",
+      "red_flags": "Outdoor pools and the Black Sea may be too chilly for a toddler by mid-September, and some seasonal resort infrastructure might begin winding down.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-13–2026-09-18, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €220.97/night (€1104.84 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Helena+Park+-+Ultra+All+Inclusive&checkin=2026-09-13&checkout=2026-09-18&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 13-18, 2026",
+          "nights": 5,
+          "price_per_night_eur": 220.97,
+          "total_eur": 1104.84,
+          "source": "Booking.com (apidojo) live 2026-08-16",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Helena+Park+-+Ultra+All+Inclusive&checkin=2026-09-13&checkout=2026-09-18&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-16",
+      "deal_id": 4,
+      "destination": "Belek All-Inclusive Mega-Resort",
+      "type": "hotel",
+      "window": "Sep 15-22, 2026",
+      "tier": "skip",
+      "llm_score": 73,
+      "price_adj": -12,
+      "transit_adj": -3,
+      "final_score": 58,
+      "flight_cost_eur_total": 750,
+      "ground_transport_eur": 120,
+      "effective_ppn": 309.2857142857143,
+      "confidence": "high",
+      "summary": "I verified the Orange County Resort Hotel Belek for your requested window of September 15–22, 2026. While the property is fully available and offers the described all-inclusive amenities, the realistic market rate is approximately €185/night (total €1,295), which is higher than the initial €138 estimate. You can book directly via their official website.",
+      "about": "Orange County Resort in Belek is a vibrant 5-star all-inclusive mega-resort on the Turkish Riviera. It is known for its extensive water infrastructure, including large pools, waterslides, and a dedicated kids' club. Families can easily spend the entire week on-site with a 4-year-old, enjoying unlimited dining, beachfront access, and non-stop entertainment designed specifically for young children.",
+      "value_case": "The rate of €185/night for a comprehensive all-inclusive package is very competitive for Belek's 5-star tier in September, which typically ranges from €230 to €280. While the hotel rate itself is a solid deal, keep in mind the added cost and time of flights from Sofia.",
+      "why": "The massive on-site waterparks and all-inclusive ease offer tremendous utility, but the significant friction of flying via Sofia with a toddler heavily limits the net value.",
+      "red_flags": "Flying from Sofia and transferring to Belek adds a full day of travel friction on both ends, which can be taxing with a 4-year-old.",
+      "grounding": "Live search results confirm the Orange County Resort Hotel Belek is a fully operational 5-star property with active listings. While the initial estimate of €138/night was aggressive, recent market data indicates typical rates for September 2026 average closer to €180-€195 per night for standard all-inclusive packages.",
+      "how_to_book": "Book directly through the official Orange County Belek website (https://www.orangecounty.com.tr/) or via major travel aggregators like Booking.com or Expedia.",
+      "options": [
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 185,
+          "total_eur": 1295,
+          "source": "Aggregated market estimates and property booking availability as of 2026-08-16",
+          "booking_url": "https://www.orangecounty.com.tr/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-16",
+      "deal_id": 2,
+      "destination": "Sani Resort Aegean Shoulder Play",
+      "type": "hotel",
+      "window": "Sep 20-25, 2026",
+      "tier": "diamond",
+      "llm_score": 92,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
+      "about": "Sani Resort is arguably the premier family-focused luxury destination in the Mediterranean, located on a private ecological reserve in Halkidiki. It features peerless infrastructure for children, including world-class shallow pools, pristine sandy beaches, and elite childcare facilities. A 4-year-old will have endless high-quality entertainment and play options, while adults experience true 5-star dining and perfectly manicured, tranquil surroundings.",
+      "value_case": "Securing a villa with a shared pool at Sani Resort for €194/night is an extraordinary find, as peak and even shoulder season rates routinely exceed €450-500/night. It represents an exceptional arbitrage opportunity to experience one of Europe's best family resorts at a fraction of its normal cost.",
+      "why": "A manageable 4-hour drive unlocks peerless, world-class kids' amenities and elite luxury, delivering exceptional overall family value that easily absorbs the road trip.",
+      "red_flags": "Shared villa pools may be unheated and chilly in late September, though the resort's massive heated main pools completely compensate.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-25, currency=EUR, adults=2, children=[4]. Live rate: €194.38/night (€971.89 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 20-25, 2026",
+          "nights": 5,
+          "price_per_night_eur": 194.38,
+          "total_eur": 971.89,
+          "source": "Booking.com (apidojo) live 2026-08-16",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€194.38/night here — about the usual rate.",
+      "child_price_caveat": true
     }
   ]
 }

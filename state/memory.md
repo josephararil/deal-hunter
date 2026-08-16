@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-08-13
+# Diamond Finder Memory — updated 2026-08-16
 
-## Price Baselines (27 entries)
+## Price Baselines (29 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -31,6 +31,11 @@ _Source: Booking.com (apidojo) live 2026-08-13_
 **Realistic:** ~€63.0/night &nbsp; **Updated:** 2026-07-15 &nbsp; **Samples:** 1
 Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-15_
+
+### helenaparkhotel|2026-09
+**Realistic:** ~€220.97/night &nbsp; **Updated:** 2026-08-16 &nbsp; **Samples:** 1
+Verified Helena Park - Ultra All Inclusive, 5-star for Sep 13-18, 2026: €220.97/night (€1104.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-16_
 
 ### hihotelsimperialresortultraallinclusivefreeparking|2026-08
 **Realistic:** ~€215.0/night &nbsp; **Updated:** 2026-07-04 &nbsp; **Samples:** 1
@@ -128,17 +133,26 @@ Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €195.96/night
 _Source: Booking.com (apidojo) live 2026-08-01_
 
 ### saniresort|2026-09
-**Realistic:** ~€194.38/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
+**Realistic:** ~€194.38/night &nbsp; **Updated:** 2026-08-16 &nbsp; **Samples:** 2
 Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-08-13_
+_Source: Booking.com (apidojo) live 2026-08-16_
+
+### santspahotel|2026-09
+**Realistic:** ~€297.7/night &nbsp; **Updated:** 2026-08-16 &nbsp; **Samples:** 1
+Verified Santé SPA Hotel, 5-star for Sep 25-28, 2026: €297.7/night (€893.09 total, 3 nights), review 9.3. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-16_
 
 ### spahotelolymp|2026-09
 **Realistic:** ~€246.41/night &nbsp; **Updated:** 2026-08-10 &nbsp; **Samples:** 1
 Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-10_
 
-## Outcome Ledger (125 entries)
+## Outcome Ledger (129 entries)
 
+- 👍 2026-08-16 | Sunny Beach Late Season Coast | Sep 13-18, 2026 | good score=75->78 claimed=€75 actual=€220.97 — The easy 2.5-hour drive provides low transit friction, but late-September weather makes outdoor…
+- 💎 2026-08-16 | Sani Resort Aegean Shoulder Play | Sep 20-25, 2026 | diamond score=92->100 claimed=€194 actual=€194.38 — A manageable 4-hour drive unlocks peerless, world-class kids' amenities and elite luxury,…
+- 👍 2026-08-16 | Velingrad Premium 5-Star Spa | Sep 25-28, 2026 | good score=85->88 claimed=€240 actual=€297.7 — Near-zero transit friction and fully heated indoor toddler pools guarantee a weather-proof, highly…
+- · 2026-08-16 | Belek All-Inclusive Mega-Resort | Sep 15-22, 2026 | skip score=73->58 claimed=€138 actual=€185 — The massive on-site waterparks and all-inclusive ease offer tremendous utility, but the significant…
 - 👍 2026-08-13 | Velingrad Spa Retreat | Sep 15-18, 2026 | good score=85->99 claimed=€128 actual=€108.77 — Near-zero transit friction and reliable warm mineral pools offer effortless, high-utility enjoyment…
 - 💎 2026-08-13 | Sani Resort Premium Arbitrage | Sep 20-25, 2026 | diamond score=88->100 claimed=€196 actual=€194.38 — Europe's premier family resort provides world-class toddler amenities and luxury, easily overcoming…
 - 👍 2026-08-13 | Bansko Mountain & SPA Break | Sep 4-7, 2026 | good score=82->91 claimed=€115 actual=€144.27 — An easy 2.5-hour drive unlocks a high-end mountain property with extensive family-friendly bio…
@@ -185,8 +199,4 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 - 👍 2026-07-19 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=85->95 claimed=€92 actual=€97.76 — An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering a high-utility,…
 - 👍 2026-07-19 | Bansko Mountain Escape | Sep 9-13, 2026 | good score=83->93 claimed=€45 actual=€151.8 — A straightforward 2.5-hour drive unlocks excellent 5-star resort utility with strong indoor kids'…
 - 👍 2026-07-19 | Velingrad Spa & Thermal Break | Sep 10-13, 2026 | good score=88->99 claimed=€151 actual=€151 — A highly manageable 1.5-hour drive provides outstanding family utility with perfectly heated…
-- 👍 2026-07-19 | Bansko Mountain Off-Season | Sep 24-27, 2026 | good score=87->99 claimed=€112 actual=€127.63 — Arguably Bansko's best family hotel offers massive on-property utility with top-tier kids' clubs…
-- 👍 2026-07-19 | Black Sea Late Summer Off-Peak | Sep 6-11, 2026 | good score=79->83 claimed=€188 actual=€186 — A straightforward highway drive offers good all-inclusive utility for a young family, though the…
-- 👍 2026-07-18 | Hisarya Thermal Retreat | Aug 14-17, 2026 | good score=92->100 claimed=€92 actual=€92.2 — An effortless 45-minute drive from Plovdiv eliminates travel stress entirely, delivering…
-- 👍 2026-07-18 | Bansko Mountain Escape | Aug 20-23, 2026 | good score=84->90 claimed=€86 actual=€167.72 — Excellent 5-star kids' infrastructure provides massive on-property utility and a cool mountain…
-_... and 75 earlier entries_
+_... and 79 earlier entries_

@@ -406,12 +406,17 @@
           "price": 194.38,
           "date": "2026-08-13",
           "source": "Booking.com (apidojo) live 2026-08-13"
+        },
+        {
+          "price": 194.38,
+          "date": "2026-08-16",
+          "source": "Booking.com (apidojo) live 2026-08-16"
         }
       ],
       "realistic_price_eur": 194.38,
       "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-13",
-      "updated": "2026-08-13"
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "updated": "2026-08-16"
     },
     "aparthotelluckybanskospaandrelax|2026-09": {
       "samples": [
@@ -425,6 +430,32 @@
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 4-7, 2026: €144.27/night (€432.8 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-13",
       "updated": "2026-08-13"
+    },
+    "helenaparkhotel|2026-09": {
+      "samples": [
+        {
+          "price": 220.97,
+          "date": "2026-08-16",
+          "source": "Booking.com (apidojo) live 2026-08-16"
+        }
+      ],
+      "realistic_price_eur": 220.97,
+      "note": "Verified Helena Park - Ultra All Inclusive, 5-star for Sep 13-18, 2026: €220.97/night (€1104.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "updated": "2026-08-16"
+    },
+    "santspahotel|2026-09": {
+      "samples": [
+        {
+          "price": 297.7,
+          "date": "2026-08-16",
+          "source": "Booking.com (apidojo) live 2026-08-16"
+        }
+      ],
+      "realistic_price_eur": 297.7,
+      "note": "Verified Santé SPA Hotel, 5-star for Sep 25-28, 2026: €297.7/night (€893.09 total, 3 nights), review 9.3. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "updated": "2026-08-16"
     }
   },
   "ledger": [
@@ -2018,6 +2049,58 @@
       "final_score": 96,
       "source": "Booking.com (apidojo) live 2026-08-13",
       "note": "A straightforward highway drive to a premium coastal property maximizes the final days of summer weather and outdoor pool utility."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Sunny Beach Late Season Coast",
+      "window": "Sep 13-18, 2026",
+      "type": "hotel",
+      "claimed_price": 75,
+      "verdict": "good",
+      "actual_price": 220.97,
+      "llm_score": 75,
+      "final_score": 78,
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "note": "The easy 2.5-hour drive provides low transit friction, but late-September weather makes outdoor pools and beach time a gamble for a toddler, capping the overall utility."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Sani Resort Aegean Shoulder Play",
+      "window": "Sep 20-25, 2026",
+      "type": "hotel",
+      "claimed_price": 194,
+      "verdict": "diamond",
+      "actual_price": 194.38,
+      "llm_score": 92,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "note": "A manageable 4-hour drive unlocks peerless, world-class kids' amenities and elite luxury, delivering exceptional overall family value that easily absorbs the road trip."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Velingrad Premium 5-Star Spa",
+      "window": "Sep 25-28, 2026",
+      "type": "hotel",
+      "claimed_price": 240,
+      "verdict": "good",
+      "actual_price": 297.7,
+      "llm_score": 85,
+      "final_score": 88,
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "note": "Near-zero transit friction and fully heated indoor toddler pools guarantee a weather-proof, highly relaxing weekend, perfectly tailored for a family with a young child."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Belek All-Inclusive Mega-Resort",
+      "window": "Sep 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 138,
+      "verdict": "skip",
+      "actual_price": 185,
+      "llm_score": 73,
+      "final_score": 58,
+      "source": "Aggregated market estimates and property booking availability as of 2026-08-16",
+      "note": "The massive on-site waterparks and all-inclusive ease offer tremendous utility, but the significant friction of flying via Sofia with a toddler heavily limits the net value."
     }
   ]
 }

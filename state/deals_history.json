@@ -2331,6 +2331,95 @@
       ],
       "baseline_note": "Typically ~€194.38/night here — about the usual rate.",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-19",
+      "deal_id": 3,
+      "destination": "London Autumn City Break",
+      "type": "flight",
+      "window": "Oct 7-12, 2026",
+      "tier": "good",
+      "llm_score": 65,
+      "price_adj": 3,
+      "transit_adj": 3,
+      "final_score": 71,
+      "flight_cost_eur_total": 250,
+      "ground_transport_eur": 100,
+      "effective_ppn": 122.18,
+      "confidence": "medium",
+      "summary": "best-value family stays in London for Oct 7-12, 2026: Residential apartments in central London €52.18/night; Royal London Apartments €55.91/night; London Elite Apartments €57.4/night.",
+      "about": "These residential apartments offer independent, self-catering bases scattered across central London. While basic, they provide essential space and kitchen facilities that are highly practical for traveling with a young child. From these bases, families can easily access Londons world-class, free attractions like the Natural History Museum, the Science Museum, and massive green spaces like Hyde Park that are perfect for a 4-year-old to run around in.",
+      "value_case": "Paying 52 EUR per night for private accommodation in central London is exceptionally cheap, as comparable flats normally cost well over 130 EUR per night. While you save heavily on the nightly rate, keep in mind that UK dining and transport will quickly add up.",
+      "why": "Direct flights from Plovdiv help, but a dense city break involves significant daily walking and transit friction that caps the net utility for a 4-year-old.",
+      "red_flags": "Extremely low rates for London apartments often mean tiny spaces, basement locations, or being situated far from the nearest tube station.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-07-2026-10-12, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 7-12, 2026",
+          "nights": 5,
+          "price_per_night_eur": 52.18,
+          "total_eur": 223.12,
+          "source": "Booking.com (apidojo) live 2026-08-19",
+          "name": "Residential apartments in central London",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Residential+apartments+in+central+London&checkin=2026-10-07&checkout=2026-10-12&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 7-12, 2026",
+          "nights": 5,
+          "price_per_night_eur": 55.91,
+          "total_eur": 239.07,
+          "source": "Booking.com (apidojo) live 2026-08-19",
+          "name": "Royal London Apartments",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Royal+London+Apartments&checkin=2026-10-07&checkout=2026-10-12&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 7-12, 2026",
+          "nights": 5,
+          "price_per_night_eur": 57.4,
+          "total_eur": 245.44,
+          "source": "Booking.com (apidojo) live 2026-08-19",
+          "name": "London Elite Apartments",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=London+Elite+Apartments&checkin=2026-10-07&checkout=2026-10-12&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-08-19",
+      "deal_id": 4,
+      "destination": "Antalya Autumn Resort Break",
+      "type": "hotel",
+      "window": "Oct 10-17, 2026",
+      "tier": "skip",
+      "llm_score": 76,
+      "price_adj": -9,
+      "transit_adj": -3,
+      "final_score": 64,
+      "flight_cost_eur_total": 700,
+      "ground_transport_eur": 150,
+      "effective_ppn": 450.42857142857144,
+      "confidence": "high",
+      "summary": "I verified the Swandor Hotels & Resort Topkapi Palace for the October 10-17, 2026 window. While the deal is real and the property is well-rated for family travel, current market pricing is approximately €329/night (totaling €2,303 for 7 nights), which is higher than the initial estimate. You can book this stay via Expedia, Agoda, or the hotel's official website.",
+      "about": "The Swandor Hotels and Resort Topkapi Palace is a massive, highly-rated 5-star all-inclusive mega-resort located in the Lara region of Antalya. Designed to mimic the famous Istanbul palace, the property features a private beach, sprawling heated pools, and immense dining options. It is a paradise for families, offering endless utility for a 4-year-old with its elaborate aquaparks, dedicated kids clubs, and continuous daily entertainment, while parents enjoy completely frictionless on-site dining and relaxation.",
+      "value_case": "At 329 EUR per night, this is a premium investment, but considering it covers high-quality all-inclusive food, drinks, and entertainment for the whole family, the math balances out. Similar flagship all-inclusives in Antalya often charge 380 to 450 EUR even in the October shoulder season.",
+      "why": "The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via Sofia for a 7-night stay adds notable travel friction.",
+      "red_flags": "Transit via Sofia and flights to Antalya with a toddler will consume almost a full day of travel on both ends of the trip.",
+      "grounding": "Live search results indicate that while the property is highly rated and active for October 2026, the estimated price of €220/night is lower than current market rates. Recent search data for similar periods show pricing closer to €329/night for all-inclusive packages. The property is fully bookable and operational with extensive family amenities.",
+      "how_to_book": "Book via major travel aggregators like Expedia, Agoda, or HotelsCombined, or visit the official Swandor Hotels website. For direct assistance, the property can be reached at +90 242 431 2600.",
+      "options": [
+        {
+          "dates": "Oct 10-17, 2026",
+          "nights": 7,
+          "price_per_night_eur": 329,
+          "total_eur": 2303,
+          "source": "Expedia/HotelsCombined live search 2026-08-19",
+          "booking_url": "https://www.expedia.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

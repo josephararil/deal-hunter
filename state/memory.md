@@ -1,4 +1,4 @@
-# Diamond Finder Memory — updated 2026-08-16
+# Diamond Finder Memory — updated 2026-08-19
 
 ## Price Baselines (29 entries)
 
@@ -93,9 +93,9 @@ Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €1
 _Source: Booking.com (apidojo) live 2026-07-05_
 
 ### parkhotelandspavellahills|2026-09
-**Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 4
-Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €108.77/night (€326.31 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-08-13_
+**Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-08-19 &nbsp; **Samples:** 5
+Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €121.89/night (€365.67 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-19_
 
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
@@ -103,9 +103,9 @@ Verified Premier Luxury Mountain Resort, 5-star for Aug 20-23, 2026: €167.72/n
 _Source: Booking.com (apidojo) live 2026-07-18_
 
 ### premierluxurymountainresort|2026-09
-**Realistic:** ~€117.4/night &nbsp; **Updated:** 2026-08-10 &nbsp; **Samples:** 2
-Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-08-10_
+**Realistic:** ~€117.4/night &nbsp; **Updated:** 2026-08-19 &nbsp; **Samples:** 3
+Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €112.22/night (€336.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-08-19_
 
 ### princessandrianaresortandspaultraallinclusive|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04 &nbsp; **Samples:** 1
@@ -147,8 +147,12 @@ _Source: Booking.com (apidojo) live 2026-08-16_
 Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-10_
 
-## Outcome Ledger (129 entries)
+## Outcome Ledger (133 entries)
 
+- 👍 2026-08-19 | Velingrad Spa Retreat | Sep 18-21, 2026 | good score=90->100 claimed=€115 actual=€121.89 — Near-zero transit friction and highly reliable warm mineral pools offer massive, weather-proof…
+- 👍 2026-08-19 | Bansko Mountain & SPA Break | Sep 11-14, 2026 | good score=88->100 claimed=€95 actual=€112.22 — An easy 2.5-hour drive unlocks a luxurious 5-star mountain property with great pools and fresh air,…
+- 👍 2026-08-19 | London Autumn City Break | Oct 7-12, 2026 | good score=65->71 claimed=€24 actual=€52.18 — Direct flights from Plovdiv help, but a dense city break involves significant daily walking and…
+- · 2026-08-19 | Antalya Autumn Resort Break | Oct 10-17, 2026 | skip score=76->64 claimed=€220 actual=€329 — The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via…
 - 👍 2026-08-16 | Sunny Beach Late Season Coast | Sep 13-18, 2026 | good score=75->78 claimed=€75 actual=€220.97 — The easy 2.5-hour drive provides low transit friction, but late-September weather makes outdoor…
 - 💎 2026-08-16 | Sani Resort Aegean Shoulder Play | Sep 20-25, 2026 | diamond score=92->100 claimed=€194 actual=€194.38 — A manageable 4-hour drive unlocks peerless, world-class kids' amenities and elite luxury,…
 - 👍 2026-08-16 | Velingrad Premium 5-Star Spa | Sep 25-28, 2026 | good score=85->88 claimed=€240 actual=€297.7 — Near-zero transit friction and fully heated indoor toddler pools guarantee a weather-proof, highly…
@@ -195,8 +199,4 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 - 👍 2026-07-20 | Park Hotel & SPA Vella Hills | Sep 17-20, 2026 | good score=86->98 claimed=€100 actual=€128.31 — An effortless 1.5-hour drive to Velingrad provides near-zero transit friction and outstanding…
 - · 2026-07-20 | Sofia to Rome, Italy (Flight) | Oct 16-19, 2026 | skip score=55->67 claimed=€38 actual=€-58907403.11 — While Rome is an elite destination, a 3-night trip with a 4-year-old introduces heavy transit…
 - 👍 2026-07-20 | Orange County Resort Hotel Belek | Sep 8-15, 2026 | good score=81->93 claimed=€138 actual=€215 — Massive on-site resort utility and a dedicated kids' waterpark provide excellent family value,…
-- 👍 2026-07-20 | Laguna Park Hotel & Aqua Club | Sep 6-11, 2026 | good score=77->84 claimed=€65 actual=€167.51 — A straightforward highway drive unlocks a strong 4-star all-inclusive with great aqua park utility,…
-- 👍 2026-07-19 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=85->95 claimed=€92 actual=€97.76 — An ultra-local 45-minute drive from Plovdiv eliminates transit friction, delivering a high-utility,…
-- 👍 2026-07-19 | Bansko Mountain Escape | Sep 9-13, 2026 | good score=83->93 claimed=€45 actual=€151.8 — A straightforward 2.5-hour drive unlocks excellent 5-star resort utility with strong indoor kids'…
-- 👍 2026-07-19 | Velingrad Spa & Thermal Break | Sep 10-13, 2026 | good score=88->99 claimed=€151 actual=€151 — A highly manageable 1.5-hour drive provides outstanding family utility with perfectly heated…
-_... and 79 earlier entries_
+_... and 83 earlier entries_

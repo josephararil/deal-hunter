@@ -184,12 +184,17 @@
           "price": 108.77,
           "date": "2026-08-13",
           "source": "Booking.com (apidojo) live 2026-08-13"
+        },
+        {
+          "price": 121.89,
+          "date": "2026-08-19",
+          "source": "Booking.com (apidojo) live 2026-08-19"
         }
       ],
       "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €108.77/night (€326.31 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-13",
-      "updated": "2026-08-13"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €121.89/night (€365.67 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "updated": "2026-08-19"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -336,12 +341,17 @@
           "price": 117.4,
           "date": "2026-08-10",
           "source": "Booking.com (apidojo) live 2026-08-10"
+        },
+        {
+          "price": 112.22,
+          "date": "2026-08-19",
+          "source": "Booking.com (apidojo) live 2026-08-19"
         }
       ],
       "realistic_price_eur": 117.4,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "updated": "2026-08-10"
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €112.22/night (€336.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "updated": "2026-08-19"
     },
     "dreamfunworld|2026-09": {
       "samples": [
@@ -2101,6 +2111,58 @@
       "final_score": 58,
       "source": "Aggregated market estimates and property booking availability as of 2026-08-16",
       "note": "The massive on-site waterparks and all-inclusive ease offer tremendous utility, but the significant friction of flying via Sofia with a toddler heavily limits the net value."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "good",
+      "actual_price": 121.89,
+      "llm_score": 90,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "note": "Near-zero transit friction and highly reliable warm mineral pools offer massive, weather-proof utility for a toddler on a quick weekend trip."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "good",
+      "actual_price": 112.22,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "note": "An easy 2.5-hour drive unlocks a luxurious 5-star mountain property with great pools and fresh air, ideal for a short toddler-friendly getaway."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "London Autumn City Break",
+      "window": "Oct 7-12, 2026",
+      "type": "flight",
+      "claimed_price": 24,
+      "verdict": "good",
+      "actual_price": 52.18,
+      "llm_score": 65,
+      "final_score": 71,
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "note": "Direct flights from Plovdiv help, but a dense city break involves significant daily walking and transit friction that caps the net utility for a 4-year-old."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "Antalya Autumn Resort Break",
+      "window": "Oct 10-17, 2026",
+      "type": "hotel",
+      "claimed_price": 220,
+      "verdict": "skip",
+      "actual_price": 329,
+      "llm_score": 76,
+      "final_score": 64,
+      "source": "Expedia/HotelsCombined live search 2026-08-19",
+      "note": "The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via Sofia for a 7-night stay adds notable travel friction."
     }
   ]
 }

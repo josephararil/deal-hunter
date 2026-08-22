@@ -2420,6 +2420,76 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-22",
+      "deal_id": 2,
+      "destination": "Bansko Mountain & SPA Break",
+      "type": "hotel",
+      "window": "Sep 11-14, 2026",
+      "tier": "good",
+      "llm_score": 88,
+      "price_adj": 8,
+      "transit_adj": 3,
+      "final_score": 99,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.",
+      "about": "SPA Resort St Ivan Rilski is a recently modernized, top-tier 4-star resort in Bansko, known for its exceptional guest ratings (9.8) and luxurious feel. It boasts one of the region's best spa centers, complete with expansive, warm indoor pools and dedicated play areas. For a family with a 4-year-old, it offers a perfect balance of fresh mountain air, easy town walks, and effortless, weather-proof indoor swimming.",
+      "value_case": "While €176/night is on the higher end for Bansko in September, this rate secures comprehensive dining at one of the highest-rated properties in the region, which normally commands closer to €210/night for similar packages. You are paying a premium over standard local 4-stars for a noticeably superior spa, food, and overall finish.",
+      "why": "An easy 2.5-hour drive unlocks a premium, exceptionally rated mountain retreat with stellar indoor heated pools, providing immense weather-proof utility for a punchy weekend break.",
+      "red_flags": "Check whether the rate is Half-Board or All-Inclusive, as the grounding summary mentions both; confirm exact meal inclusions before booking.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-11–2026-09-14, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.8. Live rate: €175.61/night (€526.83 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=SPA+Resort+St+Ivan+Rilski+-+Halfboard+%26+All+Inclusive&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 175.61,
+          "total_eur": 526.83,
+          "source": "Booking.com (apidojo) live 2026-08-22",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=SPA+Resort+St+Ivan+Rilski+-+Halfboard+%26+All+Inclusive&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-22",
+      "deal_id": 1,
+      "destination": "Sunny Beach Late Season Coast",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 83,
+      "price_adj": 10,
+      "transit_adj": -3,
+      "final_score": 90,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €184.86/night (€924.3 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "about": "Asteria Family is a well-regarded 4-star ultra all-inclusive resort situated near the center of Sunny Beach. It stands out for its lively family atmosphere, featuring dedicated kids' clubs, multiple pools, and an animation team tailored for younger children. A family with a 4-year-old will appreciate the effortless dining and proximity to the beach, ensuring a relaxing and activity-filled final stretch of summer.",
+      "value_case": "At €185/night for an ultra all-inclusive package, this is a solid shoulder-season rate for a highly-rated family resort that typically charges €230+ during peak summer months. It offers great convenience and value by bundling premium dining, snacks, and child entertainment into one predictable price.",
+      "why": "A straightforward 3-hour highway drive delivers an effortless, high-utility beach break while outdoor pools and ultra all-inclusive amenities are still fully active in early September.",
+      "red_flags": "Verify that all outdoor toddler pools and specific kids' animation programs are still operating fully in the second week of September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.6. Live rate: €184.86/night (€924.3 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Asteria+Family+Sunny+Beach+-+Ultra+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 184.86,
+          "total_eur": 924.3,
+          "source": "Booking.com (apidojo) live 2026-08-22",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Asteria+Family+Sunny+Beach+-+Ultra+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

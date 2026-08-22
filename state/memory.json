@@ -460,12 +460,43 @@
           "price": 297.7,
           "date": "2026-08-16",
           "source": "Booking.com (apidojo) live 2026-08-16"
+        },
+        {
+          "price": 297.7,
+          "date": "2026-08-22",
+          "source": "Booking.com (apidojo) live 2026-08-22"
         }
       ],
       "realistic_price_eur": 297.7,
-      "note": "Verified Santé SPA Hotel, 5-star for Sep 25-28, 2026: €297.7/night (€893.09 total, 3 nights), review 9.3. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-16",
-      "updated": "2026-08-16"
+      "note": "Verified Santé SPA Hotel, 5-star for Sep 25-28, 2026: €297.7/night (€893.09 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "updated": "2026-08-22"
+    },
+    "asteriafamilysunnybeach|2026-09": {
+      "samples": [
+        {
+          "price": 184.86,
+          "date": "2026-08-22",
+          "source": "Booking.com (apidojo) live 2026-08-22"
+        }
+      ],
+      "realistic_price_eur": 184.86,
+      "note": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €184.86/night (€924.3 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "updated": "2026-08-22"
+    },
+    "sparesortstivanrilski|2026-09": {
+      "samples": [
+        {
+          "price": 175.61,
+          "date": "2026-08-22",
+          "source": "Booking.com (apidojo) live 2026-08-22"
+        }
+      ],
+      "realistic_price_eur": 175.61,
+      "note": "Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "updated": "2026-08-22"
     }
   },
   "ledger": [
@@ -2163,6 +2194,45 @@
       "final_score": 64,
       "source": "Expedia/HotelsCombined live search 2026-08-19",
       "note": "The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via Sofia for a 7-night stay adds notable travel friction."
+    },
+    {
+      "date": "2026-08-22",
+      "destination": "Sunny Beach Late Season Coast",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "good",
+      "actual_price": 184.86,
+      "llm_score": 83,
+      "final_score": 90,
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "note": "A straightforward 3-hour highway drive delivers an effortless, high-utility beach break while outdoor pools and ultra all-inclusive amenities are still fully active in early September."
+    },
+    {
+      "date": "2026-08-22",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "good",
+      "actual_price": 175.61,
+      "llm_score": 88,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "note": "An easy 2.5-hour drive unlocks a premium, exceptionally rated mountain retreat with stellar indoor heated pools, providing immense weather-proof utility for a punchy weekend break."
+    },
+    {
+      "date": "2026-08-22",
+      "destination": "Velingrad Premium 5-Star Spa",
+      "window": "Sep 25-28, 2026",
+      "type": "hotel",
+      "claimed_price": 295,
+      "verdict": "good",
+      "actual_price": 297.7,
+      "llm_score": 87,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "note": "Near-zero transit friction and some of the best indoor mineral pools in the region offer flawless, luxurious, and weather-proof enjoyment for a toddler and adults alike."
     }
   ]
 }

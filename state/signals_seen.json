@@ -1,12 +1,5 @@
 {
   "seen": {
-    "luckybanskoaparthotelsparelax|2026-09|diamond": "2026-07-20",
-    "parkhotelspavellahills|2026-09|good": "2026-07-20",
-    "orangecountyresorthotelbelek|2026-09|good": "2026-07-21",
-    "rome|2026-10|skip": "2026-07-20",
-    "parkhotelandspavellahills|2026-09|good": "2026-07-21",
-    "kianibeachresortfamilyallinclusive|2026-10|good": "2026-07-21",
-    "hotellagunaparkandaquaclub|2026-09|good": "2026-07-22",
     "ensanaaquahousehotelandspa|Sep 6-10|good": "2026-07-25",
     "paradisebeachhotel|Sep 1-6|good": "2026-07-25",
     "votsalosuites|Aug 24-28|good": "2026-07-25",
@@ -29,11 +22,13 @@
     "helenaparkhotel|2026-09|good": "2026-08-16",
     "orangecountyresorthotelbelek|2026-09|skip": "2026-08-16",
     "london|2026-10|good": "2026-08-19",
-    "swandorhotelsandresorttopkapipalace|2026-10|skip": "2026-08-19"
+    "swandorhotelsandresorttopkapipalace|2026-10|skip": "2026-08-19",
+    "sparesortstivanrilski|2026-09|good": "2026-08-22",
+    "asteriafamilysunnybeach|2026-09|good": "2026-08-22"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
-    "2026-08": 5
+    "2026-08": 6
   }
 }

@@ -31,6 +31,8 @@ CITIES = {
     "Athens, Greece": (3, 7), "Budapest, Hungary": (2, 7),   "Krakow, Poland": (3, 7),
     "Belgrade, Serbia": (2, 5), "London, United Kingdom": (3, 7),
     "Birmingham, United Kingdom": (3, 7), "Manchester, United Kingdom": (3, 7),
+    "Valencia, Spain": (3, 7), "Murcia, Spain": (3, 7), "Malaga, Spain": (3, 7),
+    "Sevilla, Spain": (3, 7), 
 }
 
 # Cities grouped by transit tier — used to build the structured city block in
@@ -49,7 +51,7 @@ CITY_TIER_GROUPS = [
             "Edirne", "Kirklareli"
         ]),
         ("Direct Flights from PDV", [
-            "London", "Birmingham", "Manchester", "Milan", "Bratislava"
+            "London", "Birmingham", "Manchester", "Milan", "Bratislava", "Valencia", "Murcia", "Sevilla"
         ])
     ]),
     ("Tier 2 — Low-cost/Direct Flight from SOF", [
@@ -57,7 +59,7 @@ CITY_TIER_GROUPS = [
         ("Italy", ["Rome", "Bari", "Naples", "Bologna", "Venice"]),
         ("Greece", ["Athens", "Thessaloniki", "Chania", "Corfu"]),
         ("Central Europe", ["Vienna", "Budapest", "Prague", "Bratislava"]),
-        ("Spain", ["Barcelona", "Madrid", "Valencia", "Malaga"]),
+        ("Spain", ["Barcelona", "Madrid", "Malaga", "Sevilla"]),
         ("Cyprus", ["Larnaca", "Paphos"]),
         ("Malta", ["Valetta"]),
         ("Germany", ["Munich", "Frankfurt", "Memmingen", "Berlin"]),

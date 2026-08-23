@@ -184,12 +184,17 @@
           "price": 108.77,
           "date": "2026-08-13",
           "source": "Booking.com (apidojo) live 2026-08-13"
+        },
+        {
+          "price": 121.89,
+          "date": "2026-08-19",
+          "source": "Booking.com (apidojo) live 2026-08-19"
         }
       ],
       "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €108.77/night (€326.31 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-13",
-      "updated": "2026-08-13"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €121.89/night (€365.67 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "updated": "2026-08-19"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -336,12 +341,17 @@
           "price": 117.4,
           "date": "2026-08-10",
           "source": "Booking.com (apidojo) live 2026-08-10"
+        },
+        {
+          "price": 112.22,
+          "date": "2026-08-19",
+          "source": "Booking.com (apidojo) live 2026-08-19"
         }
       ],
       "realistic_price_eur": 117.4,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 3-6, 2026: €117.4/night (€352.21 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-10",
-      "updated": "2026-08-10"
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €112.22/night (€336.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "updated": "2026-08-19"
     },
     "dreamfunworld|2026-09": {
       "samples": [
@@ -406,12 +416,17 @@
           "price": 194.38,
           "date": "2026-08-13",
           "source": "Booking.com (apidojo) live 2026-08-13"
+        },
+        {
+          "price": 194.38,
+          "date": "2026-08-16",
+          "source": "Booking.com (apidojo) live 2026-08-16"
         }
       ],
       "realistic_price_eur": 194.38,
       "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-13",
-      "updated": "2026-08-13"
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "updated": "2026-08-16"
     },
     "aparthotelluckybanskospaandrelax|2026-09": {
       "samples": [
@@ -425,6 +440,63 @@
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 4-7, 2026: €144.27/night (€432.8 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-13",
       "updated": "2026-08-13"
+    },
+    "helenaparkhotel|2026-09": {
+      "samples": [
+        {
+          "price": 220.97,
+          "date": "2026-08-16",
+          "source": "Booking.com (apidojo) live 2026-08-16"
+        }
+      ],
+      "realistic_price_eur": 220.97,
+      "note": "Verified Helena Park - Ultra All Inclusive, 5-star for Sep 13-18, 2026: €220.97/night (€1104.84 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "updated": "2026-08-16"
+    },
+    "santspahotel|2026-09": {
+      "samples": [
+        {
+          "price": 297.7,
+          "date": "2026-08-16",
+          "source": "Booking.com (apidojo) live 2026-08-16"
+        },
+        {
+          "price": 297.7,
+          "date": "2026-08-22",
+          "source": "Booking.com (apidojo) live 2026-08-22"
+        }
+      ],
+      "realistic_price_eur": 297.7,
+      "note": "Verified Santé SPA Hotel, 5-star for Sep 25-28, 2026: €297.7/night (€893.09 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "updated": "2026-08-22"
+    },
+    "asteriafamilysunnybeach|2026-09": {
+      "samples": [
+        {
+          "price": 184.86,
+          "date": "2026-08-22",
+          "source": "Booking.com (apidojo) live 2026-08-22"
+        }
+      ],
+      "realistic_price_eur": 184.86,
+      "note": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €184.86/night (€924.3 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "updated": "2026-08-22"
+    },
+    "sparesortstivanrilski|2026-09": {
+      "samples": [
+        {
+          "price": 175.61,
+          "date": "2026-08-22",
+          "source": "Booking.com (apidojo) live 2026-08-22"
+        }
+      ],
+      "realistic_price_eur": 175.61,
+      "note": "Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "updated": "2026-08-22"
     }
   },
   "ledger": [
@@ -2018,6 +2090,149 @@
       "final_score": 96,
       "source": "Booking.com (apidojo) live 2026-08-13",
       "note": "A straightforward highway drive to a premium coastal property maximizes the final days of summer weather and outdoor pool utility."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Sunny Beach Late Season Coast",
+      "window": "Sep 13-18, 2026",
+      "type": "hotel",
+      "claimed_price": 75,
+      "verdict": "good",
+      "actual_price": 220.97,
+      "llm_score": 75,
+      "final_score": 78,
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "note": "The easy 2.5-hour drive provides low transit friction, but late-September weather makes outdoor pools and beach time a gamble for a toddler, capping the overall utility."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Sani Resort Aegean Shoulder Play",
+      "window": "Sep 20-25, 2026",
+      "type": "hotel",
+      "claimed_price": 194,
+      "verdict": "diamond",
+      "actual_price": 194.38,
+      "llm_score": 92,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "note": "A manageable 4-hour drive unlocks peerless, world-class kids' amenities and elite luxury, delivering exceptional overall family value that easily absorbs the road trip."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Velingrad Premium 5-Star Spa",
+      "window": "Sep 25-28, 2026",
+      "type": "hotel",
+      "claimed_price": 240,
+      "verdict": "good",
+      "actual_price": 297.7,
+      "llm_score": 85,
+      "final_score": 88,
+      "source": "Booking.com (apidojo) live 2026-08-16",
+      "note": "Near-zero transit friction and fully heated indoor toddler pools guarantee a weather-proof, highly relaxing weekend, perfectly tailored for a family with a young child."
+    },
+    {
+      "date": "2026-08-16",
+      "destination": "Belek All-Inclusive Mega-Resort",
+      "window": "Sep 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 138,
+      "verdict": "skip",
+      "actual_price": 185,
+      "llm_score": 73,
+      "final_score": 58,
+      "source": "Aggregated market estimates and property booking availability as of 2026-08-16",
+      "note": "The massive on-site waterparks and all-inclusive ease offer tremendous utility, but the significant friction of flying via Sofia with a toddler heavily limits the net value."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "good",
+      "actual_price": 121.89,
+      "llm_score": 90,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "note": "Near-zero transit friction and highly reliable warm mineral pools offer massive, weather-proof utility for a toddler on a quick weekend trip."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "good",
+      "actual_price": 112.22,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "note": "An easy 2.5-hour drive unlocks a luxurious 5-star mountain property with great pools and fresh air, ideal for a short toddler-friendly getaway."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "London Autumn City Break",
+      "window": "Oct 7-12, 2026",
+      "type": "flight",
+      "claimed_price": 24,
+      "verdict": "good",
+      "actual_price": 52.18,
+      "llm_score": 65,
+      "final_score": 71,
+      "source": "Booking.com (apidojo) live 2026-08-19",
+      "note": "Direct flights from Plovdiv help, but a dense city break involves significant daily walking and transit friction that caps the net utility for a 4-year-old."
+    },
+    {
+      "date": "2026-08-19",
+      "destination": "Antalya Autumn Resort Break",
+      "window": "Oct 10-17, 2026",
+      "type": "hotel",
+      "claimed_price": 220,
+      "verdict": "skip",
+      "actual_price": 329,
+      "llm_score": 76,
+      "final_score": 64,
+      "source": "Expedia/HotelsCombined live search 2026-08-19",
+      "note": "The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via Sofia for a 7-night stay adds notable travel friction."
+    },
+    {
+      "date": "2026-08-22",
+      "destination": "Sunny Beach Late Season Coast",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "good",
+      "actual_price": 184.86,
+      "llm_score": 83,
+      "final_score": 90,
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "note": "A straightforward 3-hour highway drive delivers an effortless, high-utility beach break while outdoor pools and ultra all-inclusive amenities are still fully active in early September."
+    },
+    {
+      "date": "2026-08-22",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "good",
+      "actual_price": 175.61,
+      "llm_score": 88,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "note": "An easy 2.5-hour drive unlocks a premium, exceptionally rated mountain retreat with stellar indoor heated pools, providing immense weather-proof utility for a punchy weekend break."
+    },
+    {
+      "date": "2026-08-22",
+      "destination": "Velingrad Premium 5-Star Spa",
+      "window": "Sep 25-28, 2026",
+      "type": "hotel",
+      "claimed_price": 295,
+      "verdict": "good",
+      "actual_price": 297.7,
+      "llm_score": 87,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-08-22",
+      "note": "Near-zero transit friction and some of the best indoor mineral pools in the region offer flawless, luxurious, and weather-proof enjoyment for a toddler and adults alike."
     }
   ]
 }

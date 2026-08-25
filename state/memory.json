@@ -16,12 +16,17 @@
           "price": 127.63,
           "date": "2026-07-21",
           "source": "Booking.com (apidojo) live 2026-07-21"
+        },
+        {
+          "price": 121.91,
+          "date": "2026-08-25",
+          "source": "Booking.com (apidojo) live 2026-08-25"
         }
       ],
-      "realistic_price_eur": 127.63,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 24-27, 2026: €127.63/night (€382.89 total, 3 nights), review 9.1. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-07-21",
-      "updated": "2026-07-21"
+      "realistic_price_eur": 124.77,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-25",
+      "updated": "2026-08-25"
     },
     "hissarspahotel|2026-07": {
       "samples": [
@@ -497,6 +502,19 @@
       "note": "Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-22",
       "updated": "2026-08-22"
+    },
+    "elysiumhotel|2026-09": {
+      "samples": [
+        {
+          "price": 548.26,
+          "date": "2026-08-25",
+          "source": "Booking.com (apidojo) live 2026-08-25"
+        }
+      ],
+      "realistic_price_eur": 548.26,
+      "note": "Verified Elysium, 5-star for Sep 15-20, 2026: €548.26/night (€2741.28 total, 5 nights), review 9.5. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-25",
+      "updated": "2026-08-25"
     }
   },
   "ledger": [
@@ -2233,6 +2251,58 @@
       "final_score": 96,
       "source": "Booking.com (apidojo) live 2026-08-22",
       "note": "Near-zero transit friction and some of the best indoor mineral pools in the region offer flawless, luxurious, and weather-proof enjoyment for a toddler and adults alike."
+    },
+    {
+      "date": "2026-08-25",
+      "destination": "Lucky Bansko Aparthotel SPA & Relax",
+      "window": "September 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 144,
+      "verdict": "unscored",
+      "actual_price": 121.91,
+      "llm_score": null,
+      "final_score": null,
+      "source": "Booking.com (apidojo) live 2026-08-25",
+      "note": "RuntimeError: SKEPTIC chain exhausted: total LLM budget exhausted before the request"
+    },
+    {
+      "date": "2026-08-25",
+      "destination": "Elysium Hotel",
+      "window": "September 15-20, 2026",
+      "type": "hotel",
+      "claimed_price": 165,
+      "verdict": "unscored",
+      "actual_price": 548.26,
+      "llm_score": null,
+      "final_score": null,
+      "source": "Booking.com (apidojo) live 2026-08-25",
+      "note": "RuntimeError: SKEPTIC chain exhausted: total LLM budget exhausted before the request"
+    },
+    {
+      "date": "2026-08-25",
+      "destination": "Istanbul City Break",
+      "window": "September 20-25, 2026",
+      "type": "hotel",
+      "claimed_price": 110,
+      "verdict": "unscored",
+      "actual_price": 24.32,
+      "llm_score": null,
+      "final_score": null,
+      "source": "Booking.com (apidojo) live 2026-08-25",
+      "note": "RuntimeError: SKEPTIC chain exhausted: total LLM budget exhausted before the request"
+    },
+    {
+      "date": "2026-08-25",
+      "destination": "Boutique & Spa Hotel Heaven",
+      "window": "September 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 55,
+      "verdict": "kill",
+      "actual_price": null,
+      "llm_score": null,
+      "final_score": null,
+      "source": "",
+      "note": ""
     }
   ]
 }

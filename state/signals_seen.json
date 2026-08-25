@@ -1,10 +1,5 @@
 {
   "seen": {
-    "ensanaaquahousehotelandspa|Sep 6-10|good": "2026-07-25",
-    "paradisebeachhotel|Sep 1-6|good": "2026-07-25",
-    "votsalosuites|Aug 24-28|good": "2026-07-25",
-    "spahotelolymp|Aug 15-18|good": "2026-07-25",
-    "asteriafamilysunnybeach|Aug 30-Sep 4|skip": "2026-07-25",
     "galeonresidenceandspa|2026-09|good": "2026-07-31",
     "hoteliv|2026-09|skip": "2026-07-28",
     "paris|2026-09|skip": "2026-07-28",
@@ -24,11 +19,17 @@
     "london|2026-10|good": "2026-08-19",
     "swandorhotelsandresorttopkapipalace|2026-10|skip": "2026-08-19",
     "sparesortstivanrilski|2026-09|good": "2026-08-22",
-    "asteriafamilysunnybeach|2026-09|good": "2026-08-22"
+    "asteriafamilysunnybeach|2026-09|good": "2026-08-22",
+    "luckybanskoaparthotelspaandrelax|2026-09|unscored": "2026-08-25",
+    "elysiumhotel|2026-09|unscored": "2026-08-25",
+    "istanbul|2026-09|unscored": "2026-08-25"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 6
+  },
+  "degraded_count": {
+    "2026-08": 1
   }
 }

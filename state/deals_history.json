@@ -2490,6 +2490,146 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-28",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Break / Lucky Bansko Aparthotel",
+      "type": "hotel",
+      "window": "Sep 11-14, 2026",
+      "tier": "good",
+      "llm_score": 98,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel is one of the premier 5-star family properties in the Bansko mountain resort, scoring highly for its exceptional service and toddler infrastructure. The hotel boasts excellent indoor heated pools, including a dedicated children's pool with warm water, multiple kids' clubs, and professional animation staff. While Bansko itself is quiet in September, the property provides more than enough entertainment and relaxation for a flawless 3-night family break.",
+      "value_case": "At ~€122/night, this is an excellent deal for a premier 5-star mountain property that usually commands €160-€200 for its suites. You get massive indoor utility without paying peak winter or summer rates.",
+      "why": "Near-flawless family utility with a manageable 2.5-hour drive, offering top-tier indoor heated pools and dedicated kids' animation perfect for a short 3-night getaway.",
+      "red_flags": "Bansko town is largely dormant during this shoulder-season window, meaning you will rely heavily on the hotel's on-site dining and amenities.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-11–2026-09-14, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €121.91/night (€365.73 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 121.91,
+          "total_eur": 365.73,
+          "source": "Booking.com (apidojo) live 2026-08-28",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€124.77/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-28",
+      "deal_id": 3,
+      "destination": "Velingrad Spa Retreat / Park Hotel & SPA Vella Hills",
+      "type": "hotel",
+      "window": "Sep 15-18, 2026",
+      "tier": "good",
+      "llm_score": 95,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Park Hotel & SPA Vella Hills is a highly-rated 4-star wellness retreat in Velingrad, Bulgaria's spa capital. It is known for its excellent indoor and outdoor mineral pools, relaxing atmosphere, and picturesque pine forest surroundings. Families with a 4-year-old will get massive value from the warm indoor children's pools and play areas, making it an effortless and comfortable mid-week escape.",
+      "value_case": "€128/night is a very solid rate for a top-rated 4-star in Velingrad, which typically sits closer to €150-160 for a family room with breakfast and spa access included.",
+      "why": "A virtually zero-friction 1.5-hour drive unlocks highly reliable warm mineral pools, guaranteeing excellent weather-proof utility for a toddler.",
+      "red_flags": "Ensure the mid-week stay dates do not coincide with any routine maintenance closures for the main kids' pools.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-15–2026-09-18, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €128.31/night (€384.94 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-15&checkout=2026-09-18&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 15-18, 2026",
+          "nights": 3,
+          "price_per_night_eur": 128.31,
+          "total_eur": 384.94,
+          "source": "Booking.com (apidojo) live 2026-08-28",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-15&checkout=2026-09-18&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€128.31/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-28",
+      "deal_id": 4,
+      "destination": "Antalya Late Season Coast / Sealife Family Resort Hotel",
+      "type": "hotel",
+      "window": "Sep 21-28, 2026",
+      "tier": "skip",
+      "llm_score": 68,
+      "price_adj": -4,
+      "transit_adj": -3,
+      "final_score": 61,
+      "flight_cost_eur_total": 750,
+      "ground_transport_eur": 120,
+      "effective_ppn": 346.2457142857143,
+      "confidence": "high",
+      "summary": "Verified Sealife Family Resort Hotel, 5-star for Sep 21-28, 2026: €221.96/night (€1553.74 total, 7 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "about": "Sealife Family Resort is a well-reviewed 5-star all-inclusive property situated right on the coast of Antalya, designed specifically with families in mind. It offers extensive water slides, multiple pools, kids' clubs, and robust daily entertainment. The area remains warm enough in late September to fully enjoy the beach and outdoor splash zones, providing a lively and action-packed week for a young child.",
+      "value_case": "At €222/night for an all-inclusive 5-star family resort, the grounded price represents a fair shoulder-season reduction from its usual €320 high-season rates, though factoring in flights makes it an expensive overall trip.",
+      "why": "Stellar on-site resort amenities for a 4-year-old, but the heavy logistical friction of flying via Sofia for a 7-night stay significantly dents the net family value.",
+      "red_flags": "Flying out of Sofia adds 1.5 hours of driving plus airport parking and wait times, turning a short flight into a draining half-day transit for a 4-year-old.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-21–2026-09-28, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €221.96/night (€1553.74 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-09-21&checkout=2026-09-28&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 21-28, 2026",
+          "nights": 7,
+          "price_per_night_eur": 221.96,
+          "total_eur": 1553.74,
+          "source": "Booking.com (apidojo) live 2026-08-28",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-09-21&checkout=2026-09-28&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-28",
+      "deal_id": 1,
+      "destination": "Kassandra, Halkidiki / Sani Resort",
+      "type": "hotel",
+      "window": "Sep 20-25, 2026",
+      "tier": "diamond",
+      "llm_score": 89,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
+      "about": "Sani Resort is a globally renowned luxury resort complex situated on the Kassandra peninsula in Halkidiki. It features multiple 5-star properties, a private marina, pristine shallow-water beaches, and some of the best children's facilities in Europe, including top-tier kids' clubs and heated splash zones. A 4-year-old will be endlessly entertained by the safe beach access and pools, while adults can enjoy the premium dining and world-class spa amenities.",
+      "value_case": "€194/night for a Sani Resort Villa is an absolute steal, as shoulder-season rates typically hover around €400-€500, and summer rates can easily exceed €800. Gaining access to this level of flagship luxury for under €200 makes it a uniquely rare opportunity.",
+      "why": "An exceptional world-class family resort with unparalleled toddler infrastructure, delivering massive utility that easily justifies the ~4.5-hour drive.",
+      "red_flags": "On-site dining at Sani is famously expensive, which will increase the overall trip cost significantly beyond the base room rate.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-25, currency=EUR, adults=2, children=[4]. Live rate: €194.38/night (€971.89 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 20-25, 2026",
+          "nights": 5,
+          "price_per_night_eur": 194.38,
+          "total_eur": 971.89,
+          "source": "Booking.com (apidojo) live 2026-08-28",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sani+Resort+Villa+with+Shared+Pool&checkin=2026-09-20&checkout=2026-09-25&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€194.38/night here — about the usual rate.",
+      "child_price_caveat": true
     }
   ]
 }

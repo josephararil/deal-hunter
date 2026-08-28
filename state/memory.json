@@ -21,12 +21,17 @@
           "price": 121.91,
           "date": "2026-08-25",
           "source": "Booking.com (apidojo) live 2026-08-25"
+        },
+        {
+          "price": 121.91,
+          "date": "2026-08-28",
+          "source": "Booking.com (apidojo) live 2026-08-28"
         }
       ],
-      "realistic_price_eur": 124.77,
+      "realistic_price_eur": 121.91,
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-25",
-      "updated": "2026-08-25"
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "updated": "2026-08-28"
     },
     "hissarspahotel|2026-07": {
       "samples": [
@@ -172,11 +177,6 @@
       "samples": [
         {
           "price": 128.31,
-          "date": "2026-07-22",
-          "source": "Booking.com (apidojo) live 2026-07-22"
-        },
-        {
-          "price": 128.31,
           "date": "2026-07-20",
           "source": "Booking.com (apidojo) live 2026-07-20"
         },
@@ -194,12 +194,17 @@
           "price": 121.89,
           "date": "2026-08-19",
           "source": "Booking.com (apidojo) live 2026-08-19"
+        },
+        {
+          "price": 128.31,
+          "date": "2026-08-28",
+          "source": "Booking.com (apidojo) live 2026-08-28"
         }
       ],
       "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €121.89/night (€365.67 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-19",
-      "updated": "2026-08-19"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "updated": "2026-08-28"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -426,12 +431,17 @@
           "price": 194.38,
           "date": "2026-08-16",
           "source": "Booking.com (apidojo) live 2026-08-16"
+        },
+        {
+          "price": 194.38,
+          "date": "2026-08-28",
+          "source": "Booking.com (apidojo) live 2026-08-28"
         }
       ],
       "realistic_price_eur": 194.38,
       "note": "Verified Sani Resort Villa with Shared Pool for Sep 20-25, 2026: €194.38/night (€971.89 total, 5 nights). Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-16",
-      "updated": "2026-08-16"
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "updated": "2026-08-28"
     },
     "aparthotelluckybanskospaandrelax|2026-09": {
       "samples": [
@@ -515,6 +525,19 @@
       "note": "Verified Elysium, 5-star for Sep 15-20, 2026: €548.26/night (€2741.28 total, 5 nights), review 9.5. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-25",
       "updated": "2026-08-25"
+    },
+    "sealifefamilyresorthotel|2026-09": {
+      "samples": [
+        {
+          "price": 221.96,
+          "date": "2026-08-28",
+          "source": "Booking.com (apidojo) live 2026-08-28"
+        }
+      ],
+      "realistic_price_eur": 221.96,
+      "note": "Verified Sealife Family Resort Hotel, 5-star for Sep 21-28, 2026: €221.96/night (€1553.74 total, 7 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "updated": "2026-08-28"
     }
   },
   "ledger": [
@@ -2303,6 +2326,58 @@
       "final_score": null,
       "source": "",
       "note": ""
+    },
+    {
+      "date": "2026-08-28",
+      "destination": "Kassandra, Halkidiki / Sani Resort",
+      "window": "Sep 20-25, 2026",
+      "type": "hotel",
+      "claimed_price": 194,
+      "verdict": "diamond",
+      "actual_price": 194.38,
+      "llm_score": 89,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "note": "An exceptional world-class family resort with unparalleled toddler infrastructure, delivering massive utility that easily justifies the ~4.5-hour drive."
+    },
+    {
+      "date": "2026-08-28",
+      "destination": "Bansko Mountain Break / Lucky Bansko Aparthotel",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "good",
+      "actual_price": 121.91,
+      "llm_score": 98,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "note": "Near-flawless family utility with a manageable 2.5-hour drive, offering top-tier indoor heated pools and dedicated kids' animation perfect for a short 3-night getaway."
+    },
+    {
+      "date": "2026-08-28",
+      "destination": "Velingrad Spa Retreat / Park Hotel & SPA Vella Hills",
+      "window": "Sep 15-18, 2026",
+      "type": "hotel",
+      "claimed_price": 121,
+      "verdict": "good",
+      "actual_price": 128.31,
+      "llm_score": 95,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "note": "A virtually zero-friction 1.5-hour drive unlocks highly reliable warm mineral pools, guaranteeing excellent weather-proof utility for a toddler."
+    },
+    {
+      "date": "2026-08-28",
+      "destination": "Antalya Late Season Coast / Sealife Family Resort Hotel",
+      "window": "Sep 21-28, 2026",
+      "type": "hotel",
+      "claimed_price": 130,
+      "verdict": "skip",
+      "actual_price": 221.96,
+      "llm_score": 68,
+      "final_score": 61,
+      "source": "Booking.com (apidojo) live 2026-08-28",
+      "note": "Stellar on-site resort amenities for a 4-year-old, but the heavy logistical friction of flying via Sofia for a 7-night stay significantly dents the net family value."
     }
   ]
 }

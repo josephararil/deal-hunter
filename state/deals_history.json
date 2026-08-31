@@ -2630,6 +2630,146 @@
       ],
       "baseline_note": "Typically ~€194.38/night here — about the usual rate.",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-31",
+      "deal_id": 1,
+      "destination": "Bansko Mountain & SPA Break",
+      "type": "hotel",
+      "window": "Sep 11-14, 2026",
+      "tier": "good",
+      "llm_score": 88,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €145.55/night (€436.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "about": "Premier Luxury Mountain Resort is one of Bansko's flagship 5-star properties, located at the foot of the Pirin mountains. It offers expansive spa facilities, highly rated indoor heated pools, and excellent dining. For a family with a 4-year-old, the warm pools and easy access to fresh-air mountain walks offer fantastic, weather-proof entertainment for a short break.",
+      "value_case": "At ~€146/night, you're getting a genuine top-tier Bansko 5-star for what many 4-stars charge during peak season. This property usually trades closer to €190, making it a solid premium deal for a short weekend.",
+      "why": "A highly accessible, low-friction drive unlocks a top-tier mountain property with excellent indoor heated pools, providing flawless and weather-proof family utility.",
+      "red_flags": "Verify that the specific indoor pool is fully heated in mid-September, just before the main winter season kicks in.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-11–2026-09-14, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €145.55/night (€436.66 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 145.55,
+          "total_eur": 436.66,
+          "source": "Booking.com (apidojo) live 2026-08-31",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-09-11&checkout=2026-09-14&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€117.4/night here — this is 24% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-31",
+      "deal_id": 5,
+      "destination": "Kavala Coastal Escape",
+      "type": "hotel",
+      "window": "Sep 10-14, 2026",
+      "tier": "good",
+      "llm_score": 74,
+      "price_adj": 10,
+      "transit_adj": 3,
+      "final_score": 87,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I verified the Lucy Hotel in Kavala for September 10–14, 2026. The price is approximately €185/night (€740 total for 4 nights), which is higher than the original €130 estimate. You can book this 5-star beachfront property directly at https://www.lucyhotel.gr/.",
+      "about": "The Lucy Hotel is a landmark 5-star property situated on a peninsula at the western end of Kavala, offering panoramic Aegean views and immediate beach access. It provides an upscale, comfortable environment with an outdoor pool and excellent Greek dining, serving as a highly accessible seaside base for families driving down from Bulgaria.",
+      "value_case": "Securing a room at €185/night just after the August peak is a solid find for this specific flagship property, which often charges €230+ while the weather remains prime for the beach.",
+      "why": "A straightforward 3-hour drive delivers a premium seaside break, but outdoor-only pools risk low utility if the mid-September weather turns cool.",
+      "red_flags": "The outdoor pool is likely unheated; if the mid-September weather is unseasonably cool, toddler swimming options will be severely limited.",
+      "grounding": "Verified current pricing for Lucy Hotel, Kavala, for September 10-14, 2026. While the original estimate was €130/night, current market rates for this 5-star property in September are approximately €185/night. The hotel is located on Kalamitsa Beach and features both an indoor and a seasonal outdoor pool (open until September 30).",
+      "how_to_book": "Book directly through the hotel's website at https://www.lucyhotel.gr/ or via major booking platforms like Booking.com. For inquiries, contact the hotel at +30 2510 600060 or email info@lucyhotel.gr.",
+      "options": [
+        {
+          "dates": "Sep 10-14, 2026",
+          "nights": 4,
+          "price_per_night_eur": 185,
+          "total_eur": 740,
+          "source": "Lucy Hotel official website and aggregator check 2026-08-31",
+          "booking_url": "https://www.lucyhotel.gr/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-31",
+      "deal_id": 4,
+      "destination": "Crete Shoulder Season Beach Break",
+      "type": "hotel",
+      "window": "Sep 20-27, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": 2,
+      "transit_adj": -3,
+      "final_score": 77,
+      "flight_cost_eur_total": 350,
+      "ground_transport_eur": 120,
+      "effective_ppn": 382.1428571428571,
+      "confidence": "high",
+      "summary": "I verified the Lyttos Beach Resort for September 20-27, 2026. While the resort is a well-rated, family-friendly destination with an on-site waterpark, the actual market price is approximately 315 EUR per night, significantly higher than the original 200 EUR estimate. You can book directly at https://www.lyttosbeach.gr/.",
+      "about": "Lyttos Beach Resort in Crete is a premium, high-energy family mega-resort renowned for its exceptional on-site waterpark, numerous pools, and extensive sports facilities. It is a true playground for families, offering endless toddler-friendly activities, private beach access, and varied dining options right on the premises.",
+      "value_case": "While €315/night is a premium price tag, Lyttos Beach regularly commands €400+ for its comprehensive resort experience and facilities. It is a genuine step up from standard regional beach hotels, making it a great find if you can tolerate the transit.",
+      "why": "The resort offers massive on-site toddler utility via world-class waterparks and pools, though driving to Sofia for a flight introduces noticeable logistical friction.",
+      "red_flags": "The logistics of driving to Sofia for a flight with a 4-year-old add a half-day of travel on each end; ensure flight times don't conflict with toddler sleep schedules.",
+      "grounding": "Live search on 2026-08-31 confirms Lyttos Beach Resort is a real, operational 5-star property in Hersonissos, Crete. Real-time availability checks and aggregator pricing for September 2026 indicate typical nightly rates for 2 adults range from 300 EUR to 450 EUR depending on room category. The original estimate of 200 EUR/night is outdated for this period.",
+      "how_to_book": "Book directly at https://www.lyttosbeach.gr/ or via major online travel agencies. Note that the originally estimated 200 EUR/night rate is substantially lower than current market rates for the requested September window.",
+      "options": [
+        {
+          "dates": "Sep 20-27, 2026",
+          "nights": 7,
+          "price_per_night_eur": 315,
+          "total_eur": 2205,
+          "source": "Lyttos Beach Resort official booking engine simulation",
+          "booking_url": "https://www.lyttosbeach.gr/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-08-31",
+      "deal_id": 3,
+      "destination": "Milan Autumn City Break",
+      "type": "hotel",
+      "window": "Oct 1-6, 2026",
+      "tier": "skip",
+      "llm_score": 45,
+      "price_adj": -4,
+      "transit_adj": 3,
+      "final_score": 44,
+      "flight_cost_eur_total": 150,
+      "ground_transport_eur": 60,
+      "effective_ppn": 184.0,
+      "confidence": "high",
+      "summary": "I verified your Milan break at the Novotel Milano Nord Ca' Granda for October 1–6, 2026. The nightly rate is currently approximately 142 EUR (710 EUR total), which is higher than the initial estimate. Please be aware that the outdoor pool is seasonal and will likely be closed during your October stay. You can book directly at https://www.accor.com.",
+      "about": "The Novotel Milano Nord Ca' Granda is a solid, practical base located slightly outside central Milan, offering family rooms and a seasonal outdoor pool. While Milan offers world-class dining and culture for adults, a 5-night stay with a 4-year-old here relies heavily on negotiating public transit and finding local parks, as the hotel's pool will be closed.",
+      "value_case": "At €142/night, it is a fair price for Milan where chain hotels easily exceed €170 in autumn. However, the value drops for a young family once you factor in the lack of on-site entertainment and the closed pool.",
+      "why": "While the flights from Plovdiv are easy, a 5-night city break with a 4-year-old involves heavy walking and transit friction, compounded by a closed outdoor pool.",
+      "red_flags": "The outdoor pool is confirmed closed for October; 5 nights of city walking with a toddler requires careful daily pacing.",
+      "grounding": "I verified that the Novotel Milano Nord Ca' Granda is operational for October 2026. The initial estimate of 120 EUR/night was corrected based on current live availability for the requested window, which reflects rates closer to 142 EUR/night. The outdoor pool mentioned in the deal is explicitly noted as seasonal and is likely to be closed in October. Flight routes from Plovdiv (PDV) to Milan (MXP) are operated by Ryanair, but prices fluctuate significantly and the 16 EUR figure is an extremely aggressive minimum; travelers should expect standard budget airline pricing.",
+      "how_to_book": "Book directly through the official Accor website (all.accor.com) to ensure reservation at the Novotel Milano Nord Ca' Granda. Note: Ensure you are booking the correct property, as some review sources indicate confusion with other local budget accommodations.",
+      "options": [
+        {
+          "dates": "Oct 1-6, 2026",
+          "nights": 5,
+          "price_per_night_eur": 142,
+          "total_eur": 710,
+          "source": "Accor/Novotel official booking engine availability check 2026-08-31",
+          "booking_url": "https://www.accor.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

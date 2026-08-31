@@ -177,11 +177,6 @@
       "samples": [
         {
           "price": 128.31,
-          "date": "2026-07-20",
-          "source": "Booking.com (apidojo) live 2026-07-20"
-        },
-        {
-          "price": 128.31,
           "date": "2026-08-10",
           "source": "Booking.com (apidojo) live 2026-08-10"
         },
@@ -199,12 +194,17 @@
           "price": 128.31,
           "date": "2026-08-28",
           "source": "Booking.com (apidojo) live 2026-08-28"
+        },
+        {
+          "price": 130.67,
+          "date": "2026-08-31",
+          "source": "Booking.com (apidojo) live 2026-08-31"
         }
       ],
       "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 15-18, 2026: €128.31/night (€384.94 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-28",
-      "updated": "2026-08-28"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €130.67/night (€392.0 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-31",
+      "updated": "2026-08-31"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -356,12 +356,17 @@
           "price": 112.22,
           "date": "2026-08-19",
           "source": "Booking.com (apidojo) live 2026-08-19"
+        },
+        {
+          "price": 145.55,
+          "date": "2026-08-31",
+          "source": "Booking.com (apidojo) live 2026-08-31"
         }
       ],
       "realistic_price_eur": 117.4,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €112.22/night (€336.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-19",
-      "updated": "2026-08-19"
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €145.55/night (€436.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-08-31",
+      "updated": "2026-08-31"
     },
     "dreamfunworld|2026-09": {
       "samples": [
@@ -2378,6 +2383,71 @@
       "final_score": 61,
       "source": "Booking.com (apidojo) live 2026-08-28",
       "note": "Stellar on-site resort amenities for a 4-year-old, but the heavy logistical friction of flying via Sofia for a 7-night stay significantly dents the net family value."
+    },
+    {
+      "date": "2026-08-31",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "good",
+      "actual_price": 145.55,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-31",
+      "note": "A highly accessible, low-friction drive unlocks a top-tier mountain property with excellent indoor heated pools, providing flawless and weather-proof family utility."
+    },
+    {
+      "date": "2026-08-31",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 128,
+      "verdict": "good",
+      "actual_price": 130.67,
+      "llm_score": 90,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-08-31",
+      "note": "Near-zero transit friction and highly reliable warm mineral pools offer massive, guaranteed utility for a toddler, regardless of autumn weather."
+    },
+    {
+      "date": "2026-08-31",
+      "destination": "Milan Autumn City Break",
+      "window": "Oct 1-6, 2026",
+      "type": "hotel",
+      "claimed_price": 120,
+      "verdict": "skip",
+      "actual_price": 142,
+      "llm_score": 45,
+      "final_score": 44,
+      "source": "Accor/Novotel official booking engine availability check 2026-08-31",
+      "note": "While the flights from Plovdiv are easy, a 5-night city break with a 4-year-old involves heavy walking and transit friction, compounded by a closed outdoor pool."
+    },
+    {
+      "date": "2026-08-31",
+      "destination": "Crete Shoulder Season Beach Break",
+      "window": "Sep 20-27, 2026",
+      "type": "hotel",
+      "claimed_price": 200,
+      "verdict": "good",
+      "actual_price": 315,
+      "llm_score": 78,
+      "final_score": 77,
+      "source": "Lyttos Beach Resort official booking engine simulation",
+      "note": "The resort offers massive on-site toddler utility via world-class waterparks and pools, though driving to Sofia for a flight introduces noticeable logistical friction."
+    },
+    {
+      "date": "2026-08-31",
+      "destination": "Kavala Coastal Escape",
+      "window": "Sep 10-14, 2026",
+      "type": "hotel",
+      "claimed_price": 130,
+      "verdict": "good",
+      "actual_price": 185,
+      "llm_score": 74,
+      "final_score": 87,
+      "source": "Lucy Hotel official website and aggregator check 2026-08-31",
+      "note": "A straightforward 3-hour drive delivers a premium seaside break, but outdoor-only pools risk low utility if the mid-September weather turns cool."
     }
   ]
 }

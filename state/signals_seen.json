@@ -1,9 +1,5 @@
 {
   "seen": {
-    "galeonresidenceandspa|2026-09|good": "2026-07-31",
-    "premierluxurymountainresort|2026-09|good": "2026-07-31",
-    "milan|2026-09|skip": "2026-07-31",
-    "corfu|2026-09|skip": "2026-07-31",
     "saniresort|2026-09|diamond": "2026-08-28",
     "limaklaradeluxehotelandresort|2026-09|good": "2026-08-01",
     "dreamfunworld|2026-09|good": "2026-08-01",
@@ -23,12 +19,16 @@
     "istanbul|2026-09|unscored": "2026-08-25",
     "luckybanskoaparthotelspaandrelax|2026-09|good": "2026-08-28",
     "parkhotelandspavellahills|2026-09|good": "2026-08-28",
-    "sealifefamilyresorthotel|2026-09|skip": "2026-08-28"
+    "sealifefamilyresorthotel|2026-09|skip": "2026-08-28",
+    "premierluxurymountainresort|2026-09|good": "2026-08-31",
+    "lucyhotel|2026-09|good": "2026-08-31",
+    "lyttosbeachresort|2026-09|good": "2026-08-31",
+    "novotelmilanonordcagranda|2026-10|skip": "2026-08-31"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
-    "2026-08": 7
+    "2026-08": 8
   },
   "degraded_count": {
     "2026-08": 1

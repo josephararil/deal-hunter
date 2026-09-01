@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-08-31
+# Diamond Finder Memory — updated 2026-09-01
 
-## Price Baselines (33 entries)
+## Price Baselines (34 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -13,9 +13,9 @@ Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug
 _Source: Booking.com (apidojo) live 2026-07-03_
 
 ### asteriafamilysunnybeach|2026-09
-**Realistic:** ~€184.86/night &nbsp; **Updated:** 2026-08-22 &nbsp; **Samples:** 1
-Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €184.86/night (€924.3 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-08-22_
+**Realistic:** ~€164.62/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 2
+Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €144.39/night (€721.94 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-01_
 
 ### balneocomplexandspaaquatonik|2026-08
 **Realistic:** ~€116.39/night &nbsp; **Updated:** 2026-07-17 &nbsp; **Samples:** 1
@@ -97,15 +97,20 @@ _Source: Booking.com (apidojo) live 2026-07-17_
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-28_
 
+### mursalitsahotel|2027-01
+**Realistic:** ~€219.71/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 1
+Verified Hotel Mursalitsa by HMG - Half board, 3-star for Jan 14-17, 2027: €219.71/night (€659.12 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-01_
+
 ### mvenpickistanbulhotelgoldenhorn|2026-09
 **Realistic:** ~€108.0/night &nbsp; **Updated:** 2026-07-05 &nbsp; **Samples:** 1
 Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
 ### parkhotelandspavellahills|2026-09
-**Realistic:** ~€128.31/night &nbsp; **Updated:** 2026-08-31 &nbsp; **Samples:** 5
-Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €130.67/night (€392.0 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-08-31_
+**Realistic:** ~€121.89/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 5
+Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-01_
 
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
@@ -167,8 +172,12 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (149 entries)
+## Outcome Ledger (153 entries)
 
+- · 2026-09-01 | Bratislava Autumn City Break | Oct 6-10, 2026 | skip score=52->55 claimed=€26 actual=€57.14 — While the direct flight from Plovdiv minimizes transit friction, a 4-night city break offers mostly…
+- 👍 2026-09-01 | Velingrad Spa Retreat | Sep 18-21, 2026 | good score=85->99 claimed=€130 actual=€117.91 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
+- 👍 2026-09-01 | Sunny Beach Late Season Escape | Sep 6-11, 2026 | good score=80->90 claimed=€185 actual=€144.39 — Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a…
+- · 2026-09-01 | Pamporovo Winter Early Bird | Jan 14-17, 2027 | skip score=58->50 claimed=€97 actual=€219.71 — While the drive is easy and the destination is great for snow, a 3-star hotel offers more limited…
 - 👍 2026-08-31 | Bansko Mountain & SPA Break | Sep 11-14, 2026 | good score=88->100 claimed=€115 actual=€145.55 — A highly accessible, low-friction drive unlocks a top-tier mountain property with excellent indoor…
 - 👍 2026-08-31 | Velingrad Spa Retreat | Sep 18-21, 2026 | good score=90->100 claimed=€128 actual=€130.67 — Near-zero transit friction and highly reliable warm mineral pools offer massive, guaranteed utility…
 - · 2026-08-31 | Milan Autumn City Break | Oct 1-6, 2026 | skip score=45->44 claimed=€120 actual=€142 — While the flights from Plovdiv are easy, a 5-night city break with a 4-year-old involves heavy…
@@ -215,8 +224,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - · 2026-07-28 | Velingrad Spa Retreat | Sep 10-13, 2026 | skip score=68->58 claimed=€52 actual=€113.61 — A very easy 1.5-hour drive provides near-zero transit friction for a quiet weekend, but the basic…
 - 👍 2026-07-28 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->96 claimed=€95 actual=€121.57 — A straightforward highway drive unlocks a strong 5-star experience, with fully open pools and…
 - ❌ 2026-07-28 | New All-Inclusive Family Resort | Sep 15-22, 2026 | kill claimed=€135
-- · 2026-07-28 | Paris Shoulder-Season Flights | Sep 28 - Oct 5, 2026 | skip score=48->47 claimed=€80 actual=€12.14 — The grueling door-to-door logistics of driving to Sofia, flying into Beauvais, and taking a…
-- 👍 2026-07-25 | Velingrad Spa Retreat | Aug 15-18 | good score=68->76 claimed=€125 actual=€166 — Near-zero transit friction and reliable half-board amenities provide an effortless, though…
-- · 2026-07-25 | Sunny Beach All-Inclusive Escape | Aug 30-Sep 4 | skip score=55->44 claimed=€105 actual=€210 — A short 2-night stay barely justifies the 6-hour round-trip drive with a toddler, heavily diluting…
-- 👍 2026-07-25 | Thassos Island Getaway | Aug 24-28 | good score=72->77 claimed=€180 actual=€250 — The exceptionally shallow, toddler-friendly waters of Golden Beach provide memorable absolute…
-_... and 99 earlier entries_
+_... and 103 earlier entries_

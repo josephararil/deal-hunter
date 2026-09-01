@@ -176,11 +176,6 @@
     "parkhotelandspavellahills|2026-09": {
       "samples": [
         {
-          "price": 128.31,
-          "date": "2026-08-10",
-          "source": "Booking.com (apidojo) live 2026-08-10"
-        },
-        {
           "price": 108.77,
           "date": "2026-08-13",
           "source": "Booking.com (apidojo) live 2026-08-13"
@@ -199,12 +194,17 @@
           "price": 130.67,
           "date": "2026-08-31",
           "source": "Booking.com (apidojo) live 2026-08-31"
+        },
+        {
+          "price": 117.91,
+          "date": "2026-09-01",
+          "source": "Booking.com (apidojo) live 2026-09-01"
         }
       ],
-      "realistic_price_eur": 128.31,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €130.67/night (€392.0 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-31",
-      "updated": "2026-08-31"
+      "realistic_price_eur": 121.89,
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "updated": "2026-09-01"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -498,12 +498,17 @@
           "price": 184.86,
           "date": "2026-08-22",
           "source": "Booking.com (apidojo) live 2026-08-22"
+        },
+        {
+          "price": 144.39,
+          "date": "2026-09-01",
+          "source": "Booking.com (apidojo) live 2026-09-01"
         }
       ],
-      "realistic_price_eur": 184.86,
-      "note": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €184.86/night (€924.3 total, 5 nights), review 8.6. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-22",
-      "updated": "2026-08-22"
+      "realistic_price_eur": 164.62,
+      "note": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €144.39/night (€721.94 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "updated": "2026-09-01"
     },
     "sparesortstivanrilski|2026-09": {
       "samples": [
@@ -543,6 +548,19 @@
       "note": "Verified Sealife Family Resort Hotel, 5-star for Sep 21-28, 2026: €221.96/night (€1553.74 total, 7 nights), review 9.2. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-08-28",
       "updated": "2026-08-28"
+    },
+    "mursalitsahotel|2027-01": {
+      "samples": [
+        {
+          "price": 219.71,
+          "date": "2026-09-01",
+          "source": "Booking.com (apidojo) live 2026-09-01"
+        }
+      ],
+      "realistic_price_eur": 219.71,
+      "note": "Verified Hotel Mursalitsa by HMG - Half board, 3-star for Jan 14-17, 2027: €219.71/night (€659.12 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "updated": "2026-09-01"
     }
   },
   "ledger": [
@@ -2448,6 +2466,58 @@
       "final_score": 87,
       "source": "Lucy Hotel official website and aggregator check 2026-08-31",
       "note": "A straightforward 3-hour drive delivers a premium seaside break, but outdoor-only pools risk low utility if the mid-September weather turns cool."
+    },
+    {
+      "date": "2026-09-01",
+      "destination": "Bratislava Autumn City Break",
+      "window": "Oct 6-10, 2026",
+      "type": "flight",
+      "claimed_price": 26,
+      "verdict": "skip",
+      "actual_price": 57.14,
+      "llm_score": 52,
+      "final_score": 55,
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "note": "While the direct flight from Plovdiv minimizes transit friction, a 4-night city break offers mostly walking and sightseeing with limited high-utility activities for a four-year-old."
+    },
+    {
+      "date": "2026-09-01",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 130,
+      "verdict": "good",
+      "actual_price": 117.91,
+      "llm_score": 85,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "note": "A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent warm mineral pools and highly rated facilities that a toddler will love."
+    },
+    {
+      "date": "2026-09-01",
+      "destination": "Sunny Beach Late Season Escape",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 185,
+      "verdict": "good",
+      "actual_price": 144.39,
+      "llm_score": 80,
+      "final_score": 90,
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "note": "Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a straightforward drive eliminates mealtime friction and keeps toddler utility high."
+    },
+    {
+      "date": "2026-09-01",
+      "destination": "Pamporovo Winter Early Bird",
+      "window": "Jan 14-17, 2027",
+      "type": "hotel",
+      "claimed_price": 97,
+      "verdict": "skip",
+      "actual_price": 219.71,
+      "llm_score": 58,
+      "final_score": 50,
+      "source": "Booking.com (apidojo) live 2026-09-01",
+      "note": "While the drive is easy and the destination is great for snow, a 3-star hotel offers more limited indoor utility for a toddler who will spend minimal time on the slopes."
     }
   ]
 }

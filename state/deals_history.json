@@ -2770,6 +2770,130 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-01",
+      "deal_id": 1,
+      "destination": "Bratislava Autumn City Break",
+      "type": "flight",
+      "window": "Oct 6-10, 2026",
+      "tier": "skip",
+      "llm_score": 52,
+      "price_adj": 0,
+      "transit_adj": 3,
+      "final_score": 55,
+      "flight_cost_eur_total": 100,
+      "ground_transport_eur": 30,
+      "effective_ppn": 89.64,
+      "confidence": "medium",
+      "summary": "best-value family stays in Bratislava for Oct 6-10, 2026: Vila Ria €57.14/night; Vienna Gate apartment €60.0/night; BNB Sunny Balcony Studio Bratislava €60.74/night.",
+      "about": "These accommodations represent solid, centrally located apartment and budget hotel options in Bratislava, providing convenient bases for urban exploration. The city itself is compact, highly walkable, and crowned by a scenic castle that offers some novelty for younger children. However, families with a toddler should expect a largely pedestrian-heavy itinerary with fewer dedicated resort-style amenities or pools to fall back on.",
+      "value_case": "Securing a central apartment or studio for around €57-60 a night is a strong deal for a European capital, where similar spaces usually run closer to €90. Combined with ultra-cheap direct flights, the overall trip cost is exceptionally low, even if the family utility is modest.",
+      "why": "While the direct flight from Plovdiv minimizes transit friction, a 4-night city break offers mostly walking and sightseeing with limited high-utility activities for a four-year-old.",
+      "red_flags": "A city-heavy itinerary can lead to toddler exhaustion, and late-autumn weather in Central Europe may limit outdoor playground time.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-06-2026-10-10, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 6-10, 2026",
+          "nights": 4,
+          "price_per_night_eur": 57.14,
+          "total_eur": 228.57,
+          "source": "Booking.com (apidojo) live 2026-09-01",
+          "name": "Vila Ria",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Vila+Ria&checkin=2026-10-06&checkout=2026-10-10&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 6-10, 2026",
+          "nights": 4,
+          "price_per_night_eur": 60.0,
+          "total_eur": 240.0,
+          "source": "Booking.com (apidojo) live 2026-09-01",
+          "name": "Vienna Gate apartment",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Vienna+Gate+apartment&checkin=2026-10-06&checkout=2026-10-10&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 6-10, 2026",
+          "nights": 4,
+          "price_per_night_eur": 60.74,
+          "total_eur": 242.95,
+          "source": "Booking.com (apidojo) live 2026-09-01",
+          "name": "BNB Sunny Balcony Studio Bratislava",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=BNB+Sunny+Balcony+Studio+Bratislava&checkin=2026-10-06&checkout=2026-10-10&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-01",
+      "deal_id": 4,
+      "destination": "Pamporovo Winter Early Bird",
+      "type": "hotel",
+      "window": "Jan 14-17, 2027",
+      "tier": "skip",
+      "llm_score": 58,
+      "price_adj": -11,
+      "transit_adj": 3,
+      "final_score": 50,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Hotel Mursalitsa by HMG - Half board, 3-star for Jan 14-17, 2027: €219.71/night (€659.12 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
+      "about": "Hotel Mursalitsa by HMG is a comfortable 3-star mountain property in Pamporovo, featuring a very respectable 8.7 review score and half-board dining. It provides essential winter amenities, including a basic indoor spa and pool area to warm up after time in the snow. While adults and older kids can hit the ski slopes, a four-year-old will primarily rely on the indoor pool and short bouts of snow play, making the hotel's internal facilities the main attraction.",
+      "value_case": "At nearly €220 per night for a 3-star half-board stay, this price reflects peak winter premiums despite the 15% early booking discount. Similar mid-tier Pamporovo properties typically average around €180, so this feels slightly overpriced for the tier.",
+      "why": "While the drive is easy and the destination is great for snow, a 3-star hotel offers more limited indoor utility for a toddler who will spend minimal time on the slopes.",
+      "red_flags": "High nightly rate for a 3-star property; limited toddler-specific entertainment beyond the basic indoor pool.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2027-01-14–2027-01-17, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.7. Live rate: €219.71/night (€659.12 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Hotel+Mursalitsa+by+HMG+-+Half+board&checkin=2027-01-14&checkout=2027-01-17&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Jan 14-17, 2027",
+          "nights": 3,
+          "price_per_night_eur": 219.71,
+          "total_eur": 659.12,
+          "source": "Booking.com (apidojo) live 2026-09-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Hotel+Mursalitsa+by+HMG+-+Half+board&checkin=2027-01-14&checkout=2027-01-17&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-01",
+      "deal_id": 3,
+      "destination": "Sunny Beach Late Season Escape",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 80,
+      "price_adj": 13,
+      "transit_adj": -3,
+      "final_score": 90,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €144.39/night (€721.94 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "about": "Asteria Family Sunny Beach is a solid 4-star resort featuring an ultra-all-inclusive concept and an 8.5 review score. The property is designed with families in mind, offering multiple pools, easy beach access, and kids' entertainment. A four-year-old will benefit immensely from the accessible water activities and beach, while parents can enjoy the complete removal of meal-planning and dining logistics.",
+      "value_case": "Paying €144 per night for an ultra-all-inclusive family resort in early September is a very solid deal, as these packages normally hover around €195 before the season fully winds down. It provides highly predictable budgeting and great value for a family of three.",
+      "why": "Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a straightforward drive eliminates mealtime friction and keeps toddler utility high.",
+      "red_flags": "Being the very end of the summer season, verify that outdoor pools are still adequately heated and that kids' animation teams haven't yet finished their contracts.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.5. Live rate: €144.39/night (€721.94 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Asteria+Family+Sunny+Beach+-+Ultra+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 144.39,
+          "total_eur": 721.94,
+          "source": "Booking.com (apidojo) live 2026-09-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Asteria+Family+Sunny+Beach+-+Ultra+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€184.86/night here — this is 22% under.",
+      "child_price_caveat": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-# Diamond Finder Memory — updated 2026-09-01
+# Diamond Finder Memory — updated 2026-09-04
 
 ## Price Baselines (34 entries)
 
@@ -13,9 +13,9 @@ Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug
 _Source: Booking.com (apidojo) live 2026-07-03_
 
 ### asteriafamilysunnybeach|2026-09
-**Realistic:** ~€164.62/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 2
-Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €144.39/night (€721.94 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-01_
+**Realistic:** ~€146.93/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 3
+Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €146.93/night (€734.66 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-04_
 
 ### balneocomplexandspaaquatonik|2026-08
 **Realistic:** ~€116.39/night &nbsp; **Updated:** 2026-07-17 &nbsp; **Samples:** 1
@@ -93,9 +93,9 @@ Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.8
 _Source: Booking.com (apidojo) live 2026-07-17_
 
 ### luckybanskoaparthotelspaandrelax|2026-09
-**Realistic:** ~€121.91/night &nbsp; **Updated:** 2026-08-28 &nbsp; **Samples:** 5
+**Realistic:** ~€121.91/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 5
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-08-28_
+_Source: Booking.com (apidojo) live 2026-09-04_
 
 ### mursalitsahotel|2027-01
 **Realistic:** ~€219.71/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 1
@@ -108,9 +108,9 @@ Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €1
 _Source: Booking.com (apidojo) live 2026-07-05_
 
 ### parkhotelandspavellahills|2026-09
-**Realistic:** ~€121.89/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 5
+**Realistic:** ~€121.89/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 5
 Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-01_
+_Source: Booking.com (apidojo) live 2026-09-04_
 
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
@@ -172,8 +172,13 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (153 entries)
+## Outcome Ledger (158 entries)
 
+- 👍 2026-09-04 | Bansko Mountain & SPA Break | Sep 11-14, 2026 | good score=92->100 claimed=€122 actual=€121.91 — A highly accessible, low-friction drive unlocks a premier flagship 5-star mountain property…
+- 👍 2026-09-04 | Velingrad Thermal Spa Retreat | Sep 18-21, 2026 | good score=86->98 claimed=€118 actual=€117.91 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
+- 👍 2026-09-04 | Sunny Beach Late Season Escape | Sep 6-11, 2026 | good score=83->89 claimed=€144 actual=€146.93 — Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a…
+- 👍 2026-09-04 | Antalya All-Inclusive Charter | Sep 15-22, 2026 | good score=75->87 claimed=€85 actual=€65 — Massive on-site excitement for a toddler is significantly offset by the logistics and potential…
+- · 2026-09-04 | Calabria Coastal Escape | Sep 20-27, 2026 | skip score=35->0 claimed=€29 actual=€53.93 — High travel friction, the need for a rental car, and a lack of on-site toddler utility make a B&B…
 - · 2026-09-01 | Bratislava Autumn City Break | Oct 6-10, 2026 | skip score=52->55 claimed=€26 actual=€57.14 — While the direct flight from Plovdiv minimizes transit friction, a 4-night city break offers mostly…
 - 👍 2026-09-01 | Velingrad Spa Retreat | Sep 18-21, 2026 | good score=85->99 claimed=€130 actual=€117.91 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
 - 👍 2026-09-01 | Sunny Beach Late Season Escape | Sep 6-11, 2026 | good score=80->90 claimed=€185 actual=€144.39 — Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a…
@@ -219,9 +224,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 👍 2026-07-31 | Hisarya Thermal Retreat | Sep 18-21, 2026 | good score=86->100 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a…
 - 👍 2026-07-31 | Bansko Mountain Retreat | Sep 3-6, 2026 | good score=82->99 claimed=€120 actual=€109.45 — An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short…
 - 👍 2026-07-31 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->94 claimed=€122 actual=€122.91 — A straightforward 3-hour highway drive to a premium 5-star coastal property maximizes the last of…
-- · 2026-07-31 | Direct Flights to Milan (MXP) | Sep 15-22, 2026 | skip score=55->58 claimed=€18 actual=€47.97 — Direct flights from Plovdiv eliminate the Sofia drive, but a 7-night city trip centered around a…
-- · 2026-07-31 | Corfu Late Summer Escape | Sep 8-15, 2026 | skip score=52->29 claimed=€20 actual=€71.16 — The high friction of driving to Sofia and flying with a toddler eats into the family value of a…
-- · 2026-07-28 | Velingrad Spa Retreat | Sep 10-13, 2026 | skip score=68->58 claimed=€52 actual=€113.61 — A very easy 1.5-hour drive provides near-zero transit friction for a quiet weekend, but the basic…
-- 👍 2026-07-28 | Sunny Beach Late Season Arbitrage | Sep 6-11, 2026 | good score=84->96 claimed=€95 actual=€121.57 — A straightforward highway drive unlocks a strong 5-star experience, with fully open pools and…
-- ❌ 2026-07-28 | New All-Inclusive Family Resort | Sep 15-22, 2026 | kill claimed=€135
-_... and 103 earlier entries_
+_... and 108 earlier entries_

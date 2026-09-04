@@ -3,11 +3,6 @@
     "luckybanskoaparthotelspaandrelax|2026-09": {
       "samples": [
         {
-          "price": 127.63,
-          "date": "2026-07-20",
-          "source": "Booking.com (apidojo) live 2026-07-20"
-        },
-        {
           "price": 104.57,
           "date": "2026-06-30",
           "source": "Booking.com (apidojo) live 2026-06-30"
@@ -26,12 +21,17 @@
           "price": 121.91,
           "date": "2026-08-28",
           "source": "Booking.com (apidojo) live 2026-08-28"
+        },
+        {
+          "price": 121.91,
+          "date": "2026-09-04",
+          "source": "Booking.com (apidojo) live 2026-09-04"
         }
       ],
       "realistic_price_eur": 121.91,
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-08-28",
-      "updated": "2026-08-28"
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "updated": "2026-09-04"
     },
     "hissarspahotel|2026-07": {
       "samples": [
@@ -176,11 +176,6 @@
     "parkhotelandspavellahills|2026-09": {
       "samples": [
         {
-          "price": 108.77,
-          "date": "2026-08-13",
-          "source": "Booking.com (apidojo) live 2026-08-13"
-        },
-        {
           "price": 121.89,
           "date": "2026-08-19",
           "source": "Booking.com (apidojo) live 2026-08-19"
@@ -199,12 +194,17 @@
           "price": 117.91,
           "date": "2026-09-01",
           "source": "Booking.com (apidojo) live 2026-09-01"
+        },
+        {
+          "price": 117.91,
+          "date": "2026-09-04",
+          "source": "Booking.com (apidojo) live 2026-09-04"
         }
       ],
       "realistic_price_eur": 121.89,
       "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-01",
-      "updated": "2026-09-01"
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "updated": "2026-09-04"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -503,12 +503,17 @@
           "price": 144.39,
           "date": "2026-09-01",
           "source": "Booking.com (apidojo) live 2026-09-01"
+        },
+        {
+          "price": 146.93,
+          "date": "2026-09-04",
+          "source": "Booking.com (apidojo) live 2026-09-04"
         }
       ],
-      "realistic_price_eur": 164.62,
-      "note": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €144.39/night (€721.94 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-01",
-      "updated": "2026-09-01"
+      "realistic_price_eur": 146.93,
+      "note": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €146.93/night (€734.66 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "updated": "2026-09-04"
     },
     "sparesortstivanrilski|2026-09": {
       "samples": [
@@ -2518,6 +2523,71 @@
       "final_score": 50,
       "source": "Booking.com (apidojo) live 2026-09-01",
       "note": "While the drive is easy and the destination is great for snow, a 3-star hotel offers more limited indoor utility for a toddler who will spend minimal time on the slopes."
+    },
+    {
+      "date": "2026-09-04",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "good",
+      "actual_price": 121.91,
+      "llm_score": 92,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "note": "A highly accessible, low-friction drive unlocks a premier flagship 5-star mountain property offering top-tier indoor pools and dedicated kids' clubs."
+    },
+    {
+      "date": "2026-09-04",
+      "destination": "Velingrad Thermal Spa Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 117.91,
+      "llm_score": 86,
+      "final_score": 98,
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "note": "A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent warm mineral pools in a quiet, high-quality 4-star setting."
+    },
+    {
+      "date": "2026-09-04",
+      "destination": "Sunny Beach Late Season Escape",
+      "window": "Sep 6-11, 2026",
+      "type": "hotel",
+      "claimed_price": 144,
+      "verdict": "good",
+      "actual_price": 146.93,
+      "llm_score": 83,
+      "final_score": 89,
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "note": "Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a straightforward drive offers massive toddler utility."
+    },
+    {
+      "date": "2026-09-04",
+      "destination": "Antalya All-Inclusive Charter",
+      "window": "Sep 15-22, 2026",
+      "type": "package",
+      "claimed_price": 85,
+      "verdict": "good",
+      "actual_price": 65,
+      "llm_score": 75,
+      "final_score": 87,
+      "source": "Aggregated charter package market data for Sofia-Antalya (2026)",
+      "note": "Massive on-site excitement for a toddler is significantly offset by the logistics and potential exhaustion of driving to Sofia to catch a charter flight."
+    },
+    {
+      "date": "2026-09-04",
+      "destination": "Calabria Coastal Escape",
+      "window": "Sep 20-27, 2026",
+      "type": "flight",
+      "claimed_price": 29,
+      "verdict": "skip",
+      "actual_price": 53.93,
+      "llm_score": 35,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-09-04",
+      "note": "High travel friction, the need for a rental car, and a lack of on-site toddler utility make a B&B stay in southern Italy a poor value fit for this family."
     }
   ]
 }

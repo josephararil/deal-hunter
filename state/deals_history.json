@@ -2894,6 +2894,130 @@
       ],
       "baseline_note": "Typically ~€184.86/night here — this is 22% under.",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-04",
+      "deal_id": 4,
+      "destination": "Antalya All-Inclusive Charter",
+      "type": "package",
+      "window": "Sep 15-22, 2026",
+      "tier": "good",
+      "llm_score": 75,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 87,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": 50,
+      "effective_ppn": 72.14285714285714,
+      "confidence": "high",
+      "summary": "I verified that Antalya all-inclusive charter packages from Sofia are readily available, but the price is much higher than your initial €85 estimate. A 7-night all-inclusive package for late September 2026 typically starts at approximately €455 per person (€65/night), which includes flights, hotel, and transfers. You will need to book through established Bulgarian tour operators like Megalo Travel or similar agencies.",
+      "about": "This represents a classic Antalya all-inclusive package, providing a week in a large resort on the Turkish Riviera with flights from Sofia included. The destination is unparalleled for families, offering massive sprawling pools, waterparks, and endless food options. However, it requires a drive to Sofia, an international flight, and a bus transfer to the hotel.",
+      "value_case": "The quoted €65/night appears to be a per-person rate rather than the total family cost, which would typically run around €250/night overall. If this genuinely covers the whole family, it is an astonishing steal; otherwise, it is standard pricing for late September charters.",
+      "why": "Massive on-site excitement for a toddler is significantly offset by the logistics and potential exhaustion of driving to Sofia to catch a charter flight.",
+      "red_flags": "Charter flights notoriously operate at anti-social hours (red-eyes) which can severely impact a 4-year-old, and the pricing is highly likely a per-person rather than total family rate.",
+      "grounding": "Live search confirms that 'All-Inclusive' charter packages for 7 nights from Sofia to Antalya are standard products sold by Bulgarian travel agencies. The initial estimate of €85 total is significantly lower than realistic market rates. Prices range from €450 to €600 per person for a full 7-night all-inclusive package, effectively €65+ per person, per night.",
+      "how_to_book": "These charter packages are typically sold through Bulgarian tour operators (e.g., Megalo Travel, Green Valleys). You must contact these operators directly via their websites or phone lines, as they consolidate flight and hotel inventory.",
+      "options": [
+        {
+          "dates": "Sep 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 65,
+          "total_eur": 455,
+          "source": "Aggregated charter package market data for Sofia-Antalya (2026)",
+          "booking_url": "null"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-04",
+      "deal_id": 5,
+      "destination": "Calabria Coastal Escape",
+      "type": "flight",
+      "window": "Sep 20-27, 2026",
+      "tier": "skip",
+      "llm_score": 35,
+      "price_adj": -52,
+      "transit_adj": -3,
+      "final_score": 0,
+      "flight_cost_eur_total": 300,
+      "ground_transport_eur": 250,
+      "effective_ppn": 132.50142857142856,
+      "confidence": "medium",
+      "summary": "best-value family stays in Lamezia Terme for Sep 20-27, 2026: B&B EMPIRA Lamezia Terme €53.93/night; Villa Maria €54.55/night; Hotel Ristorante La Mimosa €57.27/night.",
+      "about": "Lamezia Terme is a transport hub in Calabria, Southern Italy, serving as a gateway to the region's dramatic coastlines. The grounded options are basic B&Bs or small local hotels, which provide a place to sleep but lack resort amenities. Families with a toddler will need to rent a car and drive daily to find suitable beaches and entertainment.",
+      "value_case": "While €54/night is a perfectly normal rate for a basic Italian B&B, it represents poor overall value for this family. Once you factor in flights, car rental, and dining out for every meal, this budget escape quickly becomes an expensive logistical challenge.",
+      "why": "High travel friction, the need for a rental car, and a lack of on-site toddler utility make a B&B stay in southern Italy a poor value fit for this family.",
+      "red_flags": "A B&B offers zero on-site toddler utility (no pools, no kids' clubs), and exploring Calabria requires daily driving, maximizing travel friction.",
+      "grounding": "Booking.com (apidojo) city search 2026-09-20-2026-09-27, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Sep 20-27, 2026",
+          "nights": 7,
+          "price_per_night_eur": 53.93,
+          "total_eur": 377.5,
+          "source": "Booking.com (apidojo) live 2026-09-04",
+          "name": "B&B EMPIRA Lamezia Terme",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=B%26B+EMPIRA+Lamezia+Terme&checkin=2026-09-20&checkout=2026-09-27&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Sep 20-27, 2026",
+          "nights": 7,
+          "price_per_night_eur": 54.55,
+          "total_eur": 381.82,
+          "source": "Booking.com (apidojo) live 2026-09-04",
+          "name": "Villa Maria",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Villa+Maria&checkin=2026-09-20&checkout=2026-09-27&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Sep 20-27, 2026",
+          "nights": 7,
+          "price_per_night_eur": 57.27,
+          "total_eur": 400.91,
+          "source": "Booking.com (apidojo) live 2026-09-04",
+          "name": "Hotel Ristorante La Mimosa",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Hotel+Ristorante+La+Mimosa&checkin=2026-09-20&checkout=2026-09-27&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-04",
+      "deal_id": 3,
+      "destination": "Sunny Beach Late Season Escape",
+      "type": "hotel",
+      "window": "Sep 6-11, 2026",
+      "tier": "good",
+      "llm_score": 83,
+      "price_adj": 9,
+      "transit_adj": -3,
+      "final_score": 89,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €146.93/night (€734.66 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.",
+      "about": "Asteria Family is a solid 4-star ultra all-inclusive resort situated right in the center of Sunny Beach. It features extensive pools, a private beach area, and dedicated entertainment and kids' clubs. Early September still provides excellent beach weather, allowing a toddler to fully enjoy the sand and shallow waters before the resort winds down.",
+      "value_case": "Paying €147/night for an ultra all-inclusive setup for a family of three is a fantastic late-season catch. During peak summer, this tier of beachfront convenience easily exceeds €180-200 a night, making this a great value for maximizing the last days of summer.",
+      "why": "Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a straightforward drive offers massive toddler utility.",
+      "red_flags": "Check if the resort begins reducing its animation programs or closing specific kids' facilities in early September.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-06–2026-09-11, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.5. Live rate: €146.93/night (€734.66 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Asteria+Family+Sunny+Beach+-+Ultra+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 6-11, 2026",
+          "nights": 5,
+          "price_per_night_eur": 146.93,
+          "total_eur": 734.66,
+          "source": "Booking.com (apidojo) live 2026-09-04",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Asteria+Family+Sunny+Beach+-+Ultra+All+Inclusive&checkin=2026-09-06&checkout=2026-09-11&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€164.62/night here — this is 11% under.",
+      "child_price_caveat": true
     }
   ]
 }

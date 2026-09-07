@@ -24,13 +24,16 @@
     "bratislava|2026-10|skip": "2026-09-01",
     "mursalitsahotel|2027-01|skip": "2026-09-01",
     "antalya|2026-09|good": "2026-09-04",
-    "lameziaterme|2026-09|skip": "2026-09-04"
+    "lameziaterme|2026-09|skip": "2026-09-04",
+    "luckybanskoaparthotelspaandrelax|2026-09|diamond": "2026-09-07",
+    "sealifefamilyresorthotel|2026-10|good": "2026-09-07",
+    "aparthoteladagioromevatican|2026-10|skip": "2026-09-07"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
-    "2026-09": 2
+    "2026-09": 3
   },
   "degraded_count": {
     "2026-08": 1

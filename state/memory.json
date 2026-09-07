@@ -3,11 +3,6 @@
     "luckybanskoaparthotelspaandrelax|2026-09": {
       "samples": [
         {
-          "price": 104.57,
-          "date": "2026-06-30",
-          "source": "Booking.com (apidojo) live 2026-06-30"
-        },
-        {
           "price": 127.63,
           "date": "2026-07-21",
           "source": "Booking.com (apidojo) live 2026-07-21"
@@ -26,12 +21,17 @@
           "price": 121.91,
           "date": "2026-09-04",
           "source": "Booking.com (apidojo) live 2026-09-04"
+        },
+        {
+          "price": 122.63,
+          "date": "2026-09-07",
+          "source": "Booking.com (apidojo) live 2026-09-07"
         }
       ],
       "realistic_price_eur": 121.91,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 11-14, 2026: €121.91/night (€365.73 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-04",
-      "updated": "2026-09-04"
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €122.63/night (€367.88 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-07",
+      "updated": "2026-09-07"
     },
     "hissarspahotel|2026-07": {
       "samples": [
@@ -176,11 +176,6 @@
     "parkhotelandspavellahills|2026-09": {
       "samples": [
         {
-          "price": 121.89,
-          "date": "2026-08-19",
-          "source": "Booking.com (apidojo) live 2026-08-19"
-        },
-        {
           "price": 128.31,
           "date": "2026-08-28",
           "source": "Booking.com (apidojo) live 2026-08-28"
@@ -199,12 +194,17 @@
           "price": 117.91,
           "date": "2026-09-04",
           "source": "Booking.com (apidojo) live 2026-09-04"
+        },
+        {
+          "price": 117.91,
+          "date": "2026-09-07",
+          "source": "Booking.com (apidojo) live 2026-09-07"
         }
       ],
-      "realistic_price_eur": 121.89,
+      "realistic_price_eur": 117.91,
       "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-04",
-      "updated": "2026-09-04"
+      "source": "Booking.com (apidojo) live 2026-09-07",
+      "updated": "2026-09-07"
     },
     "gardeniaparkhotel|2026-08": {
       "samples": [
@@ -566,6 +566,19 @@
       "note": "Verified Hotel Mursalitsa by HMG - Half board, 3-star for Jan 14-17, 2027: €219.71/night (€659.12 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-09-01",
       "updated": "2026-09-01"
+    },
+    "sealifefamilyresorthotel|2026-10": {
+      "samples": [
+        {
+          "price": 170.08,
+          "date": "2026-09-07",
+          "source": "Booking.com (apidojo) live 2026-09-07"
+        }
+      ],
+      "realistic_price_eur": 170.08,
+      "note": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €170.08/night (€1190.54 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-07",
+      "updated": "2026-09-07"
     }
   },
   "ledger": [
@@ -2588,6 +2601,71 @@
       "final_score": 0,
       "source": "Booking.com (apidojo) live 2026-09-04",
       "note": "High travel friction, the need for a rental car, and a lack of on-site toddler utility make a B&B stay in southern Italy a poor value fit for this family."
+    },
+    {
+      "date": "2026-09-07",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 25-28, 2026",
+      "type": "hotel",
+      "claimed_price": 121,
+      "verdict": "diamond",
+      "actual_price": 122.63,
+      "llm_score": 90,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-07",
+      "note": "A flagship 5-star mountain property offering guaranteed low-season family utility through top-tier indoor pools and kids' clubs, easily reached via a low-friction 2.5h drive."
+    },
+    {
+      "date": "2026-09-07",
+      "destination": "Velingrad Thermal Spa Retreat",
+      "window": "Sep 18-21, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 117.91,
+      "llm_score": 84,
+      "final_score": 98,
+      "source": "Booking.com (apidojo) live 2026-09-07",
+      "note": "An effortless 1.5-hour drive delivers outstanding guaranteed family utility through warm mineral pools and active play areas, ideal for a short weekend getaway."
+    },
+    {
+      "date": "2026-09-07",
+      "destination": "Kavala Shoulder-Season Escape",
+      "window": "Oct 1-5, 2026",
+      "type": "hotel",
+      "claimed_price": 130,
+      "verdict": "kill",
+      "actual_price": null,
+      "llm_score": null,
+      "final_score": null,
+      "source": "",
+      "note": ""
+    },
+    {
+      "date": "2026-09-07",
+      "destination": "Antalya Late-Season Resort Deal",
+      "window": "Oct 23-30, 2026",
+      "type": "hotel",
+      "claimed_price": 160,
+      "verdict": "good",
+      "actual_price": 170.08,
+      "llm_score": 78,
+      "final_score": 73,
+      "source": "Booking.com (apidojo) live 2026-09-07",
+      "note": "The huge value of a 7-night all-inclusive stay with fully operating indoor pools is slightly tempered by the logistical friction of flying via Sofia with a toddler."
+    },
+    {
+      "date": "2026-09-07",
+      "destination": "Rome Autumn City Break",
+      "window": "Oct 24-29, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 182,
+      "llm_score": 55,
+      "final_score": 43,
+      "source": "Accor ALL direct booking portal 2026-09-07",
+      "note": "Connecting via Sofia to reach a museum-heavy destination offers limited utility for a 4-year-old, further hampered by the closed outdoor pool and high travel friction."
     }
   ]
 }

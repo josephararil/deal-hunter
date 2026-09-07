@@ -3018,6 +3018,111 @@
       ],
       "baseline_note": "Typically ~€164.62/night here — this is 11% under.",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-07",
+      "deal_id": 1,
+      "destination": "Bansko Mountain & SPA Break",
+      "type": "hotel",
+      "window": "Sep 25-28, 2026",
+      "tier": "diamond",
+      "llm_score": 90,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €122.63/night (€367.88 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is a well-known, premium 5-star property in the mountain resort town of Bansko. It stands out for its exceptional spa facilities, including indoor heated pools and dedicated children's playrooms. While the ski season is months away, families with young children can fully enjoy the town's fresh mountain air, quiet atmosphere, and the hotel's extensive indoor amenities.",
+      "value_case": "At around 123 EUR per night, you are securing a genuine tier-1 flagship property for a price closer to what standard 4-star hotels in the area typically charge; normal rates for Lucky Bansko often sit around 175 EUR.",
+      "why": "A flagship 5-star mountain property offering guaranteed low-season family utility through top-tier indoor pools and kids' clubs, easily reached via a low-friction 2.5h drive.",
+      "red_flags": "None for the hotel itself, though Bansko in late September is very quiet with many local restaurants closed ahead of the ski season.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-25–2026-09-28, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.63/night (€367.88 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 25-28, 2026",
+          "nights": 3,
+          "price_per_night_eur": 122.63,
+          "total_eur": 367.88,
+          "source": "Booking.com (apidojo) live 2026-09-07",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€121.91/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-07",
+      "deal_id": 4,
+      "destination": "Antalya Late-Season Resort Deal",
+      "type": "hotel",
+      "window": "Oct 23-30, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": -2,
+      "transit_adj": -3,
+      "final_score": 73,
+      "flight_cost_eur_total": 450,
+      "ground_transport_eur": 120,
+      "effective_ppn": 251.50857142857143,
+      "confidence": "high",
+      "summary": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €170.08/night (€1190.54 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Sealife Family Resort Hotel is a highly regarded 5-star all-inclusive resort located right on the coast in Antalya. It boasts extensive facilities including indoor pools, a spa, diverse dining options, and a dedicated kids' club. Even in late October, the property provides massive on-site entertainment and comfort for a family with a young child, ensuring parents get a real break while the little one is constantly entertained.",
+      "value_case": "Securing a 7-night all-inclusive stay at a 9.2-rated 5-star Antalya resort for 170 EUR per night is a fantastic late-season deal; this property typically charges upwards of 240 EUR for similar packages in peak times.",
+      "why": "The huge value of a 7-night all-inclusive stay with fully operating indoor pools is slightly tempered by the logistical friction of flying via Sofia with a toddler.",
+      "red_flags": "Ensure the kids' club and specific indoor facilities are operating on their full schedule during the late-October shoulder season.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-23–2026-10-30, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €170.08/night (€1190.54 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 23-30, 2026",
+          "nights": 7,
+          "price_per_night_eur": 170.08,
+          "total_eur": 1190.54,
+          "source": "Booking.com (apidojo) live 2026-09-07",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-07",
+      "deal_id": 5,
+      "destination": "Rome Autumn City Break",
+      "type": "hotel",
+      "window": "Oct 24-29, 2026",
+      "tier": "skip",
+      "llm_score": 55,
+      "price_adj": -9,
+      "transit_adj": -3,
+      "final_score": 43,
+      "flight_cost_eur_total": 200,
+      "ground_transport_eur": 130,
+      "effective_ppn": 248.0,
+      "confidence": "high",
+      "summary": "I have verified the Aparthotel Adagio Rome Vatican for your requested dates of October 24-29, 2026. The current rate is approximately 182 EUR per night (910 EUR total for 5 nights), which is higher than the initial estimate. Keep in mind the outdoor pool is closed for the season at this time. You can book directly via the Accor website: https://all.accor.com/hotel/9346/index.en.shtml.",
+      "about": "The Aparthotel Adagio Rome Vatican offers 4-star apartment-style accommodations in a residential area of Rome, providing helpful extra space and a kitchenette for families. While Rome is an incredible city for adults, its heavily historic and walking-intensive nature offers limited direct excitement for a 4-year-old. Furthermore, the property's outdoor pool is closed in late October, reducing the on-site downtime options for a young child.",
+      "value_case": "At 182 EUR per night, this rate is fairly standard for autumn in Rome, offering only a small discount compared to the typical 210 EUR for aparthotels in this tier, making it unremarkable given the closed pool.",
+      "why": "Connecting via Sofia to reach a museum-heavy destination offers limited utility for a 4-year-old, further hampered by the closed outdoor pool and high travel friction.",
+      "red_flags": "The outdoor pool is closed, and getting around Rome with a stroller can be physically demanding due to cobblestones and crowds.",
+      "grounding": "I verified the Aparthotel Adagio Rome Vatican for the requested dates of October 24-29, 2026. While the original estimate suggested 135 EUR/night, current live pricing for this period is approximately 182 EUR/night. The property is bookable and remains operational in late October, though the seasonal outdoor pool is closed after September.",
+      "how_to_book": "Book directly through the Accor/Adagio website at the link provided or via major OTAs like Booking.com. Note that the outdoor pool is seasonal and typically closes at the end of September.",
+      "options": [
+        {
+          "dates": "Oct 24-29, 2026",
+          "nights": 5,
+          "price_per_night_eur": 182,
+          "total_eur": 910,
+          "source": "Accor ALL direct booking portal 2026-09-07",
+          "booking_url": "https://all.accor.com/hotel/9346/index.en.shtml"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

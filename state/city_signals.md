@@ -1,59 +1,57 @@
-# Diamond Finder — 2026-09-07
+# Diamond Finder — 2026-09-10
 
-_Stage 1: 5 candidate(s). 5 grounded · 4 scored · 0 unscored. 1 diamond · 2 good._
+_Stage 1: 5 candidate(s). 4 grounded · 4 scored · 0 unscored. 1 diamond · 1 good._
 
-### Bansko Mountain & SPA Break 💎 — FIND 95/100 (high) · est €121/night
+### Velingrad Thermal Spa Retreat 👍 — FIND 95/100 (high) · est €110/night
+**Type:** hotel &nbsp; **Window:** Sep 20-23, 2026
+An effortless 1.5-hour drive delivers outstanding guaranteed family utility. Mid-week late September rates drop significantly post-summer, providing luxury thermal pools and active play areas for a 4-year-old at excellent value.
+_Score: LLM 90 +0 price +3 transit = **93** → good_
+
+### Bansko Mountain & SPA Break 💎 — FIND 92/100 (high) · est €122/night
 **Type:** hotel &nbsp; **Window:** Sep 25-28, 2026
-With the ski season months away, premium 5-star properties in Bansko aggressively discount to fill rooms. A highly accessible, low-friction 2.5h drive from Plovdiv unlocks a flagship mountain property offering top-tier indoor heated pools and dedicated kids' playrooms, delivering guaranteed low-season family utility for a short 3-night break.
-_Score: LLM 90 +15 price +3 transit = **100** → diamond_
+A highly accessible 2.5-hour drive unlocks a premier flagship 5-star mountain property offering top-tier indoor heated pools and dedicated kids' playrooms. September offers perfect mountain air at a massive discount compared to winter.
+_Score: LLM 95 +15 price +3 transit = **100** → diamond_
 
-### Velingrad Thermal Spa Retreat 👍 — FIND 94/100 (high) · est €118/night
-**Type:** hotel &nbsp; **Window:** Sep 18-21, 2026
-Mid-to-late September sees average rates in Velingrad drop as peak summer family demand wanes. A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent warm mineral pools and active play areas, ideal for a punchy 3-night weekend getaway.
-_Score: LLM 84 +11 price +3 transit = **98** → good_
+### Antalya All-Inclusive Charter · — FIND 89/100 (high) · est €142/night
+**Type:** package &nbsp; **Window:** Oct 8-15, 2026
+A dedicated charter flight directly from Plovdiv (PDV) eliminates Sofia transit logistics. A 7-night all-inclusive late-season stay in Belek offers massive toddler utility with kids' clubs and heated pools at ~1000 EUR total, an absolute steal.
+_Score: LLM 72 -20 price -3 transit = **49** → skip_
 
-### Kavala Shoulder-Season Escape — FIND 88/100 (high) · est €130/night
-**Type:** hotel &nbsp; **Window:** Oct 1-5, 2026
-Operating in the quieter autumn period, this luxury boutique resort near Ammolofoi beach drops to shoulder-season rates. At just a 3-hour drive from Plovdiv, it offers a highly manageable coastal escape with premium comfort, zero flight hassle, and quiet beaches before the winter chill sets in.
+### Athens Autumn City Break · — FIND 83/100 (medium) · est €130/night
+**Type:** hotel &nbsp; **Window:** Oct 15-20, 2026
+Direct 46 EUR flights from Sofia make Athens highly accessible. A high-excitement destination like this justifies the Sofia transit, and October provides mild, pleasant weather for exploring with a toddler without the summer heat exhaustion.
+_Score: LLM 48 -21 price -3 transit = **24** → skip_
 
-### Antalya Late-Season Resort Deal 👍 — FIND 85/100 (high) · est €160/night
-**Type:** hotel &nbsp; **Window:** Oct 23-30, 2026
-October is the sweet spot for Antalya: massive all-inclusive resorts drop their prices while direct flights from Sofia remain frequent and cheap (~€55 one-way). The high transit friction via Sofia is entirely offset by the huge value of a 7-night stay with fully operating indoor pools and kids' clubs.
-_Score: LLM 78 -2 price -3 transit = **73** → good_
-
-### Rome Autumn City Break · — FIND 82/100 (medium) · est €135/night
-**Type:** hotel &nbsp; **Window:** Oct 24-29, 2026
-Driven by ultra-low flash-sale fares on Wizz Air from Sofia (as low as €19 one-way), Rome becomes highly accessible in late October. The destination's massive excitement and cultural value justify the Tier-2 Sofia transit for a 5-night stay, paired with shoulder-season apartment pricing perfect for a family of 3.
-_Score: LLM 55 -9 price -3 transit = **43** → skip_
+### Rome Autumn City Break — FIND 43/100 (high) · est €15/night
+**Type:** flight &nbsp; **Window:** Oct 14-19, 2026
+Extremely low 15 EUR promotional Ryanair flights from Sofia. However, connecting via Sofia to reach a museum-heavy destination offers limited utility for a 4-year-old, keeping the score low despite the cheap airfare.
 
 ## Grounding & scoring
 
+### 🔧 SPA Hotel Infinity Park Velingrad — CORRECT (confidence: high) → final **93** (good)
+**Summary:** Verified SPA Hotel Infinity Park Velingrad, 5-star for Sep 20-23, 2026: €285.0/night (€855.0 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.
+**Options:**
+  - Sep 20-23, 2026 · €285.0/night · €855.0 total · [book](https://www.booking.com/searchresults.html?ss=SPA+Hotel+Infinity+Park+Velingrad&checkin=2026-09-20&checkout=2026-09-23&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-10_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=SPA+Hotel+Infinity+Park+Velingrad&checkin=2026-09-20&checkout=2026-09-23&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-23, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.1. Live rate: €285.0/night (€855.0 total).
+
 ### ✅ Lucky Bansko Aparthotel SPA & Relax — CONFIRM (confidence: high) → final **100** (diamond)
-**Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €122.63/night (€367.88 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
+**Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €123.97/night (€371.92 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
 **Options:**
-  - Sep 25-28, 2026 · €122.63/night · €367.88 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-07_
+  - Sep 25-28, 2026 · €123.97/night · €371.92 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-10_
 **How to book:** Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-09-25&checkout=2026-09-28&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-25–2026-09-28, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.63/night (€367.88 total).
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-25–2026-09-28, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €123.97/night (€371.92 total).
 
-### ✅ Park Hotel and SPA Vella Hills — CONFIRM (confidence: high) → final **98** (good)
-**Summary:** Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
+### 🔧 Granada Luxury Belek - Family Kids Concept — CORRECT (confidence: high) → final **49** (skip)
+**Summary:** Verified Granada Luxury Belek - Family Kids Concept, 5-star for Oct 8-15, 2026: €342.39/night (€2396.73 total, 7 nights), review 7.9. Price corrected from the Stage-1 estimate.
 **Options:**
-  - Sep 18-21, 2026 · €117.91/night · €353.74 total · [book](https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-07_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-09-18&checkout=2026-09-21&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-09-18–2026-09-21, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €117.91/night (€353.74 total).
+  - Oct 8-15, 2026 · €342.39/night · €2396.73 total · [book](https://www.booking.com/searchresults.html?ss=Granada+Luxury+Belek+-+Family+Kids+Concept&checkin=2026-10-08&checkout=2026-10-15&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-10_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Granada+Luxury+Belek+-+Family+Kids+Concept&checkin=2026-10-08&checkout=2026-10-15&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-10-08–2026-10-15, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 7.9. Live rate: €342.39/night (€2396.73 total).
 
-### ❌ Kavala Shoulder-Season Escape — ? (confidence: ?)
-
-### ✅ Sealife Family Resort Hotel — CONFIRM (confidence: high) → final **73** (good)
-**Summary:** Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €170.08/night (€1190.54 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.
+### 🔧 Athens Autumn City Break — CORRECT (confidence: high) → final **24** (skip)
+**Summary:** I have verified the Grecotel Pallas Athena as a bookable, active property in Athens. The actual rates for October 15–20, 2026, are closer to €245 per night (total ~€1,225 for 5 nights), which is higher than your original €130 estimate. You can book directly through the official website at https://www.grecotel.com/pallas-athena/.
 **Options:**
-  - Oct 23-30, 2026 · €170.08/night · €1190.54 total · [book](https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-07_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-10-23–2026-10-30, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €170.08/night (€1190.54 total).
-
-### 🔧 Rome Autumn City Break — CORRECT (confidence: high) → final **43** (skip)
-**Summary:** I have verified the Aparthotel Adagio Rome Vatican for your requested dates of October 24-29, 2026. The current rate is approximately 182 EUR per night (910 EUR total for 5 nights), which is higher than the initial estimate. Keep in mind the outdoor pool is closed for the season at this time. You can book directly via the Accor website: https://all.accor.com/hotel/9346/index.en.shtml.
-**Options:**
-  - Oct 24-29, 2026 · €182/night · €910 total · [book](https://all.accor.com/hotel/9346/index.en.shtml) · _Accor ALL direct booking portal 2026-09-07_
-**How to book:** Book directly through the Accor/Adagio website at the link provided or via major OTAs like Booking.com. Note that the outdoor pool is seasonal and typically closes at the end of September.
-**Grounding:** I verified the Aparthotel Adagio Rome Vatican for the requested dates of October 24-29, 2026. While the original estimate suggested 135 EUR/night, current live pricing for this period is approximately 182 EUR/night. The property is bookable and remains operational in late October, though the seasonal outdoor pool is closed after September.
+  - Oct 15-20, 2026 · €245/night · €1225 total · [book](https://www.grecotel.com/pallas-athena/) · _Grecotel official website and booking aggregators, September 2026_
+**How to book:** Book directly via the official Grecotel website at https://www.grecotel.com/pallas-athena/ or contact reservations at +30 210 3250900 / reservations.pa@grecotel.com.
+**Grounding:** Live search results confirm the property exists and is active for the specified dates, but market pricing for October 2026 is significantly higher than the estimate provided (approx. €245/night vs. €130/night). Prices reflect current demand and seasonal rates for 5-star central Athens properties.

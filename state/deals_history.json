@@ -3123,6 +3123,111 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-10",
+      "deal_id": 1,
+      "destination": "Velingrad Thermal Spa Retreat",
+      "type": "hotel",
+      "window": "Sep 20-23, 2026",
+      "tier": "good",
+      "llm_score": 90,
+      "price_adj": 0,
+      "transit_adj": 3,
+      "final_score": 93,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified SPA Hotel Infinity Park Velingrad, 5-star for Sep 20-23, 2026: €285.0/night (€855.0 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
+      "about": "SPA Hotel Infinity Park is a premier 5-star thermal retreat in Velingrad, known for its extensive warm mineral pools and high service standards. Families benefit from dedicated kids' pools, indoor play areas, and a highly relaxing environment for parents. The surrounding area offers pleasant parks and gentle walking paths perfect for a toddler.",
+      "value_case": "At €285/night, you are paying the standard premium rate for one of Velingrad's most sought-after 5-star properties. While not a deep discount, it delivers reliable luxury and superior amenities compared to standard €150-€200 alternatives.",
+      "why": "A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent warm mineral pools and top-tier spa facilities.",
+      "red_flags": "Verify specific pool access policies for toddlers, as some high-end spas restrict children from adult-only thermal zones.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-09-20–2026-09-23, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.1. Live rate: €285.0/night (€855.0 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=SPA+Hotel+Infinity+Park+Velingrad&checkin=2026-09-20&checkout=2026-09-23&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Sep 20-23, 2026",
+          "nights": 3,
+          "price_per_night_eur": 285.0,
+          "total_eur": 855.0,
+          "source": "Booking.com (apidojo) live 2026-09-10",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=SPA+Hotel+Infinity+Park+Velingrad&checkin=2026-09-20&checkout=2026-09-23&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-10",
+      "deal_id": 2,
+      "destination": "Antalya All-Inclusive Charter",
+      "type": "package",
+      "window": "Oct 8-15, 2026",
+      "tier": "skip",
+      "llm_score": 72,
+      "price_adj": -20,
+      "transit_adj": -3,
+      "final_score": 49,
+      "flight_cost_eur_total": 900,
+      "ground_transport_eur": 50,
+      "effective_ppn": 478.1042857142857,
+      "confidence": "high",
+      "summary": "Verified Granada Luxury Belek - Family Kids Concept, 5-star for Oct 8-15, 2026: €342.39/night (€2396.73 total, 7 nights), review 7.9. Price corrected from the Stage-1 estimate.",
+      "about": "Granada Luxury Belek is a colossal 5-star resort in Antalya, famous for its massive pool complexes and extensive entertainment facilities. For a family with a 4-year-old, it offers a dedicated Kids Concept with clubs, aquaparks, and evening shows. While the sheer scale is impressive, the modest 7.9 review score suggests it can be crowded and service may be inconsistent.",
+      "value_case": "The grounded price of €342/night is quite steep for an October stay in Antalya, where comparable 5-star resorts often sit closer to €250. This premium likely reflects the specialized kids' facilities, but it is certainly not a bargain.",
+      "why": "Massive toddler utility with extensive kids' clubs is partially offset by the logistics of a flight, the 7.9 review score, and the risk of chilly outdoor pools in mid-October.",
+      "red_flags": "A 7.9 review score for a Turkish 5-star often indicates service or crowding issues; verify if the main outdoor pools are heated in October.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-08–2026-10-15, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 7.9. Live rate: €342.39/night (€2396.73 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Granada+Luxury+Belek+-+Family+Kids+Concept&checkin=2026-10-08&checkout=2026-10-15&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 8-15, 2026",
+          "nights": 7,
+          "price_per_night_eur": 342.39,
+          "total_eur": 2396.73,
+          "source": "Booking.com (apidojo) live 2026-09-10",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Granada+Luxury+Belek+-+Family+Kids+Concept&checkin=2026-10-08&checkout=2026-10-15&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-10",
+      "deal_id": 5,
+      "destination": "Athens Autumn City Break",
+      "type": "hotel",
+      "window": "Oct 15-20, 2026",
+      "tier": "skip",
+      "llm_score": 48,
+      "price_adj": -21,
+      "transit_adj": -3,
+      "final_score": 24,
+      "flight_cost_eur_total": 450,
+      "ground_transport_eur": 100,
+      "effective_ppn": 355.0,
+      "confidence": "high",
+      "summary": "I have verified the Grecotel Pallas Athena as a bookable, active property in Athens. The actual rates for October 15–20, 2026, are closer to €245 per night (total ~€1,225 for 5 nights), which is higher than your original €130 estimate. You can book directly through the official website at https://www.grecotel.com/pallas-athena/.",
+      "about": "Grecotel Pallas Athena is a boutique 5-star hotel in central Athens, featuring artsy decor and comfortable family rooms. While the property offers high-quality dining and service, Athens as a destination leans heavily toward historical sites and museums. A family with a 4-year-old will spend much of their time navigating busy city streets and ancient ruins.",
+      "value_case": "At €245/night, this is a standard rate for a central 5-star boutique hotel in Athens during the pleasant October shoulder season. It represents fair market value for a high-end city stay, without being a notable discount.",
+      "why": "A 5-night stay in a busy, museum-heavy city offers limited engagement for a 4-year-old, further hampered by the friction of navigating flights via Sofia.",
+      "red_flags": "A 5-night city break offers limited toddler utility, and navigating ancient ruins or busy sidewalks with a stroller can be highly frustrating.",
+      "grounding": "Live search results confirm the property exists and is active for the specified dates, but market pricing for October 2026 is significantly higher than the estimate provided (approx. €245/night vs. €130/night). Prices reflect current demand and seasonal rates for 5-star central Athens properties.",
+      "how_to_book": "Book directly via the official Grecotel website at https://www.grecotel.com/pallas-athena/ or contact reservations at +30 210 3250900 / reservations.pa@grecotel.com.",
+      "options": [
+        {
+          "dates": "Oct 15-20, 2026",
+          "nights": 5,
+          "price_per_night_eur": 245,
+          "total_eur": 1225,
+          "source": "Grecotel official website and booking aggregators, September 2026",
+          "booking_url": "https://www.grecotel.com/pallas-athena/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

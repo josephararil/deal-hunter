@@ -3,11 +3,6 @@
     "luckybanskoaparthotelspaandrelax|2026-09": {
       "samples": [
         {
-          "price": 127.63,
-          "date": "2026-07-21",
-          "source": "Booking.com (apidojo) live 2026-07-21"
-        },
-        {
           "price": 121.91,
           "date": "2026-08-25",
           "source": "Booking.com (apidojo) live 2026-08-25"
@@ -26,12 +21,17 @@
           "price": 122.63,
           "date": "2026-09-07",
           "source": "Booking.com (apidojo) live 2026-09-07"
+        },
+        {
+          "price": 123.97,
+          "date": "2026-09-10",
+          "source": "Booking.com (apidojo) live 2026-09-10"
         }
       ],
       "realistic_price_eur": 121.91,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €122.63/night (€367.88 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-07",
-      "updated": "2026-09-07"
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €123.97/night (€371.92 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-10",
+      "updated": "2026-09-10"
     },
     "hissarspahotel|2026-07": {
       "samples": [
@@ -579,6 +579,32 @@
       "note": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €170.08/night (€1190.54 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-09-07",
       "updated": "2026-09-07"
+    },
+    "spahotelinfinitypark|2026-09": {
+      "samples": [
+        {
+          "price": 285.0,
+          "date": "2026-09-10",
+          "source": "Booking.com (apidojo) live 2026-09-10"
+        }
+      ],
+      "realistic_price_eur": 285.0,
+      "note": "Verified SPA Hotel Infinity Park Velingrad, 5-star for Sep 20-23, 2026: €285.0/night (€855.0 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-10",
+      "updated": "2026-09-10"
+    },
+    "granadaluxurybelek|2026-10": {
+      "samples": [
+        {
+          "price": 342.39,
+          "date": "2026-09-10",
+          "source": "Booking.com (apidojo) live 2026-09-10"
+        }
+      ],
+      "realistic_price_eur": 342.39,
+      "note": "Verified Granada Luxury Belek - Family Kids Concept, 5-star for Oct 8-15, 2026: €342.39/night (€2396.73 total, 7 nights), review 7.9. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-10",
+      "updated": "2026-09-10"
     }
   },
   "ledger": [
@@ -2666,6 +2692,58 @@
       "final_score": 43,
       "source": "Accor ALL direct booking portal 2026-09-07",
       "note": "Connecting via Sofia to reach a museum-heavy destination offers limited utility for a 4-year-old, further hampered by the closed outdoor pool and high travel friction."
+    },
+    {
+      "date": "2026-09-10",
+      "destination": "Velingrad Thermal Spa Retreat",
+      "window": "Sep 20-23, 2026",
+      "type": "hotel",
+      "claimed_price": 110,
+      "verdict": "good",
+      "actual_price": 285.0,
+      "llm_score": 90,
+      "final_score": 93,
+      "source": "Booking.com (apidojo) live 2026-09-10",
+      "note": "A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent warm mineral pools and top-tier spa facilities."
+    },
+    {
+      "date": "2026-09-10",
+      "destination": "Antalya All-Inclusive Charter",
+      "window": "Oct 8-15, 2026",
+      "type": "package",
+      "claimed_price": 142,
+      "verdict": "skip",
+      "actual_price": 342.39,
+      "llm_score": 72,
+      "final_score": 49,
+      "source": "Booking.com (apidojo) live 2026-09-10",
+      "note": "Massive toddler utility with extensive kids' clubs is partially offset by the logistics of a flight, the 7.9 review score, and the risk of chilly outdoor pools in mid-October."
+    },
+    {
+      "date": "2026-09-10",
+      "destination": "Bansko Mountain & SPA Break",
+      "window": "Sep 25-28, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "diamond",
+      "actual_price": 123.97,
+      "llm_score": 95,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-10",
+      "note": "A highly accessible, low-friction drive unlocks a premier flagship 5-star mountain property offering top-tier indoor heated pools and exceptional kids' facilities."
+    },
+    {
+      "date": "2026-09-10",
+      "destination": "Athens Autumn City Break",
+      "window": "Oct 15-20, 2026",
+      "type": "hotel",
+      "claimed_price": 130,
+      "verdict": "skip",
+      "actual_price": 245,
+      "llm_score": 48,
+      "final_score": 24,
+      "source": "Grecotel official website and booking aggregators, September 2026",
+      "note": "A 5-night stay in a busy, museum-heavy city offers limited engagement for a 4-year-old, further hampered by the friction of navigating flights via Sofia."
     }
   ]
 }

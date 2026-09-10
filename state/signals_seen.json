@@ -1,8 +1,6 @@
 {
   "seen": {
     "saniresort|2026-09|diamond": "2026-08-28",
-    "galeonresidenceandspa|2026-09|diamond": "2026-08-10",
-    "premierluxurymountainresort|2026-09|diamond": "2026-08-10",
     "aparthotelluckybanskospaandrelax|2026-09|good": "2026-08-13",
     "santspahotel|2026-09|good": "2026-08-16",
     "helenaparkhotel|2026-09|good": "2026-08-16",
@@ -27,13 +25,16 @@
     "lameziaterme|2026-09|skip": "2026-09-04",
     "luckybanskoaparthotelspaandrelax|2026-09|diamond": "2026-09-07",
     "sealifefamilyresorthotel|2026-10|good": "2026-09-07",
-    "aparthoteladagioromevatican|2026-10|skip": "2026-09-07"
+    "aparthoteladagioromevatican|2026-10|skip": "2026-09-07",
+    "spahotelinfinitypark|2026-09|good": "2026-09-10",
+    "granadaluxurybelek|2026-10|skip": "2026-09-10",
+    "grecotelpallasathena|2026-10|skip": "2026-09-10"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
-    "2026-09": 3
+    "2026-09": 4
   },
   "degraded_count": {
     "2026-08": 1

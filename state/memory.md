@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-09-07
+# Diamond Finder Memory — updated 2026-09-10
 
-## Price Baselines (35 entries)
+## Price Baselines (37 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -41,6 +41,11 @@ _Source: Booking.com (apidojo) live 2026-08-13_
 **Realistic:** ~€63.0/night &nbsp; **Updated:** 2026-07-15 &nbsp; **Samples:** 1
 Verified Gardenia Park Hotel, 4-star for Aug 21-24, 2026: €63.0/night (€189.01 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-15_
+
+### granadaluxurybelek|2026-10
+**Realistic:** ~€342.39/night &nbsp; **Updated:** 2026-09-10 &nbsp; **Samples:** 1
+Verified Granada Luxury Belek - Family Kids Concept, 5-star for Oct 8-15, 2026: €342.39/night (€2396.73 total, 7 nights), review 7.9. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-10_
 
 ### helenaparkhotel|2026-09
 **Realistic:** ~€220.97/night &nbsp; **Updated:** 2026-08-16 &nbsp; **Samples:** 1
@@ -93,9 +98,9 @@ Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Aug 6-9, 2026: €153.8
 _Source: Booking.com (apidojo) live 2026-07-17_
 
 ### luckybanskoaparthotelspaandrelax|2026-09
-**Realistic:** ~€121.91/night &nbsp; **Updated:** 2026-09-07 &nbsp; **Samples:** 5
-Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €122.63/night (€367.88 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-07_
+**Realistic:** ~€121.91/night &nbsp; **Updated:** 2026-09-10 &nbsp; **Samples:** 5
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €123.97/night (€371.92 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-10_
 
 ### mursalitsahotel|2027-01
 **Realistic:** ~€219.71/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 1
@@ -167,6 +172,11 @@ _Source: Booking.com (apidojo) live 2026-08-28_
 Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €170.08/night (€1190.54 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-09-07_
 
+### spahotelinfinitypark|2026-09
+**Realistic:** ~€285.0/night &nbsp; **Updated:** 2026-09-10 &nbsp; **Samples:** 1
+Verified SPA Hotel Infinity Park Velingrad, 5-star for Sep 20-23, 2026: €285.0/night (€855.0 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-10_
+
 ### spahotelolymp|2026-09
 **Realistic:** ~€246.41/night &nbsp; **Updated:** 2026-08-10 &nbsp; **Samples:** 1
 Verified SPA Hotel Olymp, 4-star for Sep 4-6, 2026: €246.41/night (€492.82 total, 2 nights), review 9.2. Price corrected from the Stage-1 estimate.
@@ -177,8 +187,12 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (163 entries)
+## Outcome Ledger (167 entries)
 
+- 👍 2026-09-10 | Velingrad Thermal Spa Retreat | Sep 20-23, 2026 | good score=90->93 claimed=€110 actual=€285.0 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
+- · 2026-09-10 | Antalya All-Inclusive Charter | Oct 8-15, 2026 | skip score=72->49 claimed=€142 actual=€342.39 — Massive toddler utility with extensive kids' clubs is partially offset by the logistics of a…
+- 💎 2026-09-10 | Bansko Mountain & SPA Break | Sep 25-28, 2026 | diamond score=95->100 claimed=€122 actual=€123.97 — A highly accessible, low-friction drive unlocks a premier flagship 5-star mountain property…
+- · 2026-09-10 | Athens Autumn City Break | Oct 15-20, 2026 | skip score=48->24 claimed=€130 actual=€245 — A 5-night stay in a busy, museum-heavy city offers limited engagement for a 4-year-old, further…
 - 💎 2026-09-07 | Bansko Mountain & SPA Break | Sep 25-28, 2026 | diamond score=90->100 claimed=€121 actual=€122.63 — A flagship 5-star mountain property offering guaranteed low-season family utility through top-tier…
 - 👍 2026-09-07 | Velingrad Thermal Spa Retreat | Sep 18-21, 2026 | good score=84->98 claimed=€118 actual=€117.91 — An effortless 1.5-hour drive delivers outstanding guaranteed family utility through warm mineral…
 - ❌ 2026-09-07 | Kavala Shoulder-Season Escape | Oct 1-5, 2026 | kill claimed=€130
@@ -225,8 +239,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 💎 2026-08-10 | Sunny Beach, Bulgaria | Sep 6-11, 2026 | diamond score=92->100 claimed=€123 actual=€133.61 — A straightforward highway drive to a premium 5-star coastal property maximizes the last of the…
 - 💎 2026-08-10 | Bansko, Bulgaria | Sep 3-6, 2026 | diamond score=95->100 claimed=€117 actual=€117.4 — An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short…
 - 👍 2026-08-10 | Antalya, Turkey | Sep 8-15, 2026 | good score=78->73 claimed=€222 actual=€202.09 — A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the transit via…
-- 👍 2026-08-10 | Hisarya, Bulgaria | Sep 18-21, 2026 | good score=96->100 claimed=€98 actual=€97.76 — An ultra-local 45-minute drive and reliable thermal pools offer perfect, frictionless utility for a…
-- 👍 2026-08-01 | Velingrad Spa Retreat | Sep 4-6, 2026 | good score=76->85 claimed=€130 actual=€166 — Near-zero transit friction and warm mineral pools offer effortless, reliable utility for a quick…
-- 👍 2026-08-01 | Lara Beach Shoulder-Season Package | Sep 15-22, 2026 | good score=83->85 claimed=€154 actual=€215 — Massive all-inclusive resort amenities and ultra-short airport transfers maximize family enjoyment,…
-- 👍 2026-08-01 | Antalya Fresh Opening Arbitrage | Sep 8-15, 2026 | good score=80->77 claimed=€165 actual=€222.07 — A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the longer…
-_... and 113 earlier entries_
+_... and 117 earlier entries_

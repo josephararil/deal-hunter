@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-09-10
+# Diamond Finder Memory — updated 2026-09-13
 
-## Price Baselines (37 entries)
+## Price Baselines (40 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -21,6 +21,11 @@ _Source: Booking.com (apidojo) live 2026-09-04_
 **Realistic:** ~€116.39/night &nbsp; **Updated:** 2026-07-17 &nbsp; **Samples:** 1
 Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-17_
+
+### dbseabankresortspa|2026-10
+**Realistic:** ~€662.19/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 1
+Verified db Seabank Resort + Spa All Inclusive, 4-star for Oct 24-31, 2026: €662.19/night (€4635.33 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-13_
 
 ### dreamfunworld|2026-09
 **Realistic:** ~€212.08/night &nbsp; **Updated:** 2026-08-10 &nbsp; **Samples:** 2
@@ -117,6 +122,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-09-07_
 
+### parkhotelandspavellahills|2026-10
+**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 1
+Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-13_
+
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
 Verified Premier Luxury Mountain Resort, 5-star for Aug 20-23, 2026: €167.72/night (€503.17 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.
@@ -126,6 +136,11 @@ _Source: Booking.com (apidojo) live 2026-07-18_
 **Realistic:** ~€117.4/night &nbsp; **Updated:** 2026-08-31 &nbsp; **Samples:** 4
 Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €145.55/night (€436.66 total, 3 nights), review 8.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-31_
+
+### premierluxurymountainresort|2026-11
+**Realistic:** ~€119.46/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 1
+Verified Premier Luxury Mountain Resort, 5-star for Nov 4-8, 2026: €119.46/night (€477.85 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-13_
 
 ### princessandrianaresortandspaultraallinclusive|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04 &nbsp; **Samples:** 1
@@ -168,9 +183,9 @@ Verified Sealife Family Resort Hotel, 5-star for Sep 21-28, 2026: €221.96/nigh
 _Source: Booking.com (apidojo) live 2026-08-28_
 
 ### sealifefamilyresorthotel|2026-10
-**Realistic:** ~€170.08/night &nbsp; **Updated:** 2026-09-07 &nbsp; **Samples:** 1
-Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €170.08/night (€1190.54 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-07_
+**Realistic:** ~€171.01/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 2
+Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €171.95/night (€1203.63 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-13_
 
 ### spahotelinfinitypark|2026-09
 **Realistic:** ~€285.0/night &nbsp; **Updated:** 2026-09-10 &nbsp; **Samples:** 1
@@ -187,8 +202,12 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (167 entries)
+## Outcome Ledger (171 entries)
 
+- 👍 2026-09-13 | Velingrad Thermal Spa Retreat | Oct 9-12, 2026 | good score=85->99 claimed=€118 actual=€117.91 — A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm…
+- 💎 2026-09-13 | Bansko Mountain & SPA Break | Nov 4-8, 2026 | diamond score=86->100 claimed=€95 actual=€119.46 — A high-quality 5-star resort accessible via a straightforward drive provides excellent indoor…
+- · 2026-09-13 | Malta Autumn Sun Escape | Oct 24-31, 2026 | skip score=62->0 claimed=€135 actual=€662.19 — The strong resort amenities are heavily undercut by the transit friction of flying via Sofia with a…
+- · 2026-09-13 | Antalya Late-Season All-Inclusive | Oct 23-30, 2026 | skip score=76->61 claimed=€170 actual=€171.95 — Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate…
 - 👍 2026-09-10 | Velingrad Thermal Spa Retreat | Sep 20-23, 2026 | good score=90->93 claimed=€110 actual=€285.0 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
 - · 2026-09-10 | Antalya All-Inclusive Charter | Oct 8-15, 2026 | skip score=72->49 claimed=€142 actual=€342.39 — Massive toddler utility with extensive kids' clubs is partially offset by the logistics of a…
 - 💎 2026-09-10 | Bansko Mountain & SPA Break | Sep 25-28, 2026 | diamond score=95->100 claimed=€122 actual=€123.97 — A highly accessible, low-friction drive unlocks a premier flagship 5-star mountain property…
@@ -235,8 +254,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 💎 2026-08-13 | Sani Resort Premium Arbitrage | Sep 20-25, 2026 | diamond score=88->100 claimed=€196 actual=€194.38 — Europe's premier family resort provides world-class toddler amenities and luxury, easily overcoming…
 - 👍 2026-08-13 | Bansko Mountain & SPA Break | Sep 4-7, 2026 | good score=82->91 claimed=€115 actual=€144.27 — An easy 2.5-hour drive unlocks a high-end mountain property with extensive family-friendly bio…
 - 👍 2026-08-13 | Sunny Beach Late Season Coast | Sep 6-11, 2026 | good score=84->96 claimed=€133 actual=€122.91 — A straightforward highway drive to a premium coastal property maximizes the final days of summer…
-- 👍 2026-08-10 | Velingrad, Bulgaria | Sep 17-20, 2026 | good score=86->100 claimed=€128 actual=€128.31 — Near-zero transit friction and warm mineral pools offer effortless, reliable utility for a quick…
-- 💎 2026-08-10 | Sunny Beach, Bulgaria | Sep 6-11, 2026 | diamond score=92->100 claimed=€123 actual=€133.61 — A straightforward highway drive to a premium 5-star coastal property maximizes the last of the…
-- 💎 2026-08-10 | Bansko, Bulgaria | Sep 3-6, 2026 | diamond score=95->100 claimed=€117 actual=€117.4 — An easy drive unlocks a high-end mountain property with extensive amenities, ideal for a short…
-- 👍 2026-08-10 | Antalya, Turkey | Sep 8-15, 2026 | good score=78->73 claimed=€222 actual=€202.09 — A brand-new mega-resort brings incredible aquatic amenities for toddlers, though the transit via…
-_... and 117 earlier entries_
+_... and 121 earlier entries_

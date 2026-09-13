@@ -3228,6 +3228,146 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-13",
+      "deal_id": 2,
+      "destination": "Bansko Mountain & SPA Break",
+      "type": "hotel",
+      "window": "Nov 4-8, 2026",
+      "tier": "diamond",
+      "llm_score": 86,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Premier Luxury Mountain Resort, 5-star for Nov 4-8, 2026: €119.46/night (€477.85 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "about": "Premier Luxury Mountain Resort is a well-established 5-star flagship property in Bansko, offering high-end comfort and top-tier service (rated 8.8). While November is very quiet in Bansko with no skiing and some local restaurants closed, the hotel itself provides excellent self-contained utility for families, featuring a spacious indoor heated pool, a spa for the adults, and indoor play facilities for young children.",
+      "value_case": "Securing a true 5-star Bansko property for €119/night is an excellent shoulder-season arbitrage, as this tier of hotel typically sits around €170-€200+ before the winter peak hits. It offers massive comfort upgrades over standard €80/night 4-star alternatives in the area.",
+      "why": "A high-quality 5-star resort accessible via a straightforward drive provides excellent indoor amenities that easily sustain a 4-night stay, even in the quiet shoulder season.",
+      "red_flags": "November is 'dead season' in Bansko; expect many off-property restaurants and attractions to be closed, making you reliant on the hotel's dining.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-04–2026-11-08, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €119.46/night (€477.85 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-11-04&checkout=2026-11-08&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 4-8, 2026",
+          "nights": 4,
+          "price_per_night_eur": 119.46,
+          "total_eur": 477.85,
+          "source": "Booking.com (apidojo) live 2026-09-13",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-11-04&checkout=2026-11-08&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-13",
+      "deal_id": 1,
+      "destination": "Velingrad Thermal Spa Retreat",
+      "type": "hotel",
+      "window": "Oct 9-12, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 11,
+      "transit_adj": 3,
+      "final_score": 99,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Park Hotel and SPA Vella Hills is a highly-rated (9.2) 4-star spa hotel located in Velingrad, Bulgaria's spa capital. It is a solid, upper-mid-range option known for its excellent thermal facilities. Families with a 4-year-old will spend most of their time bouncing between the warm indoor mineral pools and the dedicated kids' play areas, making it an easy and relaxing weekend escape.",
+      "value_case": "At €118/night, this is a strong deal for a premium 4-star spa experience in Velingrad, which typically commands €150+ for highly rated properties in autumn. You are securing top-tier local comfort for the price of an average 3-star.",
+      "why": "A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm mineral pools that are perfect for a 4-year-old.",
+      "red_flags": "Verify the exact temperature of the indoor kids' pool, as mineral water temperatures can sometimes vary across different basins.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-09–2026-10-12, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €117.91/night (€353.74 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-10-09&checkout=2026-10-12&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 9-12, 2026",
+          "nights": 3,
+          "price_per_night_eur": 117.91,
+          "total_eur": 353.74,
+          "source": "Booking.com (apidojo) live 2026-09-13",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-10-09&checkout=2026-10-12&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-13",
+      "deal_id": 4,
+      "destination": "Antalya Late-Season All-Inclusive",
+      "type": "hotel",
+      "window": "Oct 23-30, 2026",
+      "tier": "skip",
+      "llm_score": 76,
+      "price_adj": -12,
+      "transit_adj": -3,
+      "final_score": 61,
+      "flight_cost_eur_total": 600,
+      "ground_transport_eur": 100,
+      "effective_ppn": 271.95,
+      "confidence": "high",
+      "summary": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €171.95/night (€1203.63 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Sealife Family Resort Hotel is a highly praised (9.2) 5-star all-inclusive resort situated along Konyaalti Beach in Antalya. It caters explicitly to families, offering extensive indoor and outdoor pools, waterslides, dedicated kids' clubs, and diverse dining. While late October means the sea might be cooling down, the sheer volume of operating resort amenities ensures a 4-year-old remains constantly entertained.",
+      "value_case": "At €172/night for a 5-star ultra-all-inclusive, this is a solid late-season deal; this tier of property usually trades closer to €220/night even in the shoulder season. The low living costs on-site help offset the absolute cost of flights.",
+      "why": "Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate friction of a flight to Turkey for a week-long stay.",
+      "red_flags": "Charter or budget flights to Antalya often feature awkward red-eye timings which can be brutal with a 4-year-old; check flight schedules before booking.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-23–2026-10-30, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €171.95/night (€1203.63 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 23-30, 2026",
+          "nights": 7,
+          "price_per_night_eur": 171.95,
+          "total_eur": 1203.63,
+          "source": "Booking.com (apidojo) live 2026-09-13",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€170.08/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-13",
+      "deal_id": 3,
+      "destination": "Malta Autumn Sun Escape",
+      "type": "hotel",
+      "window": "Oct 24-31, 2026",
+      "tier": "skip",
+      "llm_score": 62,
+      "price_adj": -78,
+      "transit_adj": -3,
+      "final_score": 0,
+      "flight_cost_eur_total": 250,
+      "ground_transport_eur": 120,
+      "effective_ppn": 715.047142857143,
+      "confidence": "high",
+      "summary": "Verified db Seabank Resort + Spa All Inclusive, 4-star for Oct 24-31, 2026: €662.19/night (€4635.33 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "about": "The db Seabank Resort + Spa is a large, bustling 4-star all-inclusive complex (rated 8.3) situated in Mellieha, Malta, right across from the island's largest sandy beach. It is a mass-market family hub featuring multiple dining options, a kids' club, and an indoor pool. A 4-year-old will enjoy the beach proximity and resort entertainment, though exploring Malta's historic sites requires navigating local traffic or buses.",
+      "value_case": "At €662/night, this rate is exceptionally high—likely due to a booking glitch or only premium suites remaining—as this class of resort typically charges €250-€300/night in late October. It represents extremely poor value at this specific price point.",
+      "why": "The strong resort amenities are heavily undercut by the transit friction of flying via Sofia with a toddler, reducing the net relaxation value for a 7-night stay.",
+      "red_flags": "The nightly rate is drastically inflated above normal market pricing; additionally, verify if the outdoor pools are heated in late October.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-24–2026-10-31, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.3. Live rate: €662.19/night (€4635.33 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=db+Seabank+Resort+%2B+Spa+All+Inclusive&checkin=2026-10-24&checkout=2026-10-31&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 24-31, 2026",
+          "nights": 7,
+          "price_per_night_eur": 662.19,
+          "total_eur": 4635.33,
+          "source": "Booking.com (apidojo) live 2026-09-13",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=db+Seabank+Resort+%2B+Spa+All+Inclusive&checkin=2026-10-24&checkout=2026-10-31&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

@@ -1,9 +1,6 @@
 {
   "seen": {
     "saniresort|2026-09|diamond": "2026-08-28",
-    "santspahotel|2026-09|good": "2026-08-16",
-    "helenaparkhotel|2026-09|good": "2026-08-16",
-    "orangecountyresorthotelbelek|2026-09|skip": "2026-08-16",
     "london|2026-10|good": "2026-08-19",
     "swandorhotelsandresorttopkapipalace|2026-10|skip": "2026-08-19",
     "sparesortstivanrilski|2026-09|good": "2026-08-22",
@@ -31,13 +28,16 @@
     "premierluxurymountainresort|2026-11|diamond": "2026-09-13",
     "parkhotelandspavellahills|2026-10|good": "2026-09-13",
     "sealifefamilyresorthotel|2026-10|skip": "2026-09-13",
-    "dbseabankresortspa|2026-10|skip": "2026-09-13"
+    "dbseabankresortspa|2026-10|skip": "2026-09-13",
+    "regnumbanskomountainresort|2026-10|good": "2026-09-16",
+    "hiltonchaniaoldtownresortandspa|2026-10|skip": "2026-09-16",
+    "iliomareresorthotel|2026-10|skip": "2026-09-16"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
-    "2026-09": 5
+    "2026-09": 6
   },
   "degraded_count": {
     "2026-08": 1

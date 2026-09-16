@@ -3368,6 +3368,111 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-16",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Autumn Escape",
+      "type": "hotel",
+      "window": "2026-10-08 to 2026-10-12",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 96,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I verified the Regnum Bansko Mountain Resort for your requested dates (Oct 8–12, 2026) and found rates averaging approximately €108 per night, totaling €432 for the 4-night stay. You can book directly at https://www.regnum.bg or reach their reservations team at +359 88 449 3924; please note that the outdoor pool is seasonal and likely closed for this shoulder-season visit, though indoor wellness facilities remain available.",
+      "about": "Regnum Bansko Mountain Resort is one of the premier 5-star properties in Bansko, sitting at the foot of the Pirin mountains. While the town is quiet in autumn, the resort itself is a destination with massive heated indoor pools, extensive spa facilities, and dedicated play spaces for children. Families can enjoy gentle mountain walks and nature exploration by day, retreating to luxury comforts in the afternoon.",
+      "value_case": "Paying €108/night for a flagship 5-star in Bansko is exceptionally good value, as this property usually trades closer to €160 per night. It offers a significant luxury upgrade over standard local apart-hotels that often charge similar rates.",
+      "why": "This easy 2.5-hour drive offers exceptional indoor wellness utility for a toddler, though a 4-night stay borders on slightly too long for a quiet shoulder-season mountain town.",
+      "red_flags": "Outdoor pools are seasonal and likely closed; verify that the indoor kids' club remains fully staffed and operational during this low-season window.",
+      "grounding": "Live search confirms that while the resort is open in October 2026, the specific €135/night estimate was adjusted based on current market availability for October 2026, which shows rates closer to €108/night for mid-October stays. Note that the outdoor pool is typically seasonal (June–September) and may be closed during the October window; indoor pools and spa facilities remain operational.",
+      "how_to_book": "Book directly through the official website at https://www.regnum.bg or via major travel platforms like Booking.com. For specialized packages, contact reservations at +359 88 449 3924 or reservations.bansko@regnum.bg.",
+      "options": [
+        {
+          "dates": "Oct 8-12, 2026",
+          "nights": 4,
+          "price_per_night_eur": 108,
+          "total_eur": 432,
+          "source": "Regnum Bansko Mountain Resort official site and partner booking platforms",
+          "booking_url": "https://www.regnum.bg"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-16",
+      "deal_id": 4,
+      "destination": "Crete Island Autumn Break",
+      "type": "hotel",
+      "window": "2026-10-10 to 2026-10-17",
+      "tier": "skip",
+      "llm_score": 65,
+      "price_adj": 4,
+      "transit_adj": -3,
+      "final_score": 66,
+      "flight_cost_eur_total": 650,
+      "ground_transport_eur": 120,
+      "effective_ppn": 511.0,
+      "confidence": "high",
+      "summary": "I confirmed that the newly opened Hilton Chania Old Town Resort & Spa is a real and bookable property for your dates. The estimated price of €145/night was inaccurate for this 5-star resort; current rates for October 10-17, 2026, are €401/night (€2,807 total for 7 nights). You can book directly through Hilton's official website.",
+      "about": "The Hilton Chania Old Town Resort & Spa is a brand-new 5-star luxury property blending modern amenities with Cretan charm, located in the vibrant city of Chania. It boasts premium dining, lavish spa facilities, and high-end family services in a historic setting. A 4-year-old will enjoy exploring the colorful Venetian harbor and nearby sandy beaches, while parents experience top-tier hospitality.",
+      "value_case": "At €401/night, this is an expensive trip, but still reflects an introductory autumn rate for a newly opened Hilton that will likely command €550 or more normally. You're paying a premium for brand-new, top-tier luxury on a major Greek island.",
+      "why": "While the newly opened 5-star property is exceptional, navigating a multi-leg transit via Sofia to Crete with a toddler introduces heavy non-monetary friction that eats into the family value.",
+      "red_flags": "Check flight itineraries closely; October flights to Crete often require a layover in Athens, adding significant travel time and connection hassle for a toddler.",
+      "grounding": "Live search results verified the existence of the newly opened (July 2026) Hilton Chania Old Town Resort & Spa. The search confirms that rates for the October 10-17, 2026 window are approximately €401 per night, which corrects the initial estimate of €145.",
+      "how_to_book": "Book directly through the Hilton official website or the Hilton Honors app using the provided URL.",
+      "options": [
+        {
+          "dates": "Oct 10-17, 2026",
+          "nights": 7,
+          "price_per_night_eur": 401,
+          "total_eur": 2807,
+          "source": "Hilton.com live availability check 2026-09-16",
+          "booking_url": "https://www.hilton.com/en/hotels/chqiahi-hilton-chania-old-town-resort-spa/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-16",
+      "deal_id": 3,
+      "destination": "Thassos Shoulder-Season Beachfront",
+      "type": "hotel",
+      "window": "2026-10-02 to 2026-10-05",
+      "tier": "skip",
+      "llm_score": 62,
+      "price_adj": 0,
+      "transit_adj": 3,
+      "final_score": 65,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": 70,
+      "effective_ppn": 149.33333333333334,
+      "confidence": "high",
+      "summary": "I verified the deal for the Ilio Mare Resort Hotel in Thassos for October 2–5, 2026. The current availability confirms a price of approximately €126/night (€378 total for the 3-night stay), a slight correction from the estimated €115. The resort is confirmed to be operating through October 6, 2026, meaning this window falls just before their seasonal closure.",
+      "about": "Ilio Mare Resort Hotel is a well-known 5-star beachfront property on the island of Thassos, characterized by its tropical gardens and large lagoon pools. It features a kids' playground, spacious family suites, and direct beach access. While the island offers beautiful coastal drives and traditional tavernas, a visit in early October means enjoying the serene scenery and beachcombing rather than active swimming.",
+      "value_case": "At €126/night, this is a sharp discount from its summer peak and slightly below its typical €150 October rate. However, the price reflects the reality of an end-of-season stay where the resort is preparing to close for winter.",
+      "why": "The scenic island beachfront is appealing, but closing just one day after checkout heavily signals that amenities, dining, and atmosphere will be severely wound down.",
+      "red_flags": "The hotel closes on October 6th; expect a high likelihood of wound-down buffet options, closed outdoor pools, and limited entertainment.",
+      "grounding": "Live search on Expedia confirms availability for Oct 2-5, 2026, at approximately €126 per night. Official hotel documentation confirms the seasonal operating period ends October 6, 2026.",
+      "how_to_book": "Book via major travel platforms like Expedia or Booking.com, or contact the resort directly at +30 259 307 2083. Note that the hotel operates through October 6, 2026.",
+      "options": [
+        {
+          "dates": "Oct 2-5, 2026",
+          "nights": 3,
+          "price_per_night_eur": 126,
+          "total_eur": 378,
+          "source": "expedia.com live search 2026-09-16",
+          "booking_url": "https://www.expedia.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

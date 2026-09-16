@@ -2840,6 +2840,58 @@
       "final_score": 61,
       "source": "Booking.com (apidojo) live 2026-09-13",
       "note": "Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate friction of a flight to Turkey for a week-long stay."
+    },
+    {
+      "date": "2026-09-16",
+      "destination": "Velingrad Thermal Spa Retreat",
+      "window": "2026-09-25 to 2026-09-28",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 126,
+      "llm_score": 85,
+      "final_score": 99,
+      "source": "Aggregated booking availability check 2026-09-16",
+      "note": "A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm mineral pools that are perfect for a toddler's weekend break."
+    },
+    {
+      "date": "2026-09-16",
+      "destination": "Bansko Mountain Autumn Escape",
+      "window": "2026-10-08 to 2026-10-12",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "good",
+      "actual_price": 108,
+      "llm_score": 78,
+      "final_score": 96,
+      "source": "Regnum Bansko Mountain Resort official site and partner booking platforms",
+      "note": "This easy 2.5-hour drive offers exceptional indoor wellness utility for a toddler, though a 4-night stay borders on slightly too long for a quiet shoulder-season mountain town."
+    },
+    {
+      "date": "2026-09-16",
+      "destination": "Thassos Shoulder-Season Beachfront",
+      "window": "2026-10-02 to 2026-10-05",
+      "type": "hotel",
+      "claimed_price": 115,
+      "verdict": "skip",
+      "actual_price": 126,
+      "llm_score": 62,
+      "final_score": 65,
+      "source": "expedia.com live search 2026-09-16",
+      "note": "The scenic island beachfront is appealing, but closing just one day after checkout heavily signals that amenities, dining, and atmosphere will be severely wound down."
+    },
+    {
+      "date": "2026-09-16",
+      "destination": "Crete Island Autumn Break",
+      "window": "2026-10-10 to 2026-10-17",
+      "type": "hotel",
+      "claimed_price": 145,
+      "verdict": "skip",
+      "actual_price": 401,
+      "llm_score": 65,
+      "final_score": 66,
+      "source": "Hilton.com live availability check 2026-09-16",
+      "note": "While the newly opened 5-star property is exceptional, navigating a multi-leg transit via Sofia to Crete with a toddler introduces heavy non-monetary friction that eats into the family value."
     }
   ]
 }

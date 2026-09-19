@@ -3473,6 +3473,147 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-19",
+      "deal_id": 1,
+      "destination": "Arte Spa Thermal Retreat",
+      "type": "hotel",
+      "window": "Oct 13-16, 2026",
+      "tier": "good",
+      "llm_score": 88,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Hotel Arte SPA & Park is widely considered one of Velingrad's flagship 5-star properties, known for its extensive thermal wellness facilities. For a family with a 4-year-old, the standout features are the highly-rated, expansive indoor and outdoor warm mineral pools, along with dedicated kids' play areas and animation. The surrounding area offers easy forest walks, but the primary draw is the self-contained luxury and weather-proof relaxation on site.",
+      "value_case": "At ~€195/night, this is a solid mid-week rate for a premium property that often exceeds €250-€280 during weekends and peak times. It represents excellent value for a true 5-star experience compared to lesser local spas that typically charge €120-€150.",
+      "why": "A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's excellent warm mineral pools and elite kids' facilities.",
+      "red_flags": "Check if specific kids' animation programs are running mid-week in October.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-13–2026-10-16, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €195.1/night (€585.31 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-10-13&checkout=2026-10-16&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 13-16, 2026",
+          "nights": 3,
+          "price_per_night_eur": 195.1,
+          "total_eur": 585.31,
+          "source": "Booking.com (apidojo) live 2026-09-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-10-13&checkout=2026-10-16&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-19",
+      "deal_id": 3,
+      "destination": "Bansko Mountain Autumn Escape",
+      "type": "hotel",
+      "window": "Nov 6-9, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is a flagship 5-star family property in Bansko, highly acclaimed for its child-centric approach. It features stellar indoor pools, including a dedicated kids' pool with 33-degree water, and large indoor playrooms with supervision. While the town is quiet in November, the hotel provides a complete, weather-proof ecosystem of relaxation and entertainment for a young family.",
+      "value_case": "At ~€122/night, this is an excellent shoulder-season deal for a premium family resort that regularly commands €160 or more during busier periods. The premium is small compared to lesser 4-stars in town, making it a highly compelling upgrade.",
+      "why": "An easy 2.5-hour drive to an exceptionally family-focused property offers fantastic indoor toddler utility for a perfect 3-night autumn break.",
+      "red_flags": "November in Bansko is 'dead season'—most town restaurants and attractions will be closed, so you will be entirely reliant on the hotel's amenities.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-06–2026-11-09, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.12/night (€366.36 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 6-9, 2026",
+          "nights": 3,
+          "price_per_night_eur": 122.12,
+          "total_eur": 366.36,
+          "source": "Booking.com (apidojo) live 2026-09-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-19",
+      "deal_id": 2,
+      "destination": "Antalya Late-Season UAI Charter",
+      "type": "package",
+      "window": "Oct 20-27, 2026",
+      "tier": "skip",
+      "llm_score": 68,
+      "price_adj": -21,
+      "transit_adj": -3,
+      "final_score": 44,
+      "flight_cost_eur_total": 750,
+      "ground_transport_eur": 120,
+      "effective_ppn": 228.6357142857143,
+      "confidence": "high",
+      "summary": "Verified Oz Hotels Sui, 5-star for Oct 20-27, 2026: €104.35/night (€730.42 total, 7 nights), review 8.9. Price corrected from the Stage-1 estimate.",
+      "about": "Oz Hotels Sui is a well-regarded 5-star resort located in the Okurcalar area of Alanya, roughly 90 minutes from Antalya Airport. It offers extensive family amenities including multiple pools, waterslides, and a dedicated kids' club. A 4-year-old will find plenty of built-in entertainment, while adults can enjoy the on-site spa, diverse dining options, and straightforward beach access.",
+      "value_case": "Booking this property directly at €104/night is an aggressive late-season rate, well below its typical €160-€200 summer or early-autumn pricing. Even when adding flights, it remains a highly competitive all-in package for a week of minimal-effort sunshine.",
+      "why": "Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate friction of driving to Sofia and flying, though outdoor pools may be chilly by late October.",
+      "red_flags": "Ensure the 'Ultra All-Inclusive' concept hasn't been scaled back for the winter season, and check if outdoor pools are heated.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-20–2026-10-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.9. Live rate: €104.35/night (€730.42 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Oz+Hotels+Sui&checkin=2026-10-20&checkout=2026-10-27&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 20-27, 2026",
+          "nights": 7,
+          "price_per_night_eur": 104.35,
+          "total_eur": 730.42,
+          "source": "Booking.com (apidojo) live 2026-09-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Oz+Hotels+Sui&checkin=2026-10-20&checkout=2026-10-27&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-19",
+      "deal_id": 4,
+      "destination": "London Direct PDV Airfare",
+      "type": "flight",
+      "window": "Oct 22-29, 2026",
+      "tier": "skip",
+      "llm_score": 35,
+      "price_adj": -5,
+      "transit_adj": 3,
+      "final_score": 33,
+      "flight_cost_eur_total": 300,
+      "ground_transport_eur": 150,
+      "effective_ppn": 132.5557142857143,
+      "confidence": "medium",
+      "summary": "best-value family stays in London for Oct 22-29, 2026: 37.3 Luxury En-suite- Close to Wembley & Station €68.27/night.",
+      "about": "This property appears to be a practical, budget-oriented en-suite room located near Wembley, well outside central London. It offers basic lodging and proximity to local transit rather than resort amenities. For a family with a 4-year-old, this means commuting into central London for sightseeing, which can be tiring, though nearby parks offer some local respite.",
+      "value_case": "At €68/night, this is an exceptionally cheap base for London, where even basic family rooms often exceed €120-€150. However, the nightly savings must be weighed against the logistical effort and cost of daily train commutes with a toddler.",
+      "why": "While a direct flight from Plovdiv minimizes transit pain, a 7-night stay in a modest suburban London en-suite offers low utility and high daily exhaustion for a 4-year-old.",
+      "red_flags": "An en-suite room may lack the space or kitchen facilities a family needs for a week, and daily commutes from Wembley into central London will add significant time and transport costs.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-22-2026-10-29, order_by=price, review_score>=8.0. 1 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 22-29, 2026",
+          "nights": 7,
+          "price_per_night_eur": 68.27,
+          "total_eur": 409.97,
+          "source": "Booking.com (apidojo) live 2026-09-19",
+          "name": "37.3 Luxury En-suite- Close to Wembley & Station",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=37.3+Luxury+En-suite-+Close+to+Wembley+%26+Station&checkin=2026-10-22&checkout=2026-10-29&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
     }
   ]
 }

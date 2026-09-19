@@ -649,6 +649,45 @@
       "note": "Verified db Seabank Resort + Spa All Inclusive, 4-star for Oct 24-31, 2026: €662.19/night (€4635.33 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-09-13",
       "updated": "2026-09-13"
+    },
+    "artespaandparkhotel|2026-10": {
+      "samples": [
+        {
+          "price": 195.1,
+          "date": "2026-09-19",
+          "source": "Booking.com (apidojo) live 2026-09-19"
+        }
+      ],
+      "realistic_price_eur": 195.1,
+      "note": "Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "updated": "2026-09-19"
+    },
+    "ozhotelssui|2026-10": {
+      "samples": [
+        {
+          "price": 104.35,
+          "date": "2026-09-19",
+          "source": "Booking.com (apidojo) live 2026-09-19"
+        }
+      ],
+      "realistic_price_eur": 104.35,
+      "note": "Verified Oz Hotels Sui, 5-star for Oct 20-27, 2026: €104.35/night (€730.42 total, 7 nights), review 8.9. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "updated": "2026-09-19"
+    },
+    "luckybanskoaparthotelspaandrelax|2026-11": {
+      "samples": [
+        {
+          "price": 122.12,
+          "date": "2026-09-19",
+          "source": "Booking.com (apidojo) live 2026-09-19"
+        }
+      ],
+      "realistic_price_eur": 122.12,
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "updated": "2026-09-19"
     }
   },
   "ledger": [
@@ -2892,6 +2931,58 @@
       "final_score": 66,
       "source": "Hilton.com live availability check 2026-09-16",
       "note": "While the newly opened 5-star property is exceptional, navigating a multi-leg transit via Sofia to Crete with a toddler introduces heavy non-monetary friction that eats into the family value."
+    },
+    {
+      "date": "2026-09-19",
+      "destination": "Arte Spa Thermal Retreat",
+      "window": "Oct 13-16, 2026",
+      "type": "hotel",
+      "claimed_price": 176,
+      "verdict": "good",
+      "actual_price": 195.1,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "note": "A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's excellent warm mineral pools and elite kids' facilities."
+    },
+    {
+      "date": "2026-09-19",
+      "destination": "Antalya Late-Season UAI Charter",
+      "window": "Oct 20-27, 2026",
+      "type": "package",
+      "claimed_price": 82,
+      "verdict": "skip",
+      "actual_price": 104.35,
+      "llm_score": 68,
+      "final_score": 44,
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "note": "Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate friction of driving to Sofia and flying, though outdoor pools may be chilly by late October."
+    },
+    {
+      "date": "2026-09-19",
+      "destination": "Bansko Mountain Autumn Escape",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 109,
+      "verdict": "good",
+      "actual_price": 122.12,
+      "llm_score": 85,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "note": "An easy 2.5-hour drive to an exceptionally family-focused property offers fantastic indoor toddler utility for a perfect 3-night autumn break."
+    },
+    {
+      "date": "2026-09-19",
+      "destination": "London Direct PDV Airfare",
+      "window": "Oct 22-29, 2026",
+      "type": "flight",
+      "claimed_price": 53,
+      "verdict": "skip",
+      "actual_price": 68.27,
+      "llm_score": 35,
+      "final_score": 33,
+      "source": "Booking.com (apidojo) live 2026-09-19",
+      "note": "While a direct flight from Plovdiv minimizes transit pain, a 7-night stay in a modest suburban London en-suite offers low utility and high daily exhaustion for a 4-year-old."
     }
   ]
 }

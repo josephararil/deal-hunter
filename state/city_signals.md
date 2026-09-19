@@ -1,57 +1,53 @@
-# Diamond Finder — 2026-09-16
+# Diamond Finder — 2026-09-19
 
-_Stage 1: 5 candidate(s). 4 grounded · 4 scored · 0 unscored. 0 diamond · 2 good._
+_Stage 1: 4 candidate(s). 4 grounded · 4 scored · 0 unscored. 0 diamond · 2 good._
 
-### Velingrad Thermal Spa Retreat 👍 — FIND 92/100 (high) · est €118/night
-**Type:** hotel &nbsp; **Window:** 2026-09-25 to 2026-09-28
-An effortless 1.5-hour drive from Plovdiv delivers outstanding guaranteed family utility through warm mineral pools and active play areas. Perfect for a short 3-night weekend break, maximizing toddler entertainment without exhausting the destination's appeal.
-_Score: LLM 85 +11 price +3 transit = **99** → good_
+### Arte Spa Thermal Retreat 👍 — FIND 94/100 (high) · est €176/night
+**Type:** hotel &nbsp; **Window:** Oct 13-16, 2026
+A nearly frictionless 1.5-hour drive (Tier 1) unlocks guaranteed, weather-proof family utility with elite warm mineral pools. Mid-week pricing of €176/night for a top-tier 5-star spa property provides exceptional local value for a highly optimized 3-night toddler-friendly break.
+_Score: LLM 88 +12 price +3 transit = **100** → good_
 
-### Bansko Mountain Autumn Escape 👍 — FIND 89/100 (high) · est €135/night
-**Type:** hotel &nbsp; **Window:** 2026-10-08 to 2026-10-12
-Leveraging a live autumn 'Pay 3, Stay 4' promotion, this elite resort offers massive indoor pool and wellness utility for a 4-year-old at shoulder-season rates. The 4-night stay extracts maximum value just before peak ski pricing kicks in, all within a low-friction 2.5-hour drive.
-_Score: LLM 78 +15 price +3 transit = **96** → good_
+### Antalya Late-Season UAI Charter · — FIND 88/100 (high) · est €82/night
+**Type:** package &nbsp; **Window:** Oct 20-27, 2026
+Massive package dump: ~€576 total covers 7 nights Ultra All-Inclusive for 2 adults and a 4-year-old, including direct flights from Sofia and transfers. At effectively ~€82/night, this staggering price-to-utility disconnect completely overrides the Tier 2 transit friction.
+_Score: LLM 68 -21 price -3 transit = **44** → skip_
 
-### Thassos Shoulder-Season Beachfront · — FIND 85/100 (high) · est €115/night
-**Type:** hotel &nbsp; **Window:** 2026-10-02 to 2026-10-05
-A very manageable drive from Plovdiv to Keramoti unlocks a rare shoulder-season €115/night rate at a 5-star beachfront resort. The short 3-night window is ideal for enjoying the on-site playground and arcade room before the weather turns fully crisp.
-_Score: LLM 62 +0 price +3 transit = **65** → skip_
+### Bansko Mountain Autumn Escape 👍 — FIND 86/100 (high) · est €109/night
+**Type:** hotel &nbsp; **Window:** Nov 6-9, 2026
+An easy 2.5-hour Tier 1 drive to a property specifically geared toward young families, featuring baby-friendly amenities and free stays for children under 12. At €109/night, it is a perfectly optimized, low-logistics 3-night short break during the quiet shoulder season.
+_Score: LLM 85 +12 price +3 transit = **100** → good_
 
-### Crete Island Autumn Break · — FIND 82/100 (medium) · est €145/night
-**Type:** hotel &nbsp; **Window:** 2026-10-10 to 2026-10-17
-Although requiring a transit flight from Sofia, Chania's high-excitement island environment easily justifies a full 7-night stay. Booking a newly opened family-friendly Hilton at low introductory autumn rates provides exceptional absolute value that fully offsets the Tier-2 transit friction.
-_Score: LLM 65 +4 price -3 transit = **66** → skip_
-
-### Budapest Flash Fare City Break — FIND 71/100 (high) · est €78/night
-**Type:** flight &nbsp; **Window:** 2026-10-22 to 2026-10-26
-Live flash ~€40 round-trip airfares from Sofia offer a very cheap entry point for a European getaway. However, navigating a large city with a 4-year-old involves considerable transit and daily logistics friction, lowering the utility and keeping this strictly as a budget log.
+### London Direct PDV Airfare · — FIND 81/100 (medium) · est €53/night
+**Type:** flight &nbsp; **Window:** Oct 22-29, 2026
+Bypassing Sofia entirely with a direct Ryanair flight from Plovdiv (PDV) eliminates typical Tier 2 transit hassle. At ~€53 round-trip per person, this accessible Tier 1 logistics play opens up a high-excitement week-long family trip at extreme value.
+_Score: LLM 35 -5 price +3 transit = **33** → skip_
 
 ## Grounding & scoring
 
-### 🔧 Velingrad Thermal Spa Retreat — CORRECT (confidence: high) → final **99** (good)
-**Summary:** I have confirmed availability for the Park Hotel and SPA Vella Hills for the weekend of September 25-28, 2026. The updated nightly rate is approximately 126 EUR (378 EUR total for 3 nights), which is a slight correction from the initial estimate. You can book this retreat directly through platforms like Booking.com or by calling the hotel at +359 892 768 888.
+### ✅ Hotel Arte SPA & Park — CONFIRM (confidence: high) → final **100** (good)
+**Summary:** Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
 **Options:**
-  - Sep 25-28, 2026 · €126/night · €378 total · [book](https://www.booking.com) · _Aggregated booking availability check 2026-09-16_
-**How to book:** Book online via major platforms like Booking.com by searching for 'Park Hotel and SPA Vella Hills' for the requested dates. Alternatively, contact the property directly at +359 892 768 888.
-**Grounding:** Live search confirmed the property is active and bookable for September 25-28, 2026. Current availability indicates a slightly adjusted price of approximately 126 EUR per night compared to the initial estimate of 118 EUR.
+  - Oct 13-16, 2026 · €195.1/night · €585.31 total · [book](https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-10-13&checkout=2026-10-16&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-19_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-10-13&checkout=2026-10-16&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-10-13–2026-10-16, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €195.1/night (€585.31 total).
 
-### 🔧 Bansko Mountain Autumn Escape — CORRECT (confidence: high) → final **96** (good)
-**Summary:** I verified the Regnum Bansko Mountain Resort for your requested dates (Oct 8–12, 2026) and found rates averaging approximately €108 per night, totaling €432 for the 4-night stay. You can book directly at https://www.regnum.bg or reach their reservations team at +359 88 449 3924; please note that the outdoor pool is seasonal and likely closed for this shoulder-season visit, though indoor wellness facilities remain available.
+### 🔧 Oz Hotels Sui — CORRECT (confidence: high) → final **44** (skip)
+**Summary:** Verified Oz Hotels Sui, 5-star for Oct 20-27, 2026: €104.35/night (€730.42 total, 7 nights), review 8.9. Price corrected from the Stage-1 estimate.
 **Options:**
-  - Oct 8-12, 2026 · €108/night · €432 total · [book](https://www.regnum.bg) · _Regnum Bansko Mountain Resort official site and partner booking platforms_
-**How to book:** Book directly through the official website at https://www.regnum.bg or via major travel platforms like Booking.com. For specialized packages, contact reservations at +359 88 449 3924 or reservations.bansko@regnum.bg.
-**Grounding:** Live search confirms that while the resort is open in October 2026, the specific €135/night estimate was adjusted based on current market availability for October 2026, which shows rates closer to €108/night for mid-October stays. Note that the outdoor pool is typically seasonal (June–September) and may be closed during the October window; indoor pools and spa facilities remain operational.
+  - Oct 20-27, 2026 · €104.35/night · €730.42 total · [book](https://www.booking.com/searchresults.html?ss=Oz+Hotels+Sui&checkin=2026-10-20&checkout=2026-10-27&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-19_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Oz+Hotels+Sui&checkin=2026-10-20&checkout=2026-10-27&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-10-20–2026-10-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.9. Live rate: €104.35/night (€730.42 total).
 
-### 🔧 Thassos Shoulder-Season Beachfront — CORRECT (confidence: high) → final **65** (skip)
-**Summary:** I verified the deal for the Ilio Mare Resort Hotel in Thassos for October 2–5, 2026. The current availability confirms a price of approximately €126/night (€378 total for the 3-night stay), a slight correction from the estimated €115. The resort is confirmed to be operating through October 6, 2026, meaning this window falls just before their seasonal closure.
+### ✅ Lucky Bansko Aparthotel SPA & Relax — CONFIRM (confidence: high) → final **100** (good)
+**Summary:** Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
 **Options:**
-  - Oct 2-5, 2026 · €126/night · €378 total · [book](https://www.expedia.com) · _expedia.com live search 2026-09-16_
-**How to book:** Book via major travel platforms like Expedia or Booking.com, or contact the resort directly at +30 259 307 2083. Note that the hotel operates through October 6, 2026.
-**Grounding:** Live search on Expedia confirms availability for Oct 2-5, 2026, at approximately €126 per night. Official hotel documentation confirms the seasonal operating period ends October 6, 2026.
+  - Nov 6-9, 2026 · €122.12/night · €366.36 total · [book](https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-19_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-06–2026-11-09, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.12/night (€366.36 total).
 
-### 🔧 Crete Island Autumn Break — CORRECT (confidence: high) → final **66** (skip)
-**Summary:** I confirmed that the newly opened Hilton Chania Old Town Resort & Spa is a real and bookable property for your dates. The estimated price of €145/night was inaccurate for this 5-star resort; current rates for October 10-17, 2026, are €401/night (€2,807 total for 7 nights). You can book directly through Hilton's official website.
+### 🔧 London — CORRECT (confidence: medium) → final **33** (skip)
+**Summary:** best-value family stays in London for Oct 22-29, 2026: 37.3 Luxury En-suite- Close to Wembley & Station €68.27/night.
 **Options:**
-  - Oct 10-17, 2026 · €401/night · €2807 total · [book](https://www.hilton.com/en/hotels/chqiahi-hilton-chania-old-town-resort-spa/) · _Hilton.com live availability check 2026-09-16_
-**How to book:** Book directly through the Hilton official website or the Hilton Honors app using the provided URL.
-**Grounding:** Live search results verified the existence of the newly opened (July 2026) Hilton Chania Old Town Resort & Spa. The search confirms that rates for the October 10-17, 2026 window are approximately €401 per night, which corrects the initial estimate of €145.
+  - Oct 22-29, 2026 · €68.27/night · €409.97 total · [book](https://www.booking.com/searchresults.html?ss=37.3+Luxury+En-suite-+Close+to+Wembley+%26+Station&checkin=2026-10-22&checkout=2026-10-29&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-09-19_
+**How to book:** Search the listed properties on Booking.com for the dates above.
+**Grounding:** Booking.com (apidojo) city search 2026-10-22-2026-10-29, order_by=price, review_score>=8.0. 1 option(s) returned.

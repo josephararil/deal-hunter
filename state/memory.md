@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-09-16
+# Diamond Finder Memory — updated 2026-09-19
 
-## Price Baselines (40 entries)
+## Price Baselines (43 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -11,6 +11,11 @@ _Source: Booking.com (apidojo) live 2026-08-13_
 **Realistic:** ~€386.21/night &nbsp; **Updated:** 2026-07-03 &nbsp; **Samples:** 1
 Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug 24-29, 2026: €386.21/night (€1931.07 total, 5 nights), review 9.0. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-03_
+
+### artespaandparkhotel|2026-10
+**Realistic:** ~€195.1/night &nbsp; **Updated:** 2026-09-19 &nbsp; **Samples:** 1
+Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-19_
 
 ### asteriafamilysunnybeach|2026-09
 **Realistic:** ~€146.93/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 3
@@ -107,6 +112,11 @@ _Source: Booking.com (apidojo) live 2026-07-17_
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €123.97/night (€371.92 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-09-10_
 
+### luckybanskoaparthotelspaandrelax|2026-11
+**Realistic:** ~€122.12/night &nbsp; **Updated:** 2026-09-19 &nbsp; **Samples:** 1
+Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-19_
+
 ### mursalitsahotel|2027-01
 **Realistic:** ~€219.71/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 1
 Verified Hotel Mursalitsa by HMG - Half board, 3-star for Jan 14-17, 2027: €219.71/night (€659.12 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.
@@ -116,6 +126,11 @@ _Source: Booking.com (apidojo) live 2026-09-01_
 **Realistic:** ~€108.0/night &nbsp; **Updated:** 2026-07-05 &nbsp; **Samples:** 1
 Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
+
+### ozhotelssui|2026-10
+**Realistic:** ~€104.35/night &nbsp; **Updated:** 2026-09-19 &nbsp; **Samples:** 1
+Verified Oz Hotels Sui, 5-star for Oct 20-27, 2026: €104.35/night (€730.42 total, 7 nights), review 8.9. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-19_
 
 ### parkhotelandspavellahills|2026-09
 **Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-09-07 &nbsp; **Samples:** 5
@@ -202,8 +217,12 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (175 entries)
+## Outcome Ledger (179 entries)
 
+- 👍 2026-09-19 | Arte Spa Thermal Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€176 actual=€195.1 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's…
+- · 2026-09-19 | Antalya Late-Season UAI Charter | Oct 20-27, 2026 | skip score=68->44 claimed=€82 actual=€104.35 — Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate…
+- 👍 2026-09-19 | Bansko Mountain Autumn Escape | Nov 6-9, 2026 | good score=85->100 claimed=€109 actual=€122.12 — An easy 2.5-hour drive to an exceptionally family-focused property offers fantastic indoor toddler…
+- · 2026-09-19 | London Direct PDV Airfare | Oct 22-29, 2026 | skip score=35->33 claimed=€53 actual=€68.27 — While a direct flight from Plovdiv minimizes transit pain, a 7-night stay in a modest suburban…
 - 👍 2026-09-16 | Velingrad Thermal Spa Retreat | 2026-09-25 to 2026-09-28 | good score=85->99 claimed=€118 actual=€126 — A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm…
 - 👍 2026-09-16 | Bansko Mountain Autumn Escape | 2026-10-08 to 2026-10-12 | good score=78->96 claimed=€135 actual=€108 — This easy 2.5-hour drive offers exceptional indoor wellness utility for a toddler, though a 4-night…
 - · 2026-09-16 | Thassos Shoulder-Season Beachfront | 2026-10-02 to 2026-10-05 | skip score=62->65 claimed=€115 actual=€126 — The scenic island beachfront is appealing, but closing just one day after checkout heavily signals…
@@ -250,8 +269,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 👍 2026-08-19 | Bansko Mountain & SPA Break | Sep 11-14, 2026 | good score=88->100 claimed=€95 actual=€112.22 — An easy 2.5-hour drive unlocks a luxurious 5-star mountain property with great pools and fresh air,…
 - 👍 2026-08-19 | London Autumn City Break | Oct 7-12, 2026 | good score=65->71 claimed=€24 actual=€52.18 — Direct flights from Plovdiv help, but a dense city break involves significant daily walking and…
 - · 2026-08-19 | Antalya Autumn Resort Break | Oct 10-17, 2026 | skip score=76->64 claimed=€220 actual=€329 — The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via…
-- 👍 2026-08-16 | Sunny Beach Late Season Coast | Sep 13-18, 2026 | good score=75->78 claimed=€75 actual=€220.97 — The easy 2.5-hour drive provides low transit friction, but late-September weather makes outdoor…
-- 💎 2026-08-16 | Sani Resort Aegean Shoulder Play | Sep 20-25, 2026 | diamond score=92->100 claimed=€194 actual=€194.38 — A manageable 4-hour drive unlocks peerless, world-class kids' amenities and elite luxury,…
-- 👍 2026-08-16 | Velingrad Premium 5-Star Spa | Sep 25-28, 2026 | good score=85->88 claimed=€240 actual=€297.7 — Near-zero transit friction and fully heated indoor toddler pools guarantee a weather-proof, highly…
-- · 2026-08-16 | Belek All-Inclusive Mega-Resort | Sep 15-22, 2026 | skip score=73->58 claimed=€138 actual=€185 — The massive on-site waterparks and all-inclusive ease offer tremendous utility, but the significant…
-_... and 125 earlier entries_
+_... and 129 earlier entries_

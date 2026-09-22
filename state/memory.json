@@ -630,12 +630,17 @@
           "price": 119.46,
           "date": "2026-09-13",
           "source": "Booking.com (apidojo) live 2026-09-13"
+        },
+        {
+          "price": 132.95,
+          "date": "2026-09-22",
+          "source": "Booking.com (apidojo) live 2026-09-22"
         }
       ],
-      "realistic_price_eur": 119.46,
-      "note": "Verified Premier Luxury Mountain Resort, 5-star for Nov 4-8, 2026: €119.46/night (€477.85 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-13",
-      "updated": "2026-09-13"
+      "realistic_price_eur": 126.2,
+      "note": "Verified Premier Luxury Mountain Resort, 5-star for Nov 6-9, 2026: €132.95/night (€398.86 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-22",
+      "updated": "2026-09-22"
     },
     "dbseabankresortspa|2026-10": {
       "samples": [
@@ -656,12 +661,17 @@
           "price": 195.1,
           "date": "2026-09-19",
           "source": "Booking.com (apidojo) live 2026-09-19"
+        },
+        {
+          "price": 195.1,
+          "date": "2026-09-22",
+          "source": "Booking.com (apidojo) live 2026-09-22"
         }
       ],
       "realistic_price_eur": 195.1,
       "note": "Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-19",
-      "updated": "2026-09-19"
+      "source": "Booking.com (apidojo) live 2026-09-22",
+      "updated": "2026-09-22"
     },
     "ozhotelssui|2026-10": {
       "samples": [
@@ -2983,6 +2993,58 @@
       "final_score": 33,
       "source": "Booking.com (apidojo) live 2026-09-19",
       "note": "While a direct flight from Plovdiv minimizes transit pain, a 7-night stay in a modest suburban London en-suite offers low utility and high daily exhaustion for a 4-year-old."
+    },
+    {
+      "date": "2026-09-22",
+      "destination": "Velingrad Thermal Spa Retreat",
+      "window": "Oct 13-16, 2026",
+      "type": "hotel",
+      "claimed_price": 195,
+      "verdict": "good",
+      "actual_price": 195.1,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-22",
+      "note": "A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Arte's outstanding warm mineral pools perfectly suited for a 4-year-old."
+    },
+    {
+      "date": "2026-09-22",
+      "destination": "Bansko Mountain Autumn Escape",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 119.5,
+      "verdict": "good",
+      "actual_price": 132.95,
+      "llm_score": 85,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-09-22",
+      "note": "An easy 2.5-hour drive to an exceptionally family-focused 5-star mountain resort offers fantastic indoor toddler utility for a highly actionable 3-night weekend."
+    },
+    {
+      "date": "2026-09-22",
+      "destination": "Bratislava Autumn City Break",
+      "window": "Oct 3-7, 2026",
+      "type": "flight",
+      "claimed_price": 31,
+      "verdict": "skip",
+      "actual_price": 58.73,
+      "llm_score": 52,
+      "final_score": 48,
+      "source": "Booking.com (apidojo) live 2026-09-22",
+      "note": "Direct low-cost flights from Plovdiv eliminate transit pain, but an apartment-based city break inherently offers limited direct enjoyment for a 4-year-old compared to a resort."
+    },
+    {
+      "date": "2026-09-22",
+      "destination": "Rome Historic City Break",
+      "window": "Oct 7-14, 2026",
+      "type": "flight",
+      "claimed_price": 15,
+      "verdict": "skip",
+      "actual_price": 70.04,
+      "llm_score": 45,
+      "final_score": 46,
+      "source": "Booking.com (apidojo) live 2026-09-22",
+      "note": "The severe transit friction of flying via Sofia, combined with the inherent exhaustion of a 7-night museum-heavy city trip for a toddler, heavily undercuts the net family value."
     }
   ]
 }

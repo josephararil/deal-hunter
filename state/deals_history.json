@@ -3614,6 +3614,149 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-22",
+      "deal_id": 2,
+      "destination": "Bansko Mountain Autumn Escape",
+      "type": "hotel",
+      "window": "Nov 6-9, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 8,
+      "transit_adj": 3,
+      "final_score": 96,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Premier Luxury Mountain Resort, 5-star for Nov 6-9, 2026: €132.95/night (€398.86 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
+      "about": "Premier Luxury Mountain Resort is a well-regarded 5-star hotel in Bansko, offering high-quality rooms and strong amenities. While Bansko is primarily known for skiing, this resort provides a great indoor heated pool, a spa, and kids' play spaces that keep a 4-year-old fully entertained during shoulder season. The mountain setting is beautiful for short walks and fresh air.",
+      "value_case": "A rate of €133 per night is excellent value for a genuine 5-star in Bansko, which typically trades around €160-€180 in season. It offers a significant upgrade over the €80-€90 4-star properties nearby for a very modest price bump.",
+      "why": "An easy 2.5-hour drive to an exceptionally family-focused 5-star mountain resort offers fantastic indoor toddler utility for a highly actionable 3-night weekend.",
+      "red_flags": "November is deep off-season in Bansko, meaning many local restaurants and town attractions will be completely shut.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-06–2026-11-09, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.8. Live rate: €132.95/night (€398.86 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 6-9, 2026",
+          "nights": 3,
+          "price_per_night_eur": 132.95,
+          "total_eur": 398.86,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Premier+Luxury+Mountain+Resort&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€119.46/night here — this is 11% over.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-22",
+      "deal_id": 4,
+      "destination": "Rome Historic City Break",
+      "type": "flight",
+      "window": "Oct 7-14, 2026",
+      "tier": "skip",
+      "llm_score": 45,
+      "price_adj": 4,
+      "transit_adj": -3,
+      "final_score": 46,
+      "flight_cost_eur_total": 250,
+      "ground_transport_eur": 100,
+      "effective_ppn": 120.04,
+      "confidence": "medium",
+      "summary": "best-value family stays in Rome for Oct 7-14, 2026: CASA BOLOGNETTA €70.04/night; Casale Tre Sorelle Comfort & Luxury Rooms €71.09/night; Veio Terrace €74.05/night.",
+      "about": "This booking provides basic apartment accommodation in Rome, one of the most culturally rich and vibrant cities in the world. For a family with a 4-year-old, the city offers exciting sights, parks, and world-class food, though navigating its busy, often cobbled streets can be tiring. An apartment provides necessary space and kitchen facilities, though the location and quality are relatively modest.",
+      "value_case": "Finding an apartment in Rome for €70 a night is an exceptional bargain, as typical rates for standard family stays easily exceed €120-€150. However, the overall cost must factor in flights and ground transit.",
+      "why": "The severe transit friction of flying via Sofia, combined with the inherent exhaustion of a 7-night museum-heavy city trip for a toddler, heavily undercuts the net family value.",
+      "red_flags": "7 nights is very long for a toddler in a busy city, and apartment quality at this price point in Rome may be compromised or poorly located.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-07-2026-10-14, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 7-14, 2026",
+          "nights": 7,
+          "price_per_night_eur": 70.04,
+          "total_eur": 490.27,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "name": "CASA BOLOGNETTA",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=CASA+BOLOGNETTA&checkin=2026-10-07&checkout=2026-10-14&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 7-14, 2026",
+          "nights": 7,
+          "price_per_night_eur": 71.09,
+          "total_eur": 497.64,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "name": "Casale Tre Sorelle Comfort & Luxury Rooms",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Casale+Tre+Sorelle+Comfort+%26+Luxury+Rooms&checkin=2026-10-07&checkout=2026-10-14&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 7-14, 2026",
+          "nights": 7,
+          "price_per_night_eur": 74.05,
+          "total_eur": 518.36,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "name": "Veio Terrace",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Veio+Terrace&checkin=2026-10-07&checkout=2026-10-14&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-22",
+      "deal_id": 3,
+      "destination": "Bratislava Autumn City Break",
+      "type": "flight",
+      "window": "Oct 3-7, 2026",
+      "tier": "skip",
+      "llm_score": 52,
+      "price_adj": -7,
+      "transit_adj": 3,
+      "final_score": 48,
+      "flight_cost_eur_total": 120,
+      "ground_transport_eur": 30,
+      "effective_ppn": 96.22999999999999,
+      "confidence": "medium",
+      "summary": "best-value family stays in Bratislava for Oct 3-7, 2026: Cozy apartment near City Center with easy transport access €58.73/night; BNB Apartment near BTS Airport €47.76/night; BNB Airport apartment with balcony €48.02/night.",
+      "about": "This offers a stay in a functional, cozy apartment in Bratislava, a compact and charming Central European capital. While it lacks the pools and kids' clubs of a resort, the city is highly walkable, flat, and features nice parks and pedestrian zones suitable for a 4-year-old. The apartment provides essential space and basic amenities for a short family city break.",
+      "value_case": "Securing a central apartment for under €60 a night is a strong deal, as comparable stays usually cost closer to €85-€100. Combined with direct flights from Plovdiv, this makes for an incredibly cheap overall trip.",
+      "why": "Direct low-cost flights from Plovdiv eliminate transit pain, but an apartment-based city break inherently offers limited direct enjoyment for a 4-year-old compared to a resort.",
+      "red_flags": "Verify apartment location and host check-in policies to ensure a smooth, immediate arrival process with a toddler.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-03-2026-10-07, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 3-7, 2026",
+          "nights": 4,
+          "price_per_night_eur": 58.73,
+          "total_eur": 234.9,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "name": "Cozy apartment near City Center with easy transport access",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Cozy+apartment+near+City+Center+with+easy+transport+access&checkin=2026-10-03&checkout=2026-10-07&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 3-7, 2026",
+          "nights": 4,
+          "price_per_night_eur": 47.76,
+          "total_eur": 191.05,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "name": "BNB Apartment near BTS Airport",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=BNB+Apartment+near+BTS+Airport&checkin=2026-10-03&checkout=2026-10-07&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 3-7, 2026",
+          "nights": 4,
+          "price_per_night_eur": 48.02,
+          "total_eur": 192.07,
+          "source": "Booking.com (apidojo) live 2026-09-22",
+          "name": "BNB Airport apartment with balcony",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=BNB+Airport+apartment+with+balcony&checkin=2026-10-03&checkout=2026-10-07&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
     }
   ]
 }

@@ -1,4 +1,4 @@
-# Diamond Finder Memory — updated 2026-09-19
+# Diamond Finder Memory — updated 2026-09-22
 
 ## Price Baselines (43 entries)
 
@@ -13,9 +13,9 @@ Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug
 _Source: Booking.com (apidojo) live 2026-07-03_
 
 ### artespaandparkhotel|2026-10
-**Realistic:** ~€195.1/night &nbsp; **Updated:** 2026-09-19 &nbsp; **Samples:** 1
+**Realistic:** ~€195.1/night &nbsp; **Updated:** 2026-09-22 &nbsp; **Samples:** 2
 Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-19_
+_Source: Booking.com (apidojo) live 2026-09-22_
 
 ### asteriafamilysunnybeach|2026-09
 **Realistic:** ~€146.93/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 3
@@ -153,9 +153,9 @@ Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €145.55/n
 _Source: Booking.com (apidojo) live 2026-08-31_
 
 ### premierluxurymountainresort|2026-11
-**Realistic:** ~€119.46/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 1
-Verified Premier Luxury Mountain Resort, 5-star for Nov 4-8, 2026: €119.46/night (€477.85 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-13_
+**Realistic:** ~€126.2/night &nbsp; **Updated:** 2026-09-22 &nbsp; **Samples:** 2
+Verified Premier Luxury Mountain Resort, 5-star for Nov 6-9, 2026: €132.95/night (€398.86 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-22_
 
 ### princessandrianaresortandspaultraallinclusive|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04 &nbsp; **Samples:** 1
@@ -217,8 +217,12 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (179 entries)
+## Outcome Ledger (183 entries)
 
+- 👍 2026-09-22 | Velingrad Thermal Spa Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€195 actual=€195.1 — A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Arte's…
+- 👍 2026-09-22 | Bansko Mountain Autumn Escape | Nov 6-9, 2026 | good score=85->96 claimed=€119.5 actual=€132.95 — An easy 2.5-hour drive to an exceptionally family-focused 5-star mountain resort offers fantastic…
+- · 2026-09-22 | Bratislava Autumn City Break | Oct 3-7, 2026 | skip score=52->48 claimed=€31 actual=€58.73 — Direct low-cost flights from Plovdiv eliminate transit pain, but an apartment-based city break…
+- · 2026-09-22 | Rome Historic City Break | Oct 7-14, 2026 | skip score=45->46 claimed=€15 actual=€70.04 — The severe transit friction of flying via Sofia, combined with the inherent exhaustion of a 7-night…
 - 👍 2026-09-19 | Arte Spa Thermal Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€176 actual=€195.1 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's…
 - · 2026-09-19 | Antalya Late-Season UAI Charter | Oct 20-27, 2026 | skip score=68->44 claimed=€82 actual=€104.35 — Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate…
 - 👍 2026-09-19 | Bansko Mountain Autumn Escape | Nov 6-9, 2026 | good score=85->100 claimed=€109 actual=€122.12 — An easy 2.5-hour drive to an exceptionally family-focused property offers fantastic indoor toddler…
@@ -265,8 +269,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 👍 2026-08-22 | Sunny Beach Late Season Coast | Sep 6-11, 2026 | good score=83->90 claimed=€85 actual=€184.86 — A straightforward 3-hour highway drive delivers an effortless, high-utility beach break while…
 - 👍 2026-08-22 | Bansko Mountain & SPA Break | Sep 11-14, 2026 | good score=88->99 claimed=€95 actual=€175.61 — An easy 2.5-hour drive unlocks a premium, exceptionally rated mountain retreat with stellar indoor…
 - 👍 2026-08-22 | Velingrad Premium 5-Star Spa | Sep 25-28, 2026 | good score=87->96 claimed=€295 actual=€297.7 — Near-zero transit friction and some of the best indoor mineral pools in the region offer flawless,…
-- 👍 2026-08-19 | Velingrad Spa Retreat | Sep 18-21, 2026 | good score=90->100 claimed=€115 actual=€121.89 — Near-zero transit friction and highly reliable warm mineral pools offer massive, weather-proof…
-- 👍 2026-08-19 | Bansko Mountain & SPA Break | Sep 11-14, 2026 | good score=88->100 claimed=€95 actual=€112.22 — An easy 2.5-hour drive unlocks a luxurious 5-star mountain property with great pools and fresh air,…
-- 👍 2026-08-19 | London Autumn City Break | Oct 7-12, 2026 | good score=65->71 claimed=€24 actual=€52.18 — Direct flights from Plovdiv help, but a dense city break involves significant daily walking and…
-- · 2026-08-19 | Antalya Autumn Resort Break | Oct 10-17, 2026 | skip score=76->64 claimed=€220 actual=€329 — The all-inclusive mega-resort amenities provide spectacular on-site toddler utility, but flying via…
-_... and 129 earlier entries_
+_... and 133 earlier entries_

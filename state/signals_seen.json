@@ -2,9 +2,6 @@
   "seen": {
     "saniresort|2026-09|diamond": "2026-08-28",
     "asteriafamilysunnybeach|2026-09|good": "2026-09-04",
-    "luckybanskoaparthotelspaandrelax|2026-09|unscored": "2026-08-25",
-    "elysiumhotel|2026-09|unscored": "2026-08-25",
-    "istanbul|2026-09|unscored": "2026-08-25",
     "luckybanskoaparthotelspaandrelax|2026-09|good": "2026-08-28",
     "parkhotelandspavellahills|2026-09|good": "2026-08-28",
     "sealifefamilyresorthotel|2026-09|skip": "2026-08-28",
@@ -34,13 +31,14 @@
     "ozhotelssui|2026-10|skip": "2026-09-19",
     "london|2026-10|skip": "2026-09-19",
     "premierluxurymountainresort|2026-11|good": "2026-09-22",
-    "rome|2026-10|skip": "2026-09-22"
+    "rome|2026-10|skip": "2026-09-22",
+    "termedihissar|2026-10|skip": "2026-09-25"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
-    "2026-09": 8
+    "2026-09": 9
   },
   "degraded_count": {
     "2026-08": 1

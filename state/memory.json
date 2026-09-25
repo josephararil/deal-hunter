@@ -3045,6 +3045,58 @@
       "final_score": 46,
       "source": "Booking.com (apidojo) live 2026-09-22",
       "note": "The severe transit friction of flying via Sofia, combined with the inherent exhaustion of a 7-night museum-heavy city trip for a toddler, heavily undercuts the net family value."
+    },
+    {
+      "date": "2026-09-25",
+      "destination": "Arte Spa & Park Hotel, Velingrad",
+      "window": "2026-10-13 to 2026-10-16",
+      "type": "hotel",
+      "claimed_price": 195,
+      "verdict": "good",
+      "actual_price": 195.1,
+      "llm_score": 88,
+      "final_score": 91,
+      "source": "Property website and historic pricing baseline",
+      "note": "A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Velingrad's top-tier warm mineral pools and comprehensive indoor kids' facilities."
+    },
+    {
+      "date": "2026-09-25",
+      "destination": "Premier Luxury Mountain Resort, Bansko",
+      "window": "2026-11-06 to 2026-11-09",
+      "type": "hotel",
+      "claimed_price": 133,
+      "verdict": "good",
+      "actual_price": 133,
+      "llm_score": 85,
+      "final_score": 96,
+      "source": "Official resort website and seasonal offer data",
+      "note": "An easy 2.5-hour drive delivers a family to a high-end mountain resort with excellent heated indoor pools and play areas, perfect for a self-contained shoulder-season retreat."
+    },
+    {
+      "date": "2026-09-25",
+      "destination": "Terme di Hissar, Hisarya",
+      "window": "2026-10-22 to 2026-10-26",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "skip",
+      "actual_price": 211,
+      "llm_score": 72,
+      "final_score": 59,
+      "source": "Booking.com and OTA market data as of 2026-09-25",
+      "note": "Frictionless 45-minute transit makes this a highly accessible local getaway, but a 4-night stay in a standard regional spa town slightly stretches the entertainment value for an active toddler."
+    },
+    {
+      "date": "2026-09-25",
+      "destination": "Ilio Mare Resort Hotel, Thassos",
+      "window": "2026-10-01 to 2026-10-05",
+      "type": "hotel",
+      "claimed_price": 120,
+      "verdict": "skip",
+      "actual_price": 126,
+      "llm_score": 45,
+      "final_score": 44,
+      "source": "Expedia/Hotels.com live search data (Sep 2026)",
+      "note": "The 5-hour door-to-door transit including a ferry crossing is disproportionate for a 4-night trip, especially in October when unheated resort pools will likely be too cold for a toddler."
     }
   ]
 }

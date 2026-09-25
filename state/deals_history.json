@@ -3757,6 +3757,41 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-09-25",
+      "deal_id": 3,
+      "destination": "Terme di Hissar, Hisarya",
+      "type": "hotel",
+      "window": "2026-10-22 to 2026-10-26",
+      "tier": "skip",
+      "llm_score": 72,
+      "price_adj": -16,
+      "transit_adj": 3,
+      "final_score": 59,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I verified the availability of Terme di Hissar for Oct 22–26, 2026. While the property is a highly-rated wellness destination, the actual market price is approximately €211 per night (€844 total), which is higher than the €95 estimate. You can book via major travel platforms or by contacting the property directly to inquire about their specific 3+1 night promotional packages.",
+      "about": "Terme di Hissar is a prominent wellness and spa complex in the historic town of Hisarya, famous for its Roman ruins and mineral springs. The property offers extensive indoor and outdoor thermal pools, modern spa facilities, and comfortable family rooms. A 4-year-old will get plenty of use out of the warm indoor children's pools, while the adjacent large parks and Roman fort ruins provide vast, stroller-friendly areas to explore.",
+      "value_case": "At €211/night, this is priced at the absolute top end of the Hisarya market, actually competing directly with flagship 5-stars in Velingrad. The area's normal premium spa rate hovers around €160 for autumn, meaning you are paying peak prices and there is no discount present here.",
+      "why": "Frictionless 45-minute transit makes this a highly accessible local getaway, but a 4-night stay in a standard regional spa town slightly stretches the entertainment value for an active toddler.",
+      "red_flags": "The grounded rate of €211/night is severely inflated compared to the estimated €95 promotional package; verify if the 3+1 promo can actually be applied directly with the hotel.",
+      "grounding": "Live search results confirm the destination's existence as a popular mineral complex and accommodation provider. While the candidate deal estimated a nightly rate of €95, current market pricing on booking platforms indicates an average rate of approximately €211 per night for the specified dates.",
+      "how_to_book": "The property can be booked through major OTAs like Booking.com or Agoda. For inquiries about promotional packages (such as 3+1 night offers) and villa availability, contact the property directly at +359 898 480 022 / +359 898 480 021 or via email at office@termedihissar.bg.",
+      "options": [
+        {
+          "dates": "Oct 22-26, 2026",
+          "nights": 4,
+          "price_per_night_eur": 211,
+          "total_eur": 844,
+          "source": "Booking.com and OTA market data as of 2026-09-25",
+          "booking_url": "https://www.booking.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

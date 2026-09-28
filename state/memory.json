@@ -617,12 +617,17 @@
           "price": 117.91,
           "date": "2026-09-13",
           "source": "Booking.com (apidojo) live 2026-09-13"
+        },
+        {
+          "price": 117.91,
+          "date": "2026-09-28",
+          "source": "Booking.com (apidojo) live 2026-09-28"
         }
       ],
       "realistic_price_eur": 117.91,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-13",
-      "updated": "2026-09-13"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "updated": "2026-09-28"
     },
     "premierluxurymountainresort|2026-11": {
       "samples": [
@@ -635,12 +640,17 @@
           "price": 132.95,
           "date": "2026-09-22",
           "source": "Booking.com (apidojo) live 2026-09-22"
+        },
+        {
+          "price": 132.95,
+          "date": "2026-09-28",
+          "source": "Booking.com (apidojo) live 2026-09-28"
         }
       ],
-      "realistic_price_eur": 126.2,
+      "realistic_price_eur": 132.95,
       "note": "Verified Premier Luxury Mountain Resort, 5-star for Nov 6-9, 2026: €132.95/night (€398.86 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-22",
-      "updated": "2026-09-22"
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "updated": "2026-09-28"
     },
     "dbseabankresortspa|2026-10": {
       "samples": [
@@ -666,12 +676,17 @@
           "price": 195.1,
           "date": "2026-09-22",
           "source": "Booking.com (apidojo) live 2026-09-22"
+        },
+        {
+          "price": 195.1,
+          "date": "2026-09-28",
+          "source": "Booking.com (apidojo) live 2026-09-28"
         }
       ],
       "realistic_price_eur": 195.1,
       "note": "Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-22",
-      "updated": "2026-09-22"
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "updated": "2026-09-28"
     },
     "ozhotelssui|2026-10": {
       "samples": [
@@ -3097,6 +3112,58 @@
       "final_score": 44,
       "source": "Expedia/Hotels.com live search data (Sep 2026)",
       "note": "The 5-hour door-to-door transit including a ferry crossing is disproportionate for a 4-night trip, especially in October when unheated resort pools will likely be too cold for a toddler."
+    },
+    {
+      "date": "2026-09-28",
+      "destination": "Velingrad, Bulgaria",
+      "window": "Oct 13-16, 2026",
+      "type": "hotel",
+      "claimed_price": 195.1,
+      "verdict": "good",
+      "actual_price": 195.1,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "note": "A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's excellent warm mineral pools and dedicated kids' areas."
+    },
+    {
+      "date": "2026-09-28",
+      "destination": "Bansko, Bulgaria",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 132.95,
+      "verdict": "diamond",
+      "actual_price": 132.95,
+      "llm_score": 85,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "note": "An easy 2.5-hour drive to a highly-rated 5-star mountain resort offers fantastic indoor toddler utility and high adult comfort during the quiet November shoulder season."
+    },
+    {
+      "date": "2026-09-28",
+      "destination": "Valencia, Spain",
+      "window": "Oct 15-22, 2026",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "good",
+      "actual_price": 74.81,
+      "llm_score": 78,
+      "final_score": 83,
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "note": "Direct flights from Plovdiv keep transit friction manageable, while the city offers world-class toddler attractions like the Oceanografic and Bioparc over a well-paced 7-night stay."
+    },
+    {
+      "date": "2026-09-28",
+      "destination": "Velingrad, Bulgaria",
+      "window": "Oct 9-12, 2026",
+      "type": "hotel",
+      "claimed_price": 117.91,
+      "verdict": "good",
+      "actual_price": 117.91,
+      "llm_score": 75,
+      "final_score": 89,
+      "source": "Booking.com (apidojo) live 2026-09-28",
+      "note": "This highly accessible 4-star spa hotel provides excellent heated pools and a kids' club just 1.5 hours away, delivering a highly relaxing and easy weekend break."
     }
   ]
 }

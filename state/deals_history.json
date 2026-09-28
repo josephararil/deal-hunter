@@ -3792,6 +3792,60 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-09-28",
+      "deal_id": 3,
+      "destination": "Valencia, Spain",
+      "type": "hotel",
+      "window": "Oct 15-22, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": 2,
+      "transit_adj": 3,
+      "final_score": 83,
+      "flight_cost_eur_total": 250,
+      "ground_transport_eur": 40,
+      "effective_ppn": 116.23857142857143,
+      "confidence": "medium",
+      "summary": "best-value family stays in Valencia for Oct 15-22, 2026: Appartement Tavernes de la Valldigna 4p €74.81/night; Travel Habitat Cabanyal Lofts €93.41/night; Travel Habitat Mediterranean Suites €94.84/night.",
+      "about": "These are well-rated, self-catering apartments offering practical space for families in various parts of Valencia. While they lack built-in hotel amenities like pools or kids' clubs, Valencia itself is a spectacular family destination. A 4-year-old will be thrilled by the Bioparc (an immersive zoo) and the massive Oceanografic aquarium, complemented by pleasant October weather and the sprawling, car-free Turia park.",
+      "value_case": "Securing a quality apartment for €75/night in Valencia during the pleasant autumn season is excellent absolute value, as comparable stays often average €120. The low accommodation cost easily offsets the budget airline flights.",
+      "why": "Direct flights from Plovdiv keep transit friction manageable, while the city offers world-class toddler attractions like the Oceanografic and Bioparc over a well-paced 7-night stay.",
+      "red_flags": "Self-catering apartments lack the built-in entertainment of a resort; verify the exact location to ensure easy access to public transport or the Turia park to minimize walking with a toddler.",
+      "grounding": "Booking.com (apidojo) city search 2026-10-15-2026-10-22, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Oct 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 74.81,
+          "total_eur": 523.64,
+          "source": "Booking.com (apidojo) live 2026-09-28",
+          "name": "Appartement Tavernes de la Valldigna 4p",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Appartement+Tavernes+de+la+Valldigna+4p&checkin=2026-10-15&checkout=2026-10-22&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 93.41,
+          "total_eur": 653.89,
+          "source": "Booking.com (apidojo) live 2026-09-28",
+          "name": "Travel Habitat Cabanyal Lofts",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Travel+Habitat+Cabanyal+Lofts&checkin=2026-10-15&checkout=2026-10-22&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Oct 15-22, 2026",
+          "nights": 7,
+          "price_per_night_eur": 94.84,
+          "total_eur": 663.89,
+          "source": "Booking.com (apidojo) live 2026-09-28",
+          "name": "Travel Habitat Mediterranean Suites",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Travel+Habitat+Mediterranean+Suites&checkin=2026-10-15&checkout=2026-10-22&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

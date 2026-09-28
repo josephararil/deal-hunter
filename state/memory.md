@@ -1,4 +1,4 @@
-# Diamond Finder Memory — updated 2026-09-25
+# Diamond Finder Memory — updated 2026-09-28
 
 ## Price Baselines (43 entries)
 
@@ -13,9 +13,9 @@ Verified Aqua Fantasy Aquapark Hotel & Spa - Ultra All Inclusive, 5-star for Aug
 _Source: Booking.com (apidojo) live 2026-07-03_
 
 ### artespaandparkhotel|2026-10
-**Realistic:** ~€195.1/night &nbsp; **Updated:** 2026-09-22 &nbsp; **Samples:** 2
+**Realistic:** ~€195.1/night &nbsp; **Updated:** 2026-09-28 &nbsp; **Samples:** 3
 Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-22_
+_Source: Booking.com (apidojo) live 2026-09-28_
 
 ### asteriafamilysunnybeach|2026-09
 **Realistic:** ~€146.93/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 3
@@ -138,9 +138,9 @@ Verified Park Hotel and SPA Vella Hills, 4-star for Sep 18-21, 2026: €117.91/n
 _Source: Booking.com (apidojo) live 2026-09-07_
 
 ### parkhotelandspavellahills|2026-10
-**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 1
-Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/night (€353.74 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-13_
+**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-09-28 &nbsp; **Samples:** 2
+Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-09-28_
 
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
@@ -153,9 +153,9 @@ Verified Premier Luxury Mountain Resort, 5-star for Sep 11-14, 2026: €145.55/n
 _Source: Booking.com (apidojo) live 2026-08-31_
 
 ### premierluxurymountainresort|2026-11
-**Realistic:** ~€126.2/night &nbsp; **Updated:** 2026-09-22 &nbsp; **Samples:** 2
+**Realistic:** ~€132.95/night &nbsp; **Updated:** 2026-09-28 &nbsp; **Samples:** 3
 Verified Premier Luxury Mountain Resort, 5-star for Nov 6-9, 2026: €132.95/night (€398.86 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-22_
+_Source: Booking.com (apidojo) live 2026-09-28_
 
 ### princessandrianaresortandspaultraallinclusive|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04 &nbsp; **Samples:** 1
@@ -217,8 +217,12 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
-## Outcome Ledger (187 entries)
+## Outcome Ledger (191 entries)
 
+- 👍 2026-09-28 | Velingrad, Bulgaria | Oct 13-16, 2026 | good score=88->100 claimed=€195.1 actual=€195.1 — A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through…
+- 💎 2026-09-28 | Bansko, Bulgaria | Nov 6-9, 2026 | diamond score=85->100 claimed=€132.95 actual=€132.95 — An easy 2.5-hour drive to a highly-rated 5-star mountain resort offers fantastic indoor toddler…
+- 👍 2026-09-28 | Valencia, Spain | Oct 15-22, 2026 | good score=78->83 claimed=€125 actual=€74.81 — Direct flights from Plovdiv keep transit friction manageable, while the city offers world-class…
+- 👍 2026-09-28 | Velingrad, Bulgaria | Oct 9-12, 2026 | good score=75->89 claimed=€117.91 actual=€117.91 — This highly accessible 4-star spa hotel provides excellent heated pools and a kids' club just 1.5…
 - 👍 2026-09-25 | Arte Spa & Park Hotel, Velingrad | 2026-10-13 to 2026-10-16 | good score=88->91 claimed=€195 actual=€195.1 — A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Velingrad's…
 - 👍 2026-09-25 | Premier Luxury Mountain Resort, Bansko | 2026-11-06 to 2026-11-09 | good score=85->96 claimed=€133 actual=€133 — An easy 2.5-hour drive delivers a family to a high-end mountain resort with excellent heated indoor…
 - · 2026-09-25 | Terme di Hissar, Hisarya | 2026-10-22 to 2026-10-26 | skip score=72->59 claimed=€95 actual=€211 — Frictionless 45-minute transit makes this a highly accessible local getaway, but a 4-night stay in…
@@ -265,8 +269,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 💎 2026-08-28 | Kassandra, Halkidiki / Sani Resort | Sep 20-25, 2026 | diamond score=89->100 claimed=€194 actual=€194.38 — An exceptional world-class family resort with unparalleled toddler infrastructure, delivering…
 - 👍 2026-08-28 | Bansko Mountain Break / Lucky Bansko Aparthotel | Sep 11-14, 2026 | good score=98->100 claimed=€122 actual=€121.91 — Near-flawless family utility with a manageable 2.5-hour drive, offering top-tier indoor heated…
 - 👍 2026-08-28 | Velingrad Spa Retreat / Park Hotel & SPA Vella Hills | Sep 15-18, 2026 | good score=95->100 claimed=€121 actual=€128.31 — A virtually zero-friction 1.5-hour drive unlocks highly reliable warm mineral pools, guaranteeing…
-- · 2026-08-28 | Antalya Late Season Coast / Sealife Family Resort Hotel | Sep 21-28, 2026 | skip score=68->61 claimed=€130 actual=€221.96 — Stellar on-site resort amenities for a 4-year-old, but the heavy logistical friction of flying via…
-- • 2026-08-25 | Lucky Bansko Aparthotel SPA & Relax | September 11-14, 2026 | unscored claimed=€144 actual=€121.91 — RuntimeError: SKEPTIC chain exhausted: total LLM budget exhausted before the request
-- • 2026-08-25 | Elysium Hotel | September 15-20, 2026 | unscored claimed=€165 actual=€548.26 — RuntimeError: SKEPTIC chain exhausted: total LLM budget exhausted before the request
-- • 2026-08-25 | Istanbul City Break | September 20-25, 2026 | unscored claimed=€110 actual=€24.32 — RuntimeError: SKEPTIC chain exhausted: total LLM budget exhausted before the request
-_... and 137 earlier entries_
+_... and 141 earlier entries_

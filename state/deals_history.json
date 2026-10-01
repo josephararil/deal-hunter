@@ -3846,6 +3846,146 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-01",
+      "deal_id": 1,
+      "destination": "Velingrad Spa Retreat",
+      "type": "hotel",
+      "window": "Nov 6-9, 2026",
+      "tier": "good",
+      "llm_score": 85,
+      "price_adj": 9,
+      "transit_adj": 3,
+      "final_score": 97,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 6-9, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "about": "Park Hotel and SPA Vella Hills is a highly-rated 4-star wellness retreat in Velingrad, Bulgaria's spa capital. It features extensive indoor and outdoor warm mineral water pools, a dedicated kids' club, and high-quality dining. Families can easily spend the entire 3-day weekend enjoying the pools and spa facilities without worrying about the November weather.",
+      "value_case": "At 118 EUR per night, this is a solid deal for a 4-star Velingrad spa hotel with a 9.3 rating, which typically commands 140 EUR to 150 EUR per night for a weekend stay. It offers near 5-star utility at a mid-tier price point.",
+      "why": "A frictionless 1.5-hour drive delivers outstanding weather-proof family utility through excellent heated mineral pools, ideal for a short toddler-friendly break.",
+      "red_flags": "Verify whether the kids' club operates full hours during the November off-season.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-06–2026-11-09, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.3. Live rate: €117.91/night (€353.74 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 6-9, 2026",
+          "nights": 3,
+          "price_per_night_eur": 117.91,
+          "total_eur": 353.74,
+          "source": "Booking.com (apidojo) live 2026-10-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-11-06&checkout=2026-11-09&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-01",
+      "deal_id": 4,
+      "destination": "Pamporovo Winter Prep",
+      "type": "hotel",
+      "window": "Dec 11-14, 2026",
+      "tier": "good",
+      "llm_score": 68,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 78,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I verified the Mursalitsa Hotel in Pamporovo for the dates of December 11–14, 2026. The actual rate for a double room on a half-board basis is approximately €128 per night (€384 total), which corrects the original €82 estimate. You can explore booking options at https://www.bulgariaski.com/pamporovo/hotels/mursalitsa.shtml.",
+      "about": "Mursalitsa Hotel is a classic 4-star mountain lodge in Pamporovo, offering half-board dining, an indoor pool, and a cozy spa. It is situated close to the ski slopes, making it a convenient base. For a 4-year-old, the main draw is the indoor pool and potentially playing in early season snow, offering a pleasant change of scenery from the city.",
+      "value_case": "At 128 EUR per night on a half-board basis, this is a fair rate for the early winter season, where comparable 4-star Pamporovo stays typically run around 150 EUR. Including breakfast and dinner significantly reduces daily dining friction and out-of-pocket costs.",
+      "why": "A straightforward drive to a local mountain resort provides a fun, low-friction introduction to early winter for a toddler, though lack of guaranteed snow early in the season caps the absolute utility.",
+      "red_flags": "Mid-December dates mean natural snow is not guaranteed, and some resort amenities might still be ramping up for peak season.",
+      "grounding": "Live search indicates standard double room rates for early winter season (HB basis) are approximately €128/night, contradicting the €82 estimate. Dates for Dec 11-14, 2026, are confirmed as part of the operational winter season.",
+      "how_to_book": "The property can be booked via tour operators specializing in Bulgarian ski resorts such as BulgariaSki.com or online travel platforms.",
+      "options": [
+        {
+          "dates": "Dec 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 128,
+          "total_eur": 384,
+          "source": "BulgariaSki.com/Mursalitsa Hotel Rate Card 2026",
+          "booking_url": "https://www.bulgariaski.com/pamporovo/hotels/mursalitsa.shtml"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-01",
+      "deal_id": 3,
+      "destination": "Rome City Break",
+      "type": "hotel",
+      "window": "Nov 5-10, 2026",
+      "tier": "skip",
+      "llm_score": 58,
+      "price_adj": -4,
+      "transit_adj": -3,
+      "final_score": 51,
+      "flight_cost_eur_total": 180,
+      "ground_transport_eur": 90,
+      "effective_ppn": 238.0,
+      "confidence": "high",
+      "summary": "I verified the availability of UNAHOTELS Decò Roma for November 5–10, 2026. The nightly rate is currently €184 per night (€920 total for 5 nights) rather than the estimated €135. You can book directly at https://www.unaitalianhospitality.com/.",
+      "about": "UNAHOTELS Deco Roma is a well-regarded 4-star hotel conveniently located near Roma Termini station, making airport transfers and city navigation relatively easy. It offers comfortable modern rooms and a hearty breakfast. However, a Rome trip with a toddler is primarily about navigating busy streets, piazzas, and parks like Villa Borghese rather than enjoying dedicated resort amenities.",
+      "value_case": "The 184 EUR nightly rate is reasonable for a central 4-star hotel in Rome during the pleasant autumn shoulder season, where typical rates often exceed 220 EUR. However, once flights and transfers are added, the overall package becomes a premium expense.",
+      "why": "While Rome is a spectacular city, a 5-night walking-heavy itinerary with flight and connection friction offers modest net utility for a 4-year-old.",
+      "red_flags": "High daily step count and lack of toddler-specific amenities require careful itinerary planning to avoid burnout.",
+      "grounding": "I performed a live search for the UNAHOTELS Decò Roma for the window of November 5–10, 2026. The property is available, but the real-time pricing is consistently higher than the estimated €135/night, with rates currently trending around €184/night.",
+      "how_to_book": "Book directly through the UNA Italian Hospitality website or major online travel agencies (Booking.com, Expedia, or Priceline).",
+      "options": [
+        {
+          "dates": "Nov 5-10, 2026",
+          "nights": 5,
+          "price_per_night_eur": 184,
+          "total_eur": 920,
+          "source": "Priceline/Trivago live search 2026-10-01",
+          "booking_url": "https://www.unaitalianhospitality.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-01",
+      "deal_id": 5,
+      "destination": "Istanbul Cultural Long Stay",
+      "type": "hotel",
+      "window": "Oct 24-29, 2026",
+      "tier": "skip",
+      "llm_score": 52,
+      "price_adj": -10,
+      "transit_adj": -3,
+      "final_score": 39,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": 80,
+      "effective_ppn": 288.63,
+      "confidence": "high",
+      "summary": "Verified DoubleTree by Hilton Istanbul - Sirkeci, 4-star for Oct 24-29, 2026: €272.63/night (€1363.17 total, 5 nights), review 9.5. Price corrected from the Stage-1 estimate.",
+      "about": "The DoubleTree by Hilton Istanbul - Sirkeci is a premium 4-star hotel located right in the historic heart of Istanbul, boasting an exceptional 9.5 rating. It offers high-end comfort, a spa, and immediate access to top sights. However, navigating the crowded streets and intense sensory environment of central Istanbul with a 4-year-old can be highly taxing.",
+      "value_case": "The rate of 272 EUR per night is steep, even for a top-rated property in Sirkeci, where typical luxury 4-star rates hover around 220 EUR to 240 EUR in late October. This is a premium price for a premium property, with no real discount applied.",
+      "why": "A chaotic, culturally intense city and a long 4.5-hour drive offer very low relaxation value for a toddler, overriding the high-quality hotel experience.",
+      "red_flags": "The nightly rate is exceptionally high for Istanbul, and navigating the historic center with a stroller is notoriously difficult.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-24–2026-10-29, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.5. Live rate: €272.63/night (€1363.17 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=DoubleTree+by+Hilton+Istanbul+-+Sirkeci&checkin=2026-10-24&checkout=2026-10-29&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 24-29, 2026",
+          "nights": 5,
+          "price_per_night_eur": 272.63,
+          "total_eur": 1363.17,
+          "source": "Booking.com (apidojo) live 2026-10-01",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=DoubleTree+by+Hilton+Istanbul+-+Sirkeci&checkin=2026-10-24&checkout=2026-10-29&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

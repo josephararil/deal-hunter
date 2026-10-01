@@ -713,6 +713,32 @@
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-09-19",
       "updated": "2026-09-19"
+    },
+    "parkhotelandspavellahills|2026-11": {
+      "samples": [
+        {
+          "price": 117.91,
+          "date": "2026-10-01",
+          "source": "Booking.com (apidojo) live 2026-10-01"
+        }
+      ],
+      "realistic_price_eur": 117.91,
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 6-9, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-01",
+      "updated": "2026-10-01"
+    },
+    "doubletreebyhiltonistanbulsirkeci|2026-10": {
+      "samples": [
+        {
+          "price": 272.63,
+          "date": "2026-10-01",
+          "source": "Booking.com (apidojo) live 2026-10-01"
+        }
+      ],
+      "realistic_price_eur": 272.63,
+      "note": "Verified DoubleTree by Hilton Istanbul - Sirkeci, 4-star for Oct 24-29, 2026: €272.63/night (€1363.17 total, 5 nights), review 9.5. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-01",
+      "updated": "2026-10-01"
     }
   },
   "ledger": [
@@ -3164,6 +3190,71 @@
       "final_score": 89,
       "source": "Booking.com (apidojo) live 2026-09-28",
       "note": "This highly accessible 4-star spa hotel provides excellent heated pools and a kids' club just 1.5 hours away, delivering a highly relaxing and easy weekend break."
+    },
+    {
+      "date": "2026-10-01",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 117.91,
+      "llm_score": 85,
+      "final_score": 97,
+      "source": "Booking.com (apidojo) live 2026-10-01",
+      "note": "A frictionless 1.5-hour drive delivers outstanding weather-proof family utility through excellent heated mineral pools, ideal for a short toddler-friendly break."
+    },
+    {
+      "date": "2026-10-01",
+      "destination": "Antalya Coastal Resort",
+      "window": "Nov 10-17, 2026",
+      "type": "hotel",
+      "claimed_price": 104,
+      "verdict": "kill",
+      "actual_price": null,
+      "llm_score": null,
+      "final_score": null,
+      "source": "Live search indicates that the Oz Hotels Sui property is seasonally closed from October 17, 2026, through March 27, 2027, making it unavailable during the target window.",
+      "note": "I checked the availability for Oz Hotels Sui for your requested dates of November 10–17, 2026. Unfortunately, the hotel closes for the season on October 17, 2026, and does not reopen until March…"
+    },
+    {
+      "date": "2026-10-01",
+      "destination": "Rome City Break",
+      "window": "Nov 5-10, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 184,
+      "llm_score": 58,
+      "final_score": 51,
+      "source": "Priceline/Trivago live search 2026-10-01",
+      "note": "While Rome is a spectacular city, a 5-night walking-heavy itinerary with flight and connection friction offers modest net utility for a 4-year-old."
+    },
+    {
+      "date": "2026-10-01",
+      "destination": "Pamporovo Winter Prep",
+      "window": "Dec 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 82,
+      "verdict": "good",
+      "actual_price": 128,
+      "llm_score": 68,
+      "final_score": 78,
+      "source": "BulgariaSki.com/Mursalitsa Hotel Rate Card 2026",
+      "note": "A straightforward drive to a local mountain resort provides a fun, low-friction introduction to early winter for a toddler, though lack of guaranteed snow early in the season caps the absolute…"
+    },
+    {
+      "date": "2026-10-01",
+      "destination": "Istanbul Cultural Long Stay",
+      "window": "Oct 24-29, 2026",
+      "type": "hotel",
+      "claimed_price": 95,
+      "verdict": "skip",
+      "actual_price": 272.63,
+      "llm_score": 52,
+      "final_score": 39,
+      "source": "Booking.com (apidojo) live 2026-10-01",
+      "note": "A chaotic, culturally intense city and a long 4.5-hour drive offer very low relaxation value for a toddler, overriding the high-quality hotel experience."
     }
   ]
 }

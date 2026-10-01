@@ -1,10 +1,6 @@
 {
   "seen": {
     "asteriafamilysunnybeach|2026-09|good": "2026-09-04",
-    "premierluxurymountainresort|2026-09|good": "2026-08-31",
-    "lucyhotel|2026-09|good": "2026-08-31",
-    "lyttosbeachresort|2026-09|good": "2026-08-31",
-    "novotelmilanonordcagranda|2026-10|skip": "2026-08-31",
     "bratislava|2026-10|skip": "2026-09-22",
     "mursalitsahotel|2027-01|skip": "2026-09-01",
     "antalya|2026-09|good": "2026-09-04",
@@ -29,13 +25,18 @@
     "premierluxurymountainresort|2026-11|good": "2026-09-22",
     "rome|2026-10|skip": "2026-09-22",
     "termedihissar|2026-10|skip": "2026-09-25",
-    "valencia|2026-10|good": "2026-09-28"
+    "valencia|2026-10|good": "2026-09-28",
+    "parkhotelandspavellahills|2026-11|good": "2026-10-01",
+    "mursalitsahotel|2026-12|good": "2026-10-01",
+    "unahotelsdecroma|2026-11|skip": "2026-10-01",
+    "doubletreebyhiltonistanbulsirkeci|2026-10|skip": "2026-10-01"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
-    "2026-09": 10
+    "2026-09": 10,
+    "2026-10": 1
   },
   "degraded_count": {
     "2026-08": 1

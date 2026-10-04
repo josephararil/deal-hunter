@@ -2,7 +2,6 @@
   "seen": {
     "asteriafamilysunnybeach|2026-09|good": "2026-09-04",
     "bratislava|2026-10|skip": "2026-09-22",
-    "mursalitsahotel|2027-01|skip": "2026-09-01",
     "antalya|2026-09|good": "2026-09-04",
     "lameziaterme|2026-09|skip": "2026-09-04",
     "luckybanskoaparthotelspaandrelax|2026-09|diamond": "2026-09-07",
@@ -29,14 +28,18 @@
     "parkhotelandspavellahills|2026-11|good": "2026-10-01",
     "mursalitsahotel|2026-12|good": "2026-10-01",
     "unahotelsdecroma|2026-11|skip": "2026-10-01",
-    "doubletreebyhiltonistanbulsirkeci|2026-10|skip": "2026-10-01"
+    "doubletreebyhiltonistanbulsirkeci|2026-10|skip": "2026-10-01",
+    "saintspasbalneocomplex|2026-11|good": "2026-10-04",
+    "luckybanskoaparthotelspaandrelax|2026-10|good": "2026-10-04",
+    "wyndhamgardenantalyakonyaalti|2026-11|skip": "2026-10-04",
+    "bari|2026-11|skip": "2026-10-04"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
     "2026-09": 10,
-    "2026-10": 1
+    "2026-10": 2
   },
   "degraded_count": {
     "2026-08": 1

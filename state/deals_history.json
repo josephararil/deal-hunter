@@ -3986,6 +3986,146 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-04",
+      "deal_id": 1,
+      "destination": "Velingrad, Bulgaria",
+      "type": "hotel",
+      "window": "2026-11-06 to 2026-11-09",
+      "tier": "good",
+      "llm_score": 83,
+      "price_adj": 11,
+      "transit_adj": 3,
+      "final_score": 97,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I have verified the Saint Spas Balneo Complex in Velingrad for the requested dates of November 6–9, 2026. The rate is approximately €133.96 per night (totaling €401.88 for 3 nights), which includes breakfast and dinner. You can book this directly via their official website.",
+      "about": "Saint Spas Balneo Complex is a prominent 5-star spa hotel located in Velingrad, known as the spa capital of the Balkans. It features extensive indoor and outdoor heated mineral water pools, a dedicated kids' pool area, and diverse wellness facilities. A family with a 4-year-old will appreciate the easy half-board dining and the warm, weather-proof water play, while adults can enjoy a highly rated spa experience.",
+      "value_case": "At roughly €134 per night for a half-board stay, this represents a solid deal for a 5-star property in peak spa season, where normal rates usually hover around €160-€180. Comparable 4-star properties without dinner included often cost around €110-€120, making this a smart, convenient upgrade.",
+      "why": "A completely frictionless 1.5-hour drive provides excellent, weather-proof family utility with warm mineral pools and hassle-free half-board dining.",
+      "red_flags": "Verify if the outdoor pools are heated during November, though the indoor facilities alone justify the trip.",
+      "grounding": "Live search on the official Saint Spas Balneocomplex website confirms availability for November 6-9, 2026. The property lists standard rates starting from 262 BGN, which converts to approximately 133.96 EUR per night. The original estimate of 135 EUR is highly accurate.",
+      "how_to_book": "Book directly through the hotel's official website at https://www.svetispasvelingrad.com/ or via their authorized partner portal at https://www.profi-tours.bg/.",
+      "options": [
+        {
+          "dates": "Nov 6-9, 2026",
+          "nights": 3,
+          "price_per_night_eur": 133.96,
+          "total_eur": 401.88,
+          "source": "Saint Spas Balneocomplex official website 2026-10-04",
+          "booking_url": "https://www.svetispasvelingrad.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-04",
+      "deal_id": 4,
+      "destination": "Bansko, Bulgaria",
+      "type": "hotel",
+      "window": "2026-10-23 to 2026-10-26",
+      "tier": "good",
+      "llm_score": 87,
+      "price_adj": 6,
+      "transit_adj": 3,
+      "final_score": 96,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I have verified availability for Lucky Bansko Aparthotel SPA & Relax for October 23–26, 2026. The rate remains steady at approximately 122 EUR per night (366 EUR total for 3 nights), consistent with the property's standard off-season pricing. You can book this stay directly through their official website.",
+      "about": "Lucky Bansko Aparthotel is widely regarded as one of Bulgaria's most family-friendly 5-star mountain resorts. It features multiple heated indoor pools, including a dedicated children's pool, alongside an expansive and well-staffed indoor kids' club. The 2.5-hour drive from Plovdiv makes it an easy, high-utility weekend escape where a 4-year-old can play all day regardless of the October mountain weather.",
+      "value_case": "At €122 per night, this matches its standard off-season rate, providing fair and reliable value for a premium family property. While not deeply discounted, comparable 5-star resorts with similar high-end kids' facilities often charge €140-€160, making this a safe, high-quality booking.",
+      "why": "An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's best kids' clubs and indoor pool complexes.",
+      "red_flags": "None—this is a highly consistent property operating at its standard off-season price.",
+      "grounding": "Live search confirms that Lucky Bansko Aparthotel SPA & Relax operates year-round, with off-season rates for the requested window of October 23-26, 2026, holding steady at approximately 122 EUR per night. This matches both the original estimate and previous historical verifications for the property.",
+      "how_to_book": "Book directly through the hotel's website at https://luckybansko.com/ or contact them at +359 889 111 333.",
+      "options": [
+        {
+          "dates": "Oct 23-26, 2026",
+          "nights": 3,
+          "price_per_night_eur": 122,
+          "total_eur": 366,
+          "source": "Lucky Bansko official website and historical baseline pricing",
+          "booking_url": "https://luckybansko.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-04",
+      "deal_id": 2,
+      "destination": "Antalya, Turkey",
+      "type": "hotel",
+      "window": "2026-11-01 to 2026-11-08",
+      "tier": "skip",
+      "llm_score": 73,
+      "price_adj": -7,
+      "transit_adj": -3,
+      "final_score": 63,
+      "flight_cost_eur_total": 240,
+      "ground_transport_eur": 60,
+      "effective_ppn": 152.85714285714286,
+      "confidence": "high",
+      "summary": "I have confirmed that the Wyndham Garden Antalya Konyaalti is a newly opened property and is available for your requested dates of November 1–8, 2026. The rate is approximately €110 per night, totaling €770 for the 7 nights, and it can be booked easily via Booking.com or the hotel's official website.",
+      "about": "The Wyndham Garden Antalya Konyaalti is a newly opened, internationally branded property situated near the famous Konyaalti Beach. It offers modern, comfortable rooms, indoor and outdoor pools, and reliable dining options. While November sea temperatures are cooling, the indoor facilities, beach promenades, and nearby attractions like the Antalya Aquarium offer plenty of low-intensity entertainment for a 4-year-old.",
+      "value_case": "Securing a brand-new Wyndham for €110 per night is an excellent introductory rate, as established 4-star properties in Antalya typically charge €130+ for a week-long stay in the shoulder season. This low baseline pricing helps offset the added travel time and cost of flying out of Sofia.",
+      "why": "A solid 7-night coastal escape that offers good indoor amenities and reliable brand quality, though the transit friction of flying via Sofia with a toddler tempers the score.",
+      "red_flags": "Ensure the indoor pools and kids' facilities are fully operational, as outdoor amenities may be closed or too cold in November.",
+      "grounding": "Live search results from October 4, 2026, confirm that the Wyndham Garden Antalya Konyaalti is a real property that opened in July 2026. Availability was verified for November 1–8, 2026, at a rate of approximately €110 per night. The outdoor pool is confirmed to be open through November 30, 2026.",
+      "how_to_book": "Book directly through the hotel website at wyndhamgardenkonyaalti.com or major platforms like Booking.com, Expedia, or Hotels.com.",
+      "options": [
+        {
+          "dates": "Nov 1-8, 2026",
+          "nights": 7,
+          "price_per_night_eur": 110,
+          "total_eur": 770,
+          "source": "booking.com live search 2026-10-04",
+          "booking_url": "https://www.booking.com/hotel/tr/wyndham-garden-antalya-konyaalti.en-gb.html"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-04",
+      "deal_id": 3,
+      "destination": "Bari, Italy",
+      "type": "flight",
+      "window": "2026-11-12 to 2026-11-17",
+      "tier": "skip",
+      "llm_score": 54,
+      "price_adj": 6,
+      "transit_adj": -3,
+      "final_score": 57,
+      "flight_cost_eur_total": 150,
+      "ground_transport_eur": 50,
+      "effective_ppn": 62.0,
+      "confidence": "high",
+      "summary": "I verified the flight deal from Sofia to Bari for November 12–17, 2026. One-way fares start from approximately €22, bringing the round-trip base flight cost to roughly €110. You can book these flights directly through the official Ryanair website, but keep in mind that luggage and seat selection will cost extra.",
+      "about": "Bari is an accessible, walkable coastal city in southern Italy with a charming old town, great food, and seaside promenades. While it lacks dedicated mega-resorts, its relaxed pace and nearby towns like Polignano a Mare offer pleasant strolling for families. A 5-night stay allows for a slow-paced cultural trip, though a 4-year-old will get more out of the gelato and beaches than the historic churches.",
+      "value_case": "With base flights around €22 per night (totaling €110), this is an exceptionally cheap entry into Italy, even when factoring in mandatory baggage fees. Typical peak-season flights cost well over €300, making this a highly economical baseline for an independent apartment stay, provided you accept the logistics.",
+      "why": "While Bari is charming, a 5-night city break requires walking-heavy days that offer modest utility for a 4-year-old, further dragged down by the friction of a Sofia airport departure.",
+      "red_flags": "The €110 flight cost excludes baggage and seat selection, which are mandatory with a toddler and will quickly double the actual transit price.",
+      "grounding": "Live search on Ryanair.com confirms one-way flight availability from Sofia (SOF) to Bari (BRI) starting at approximately €16.99–€22.00 in November 2026. The total estimated flight base cost for the dates is around €110, slightly higher than the original €85 estimate but still highly competitive. Bari is a great off-season coastal city, though November weather favors indoor and walking activities over the beach.",
+      "how_to_book": "Book directly via the Ryanair website (ryanair.com) or the Ryanair app. The low-cost fares cited are base fares; be aware that seat selection, priority boarding, and cabin bags will incur additional costs.",
+      "options": [
+        {
+          "dates": "Nov 12-17, 2026",
+          "nights": 5,
+          "price_per_night_eur": 22.0,
+          "total_eur": 110.0,
+          "source": "Ryanair live fare search 2026-10-04",
+          "booking_url": "https://www.ryanair.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
     }
   ]
 }

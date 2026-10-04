@@ -3255,6 +3255,58 @@
       "final_score": 39,
       "source": "Booking.com (apidojo) live 2026-10-01",
       "note": "A chaotic, culturally intense city and a long 4.5-hour drive offer very low relaxation value for a toddler, overriding the high-quality hotel experience."
+    },
+    {
+      "date": "2026-10-04",
+      "destination": "Velingrad, Bulgaria",
+      "window": "2026-11-06 to 2026-11-09",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "good",
+      "actual_price": 133.96,
+      "llm_score": 83,
+      "final_score": 97,
+      "source": "Saint Spas Balneocomplex official website 2026-10-04",
+      "note": "A completely frictionless 1.5-hour drive provides excellent, weather-proof family utility with warm mineral pools and hassle-free half-board dining."
+    },
+    {
+      "date": "2026-10-04",
+      "destination": "Antalya, Turkey",
+      "window": "2026-11-01 to 2026-11-08",
+      "type": "hotel",
+      "claimed_price": 110,
+      "verdict": "skip",
+      "actual_price": 110,
+      "llm_score": 73,
+      "final_score": 63,
+      "source": "booking.com live search 2026-10-04",
+      "note": "A solid 7-night coastal escape that offers good indoor amenities and reliable brand quality, though the transit friction of flying via Sofia with a toddler tempers the score."
+    },
+    {
+      "date": "2026-10-04",
+      "destination": "Bari, Italy",
+      "window": "2026-11-12 to 2026-11-17",
+      "type": "flight",
+      "claimed_price": 85,
+      "verdict": "skip",
+      "actual_price": 22.0,
+      "llm_score": 54,
+      "final_score": 57,
+      "source": "Ryanair live fare search 2026-10-04",
+      "note": "While Bari is charming, a 5-night city break requires walking-heavy days that offer modest utility for a 4-year-old, further dragged down by the friction of a Sofia airport departure."
+    },
+    {
+      "date": "2026-10-04",
+      "destination": "Bansko, Bulgaria",
+      "window": "2026-10-23 to 2026-10-26",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "good",
+      "actual_price": 122,
+      "llm_score": 87,
+      "final_score": 96,
+      "source": "Lucky Bansko official website and historical baseline pricing",
+      "note": "An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's best kids' clubs and indoor pool complexes."
     }
   ]
 }

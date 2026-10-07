@@ -707,12 +707,17 @@
           "price": 122.12,
           "date": "2026-09-19",
           "source": "Booking.com (apidojo) live 2026-09-19"
+        },
+        {
+          "price": 122.12,
+          "date": "2026-10-07",
+          "source": "Booking.com (apidojo) live 2026-10-07"
         }
       ],
       "realistic_price_eur": 122.12,
       "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-19",
-      "updated": "2026-09-19"
+      "source": "Booking.com (apidojo) live 2026-10-07",
+      "updated": "2026-10-07"
     },
     "parkhotelandspavellahills|2026-11": {
       "samples": [
@@ -739,42 +744,35 @@
       "note": "Verified DoubleTree by Hilton Istanbul - Sirkeci, 4-star for Oct 24-29, 2026: €272.63/night (€1363.17 total, 5 nights), review 9.5. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-10-01",
       "updated": "2026-10-01"
+    },
+    "hotelartespaandpark|2026-10": {
+      "samples": [
+        {
+          "price": 195.1,
+          "date": "2026-10-07",
+          "source": "Booking.com (apidojo) live 2026-10-07"
+        }
+      ],
+      "realistic_price_eur": 195.1,
+      "note": "Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-07",
+      "updated": "2026-10-07"
+    },
+    "prestigehotelandaquapark|2026-10": {
+      "samples": [
+        {
+          "price": 1171.63,
+          "date": "2026-10-07",
+          "source": "Booking.com (apidojo) live 2026-10-07"
+        }
+      ],
+      "realistic_price_eur": 1171.63,
+      "note": "Verified Prestige Hotel and Aquapark - All inclusive, 4-star for Oct 23-26, 2026: €1171.63/night (€3514.9 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-07",
+      "updated": "2026-10-07"
     }
   },
   "ledger": [
-    {
-      "date": "2026-06-28",
-      "destination": "Hot Springs Medical and SPA, Banya, Bulgaria",
-      "window": "Sep 15-20, 2026",
-      "type": "hotel",
-      "claimed_price": null,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "Paying $168-$185 per night for a 4-star regional spa hotel is a classic absolute-value trap, as the local market offers comparable thermal resort utility for a family at significantly lower price floors.",
-      "note": "High absolute baseline price masquerading as a seasonal deal; local dining and extras will inflate costs further."
-    },
-    {
-      "date": "2026-06-28",
-      "destination": "Arte Spa & Park Hotel, Velingrad, Bulgaria",
-      "window": "Aug 15-19, 2026",
-      "type": "hotel",
-      "claimed_price": null,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "At roughly €145/night, this falls directly into the absolute-value trap for Velingrad, where the framed discount is irrelevant because the absolute price buys nothing exceptional compared to cheaper regional competitors.",
-      "note": "Peak-season price anchoring disguising a completely standard, unexceptional absolute rate for the region."
-    },
-    {
-      "date": "2026-06-28",
-      "destination": "Alexandra Beach Thassos Spa Resort, Potos, Thassos, Greece",
-      "window": "Sep 8-15, 2026",
-      "type": "hotel",
-      "claimed_price": null,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "The 3.5-hour drive plus a 40-minute ferry crossing pushes door-to-door transit well past the 4-hour threshold, adding too much logistical friction and toddler tax for a completely standard shoulder-season rate.",
-      "note": "Ferry wait times, boarding logistics, and island driving will push total travel time past 5 hours, defeating the purpose of a low-friction getaway."
-    },
     {
       "date": "2026-06-28",
       "destination": "Kempinski Hotel Grand Arena, Bansko, Bulgaria",
@@ -3307,6 +3305,45 @@
       "final_score": 96,
       "source": "Lucky Bansko official website and historical baseline pricing",
       "note": "An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's best kids' clubs and indoor pool complexes."
+    },
+    {
+      "date": "2026-10-07",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Oct 13-16, 2026",
+      "type": "hotel",
+      "claimed_price": 195,
+      "verdict": "good",
+      "actual_price": 195.1,
+      "llm_score": 88,
+      "final_score": 99,
+      "source": "Booking.com (apidojo) live 2026-10-07",
+      "note": "A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's excellent warm mineral pools and premium kids' facilities."
+    },
+    {
+      "date": "2026-10-07",
+      "destination": "Bansko Mountain Escape",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "good",
+      "actual_price": 122.12,
+      "llm_score": 87,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-10-07",
+      "note": "An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's best kids' clubs and indoor pools, perfectly sized for a 3-night toddler trip."
+    },
+    {
+      "date": "2026-10-07",
+      "destination": "Golden Sands Indoor Aquapark",
+      "window": "Oct 23-26, 2026",
+      "type": "hotel",
+      "claimed_price": 75,
+      "verdict": "skip",
+      "actual_price": 1171.63,
+      "llm_score": 35,
+      "final_score": 0,
+      "source": "Booking.com (apidojo) live 2026-10-07",
+      "note": "A 4-hour drive to a completely dead Black Sea resort in late October heavily limits utility, as outdoor aquaparks are closed and the town is shut down."
     }
   ]
 }

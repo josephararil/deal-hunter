@@ -4126,6 +4126,76 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-10-07",
+      "deal_id": 1,
+      "destination": "Velingrad Spa Retreat",
+      "type": "hotel",
+      "window": "Oct 13-16, 2026",
+      "tier": "good",
+      "llm_score": 88,
+      "price_adj": 8,
+      "transit_adj": 3,
+      "final_score": 99,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.",
+      "about": "Hotel Arte SPA & Park is widely considered one of Velingrad's premier 5-star resorts, famous for its extensive thermal mineral pools. It offers exceptional year-round family amenities, including highly-rated kids' play areas, warm indoor and outdoor pools, and premium dining. For a 4-year-old, the combination of dedicated play spaces and comfortably heated water ensures days of easy, weather-proof entertainment, while adults enjoy top-tier spa facilities in Bulgaria's spa capital.",
+      "value_case": "At €195/night, this is a very solid rate for Arte during the autumn season, as it typically commands €220-€250+ for its premium reputation and thermal facilities. While you can find 4-star options in Velingrad for €100-€140, the premium here pays for noticeably superior pools, food, and childcare facilities.",
+      "why": "A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's excellent warm mineral pools and premium kids' facilities.",
+      "red_flags": "None significant, though it is always worth verifying the kids' club access hours for toddlers.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-13–2026-10-16, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €195.1/night (€585.31 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-10-13&checkout=2026-10-16&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 13-16, 2026",
+          "nights": 3,
+          "price_per_night_eur": 195.1,
+          "total_eur": 585.31,
+          "source": "Booking.com (apidojo) live 2026-10-07",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-10-13&checkout=2026-10-16&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-07",
+      "deal_id": 3,
+      "destination": "Golden Sands Indoor Aquapark",
+      "type": "hotel",
+      "window": "Oct 23-26, 2026",
+      "tier": "skip",
+      "llm_score": 35,
+      "price_adj": -601,
+      "transit_adj": -3,
+      "final_score": 0,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Prestige Hotel and Aquapark - All inclusive, 4-star for Oct 23-26, 2026: €1171.63/night (€3514.9 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
+      "about": "The Prestige Hotel and Aquapark is a 4-star all-inclusive property in Golden Sands, best known for its extensive summer water slides and family entertainment. While it does have a heated indoor pool to fall back on during cooler months, the broader resort town effectively shuts down by late October. Families visiting at this time will find very few outside dining or entertainment options, making the stay completely reliant on the hotel's limited off-season indoor amenities.",
+      "value_case": "The grounded rate of €1,171/night is an extreme platform pricing glitch for a hotel that typically charges €80-€100/night in the off-season. Even at its normal rate, an October stay here offers poor utility compared to mountain or spa resorts with full year-round operations.",
+      "why": "A 4-hour drive to a completely dead Black Sea resort in late October heavily limits utility, as outdoor aquaparks are closed and the town is shut down.",
+      "red_flags": "Severe booking platform pricing glitch (€1,171/night); dead off-season resort town with heavily reduced local services; outdoor aquapark amenities will be closed.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-23–2026-10-26, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 8.2. Live rate: €1171.63/night (€3514.9 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Prestige+Deluxe+Hotel+Aquapark+Club+-+All+inclusive&checkin=2026-10-23&checkout=2026-10-26&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 23-26, 2026",
+          "nights": 3,
+          "price_per_night_eur": 1171.63,
+          "total_eur": 3514.9,
+          "source": "Booking.com (apidojo) live 2026-10-07",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Prestige+Deluxe+Hotel+Aquapark+Club+-+All+inclusive&checkin=2026-10-23&checkout=2026-10-26&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

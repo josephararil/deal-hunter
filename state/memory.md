@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-10-04
+# Diamond Finder Memory — updated 2026-10-07
 
-## Price Baselines (45 entries)
+## Price Baselines (47 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -92,6 +92,11 @@ _Source: Booking.com (apidojo) live 2026-07-05_
 Verified Hotel Arte SPA & Park, 5-star for Sep 11-14, 2026: €250.76/night (€752.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-17_
 
+### hotelartespaandpark|2026-10
+**Realistic:** ~€195.1/night &nbsp; **Updated:** 2026-10-07 &nbsp; **Samples:** 1
+Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-07_
+
 ### hotellagunaparkandaquacluballinclusive|2026-09
 **Realistic:** ~€167.51/night &nbsp; **Updated:** 2026-07-22 &nbsp; **Samples:** 2
 Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.
@@ -118,9 +123,9 @@ Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 25-28, 2026: €123
 _Source: Booking.com (apidojo) live 2026-09-10_
 
 ### luckybanskoaparthotelspaandrelax|2026-11
-**Realistic:** ~€122.12/night &nbsp; **Updated:** 2026-09-19 &nbsp; **Samples:** 1
+**Realistic:** ~€122.12/night &nbsp; **Updated:** 2026-10-07 &nbsp; **Samples:** 2
 Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-09-19_
+_Source: Booking.com (apidojo) live 2026-10-07_
 
 ### mursalitsahotel|2027-01
 **Realistic:** ~€219.71/night &nbsp; **Updated:** 2026-09-01 &nbsp; **Samples:** 1
@@ -166,6 +171,11 @@ _Source: Booking.com (apidojo) live 2026-08-31_
 **Realistic:** ~€132.95/night &nbsp; **Updated:** 2026-09-28 &nbsp; **Samples:** 3
 Verified Premier Luxury Mountain Resort, 5-star for Nov 6-9, 2026: €132.95/night (€398.86 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-09-28_
+
+### prestigehotelandaquapark|2026-10
+**Realistic:** ~€1171.63/night &nbsp; **Updated:** 2026-10-07 &nbsp; **Samples:** 1
+Verified Prestige Hotel and Aquapark - All inclusive, 4-star for Oct 23-26, 2026: €1171.63/night (€3514.9 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-07_
 
 ### princessandrianaresortandspaultraallinclusive|2026-09
 **Realistic:** ~€426.0/night &nbsp; **Updated:** 2026-07-04 &nbsp; **Samples:** 1
@@ -229,6 +239,9 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 
 ## Outcome Ledger (200 entries)
 
+- 👍 2026-10-07 | Velingrad Spa Retreat | Oct 13-16, 2026 | good score=88->99 claimed=€195 actual=€195.1 — A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through…
+- 👍 2026-10-07 | Bansko Mountain Escape | Nov 6-9, 2026 | good score=87->100 claimed=€122 actual=€122.12 — An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's…
+- · 2026-10-07 | Golden Sands Indoor Aquapark | Oct 23-26, 2026 | skip score=35->0 claimed=€75 actual=€1171.63 — A 4-hour drive to a completely dead Black Sea resort in late October heavily limits utility, as…
 - 👍 2026-10-04 | Velingrad, Bulgaria | 2026-11-06 to 2026-11-09 | good score=83->97 claimed=€135 actual=€133.96 — A completely frictionless 1.5-hour drive provides excellent, weather-proof family utility with warm…
 - · 2026-10-04 | Antalya, Turkey | 2026-11-01 to 2026-11-08 | skip score=73->63 claimed=€110 actual=€110 — A solid 7-night coastal escape that offers good indoor amenities and reliable brand quality, though…
 - · 2026-10-04 | Bari, Italy | 2026-11-12 to 2026-11-17 | skip score=54->57 claimed=€85 actual=€22.0 — While Bari is charming, a 5-night city break requires walking-heavy days that offer modest utility…
@@ -276,7 +289,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - 👍 2026-09-04 | Sunny Beach Late Season Escape | Sep 6-11, 2026 | good score=83->89 claimed=€144 actual=€146.93 — Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a…
 - 👍 2026-09-04 | Antalya All-Inclusive Charter | Sep 15-22, 2026 | good score=75->87 claimed=€85 actual=€65 — Massive on-site excitement for a toddler is significantly offset by the logistics and potential…
 - · 2026-09-04 | Calabria Coastal Escape | Sep 20-27, 2026 | skip score=35->0 claimed=€29 actual=€53.93 — High travel friction, the need for a rental car, and a lack of on-site toddler utility make a B&B…
-- · 2026-09-01 | Bratislava Autumn City Break | Oct 6-10, 2026 | skip score=52->55 claimed=€26 actual=€57.14 — While the direct flight from Plovdiv minimizes transit friction, a 4-night city break offers mostly…
-- 👍 2026-09-01 | Velingrad Spa Retreat | Sep 18-21, 2026 | good score=85->99 claimed=€130 actual=€117.91 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
-- 👍 2026-09-01 | Sunny Beach Late Season Escape | Sep 6-11, 2026 | good score=80->90 claimed=€185 actual=€144.39 — Early September retains excellent beach weather, and an ultra-all-inclusive setup combined with a…
 _... and 150 earlier entries_

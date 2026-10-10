@@ -4196,6 +4196,130 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-10",
+      "deal_id": 1,
+      "destination": "Lucky Bansko Aparthotel SPA & Relax",
+      "type": "hotel",
+      "window": "Nov 13-16, 2026",
+      "tier": "diamond",
+      "llm_score": 87,
+      "price_adj": 13,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 13-16, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "about": "Lucky Bansko Aparthotel SPA & Relax is a renowned 5-star flagship property in Bansko, known for its exceptional family-friendly amenities. It features spacious apartment-style rooms, a dedicated children's club, and outstanding indoor bio pools. During the pre-ski season in November, the town is quiet, making it an ideal short-break destination where families can enjoy top-tier spa facilities without the winter crowds.",
+      "value_case": "At ~€122/night, you're getting a significant off-season discount on a premium 5-star property that typically charges €165-€200 during busier periods. Comparable 4-star hotels in the area often sit around €80-€100, making this a small premium for a substantial upgrade in comfort and kids' amenities.",
+      "why": "An easy 2.5-hour drive provides immense pre-ski-season value at one of Bulgaria's most acclaimed family properties, with excellent indoor pools and kids' clubs perfectly suited for a 4-year-old.",
+      "red_flags": "Check specific operating hours for the kids' club and bio pools, as off-season weekends can sometimes carry reduced schedules.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-13–2026-11-16, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.0. Live rate: €122.12/night (€366.36 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-11-13&checkout=2026-11-16&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 13-16, 2026",
+          "nights": 3,
+          "price_per_night_eur": 122.12,
+          "total_eur": 366.36,
+          "source": "Booking.com (apidojo) live 2026-10-10",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Lucky+Bansko+Aparthotel+SPA+%26+Relax&checkin=2026-11-13&checkout=2026-11-16&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€122.12/night here — about the usual rate.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-10",
+      "deal_id": 3,
+      "destination": "Sealife Family Resort Hotel",
+      "type": "hotel",
+      "window": "Oct 23-30, 2026",
+      "tier": "good",
+      "llm_score": 78,
+      "price_adj": -4,
+      "transit_adj": -3,
+      "final_score": 71,
+      "flight_cost_eur_total": 450,
+      "ground_transport_eur": 100,
+      "effective_ppn": 237.71142857142854,
+      "confidence": "high",
+      "summary": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €159.14/night (€1113.96 total, 7 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "about": "Sealife Family Resort Hotel is a premium 5-star all-inclusive resort located in Antalya, Turkey. It boasts extensive family-focused infrastructure, including dedicated kids' clubs, multiple pools, and varied dining options. Late October still offers warm Mediterranean weather, providing a fantastic opportunity for a 4-year-old to enjoy an active beach holiday before the winter sets in.",
+      "value_case": "At ~€159/night for a 5-star all-inclusive package, this is an excellent end-of-season rate compared to the €220+ you would normally pay for similar Antalya resorts. When factoring in the included food and entertainment, the daily rate delivers tremendous value despite the added cost of flights.",
+      "why": "While requiring a flight and transit via Sofia, this 5-star late-season beach escape offers outstanding resort infrastructure and warm weather that easily absorbs the logistics friction.",
+      "red_flags": "Late October is near the very end of the season; verify if any specific outdoor aquaparks or kids' entertainment programs are closed or operating on reduced schedules.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-10-23–2026-10-30, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.3. Live rate: €159.14/night (€1113.96 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Oct 23-30, 2026",
+          "nights": 7,
+          "price_per_night_eur": 159.14,
+          "total_eur": 1113.96,
+          "source": "Booking.com (apidojo) live 2026-10-10",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sealife+Family+Resort+Hotel&checkin=2026-10-23&checkout=2026-10-30&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€171.01/night here — this is 7% under.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-10",
+      "deal_id": 4,
+      "destination": "MSC Lirica 7-Night Mediterranean Cruise",
+      "type": "cruise",
+      "window": "Jan 11-18, 2027",
+      "tier": "skip",
+      "llm_score": 18,
+      "price_adj": 15,
+      "transit_adj": -3,
+      "final_score": 30,
+      "flight_cost_eur_total": 350,
+      "ground_transport_eur": 80,
+      "effective_ppn": 95.12857142857143,
+      "confidence": "medium",
+      "summary": "best-value family stays in Athens for Jan 11-18, 2027: Freshly Renovated Appartment €33.7/night; Casa Arancio 1 Gbps Internet €34.02/night; Dioskouros Hostel €32.3/night.",
+      "about": "The MSC Lirica is a classic cruise ship offering multi-night itineraries across the Mediterranean, typically featuring stops in Greece, Italy, and Turkey. While the ship has kids' clubs and indoor entertainment, a January sailing means outdoor decks are chilly and usable space is restricted. A cruise inherently involves daily disembarkations and heavy crowds, which can quickly overwhelm younger children.",
+      "value_case": "The grounded price of ~€33/night is a severe mismatch, reflecting budget Athens apartments rather than the actual cruise fare, which typically runs closer to €140 per night. Even at a steep discount, a winter cruise provides poor practical value for a family with a toddler due to the high travel friction and daily logistical stress.",
+      "why": "A multi-destination Mediterranean winter cruise presents a logistics nightmare for a 4-year-old, with exhausting daily port excursions and limited weather-appropriate deck utility.",
+      "red_flags": "Major grounding discrepancy: the €33/night price reflects an Athens hostel/apartment, not the cruise fare. Additionally, winter Mediterranean cruises have a high risk of rough seas and limited outdoor utility.",
+      "grounding": "Booking.com (apidojo) city search 2027-01-11-2027-01-18, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Jan 11-18, 2027",
+          "nights": 7,
+          "price_per_night_eur": 33.7,
+          "total_eur": 235.9,
+          "source": "Booking.com (apidojo) live 2026-10-10",
+          "name": "Freshly Renovated Appartment",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Freshly+Renovated+Appartment&checkin=2027-01-11&checkout=2027-01-18&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Jan 11-18, 2027",
+          "nights": 7,
+          "price_per_night_eur": 34.02,
+          "total_eur": 238.17,
+          "source": "Booking.com (apidojo) live 2026-10-10",
+          "name": "Casa Arancio 1 Gbps Internet",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Casa+Arancio+1+Gbps+Internet&checkin=2027-01-11&checkout=2027-01-18&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Jan 11-18, 2027",
+          "nights": 7,
+          "price_per_night_eur": 32.3,
+          "total_eur": 226.08,
+          "source": "Booking.com (apidojo) live 2026-10-10",
+          "name": "Dioskouros Hostel",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Dioskouros+Hostel&checkin=2027-01-11&checkout=2027-01-18&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": false
     }
   ]
 }

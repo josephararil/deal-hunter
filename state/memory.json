@@ -578,12 +578,17 @@
           "price": 171.95,
           "date": "2026-09-13",
           "source": "Booking.com (apidojo) live 2026-09-13"
+        },
+        {
+          "price": 159.14,
+          "date": "2026-10-10",
+          "source": "Booking.com (apidojo) live 2026-10-10"
         }
       ],
-      "realistic_price_eur": 171.01,
-      "note": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €171.95/night (€1203.63 total, 7 nights), review 9.2. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-09-13",
-      "updated": "2026-09-13"
+      "realistic_price_eur": 170.08,
+      "note": "Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €159.14/night (€1113.96 total, 7 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "updated": "2026-10-10"
     },
     "spahotelinfinitypark|2026-09": {
       "samples": [
@@ -712,12 +717,17 @@
           "price": 122.12,
           "date": "2026-10-07",
           "source": "Booking.com (apidojo) live 2026-10-07"
+        },
+        {
+          "price": 122.12,
+          "date": "2026-10-10",
+          "source": "Booking.com (apidojo) live 2026-10-10"
         }
       ],
       "realistic_price_eur": 122.12,
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 6-9, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-10-07",
-      "updated": "2026-10-07"
+      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Nov 13-16, 2026: €122.12/night (€366.36 total, 3 nights), review 9.0. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "updated": "2026-10-10"
     },
     "parkhotelandspavellahills|2026-11": {
       "samples": [
@@ -725,12 +735,17 @@
           "price": 117.91,
           "date": "2026-10-01",
           "source": "Booking.com (apidojo) live 2026-10-01"
+        },
+        {
+          "price": 117.91,
+          "date": "2026-10-10",
+          "source": "Booking.com (apidojo) live 2026-10-10"
         }
       ],
       "realistic_price_eur": 117.91,
       "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 6-9, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-10-01",
-      "updated": "2026-10-01"
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "updated": "2026-10-10"
     },
     "doubletreebyhiltonistanbulsirkeci|2026-10": {
       "samples": [
@@ -773,50 +788,6 @@
     }
   },
   "ledger": [
-    {
-      "date": "2026-06-28",
-      "destination": "Kempinski Hotel Grand Arena, Bansko, Bulgaria",
-      "window": "Sep 10-14, 2026",
-      "type": "hotel",
-      "claimed_price": null,
-      "verdict": "over_ceiling",
-      "actual_price": null,
-      "source": "est_price_eur 158 > Bulgaria ceiling 100",
-      "note": "Removed poisoned baseline: Stage 3 verified July 26-27 pricing (€158) for a September window at low confidence — out-of-window, unreliable."
-    },
-    {
-      "date": "2026-06-29",
-      "destination": "Santé SPA Hotel",
-      "window": "September 14-21, 2026",
-      "type": "hotel",
-      "claimed_price": 105,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "At €105/night, this triggers the absolute-value trap; it is a completely standard off-peak rate for premium Velingrad spa hotels rather than a rare arbitrage opportunity.",
-      "note": "September is actually a high-demand transition period for Bulgarian spa tourism, meaning local dining and extras will not reflect low-season pricing."
-    },
-    {
-      "date": "2026-06-29",
-      "destination": "Hotel Rila Borovets",
-      "window": "September 7-14, 2026",
-      "type": "hotel",
-      "claimed_price": 95,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "The €95/night rate is unremarkable for this massive resort in autumn, and unpredictable mountain weather risks eliminating the utility of outdoor activities for a toddler.",
-      "note": "Mountain lifts are frequently reduced to weekend-only operations by mid-September, severely limiting weekday utility."
-    },
-    {
-      "date": "2026-06-29",
-      "destination": "Lucky Bansko Aparthotel SPA & Relax",
-      "window": "September 10-17, 2026",
-      "type": "hotel",
-      "claimed_price": 85,
-      "verdict": "confirm",
-      "actual_price": 96.21,
-      "source": "Booking.com (apidojo) live 2026-06-29",
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €96.21/night (€673.46 total, 7 nights), review 9.1. Price matches the Stage-1 estimate."
-    },
     {
       "date": "2026-06-30",
       "destination": "Velingrad, Park Hotel and SPA Vella Hills",
@@ -3344,6 +3315,58 @@
       "final_score": 0,
       "source": "Booking.com (apidojo) live 2026-10-07",
       "note": "A 4-hour drive to a completely dead Black Sea resort in late October heavily limits utility, as outdoor aquaparks are closed and the town is shut down."
+    },
+    {
+      "date": "2026-10-10",
+      "destination": "Lucky Bansko Aparthotel SPA & Relax",
+      "window": "Nov 13-16, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "diamond",
+      "actual_price": 122.12,
+      "llm_score": 87,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "note": "An easy 2.5-hour drive provides immense pre-ski-season value at one of Bulgaria's most acclaimed family properties, with excellent indoor pools and kids' clubs perfectly suited for a 4-year-old."
+    },
+    {
+      "date": "2026-10-10",
+      "destination": "Park Hotel and SPA Vella Hills",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 117.91,
+      "llm_score": 85,
+      "final_score": 97,
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "note": "A completely frictionless 1.5-hour drive to a highly-rated spa resort with excellent heated pools provides optimal, low-stress weekend utility for a family with a toddler."
+    },
+    {
+      "date": "2026-10-10",
+      "destination": "Sealife Family Resort Hotel",
+      "window": "Oct 23-30, 2026",
+      "type": "hotel",
+      "claimed_price": 172,
+      "verdict": "good",
+      "actual_price": 159.14,
+      "llm_score": 78,
+      "final_score": 71,
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "note": "While requiring a flight and transit via Sofia, this 5-star late-season beach escape offers outstanding resort infrastructure and warm weather that easily absorbs the logistics friction."
+    },
+    {
+      "date": "2026-10-10",
+      "destination": "MSC Lirica 7-Night Mediterranean Cruise",
+      "window": "Jan 11-18, 2027",
+      "type": "cruise",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 33.7,
+      "llm_score": 18,
+      "final_score": 30,
+      "source": "Booking.com (apidojo) live 2026-10-10",
+      "note": "A multi-destination Mediterranean winter cruise presents a logistics nightmare for a 4-year-old, with exhausting daily port excursions and limited weather-appropriate deck utility."
     }
   ]
 }

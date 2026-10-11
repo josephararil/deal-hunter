@@ -5,7 +5,7 @@ Guidance for Claude Code when working in this repository.
 ## What this is
 
 A personal travel deal-finder for a family of 3 (2 adults + 4-year-old) based near Plovdiv,
-Bulgaria. It runs every 3 days on free GitHub Actions, emails immediately when something genuinely
+Bulgaria. It runs weekly on free GitHub Actions, emails immediately when something genuinely
 exceptional is found, and is silent the rest of the time. No server, no real database — just
 JSON state files committed back by CI.
 
@@ -15,7 +15,7 @@ lines, it's probably wrong for this repo. One genuine find a year justifies the 
 
 ## Active product: the Diamond Finder
 
-`find_city_anomalies.py` is the only script that runs automatically (every 3 days via `daily.yml`).
+`find_city_anomalies.py` is the only script that runs automatically (every Monday via `daily.yml`).
 It is self-contained: no baseline data; Stage-3 grounding uses Booking.com (apidojo)
 live rates, falling back to LLM concierge on any failure.
 
@@ -157,12 +157,12 @@ find_city_anomalies.py
 | `config.py` | City list + diamond-finder knobs; per-stage provider overrides; token budgets; prompts. **Names no model** — the `LLM models` and `Run resilience` blocks are deliberately empty and point at the `llm-chain` package |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
 | `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
-| `find_city_anomalies.py` | The diamond finder — runs every 3 days, emails a digest of every scored candidate (diamond/good/skip) + unscored/dropped sections |
+| `find_city_anomalies.py` | The diamond finder — runs weekly, emails a digest of every scored candidate (diamond/good/skip) + unscored/dropped sections |
 | `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
 | `trips.py` | Read-only user-maintained trip log: `load()`/`valid_trips()`/`price_anchors()`/`summarize_for_prompt()`/`backtest()`/`paste_snippet()` — see "Trip log" below |
 | `state/trips.json` | Hand-edited by the user (booked trips); the pipeline reads it but never writes it (Invariant T) |
 | `tools/migrate_memory.py` | One-off, already-run, idempotent migration script — the reviewable record of the 2026-08-10 state repair (baseline provenance purge, re-key, ledger revert, `trips.json` seed) |
-| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC every 3 days (`cron: "0 6 */3 * *"`); commits `state/`; `timeout-minutes: 20` |
+| `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC every Monday (`cron: "0 6 * * 1"`); commits `state/`; `timeout-minutes: 20` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
 | `state/signals_seen.json` | Anti-spam TTL memory: `property-identity\|season\|tier → date_emailed`, monthly count |

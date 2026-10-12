@@ -790,61 +790,6 @@
   "ledger": [
     {
       "date": "2026-06-30",
-      "destination": "Velingrad, Park Hotel and SPA Vella Hills",
-      "window": "September 12-19, 2026",
-      "type": "hotel",
-      "claimed_price": 105,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "Fails the absolute-value floor test; €105/night is a completely standard, unremarkable rate for a 4-star spa hotel in Velingrad rather than a true arbitrage opportunity.",
-      "note": "Standard regional pricing masquerading as a seasonal discount."
-    },
-    {
-      "date": "2026-06-30",
-      "destination": "Hisarya, Sana Spa Hotel",
-      "window": "September 15-22, 2026",
-      "type": "hotel",
-      "claimed_price": 98,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "While highly convenient, €98/night is simply the normal market rate for Hisarya spa hotels, lacking the massive price drop required for a high-utility value play.",
-      "note": "Lack of genuine discount; ordinary absolute pricing for the geography."
-    },
-    {
-      "date": "2026-06-30",
-      "destination": "Paphos, Aliathon Aegean",
-      "window": "September 14-21, 2026",
-      "type": "hotel",
-      "claimed_price": 118,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "Driving to Sofia, airport waits, the flight, and local transfers will push total door-to-door transit past 5 hours, while low-cost airline fees for luggage and family seating will erase the hotel savings.",
-      "note": "Budget flight 'toddler tax' (mandatory seating/baggage fees) and transit fatigue."
-    },
-    {
-      "date": "2026-06-30",
-      "destination": "Bansko, Lucky Bansko Aparthotel SPA & Relax",
-      "window": "September 10-17, 2026",
-      "type": "hotel",
-      "claimed_price": 96,
-      "verdict": "confirm",
-      "actual_price": 104.57,
-      "source": "Booking.com (apidojo) live 2026-06-30",
-      "note": "Verified Lucky Bansko Aparthotel SPA & Relax, 5-star for Sep 10-17, 2026: €104.57/night (€732.02 total, 7 nights), review 9.1. Price matches the Stage-1 estimate."
-    },
-    {
-      "date": "2026-06-30",
-      "destination": "Bansko, Bulgaria",
-      "window": "Sep 10-13, 2026",
-      "type": "hotel",
-      "claimed_price": 104.0,
-      "verdict": "over_ceiling",
-      "actual_price": null,
-      "source": "est_price_eur 104.0 > ceiling 100",
-      "note": "Verified ground-truth pricing of €104/night includes a full 'Summer SPA vacation' package with breakfast and dinner (half-board) and free stay for a child under 12. Outstanding Tier 1 value with…"
-    },
-    {
-      "date": "2026-06-30",
       "destination": "Bansko, Bulgaria",
       "window": "Jul 24-27, 2026",
       "type": "hotel",
@@ -3367,6 +3312,71 @@
       "final_score": 30,
       "source": "Booking.com (apidojo) live 2026-10-10",
       "note": "A multi-destination Mediterranean winter cruise presents a logistics nightmare for a 4-year-old, with exhausting daily port excursions and limited weather-appropriate deck utility."
+    },
+    {
+      "date": "2026-10-12",
+      "destination": "Milan City Break via PDV Direct",
+      "window": "Nov 5 - Nov 10, 2026",
+      "type": "hotel",
+      "claimed_price": 120,
+      "verdict": "skip",
+      "actual_price": 120,
+      "llm_score": 52,
+      "final_score": 56,
+      "source": "Accor (Novotel) direct booking search 2026-10-12",
+      "note": "A 5-night city break in Milan involves significant walking and modest toddler appeal, even though direct flights from Plovdiv keep transit friction low."
+    },
+    {
+      "date": "2026-10-12",
+      "destination": "Velingrad Spa Retreat",
+      "window": "Nov 13 - Nov 16, 2026",
+      "type": "hotel",
+      "claimed_price": 118,
+      "verdict": "good",
+      "actual_price": 118,
+      "llm_score": 86,
+      "final_score": 100,
+      "source": "Booking.com live search 2026-10-12",
+      "note": "A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent warm mineral pools perfectly scaled for a 3-night stay."
+    },
+    {
+      "date": "2026-10-12",
+      "destination": "Bansko Pre-Season Mountain Escape",
+      "window": "Nov 20 - Nov 23, 2026",
+      "type": "hotel",
+      "claimed_price": 122,
+      "verdict": "good",
+      "actual_price": 122,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Official hotel booking portal and verified pricing memory",
+      "note": "An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's best kids' clubs and a dedicated 33-degree children's pool."
+    },
+    {
+      "date": "2026-10-12",
+      "destination": "Rome Autumn Exploration",
+      "window": "Nov 3 - Nov 8, 2026",
+      "type": "hotel",
+      "claimed_price": 110,
+      "verdict": "skip",
+      "actual_price": 138,
+      "llm_score": 45,
+      "final_score": 37,
+      "source": "Accor/Novotel official booking engine live check 2026-10-12",
+      "note": "A 5-night museum-heavy city break with the added toddler-tax of driving to Sofia for a flight provides highly constrained utility for a 4-year-old."
+    },
+    {
+      "date": "2026-10-12",
+      "destination": "Thessaloniki Luxury City Break",
+      "window": "Nov 2 - Nov 6, 2026",
+      "type": "hotel",
+      "claimed_price": 248,
+      "verdict": "good",
+      "actual_price": 203,
+      "llm_score": 62,
+      "final_score": 70,
+      "source": "Electra Hotels official website live check 2026-10-12",
+      "note": "While the indoor pool and 5-star luxury are great, a near 4-hour drive for a 4-night city break offers modest toddler utility compared to a dedicated spa resort."
     }
   ]
 }

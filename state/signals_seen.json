@@ -1,9 +1,6 @@
 {
   "seen": {
     "bratislava|2026-10|skip": "2026-09-22",
-    "spahotelinfinitypark|2026-09|good": "2026-09-10",
-    "granadaluxurybelek|2026-10|skip": "2026-09-10",
-    "grecotelpallasathena|2026-10|skip": "2026-09-10",
     "premierluxurymountainresort|2026-11|diamond": "2026-09-13",
     "parkhotelandspavellahills|2026-10|good": "2026-09-13",
     "sealifefamilyresorthotel|2026-10|skip": "2026-09-13",
@@ -31,14 +28,17 @@
     "prestigehotelandaquapark|2026-10|skip": "2026-10-07",
     "luckybanskoaparthotelspaandrelax|2026-11|diamond": "2026-10-10",
     "sealifefamilyresorthotel|2026-10|good": "2026-10-10",
-    "athens|2027-01|skip": "2026-10-10"
+    "athens|2027-01|skip": "2026-10-10",
+    "electrapalacethessaloniki|2026-11|good": "2026-10-12",
+    "novotelmilanonordcagranda|2026-11|skip": "2026-10-12",
+    "novotelromaeur|2026-11|skip": "2026-10-12"
   },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
     "2026-09": 10,
-    "2026-10": 4
+    "2026-10": 5
   },
   "degraded_count": {
     "2026-08": 1

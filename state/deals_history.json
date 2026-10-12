@@ -4320,6 +4320,111 @@
       ],
       "baseline_note": "",
       "child_price_caveat": false
+    },
+    {
+      "date": "2026-10-12",
+      "deal_id": 5,
+      "destination": "Thessaloniki Luxury City Break",
+      "type": "hotel",
+      "window": "Nov 2 - Nov 6, 2026",
+      "tier": "good",
+      "llm_score": 62,
+      "price_adj": 11,
+      "transit_adj": -3,
+      "final_score": 70,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I verified the Electra Palace Thessaloniki for the requested window of Nov 2–6, 2026. The price is approximately •203 per night (•812 total), which is lower than the initial estimate. Please note that while the hotel has an indoor pool, the outdoor pool is closed for the season during November.",
+      "about": "The Electra Palace Thessaloniki is a landmark 5-star flagship property situated directly on the iconic Aristotelous Square, offering spectacular views of the Thermaic Gulf. It uniquely features a heated indoor pool, which is a rare and crucial amenity for families visiting in autumn. While Thessaloniki is a vibrant cultural hub, a 4-year-old will mostly appreciate the indoor pool and waterfront walks over a 4-night stay.",
+      "value_case": "Securing a room at the Electra Palace for 203 EUR per night is a strong deal, as this prime-location flagship typically commands 260 EUR per night even outside peak summer. It offers a genuine touch of classical luxury and an indoor pool, justifying the premium over standard city hotels.",
+      "why": "While the indoor pool and 5-star luxury are great, a near 4-hour drive for a 4-night city break offers modest toddler utility compared to a dedicated spa resort.",
+      "red_flags": "A near 4-hour drive from Plovdiv is at the upper limit for a 4-year-old, and standard city parking fees may add unexpected daily costs.",
+      "grounding": "Searched official Electra Hotels booking engine for Nov 2-6, 2026. Found base rates starting from •203/night. Note: The hotel's indoor pool is available, but the outdoor pool is seasonally closed from Oct 1 to April 30.",
+      "how_to_book": "Book directly at the official Electra Hotels website (https://www.electrahotels.gr/electra-palace-thessaloniki/) to access member rates and guarantee the best price.",
+      "options": [
+        {
+          "dates": "Nov 2-6, 2026",
+          "nights": 4,
+          "price_per_night_eur": 203,
+          "total_eur": 812,
+          "source": "Electra Hotels official website live check 2026-10-12",
+          "booking_url": "https://www.electrahotels.gr/electra-palace-thessaloniki/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-12",
+      "deal_id": 1,
+      "destination": "Milan City Break via PDV Direct",
+      "type": "hotel",
+      "window": "Nov 5 - Nov 10, 2026",
+      "tier": "skip",
+      "llm_score": 52,
+      "price_adj": 1,
+      "transit_adj": 3,
+      "final_score": 56,
+      "flight_cost_eur_total": 120,
+      "ground_transport_eur": 60,
+      "effective_ppn": 156.0,
+      "confidence": "high",
+      "summary": "I have confirmed this Milan itinerary. Ryanair operates direct flights from Plovdiv (PDV) to Milan Malpensa (MXP), and I found the Novotel Milano Nord Ca' Granda available for your 5-night stay (Nov 5–10) at €120 per night (€600 total). You can book the hotel directly on the Accor website and the flights via Ryanair.",
+      "about": "Novotel Milano Nord Ca' Granda is a solid, family-friendly 4-star hotel located a bit outside central Milan, but well-connected by tram and metro. It features standard reliable Novotel amenities, though its outdoor pool will be closed in November. For a family, Milan offers some parks and the Duomo, but a 5-night stay leans heavily on city exploration which will likely test a 4-year-old's patience.",
+      "value_case": "At 120 EUR per night, this is a very fair rate for a branded 4-star in Milan, which often hovers around 160 EUR in autumn. It provides a reliable, budget-friendly base compared to central options that easily exceed 250 EUR, though you trade location for space.",
+      "why": "A 5-night city break in Milan involves significant walking and modest toddler appeal, even though direct flights from Plovdiv keep transit friction low.",
+      "red_flags": "A 5-night stay in a major city can be exhausting for a 4-year-old, and the outdoor pool will be closed.",
+      "grounding": "Live search verified direct Ryanair flights from Plovdiv (PDV) to Milan Malpensa (MXP) in November 2026. The Novotel Milano Nord Ca' Granda is confirmed available for the Nov 5-10, 2026 window at approximately €120/night based on live search results from October 12, 2026.",
+      "how_to_book": "Book flights directly at Ryanair.com (Plovdiv PDV to Milan MXP). Book the hotel directly via the Accor website using the provided booking URL.",
+      "options": [
+        {
+          "dates": "Nov 5-10, 2026",
+          "nights": 5,
+          "price_per_night_eur": 120,
+          "total_eur": 600,
+          "source": "Accor (Novotel) direct booking search 2026-10-12",
+          "booking_url": "https://all.accor.com/hotel/0952/index.en.shtml"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-12",
+      "deal_id": 4,
+      "destination": "Rome Autumn Exploration",
+      "type": "hotel",
+      "window": "Nov 3 - Nov 8, 2026",
+      "tier": "skip",
+      "llm_score": 45,
+      "price_adj": -5,
+      "transit_adj": -3,
+      "final_score": 37,
+      "flight_cost_eur_total": 150,
+      "ground_transport_eur": 100,
+      "effective_ppn": 188.0,
+      "confidence": "high",
+      "summary": "I verified availability for the Novotel Roma Eur from Nov 3–8, 2026. The property is bookable, but the price is currently €138/night (€690 total), which is higher than the original €110 estimate. You can book directly via the Accor website at https://all.accor.com.",
+      "about": "Novotel Roma Eur is a dependable, modern 4-star hotel located in Rome's EUR business district, away from the chaotic historic center. While it provides comfortable, spacious family rooms and a reliable standard of service, it requires a metro ride to reach Rome's main attractions. For a 4-year-old, Rome is a demanding walking destination where ruins and museums offer little immediate fun.",
+      "value_case": "At 138 EUR per night, this is a reasonable off-season rate for Rome, where even basic accommodations routinely push past 200 EUR. However, it is priced fairly for its out-of-center location rather than being an outright steal compared to its normal 170 EUR rate.",
+      "why": "A 5-night museum-heavy city break with the added toddler-tax of driving to Sofia for a flight provides highly constrained utility for a 4-year-old.",
+      "red_flags": "Significant travel friction driving to Sofia for a flight, combined with a walking-heavy 5-day city itinerary lacking toddler-friendly attractions.",
+      "grounding": "Live search confirms the Novotel Roma Eur is operational and available for the Nov 3–8 window. Current market pricing for this period is approximately €138/night, which is higher than the initial €110 estimate. The location is in the EUR business district, approximately 20–30 minutes from Rome's historic city center via public transit.",
+      "how_to_book": "Book directly through the Accor website (all.accor.com) or major OTAs like Booking.com using the property name 'Novotel Roma Eur'.",
+      "options": [
+        {
+          "dates": "Nov 3-8, 2026",
+          "nights": 5,
+          "price_per_night_eur": 138,
+          "total_eur": 690,
+          "source": "Accor/Novotel official booking engine live check 2026-10-12",
+          "booking_url": "https://all.accor.com"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

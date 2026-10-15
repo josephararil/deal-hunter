@@ -80,6 +80,36 @@ def baseline_key(d):
     return f"{identity(d)}|{season_key(d.get('window', '') or '')}"
 
 
+def canonical(ident):
+    """Sorted characters of an identity string (see identity_key)."""
+    return "".join(sorted(ident))
+
+
+def identity_key(d):
+    """Word-order-proof property key: the sorted characters of identity(). 'Hotel Arte SPA &
+    Park' and 'Arte SPA and Park Hotel' collide on purpose. Computable from legacy squashed
+    keys, which is why it sorts characters, not words."""
+    return canonical(identity(d))
+
+
+def baseline_samples(baselines, d):
+    """Every real price sample for this property and season, merged across word-order variants
+    of its baseline key. A legacy entry with no `samples` list contributes its
+    realistic_price_eur. Keys are left as written (Invariant S); merging happens only here."""
+    season = season_key(d.get("window", "") or "")
+    want = identity_key(d)
+    out = []
+    for key, b in baselines.items():
+        ident, _, key_season = key.rpartition("|")
+        if key_season != season or canonical(ident) != want:
+            continue
+        if b.get("samples"):
+            out.extend(s["price"] for s in b["samples"] if isinstance(s.get("price"), (int, float)))
+        elif isinstance(b.get("realistic_price_eur"), (int, float)):
+            out.append(b["realistic_price_eur"])
+    return out
+
+
 def _clip(text, limit):
     """Clip text at the last word boundary before limit, appending an ellipsis."""
     if not text or len(text) <= limit:
@@ -194,20 +224,27 @@ def prune(memory):
 
 # ── prompt summary ─────────────────────────────────────────────────────────────
 
-def summarize_for_prompt(memory, cities=None, trip_anchors=None):
+_DEFAULT_OUTCOME_VERDICTS = ("correct", "kill", "hallucinated", "skeptic_kill", "skip", "blocked", "good")
+
+
+def summarize_for_prompt(memory, cities=None, trip_anchors=None, include_baselines=True,
+                         outcome_verdicts=None):
     """Return a compact text block for injection into FIND/SKEPTIC/VERIFY prompts.
 
     cities: optional list of city/destination strings; when given, only baselines
     whose key contains one of these strings are included (case-insensitive).
     trip_anchors: optional {baseline_key: {"price_per_night_eur", "hotel_name", "checkin"}} —
     a key present here renders as a "PAID" line (an actual booking) instead of a baseline line.
+    include_baselines=False omits the "Known realistic prices" block, and outcome_verdicts
+    narrows the outcome rows: FIND gets corrections only, because a block full of past "good"
+    Velingrad/Bansko results taught it to re-propose the same hotels every week.
     Result is intentionally capped so prompt size stays controlled."""
     lines = []
     trip_anchors = trip_anchors or {}
 
     # --- Baselines (a trip anchor for the same key replaces the baseline line) ---
-    baselines = memory.get("baselines", {})
-    if baselines or trip_anchors:
+    baselines = memory.get("baselines", {}) if include_baselines else {}
+    if include_baselines and (baselines or trip_anchors):
         relevant = []
         for key, b in sorted(baselines.items(), key=lambda kv: kv[1].get("updated", ""), reverse=True):
             if cities:
@@ -237,9 +274,9 @@ def summarize_for_prompt(memory, cities=None, trip_anchors=None):
     # shape is only ever produced by the coercion bug this rule replaces — re-poisoning the
     # ledger with a fabricated 0 would be expensive and invisible).
     ledger = memory.get("ledger", [])
+    verdicts = outcome_verdicts if outcome_verdicts is not None else _DEFAULT_OUTCOME_VERDICTS
     recent_bad = sorted(
-        [e for e in ledger if e.get("verdict") in
-         ("correct", "kill", "hallucinated", "skeptic_kill", "skip", "blocked", "good")
+        [e for e in ledger if e.get("verdict") in verdicts
          and not (e.get("llm_score") == 0 and e.get("final_score") == 0)],
         key=lambda e: e.get("date", ""),
         reverse=True,

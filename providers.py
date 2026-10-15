@@ -15,6 +15,12 @@ import config as C
 
 # ── Internal HTTP ─────────────────────────────────────────────────────────────
 
+# Why each ground_api call fell back to the LLM this run (first 200 chars of the error).
+# find_city_anomalies.main() clears it per run and shows the first one in the email's health
+# footer -- CI logs expire, so the email is the only lasting record of WHY Booking.com failed.
+FAILURES = []
+
+
 def _get(path, params):
     """GET BOOKING_BASE_URL+path; return parsed JSON or raise."""
     if not C.RAPIDAPI_KEY:
@@ -29,7 +35,10 @@ def _get(path, params):
         headers=headers,
         timeout=C.HOTEL_HTTP_TIMEOUT,
     )
-    resp.raise_for_status()
+    if not resp.ok:
+        # Keep RapidAPI's body (quota / key / plan message); raise_for_status() drops it.
+        raise requests.HTTPError(f"HTTP {resp.status_code} on {path}: {resp.text[:200]}",
+                                 response=resp)
     return resp.json()
 
 
@@ -140,8 +149,15 @@ def resolve_hotel(diamond):
 
 # ── Property listing ──────────────────────────────────────────────────────────
 
-def list_properties(ref, chk_in, chk_out):
-    """Return list of property_card dicts from /properties/v2/list."""
+def card_currency(card):
+    """The currency code apidojo quoted a property card's nightly price in, or None."""
+    return ((card.get("composite_price_breakdown") or {}).get("gross_amount_per_night") or {}).get("currency")
+
+
+def list_properties(ref, chk_in, chk_out, order_by=None):
+    """Return list of property_card dicts from /properties/v2/list.
+
+    `order_by` overrides the default ("price" for a city search, "distance" otherwise)."""
     params = {
         "offset":                    0,
         "arrival_date":              chk_in,
@@ -153,7 +169,7 @@ def list_properties(ref, chk_in, chk_out):
         "children_qty":              len(C.HOTEL_CHILDREN_AGES),
         "children_age":              ",".join(map(str, C.HOTEL_CHILDREN_AGES)),
         "price_filter_currencycode": "EUR",
-        "order_by":                  "price" if ref["kind"] == "city" else "distance",
+        "order_by":                  order_by or ("price" if ref["kind"] == "city" else "distance"),
         "languagecode":              "en-us",
         "units":                     "metric",
     }
@@ -206,6 +222,11 @@ def price(ref, chk_in, chk_out):
     ppn = ppn_block.get("value")
     if ppn is None:
         return None
+    # Every price is labelled EUR downstream; a card quoted in another currency would be
+    # mislabelled, not converted. Raising sends ground_api to the LLM fallback.
+    cur = card_currency(matched)
+    if cur and cur.upper() != "EUR":
+        raise ValueError(f"non-EUR price ({cur}) for {matched.get('hotel_name')}")
 
     total_raw = matched.get("min_total_price")
     if total_raw is None:
@@ -392,6 +413,8 @@ def _price_alternatives(ref, chk_in, chk_out):
         score = card.get("review_score")
         if score is None or float(score) < 8.0:
             continue
+        if (card_currency(card) or "EUR").upper() != "EUR":
+            continue  # see the currency guard in price()
         breakdown = card.get("composite_price_breakdown") or {}
         ppn_block = breakdown.get("gross_amount_per_night") or {}
         ppn = ppn_block.get("value")
@@ -629,5 +652,6 @@ def ground_api(diamond, mem_text, today):
 
     except (requests.RequestException, ValueError, KeyError) as exc:
         print(f"  [providers] Booking.com grounding failed ({exc}), falling back to LLM")
+        FAILURES.append(str(exc)[:200])
         import find_city_anomalies as fa  # lazy import to avoid circular dependency
         return fa._ground_llm(diamond, mem_text, today)

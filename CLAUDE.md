@@ -96,10 +96,13 @@ find_city_anomalies.py
   │    local weekend, however cheap, is at most GOOD (>=GOOD_SCORE_THRESHOLD), else skip.
   │    "good" additionally needs discount>=GOOD_MIN_DISCOUNT (10%): a nice hotel at its usual
   │    price is a skip. REFERENCE PRICE (Invariant H2): with >=REF_MIN_SAMPLES real Booking.com
-  │    samples for the property+season (M.baseline_samples, merged across word orders), their
-  │    median replaces normal_price_eur; with 1-2 samples, min(llm, median). CAPS after tier_for
-  │    (Invariant U, then F): a non-apidojo price → skip + NOTE_UNVERIFIED; a "good" that is not
-  │    is_low_friction → skip + NOTE_FAR (far trips are diamond-only). Notes render in the email.
+  │    samples for the property+season (M.baseline_samples, merged across word orders and across
+  │    FIND names via the Booking.com name), their median replaces normal_price_eur; with 1-2
+  │    samples, min(llm, median); with none this month but some in other months,
+  │    min(llm, any-month median) (ref_source history_any). CAPS after tier_for (Invariant U,
+  │    then N, then F): a non-apidojo price → skip + NOTE_UNVERIFIED; a diamond/good with no
+  │    PRIOR live price in any month → skip + NOTE_FIRST; a "good" that is not is_low_friction →
+  │    skip + NOTE_FAR (far trips are diamond-only). Notes render in the email.
   │    The LLM never vetoes or tiers — a low final score is dropped by default, but every
   │    score is recorded. Same €85 can be a diamond for a standout (high llm_score) and a
   │    skip for an ordinary place. The scorer also emits a descriptive DOSSIER per candidate
@@ -173,9 +176,9 @@ find_city_anomalies.py
 |---|---|
 | `config.py` | City list + diamond-finder knobs; per-stage provider overrides; token budgets; prompts. **Names no model** — the `LLM models` and `Run resilience` blocks are deliberately empty and point at the `llm-chain` package |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
-| `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()`; `identity_key()`/`canonical()`/`baseline_samples()` (word-order-proof property key + merged price history) |
+| `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()`; `identity_key()`/`canonical()`/`baseline_samples(any_season=False)` (word-order-proof property key + merged price history); `booking_key()`/`entry_booking_name()` (match history across FIND names by the Booking.com name) |
 | `find_city_anomalies.py` | The diamond finder — runs weekly, emails a digest of every scored candidate (diamond/good/skip) + unscored/dropped sections |
-| `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties(order_by=None)`, `card_currency()`. Non-EUR cards are refused (price raises → LLM fallback; alternatives skip them). `FAILURES` collects each fallback reason for the health footer |
+| `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties(order_by=None)`, `card_currency()`. Non-EUR cards are refused (price raises → LLM fallback; alternatives skip them). `FAILURES` collects each fallback reason for the health footer. `_to_stage3` returns `booking_name` (the priced card's name); `_to_stage3_alternatives` does not |
 | `trips.py` | Read-only user-maintained trip log: `load()`/`valid_trips()`/`price_anchors()`/`summarize_for_prompt()`/`backtest()`/`paste_snippet()` — see "Trip log" below |
 | `state/trips.json` | Hand-edited by the user (booked trips); the pipeline reads it but never writes it (Invariant T) |
 | `tools/migrate_memory.py` | One-off, already-run, idempotent migration script — the reviewable record of the 2026-08-10 state repair (baseline provenance purge, re-key, ledger revert, `trips.json` seed) |
@@ -612,18 +615,39 @@ it's a real paid price and a real choice made.
 - **(H2, history beats guess) With ≥ `REF_MIN_SAMPLES` real Booking.com samples
   (`M.baseline_samples(prior_baselines, c)`), their median is the discount reference and the
   scorer's `normal_price_eur` is ignored;** with 1–2 samples, `min(llm, median)` (median alone
-  if the LLM gave none). For a fly destination with a history reference the same per-night
+  if the LLM gave none). With no same-month sample but samples from other months
+  (`baseline_samples(..., any_season=True)`), `min(llm, any-month median)`: other months may
+  only LOWER the reference, because seasons differ and a summer median must not inflate a winter
+  one. For a fly destination with a history reference the same per-night
   flight cost is added to the reference, so the discount compares like with like. The reference
-  actually used is stored as `normal_price_eur` with `ref_source` (`history`/`llm`/`none`).
+  actually used is stored as `normal_price_eur` with `ref_source`
+  (`history`/`history_any`/`llm`/`none`).
+  **Samples match by Booking.com name as well as FIND's name.** FIND names one hotel many ways
+  ("Saint Ivan Rilski SPA Resort" vs "SPA Resort St Ivan Rilski"), so `baseline_samples` also
+  matches when `M.booking_key(d["booking_name"])` equals `M.booking_key(M.entry_booking_name(b))`.
+  `booking_name` is the priced card's name (`providers._to_stage3`, threaded onto the grounded
+  candidate and stored by `record_baseline`); legacy entries without it fall back to the name
+  parsed from their "Verified X, N-star for …" note. `booking_key` sorts characters after a
+  token alias map (`_NAME_ALIASES`, only `st`→`saint`; extend only with evidence). Stored keys
+  never change (Invariant S); this widening is read-time only.
   Looks correct if broken: a fake 15% discount yields a plausible "good" (Lucky Bansko was €122
-  on all 8 live checks yet got +12 bonuses from a guessed €140 "usual").
+  on all 8 live checks yet got +12 bonuses from a guessed €140 "usual"); on 2026-10-15 Saint Ivan
+  Rilski was a 💎 "27% below €220" while a real €175.61 sat under another name and month (8.2%).
+  Test: Case 16.
+- **(N, no history, no pick) A diamond/good with no PRIOR live Booking.com price for the
+  property in any month becomes skip with `NOTE_FIRST`.** "Prior" means `prior_baselines` only:
+  this run's own price never counts, or the gate would be vacuous (Invariant U already requires
+  a live price). Order is U, then N, then F; the first that fires sets the note. A later run
+  emails the hotel again if it then rates good or diamond (Invariant R: higher tier). Looks
+  correct if broken: a guessed "usual" produces a plausible "good" (Hotel Perelik, 2026-10-15,
+  18% off a guessed €230). Test: Case 16b.
 - **(Q, price sanity) A grounded price > `PRICE_SANITY_MULTIPLE` (4×) FIND's own
   `est_price_eur` is a data-quality block, never scored.** It is not a price ceiling — it
   compares against FIND's estimate, not an absolute. `EST_GAP_FLAG_MULTIPLE` (1.4×,
   display-only) still flags smaller gaps. Motivating case: a €1,171.63/night Varna listing vs a
   €75 estimate (15.6×).
 - **(U, unverified) A candidate whose `grounding_method != "apidojo"` cannot be diamond/good**
-  → skip with `NOTE_UNVERIFIED`. Applied before F, so the note shown is the unverified one. An
+  → skip with `NOTE_UNVERIFIED`. Applied before N and F, so the note shown is the unverified one. An
   LLM-estimated price cannot prove a deal; this also makes a run-wide Booking.com outage
   quiet instead of spammy.
 - **(SP, Spain arithmetic is the pipeline's) The LLM never sets or changes any Spain number or
@@ -757,6 +781,10 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
   only again if it gets 15% cheaper or reaches a higher tier. Acceptable given the "rare,
   act-now" framing. Legacy-seeded props have `price_eur: null`, so the price-drop path for
   them is off until they are emailed again.
+- **A first sighting can't be a pick (Invariant N).** A hotel the pipeline has never priced live
+  is at most a skip, however good it looks, because nothing proves the discount. Accepted by
+  Joseph on 2026-10-15. The cost: a real one-off deal on a never-seen hotel is shown as a skip,
+  and is emailed as a pick only if a later run sees it again at a good price.
 - **Family-only scope.** Destinations that require arduous travel or are poor fits for a
   4-year-old are excluded by the skeptic prompt. This is intentional, not a filter bug.
 - **Tier-2 (fly-from-SOF / long-drive) variety was investigated and deliberately deferred, not

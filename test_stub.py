@@ -12,10 +12,11 @@ Coverage:
   - No hard ceiling: Kempinski (FIND est €158) is NOT gate-dropped; it grounds at €85.
   - Regnum grounds at €112 vs an €80 normal → priced ABOVE normal → uncapped penalty → SKIP.
   - Neutral no-reference fallback + diamond bar: an ordinary Hisarya spa weekend (no
-    normal_price_eur given) grounds at a fair €95 and lands in GOOD, not diamond — with no
-    reference price the pipeline stays neutral (discount 0.0, price_adj 0) rather than
-    substituting a regional par, which used to manufacture a false discount/diamond.
-  - Wildcard: the most interesting non-local find (Antalya) is badged in the digest.
+    normal_price_eur given) grounds at a fair €95 and lands in SKIP: with no reference price
+    the pipeline stays neutral (discount 0.0, price_adj 0) rather than substituting a
+    regional par (which used to manufacture a false discount/diamond), and a 0.0 discount is
+    below GOOD_MIN_DISCOUNT, so it cannot be "good" either.
+  - No wildcard badge: the wildcard feature is deleted.
   - Arte Spa: grounding KILL (hallucination) → dropped before scoring.
   - Sofia: grounding low-confidence → data-quality guard blocks it before scoring.
   - Deterministic tiers: final = llm + price_adj + transit_adj.
@@ -95,7 +96,9 @@ _STAGE1 = {"candidates": [
      "city": "Bansko", "country": "Bulgaria", "score": 83, "type": "hotel",
      "window": "Jul 2026", "est_price_eur": 158,
      "reason": "5-star ski resort, spa open year-round.", "confidence": "high"},
-    {"destination": "Regnum Bansko, Bulgaria", "hotel_name": "Regnum Bansko", "city": "Bansko",
+    # city is Pamporovo (not Bansko) so the per-city cap keeps both Regnum and Kempinski;
+    # the label and hotel_name stay "Bansko" because they key _GROUND and the ledger asserts.
+    {"destination": "Regnum Bansko, Bulgaria", "hotel_name": "Regnum Bansko", "city": "Pamporovo",
      "country": "Bulgaria", "score": 84, "type": "hotel", "window": "Aug 8-10, 2026",
      "est_price_eur": 84, "reason": "Luxury alpine resort, indoor pool.", "confidence": "high"},
     {"destination": "Arte Spa & Park, Velingrad, Bulgaria", "hotel_name": "Arte Spa Park",
@@ -165,15 +168,16 @@ def _opt(ppn, total, dates, nights):
 
 _GROUND = {
     "Antalya 5-Star All-Inclusive": {"destination": "Rixos Premium Antalya", "verdict": "correct",
-        "confidence": "high", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
+        "confidence": "high", "grounding_method": "apidojo", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
         "assistant_summary": "Rixos Premium Antalya, Jan 10-14: €70/night (€280 total).",
         "options": [_opt(70, 280, "Jan 10-14, 2027", 4)]},
     "Kempinski Hotel Grand Arena, Bansko, Bulgaria": {"destination": "Kempinski Grand Arena",
-        "verdict": "correct", "confidence": "high", "how_to_book": "Book at booking.com",
+        "verdict": "correct", "confidence": "high", "grounding_method": "apidojo",
+        "how_to_book": "Book at booking.com",
         "grounding": "apidojo live", "assistant_summary": "Kempinski Grand Arena, Jul 10-13: €85/night.",
         "options": [_opt(85, 255, "Jul 10-13, 2026", 3)]},
     "Regnum Bansko, Bulgaria": {"destination": "Regnum Bansko", "verdict": "correct",
-        "confidence": "high", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
+        "confidence": "high", "grounding_method": "apidojo", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
         "assistant_summary": "Regnum Bansko, Aug 8-10: €112/night.",
         "options": [_opt(112, 224, "Aug 8-10, 2026", 2)]},
     # Grounding kill (hallucination) → dropped before scoring.
@@ -185,9 +189,9 @@ _GROUND = {
         "confidence": "low", "how_to_book": "", "grounding": "search returned no firm rate",
         "assistant_summary": "Could not verify a firm Sofia rate.",
         "options": [_opt(88, 176, "Sep 5-7, 2026", 2)]},
-    # Ordinary local spa at a fair price → GOOD, not diamond (no discount, ordinary desirability).
+    # Ordinary local spa at a fair price → SKIP (no reference price → discount 0.0).
     "Hisarya Ultra-Local Thermal Retreat": {"destination": "Sana Spa Hotel", "verdict": "confirm",
-        "confidence": "high", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
+        "confidence": "high", "grounding_method": "apidojo", "how_to_book": "Book at booking.com", "grounding": "apidojo live",
         "assistant_summary": "Sana Spa Hotel, Aug 28-31: €95/night.",
         "options": [_opt(95, 285, "Aug 28-31, 2026", 3)]},
 }
@@ -258,17 +262,16 @@ try:
     # CORE REGRESSION: with no normal_price_eur given, the pipeline must stay NEUTRAL (no
     # discount, no par substitution) rather than comparing the grounded price against a
     # regional floor. Hisarya: llm_score 82, no normal_price_eur -> discount 0.0, price_adj 0;
-    # Tier-1 (drivable) -> transit_adj +3; final = 82 + 0 + 3 = 85. It still lands in GOOD not
-    # diamond because it's double-gated: final 85 < DIAMOND_SCORE_THRESHOLD 88 AND
-    # discount 0.0 < DIAMOND_MIN_DISCOUNT 0.25.
+    # Tier-1 (drivable) -> transit_adj +3; final = 82 + 0 + 3 = 85. It lands in SKIP: no
+    # reference price -> discount 0.0 < GOOD_MIN_DISCOUNT 0.10 (and < DIAMOND_MIN_DISCOUNT).
     hisarya = led["Hisarya Ultra-Local Thermal Retreat"]
-    assert hisarya["verdict"] == "good", f"ordinary local spa must be GOOD not {hisarya['verdict']}: {hisarya}"
+    assert hisarya["verdict"] == "skip", f"ordinary local spa must be SKIP not {hisarya['verdict']}: {hisarya}"
     assert hisarya["final_score"] == 85, f"expected neutral-fallback final 85, got {hisarya['final_score']}"
-    print("Ordinary local spa scored GOOD (not diamond) via neutral no-reference fallback [OK]")
+    print("Ordinary local spa scored SKIP (no discount) via neutral no-reference fallback [OK]")
 
-    # Wildcard: the most interesting NON-LOCAL find (Antalya) is badged in the digest.
-    assert "🃏 Wildcard" in html, "wildcard badge missing from digest"
-    print("Wildcard badge surfaced for the non-local find [OK]")
+    # Wildcard feature is deleted.
+    assert "🃏" not in html, "wildcard badge must be gone from the digest"
+    print("No wildcard badge in digest [OK]")
 
     # city_signals.json carries the full score breakdown.
     sig = {s["city"]: s for s in json.load(open("state/city_signals.json", encoding="utf-8"))["signals"]}
@@ -377,7 +380,7 @@ try:
         assert bad not in html1, f"'{bad}' must not appear in an all-unscored digest"
 
     seen1 = json.load(open("state/signals_seen.json", encoding="utf-8"))
-    assert any(k.endswith("|unscored") for k in seen1.get("seen", {})), seen1.get("seen")
+    assert any(v.get("tier") == "unscored" for v in seen1.get("props", {}).values()), seen1
     month_key = fa.this_month()
     assert seen1.get("monthly_count", {}).get(month_key) is None, \
         f"a fully-degraded send must not count toward the genuine-pick monthly total: {seen1.get('monthly_count')}"
@@ -393,17 +396,18 @@ finally:
 print("\n=== Case 2: unscored, partial (scorer omits one deal_id) ===\n")
 sandbox2 = _new_sandbox("dh_stub_c2_")
 try:
+    # Three different cities: the per-city cap would otherwise ground only the top-scored one.
     _STAGE1_C2 = {"candidates": [
         {"destination": "Bansko Weekend One, Bulgaria", "hotel_name": "Alpine Lodge One",
          "city": "Bansko", "country": "Bulgaria", "score": 82, "type": "hotel",
          "window": "Mar 5-8, 2027", "est_price_eur": 90,
          "reason": "Ski lodge.", "confidence": "high"},
         {"destination": "Bansko Weekend Two, Bulgaria", "hotel_name": "Alpine Lodge Two",
-         "city": "Bansko", "country": "Bulgaria", "score": 83, "type": "hotel",
+         "city": "Pamporovo", "country": "Bulgaria", "score": 83, "type": "hotel",
          "window": "Mar 5-8, 2027", "est_price_eur": 92,
          "reason": "Ski lodge.", "confidence": "high"},
         {"destination": "Bansko Weekend Three, Bulgaria", "hotel_name": "Alpine Lodge Three",
-         "city": "Bansko", "country": "Bulgaria", "score": 84, "type": "hotel",
+         "city": "Velingrad", "country": "Bulgaria", "score": 84, "type": "hotel",
          "window": "Mar 5-8, 2027", "est_price_eur": 94,
          "reason": "Ski lodge.", "confidence": "high"},
     ]}
@@ -561,6 +565,9 @@ print("\n=== Case 6: Invariant S — identity derivation is shared, not duplicat
 assert M.identity({"hotel_name": "SPA Hotel Olymp"}) == "spahotelolymp", \
     M.identity({"hotel_name": "SPA Hotel Olymp"})
 assert fa._identity is M.identity, "find_city_anomalies._identity must alias memory.identity"
+assert (M.identity_key({"hotel_name": "Hotel Arte SPA & Park"})
+        == M.identity_key({"hotel_name": "Arte SPA and Park Hotel"})
+        == "aaaadeehklnopprrstt"), M.identity_key({"hotel_name": "Hotel Arte SPA & Park"})
 print("Case 6: memory.identity() normalizes as expected and find_city_anomalies._identity "
       "is a literal alias of it [OK]")
 
@@ -807,6 +814,189 @@ assert _names == ["FIND", "VERIFY"], (
 assert _as_main.STAGE_RESULTS is fa.STAGE_RESULTS is X.STAGE_RESULTS
 X.STAGE_RESULTS.clear()
 print("Case 10: STAGE_RESULTS shared across __main__ and imported module copies [OK]")
+
+
+print("\n=== Case 11: re-alert rule (fa.is_new) ===\n")
+_key11 = M.identity_key({"hotel_name": "Hotel Arte SPA & Park"})
+_state11 = {"props": {_key11: {"date": "2026-10-07", "tier": "good", "price_eur": 195.1,
+                               "name": "Hotel Arte SPA & Park"}}}
+_base11 = {"hotel_name": "Arte SPA and Park Hotel", "tier": "good",
+           "grounded_price_per_night_eur": 195.1}
+for _label, _d, _today, _want in [
+    ("same price, 12 days later", _base11, "2026-10-19", False),
+    ("price 165.0 (>=15% drop, <= 165.835)", {**_base11, "grounded_price_per_night_eur": 165.0}, "2026-10-19", True),
+    ("price 166.0 (drop just under 15%)", {**_base11, "grounded_price_per_night_eur": 166.0}, "2026-10-19", False),
+    ("higher tier (diamond)", {**_base11, "tier": "diamond"}, "2026-10-19", True),
+    ("lower tier (skip)", {**_base11, "tier": "skip"}, "2026-10-19", False),
+    ("89 days later", _base11, "2027-01-04", False),
+    ("90 days later", _base11, "2027-01-05", True),
+    ("never-seen property", {"hotel_name": "Some New Hotel", "tier": "skip"}, "2026-10-19", True),
+]:
+    assert fa.is_new(_state11, _d, _today) is _want, f"is_new wrong for: {_label}"
+print("Case 11: re-alert rule (word-order-proof key, 90 days, >=15% drop, higher tier) [OK]")
+
+
+print("\n=== Case 12: legacy signals_seen seeding ===\n")
+_legacy12 = {"hotelartespaandpark|2026-10|good": "2026-10-07",
+             "artespaandparkhotel|2026-10|good": "2026-09-19",
+             "luckybanskoaparthotelspaandrelax|2026-11|good": "2026-09-19",
+             "luckybanskoaparthotelspaandrelax|2026-10|good": "2026-10-04",
+             "luckybanskoaparthotelspaandrelax|2026-11|diamond": "2026-10-10"}
+_seeded12 = fa.seed_props_from_legacy(_legacy12)
+assert _seeded12 == {
+    "aaaadeehklnopprrstt": {"date": "2026-10-07", "tier": "good", "price_eur": None,
+                            "name": "hotelartespaandpark"},
+    "aaaaaabcdeehkklllnnoopprrssttuxy": {"date": "2026-10-10", "tier": "diamond", "price_eur": None,
+                                         "name": "luckybanskoaparthotelspaandrelax"},
+}, _seeded12
+sandbox12 = _new_sandbox("dh_stub_c12_")
+try:
+    with open("state/signals_seen.json", "w", encoding="utf-8") as f:
+        json.dump({"seen": _legacy12, "monthly_count": {}}, f)
+    _loaded12 = fa.load_seen()
+    assert len(_loaded12.get("props", {})) == 2, _loaded12
+    assert "seen" not in _loaded12, _loaded12
+finally:
+    os.chdir(_cwd)
+    shutil.rmtree(sandbox12, ignore_errors=True)
+print("Case 12: legacy 'seen' keys collapse to one props entry per property on load [OK]")
+
+
+print("\n=== Case 13: pipeline end to end — history reference, caps, provenance, no re-alert ===\n")
+sandbox13 = _new_sandbox("dh_stub_c13_")
+_saved13 = (L.call_llm, fa.ground_deal, X.send_email)
+try:
+    T0 = dt.date.today()
+    _lucky_key = "luckybanskoaparthotelspaandrelax|2026-11"
+    with open("state/memory.json", "w", encoding="utf-8") as f:
+        json.dump({"baselines": {_lucky_key: {
+            "samples": [{"price": 122.12, "date": T0.isoformat(), "source": "Booking.com (apidojo)"}
+                        for _ in range(3)],
+            "realistic_price_eur": 122.12, "note": "seeded",
+            "source": "Booking.com (apidojo)", "updated": T0.isoformat()}}, "ledger": []}, f)
+    with open("state/signals_seen.json", "w", encoding="utf-8") as f:
+        json.dump({"props": {M.identity_key({"hotel_name": "Electra Palace Thessaloniki"}): {
+            "date": (T0 - dt.timedelta(days=5)).isoformat(), "tier": "good", "price_eur": 203.0,
+            "name": "Electra Palace Thessaloniki"}}, "monthly_count": {}}, f)
+
+    def _cand13(dest, hotel, city, country, score, window, est):
+        return {"destination": dest, "hotel_name": hotel, "city": city, "country": country,
+                "score": score, "type": "hotel", "window": window, "est_price_eur": est,
+                "reason": "x", "confidence": "high"}
+
+    _STAGE1_C13 = {"candidates": [   # order matters: deal_ids are assigned 1..5 in this order
+        _cand13("Lucky Bansko Spa Break", "Aparthotel Lucky Bansko SPA & Relax", "Bansko", "Bulgaria", 96, "Nov 20-23, 2026", 122),
+        _cand13("Prestige Varna", "Prestige Hotel And Aquapark", "Varna", "Bulgaria", 85, "Oct 23-26, 2026", 75),
+        _cand13("Rome Test", "Hotel Roma Test", "Rome", "Italy", 85, "Nov 3-8, 2026", 110),
+        _cand13("Kempinski Bansko", "Kempinski Grand Arena", "Bansko", "Bulgaria", 90, "Nov 20-23, 2026", 150),
+        _cand13("Hissar Test", "Hissar Test Hotel", "Hisarya", "Bulgaria", 88, "Dec 4-7, 2026", 90),
+    ]}
+
+    def _score13(deal_id, dest, score, normal):
+        return {"deal_id": deal_id, "destination": dest, "score": score, "normal_price_eur": normal,
+                "why": "x", "about": "x", "value_case": "x", "red_flags": "",
+                "flight_cost_eur_total": 0, "ground_transport_eur": 0}
+
+    _SCORES_C13 = [_score13(1, "Lucky Bansko Spa Break", 88, 140),
+                   _score13(3, "Rome Test", 80, 130),
+                   _score13(5, "Hissar Test", 86, 120)]
+
+    _find_prompt13 = {}
+    def _stub_llm_c13(messages, model, max_tokens=2000, want_search=False, response_schema=None,
+                      provider=None, search_prompt=None):
+        if response_schema is C.STAGE1_RESPONSE_SCHEMA:
+            _find_prompt13.setdefault("text", messages[0]["content"])
+            return json.dumps(_STAGE1_C13)
+        if response_schema is C.STAGE2_RESPONSE_SCHEMA:
+            return json.dumps(_SCORES_C13)
+        raise AssertionError(f"unexpected llm schema={response_schema}")
+
+    def _ground13(name, method, verdict, ppn, total, dates, nights):
+        return {"destination": name, "verdict": verdict, "confidence": "high",
+                "grounding_method": method, "how_to_book": "Book at booking.com",
+                "grounding": f"{method} live", "assistant_summary": f"{name}: €{ppn}/night.",
+                "options": [_opt(ppn, total, dates, nights)]}
+
+    _GROUND_C13 = {
+        "Lucky Bansko Spa Break": _ground13("Aparthotel Lucky Bansko SPA & Relax", "apidojo", "confirm", 122.12, 366.36, "Nov 20-23, 2026", 3),
+        "Prestige Varna": _ground13("Prestige Hotel And Aquapark", "apidojo", "correct", 1171.63, 3514.9, "Oct 23-26, 2026", 3),
+        "Rome Test": _ground13("Hotel Roma Test", "apidojo", "correct", 100, 500, "Nov 3-8, 2026", 5),
+        "Hissar Test": _ground13("Hissar Test Hotel", "llm", "confirm", 70, 210, "Dec 4-7, 2026", 3),
+    }
+    _called13 = []
+    def _stub_ground_c13(diamond, mem_text, today):
+        # Do NOT assert/raise here: main() wraps ground_deal in `except Exception`, which would
+        # swallow it. Record the call and assert afterwards.
+        dest = diamond.get("destination")
+        _called13.append(dest)
+        return _GROUND_C13.get(dest, {})
+
+    _email13 = {}
+    def _stub_send_c13(subject, html, text):
+        _email13["subject"], _email13["html"], _email13["text"] = subject, html, text
+
+    L.call_llm = _as_chain(_stub_llm_c13)
+    fa.ground_deal = _stub_ground_c13
+    X.send_email = _stub_send_c13
+
+    fa.main()
+
+    assert _email13, "run 1 should have emailed the new skips"
+    html13, text13 = _email13["html"], _email13["text"]
+    mem13 = json.load(open("state/memory.json", encoding="utf-8"))
+    led13 = {e["destination"]: e for e in mem13["ledger"]}
+
+    # Lucky: history reference 122.12 == grounded -> discount 0 -> price_adj 0, transit +3;
+    # 88 + 0 + 3 = 91. Good is blocked by GOOD_MIN_DISCOUNT.
+    lucky = led13["Lucky Bansko Spa Break"]
+    assert (lucky["verdict"], lucky["final_score"], lucky["llm_score"]) == ("skip", 91, 88), lucky
+
+    # Prestige: grounded 15.6x FIND's estimate -> Invariant Q blocks it.
+    assert led13["Prestige Varna"]["verdict"] == "blocked", led13["Prestige Varna"]
+    assert "15.6× FIND's €75 estimate" in html13, "Invariant Q reason missing from dropped footer"
+
+    # Rome: ref 130 -> discount 0.2308 -> price_adj 12; transit -3; 80 + 12 - 3 = 89. tier_for
+    # says good (llm 80 < 85 so not diamond); Invariant F demotes it because Rome is not drivable.
+    rome = led13["Rome Test"]
+    assert (rome["verdict"], rome["final_score"]) == ("skip", 89), rome
+    assert fa.NOTE_FAR in html13, "far-away demotion note missing"
+
+    # Kempinski: same city as Lucky (FIND 90 < 96) -> never grounded, never ledgered.
+    assert "Kempinski Bansko" not in _called13, _called13
+    assert "Kempinski Bansko" not in led13, led13.keys()
+
+    # Hissar: LLM-grounded -> Invariant U caps diamond at skip. 86 + 15 + 3 = 104 -> clamp 100.
+    hissar = led13["Hissar Test"]
+    assert (hissar["verdict"], hissar["final_score"]) == ("skip", 100), hissar
+    assert fa.NOTE_UNVERIFIED in html13, "unverified-price demotion note missing"
+    _hissar_id = M.identity({"hotel_name": "Hissar Test Hotel"})
+    assert not any(k.startswith(_hissar_id) for k in mem13["baselines"]), \
+        f"Invariant B: LLM-grounded Hissar must not write a baseline: {list(mem13['baselines'])}"
+
+    for body in (html13, text13):
+        assert "Prices: 2 live Booking.com · 1 LLM estimates" in body, "health-footer price line missing"
+
+    p13 = _find_prompt13["text"]
+    assert "ALREADY EMAILED IN THE LAST 90 DAYS" in p13
+    assert "Electra Palace Thessaloniki — emailed" in p13
+    assert "Known realistic prices" not in p13
+
+    seen13 = json.load(open("state/signals_seen.json", encoding="utf-8"))
+    _lucky_id = M.identity_key({"hotel_name": "Aparthotel Lucky Bansko SPA & Relax"})
+    assert seen13["props"][_lucky_id]["price_eur"] == 122.12, seen13["props"].get(_lucky_id)
+
+    # Second run, same stubs: the three skips are at unchanged prices -> not new -> no email.
+    _email13.clear()
+    fa.main()
+    assert not _email13, f"run 2 must not re-email unchanged skips: {_email13.get('subject')}"
+    assert "Kempinski Bansko" not in _called13, _called13
+
+    print("Case 13: history reference, Q block, per-city cap, F/U demotions, Invariant B, "
+          "prompt do-not-repeat list, health price line, no re-alert on run 2 [OK]")
+finally:
+    L.call_llm, fa.ground_deal, X.send_email = _saved13
+    os.chdir(_cwd)
+    shutil.rmtree(sandbox13, ignore_errors=True)
 
 
 print("\nAll assertions passed (Part 1 + Part 2).")

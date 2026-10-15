@@ -4,6 +4,8 @@ state/memory.json structure:
   baselines: {destination|season → {realistic_price_eur, note, source, updated}}
   ledger:    [{date, destination, window, type, claimed_price, verdict,
                actual_price, source, note}]
+  spain_dest: {city: {dest_id, search_type, kind, name}} — Booking.com city refs cached by
+              spain.py so resolve_hotel runs once per Spain city, ever
 
 Ledger is capped to MAX_LEDGER_ENTRIES entries and MAX_LEDGER_DAYS days.
 summarize_for_prompt() produces a compact, bounded text block for prompt injection.
@@ -145,9 +147,10 @@ def load():
             data = json.load(f)
         data.setdefault("baselines", {})
         data.setdefault("ledger", [])
+        data.setdefault("spain_dest", {})
         return data
     except (FileNotFoundError, json.JSONDecodeError):
-        return {"baselines": {}, "ledger": []}
+        return {"baselines": {}, "ledger": [], "spain_dest": {}}
 
 
 def save(memory):

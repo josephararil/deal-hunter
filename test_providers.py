@@ -432,6 +432,12 @@ try:
         and P._extract_date_range("10-14 Sep 2026") == ("2026-09-10", "2026-09-14"),
         f"got {P._extract_date_range('Sep 10-14, 2026')} / {P._extract_date_range('10-14 Sep 2026')}")
 
+    # 2026-10-15 run: "Nov 25-Dec 2, 2026" missed the parser and Antalya fell to the LLM.
+    chk("_extract_date_range: short cross-month and cross-year forms",
+        P._extract_date_range("Nov 25-Dec 2, 2026") == ("2026-11-25", "2026-12-02")
+        and P._extract_date_range("Dec 28-Jan 2, 2027") == ("2026-12-28", "2027-01-02"),
+        f"got {P._extract_date_range('Nov 25-Dec 2, 2026')} / {P._extract_date_range('Dec 28-Jan 2, 2027')}")
+
     chk("_extract_date_range: backwards window -> None",
         P._extract_date_range("20 July 2026 - 17 July 2026") is None,
         f"got {P._extract_date_range('20 July 2026 - 17 July 2026')}")

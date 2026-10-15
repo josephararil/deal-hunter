@@ -320,7 +320,7 @@ outlasting CI's job timeout or silently pretending a bad run was a quiet one.
   top. One real improvement: the clock now starts at the **first `call_llm`** rather than at
   import, so state loading and apidojo grounding no longer eat into the LLM budget.
 - **The one-shot `GEMINI_FALLBACK_MODEL_MAP` hop is now a full chain**, `LLM_MODEL_CHAIN`.
-  Same `pro-latest → flash-latest → 3.1-flash-lite` ladder, but `llm_chain` retries the
+  Now `flash-latest → 3.1-flash-lite` (pro dropped 2026-10-15), and `llm_chain` retries the
   current model on a transient status and then *advances*, repeatedly, instead of hopping
   once and giving up. `LLM_ATTEMPTS_PER_MODEL=3` + `LLM_BACKOFF_SECONDS=5,15` reproduce the
   old `_MAX_RETRIES`/`_RETRY_DELAYS` policy exactly. The old retry **jitter** was dropped
@@ -404,7 +404,7 @@ it's a real paid price and a real choice made.
   must return nothing. Model names live only in `LLM_MODEL_CHAIN`/`LLM_SEARCH_MODEL_CHAIN`.
   Those two carry an explicit `|| '<default>'` in `daily.yml` rather than falling through to
   `llm_chain`'s own defaults, which are flash-based and tuned for a different repo — falling
-  through would silently move every reasoning stage off `gemini-pro-latest`. That is the one
+  through would silently change the reasoning model this repo chose. That is the one
   place a model name is written down, and it is YAML, not code.
 - **All email goes through `common.send_email()`.** Single SMTP path. No duplication.
 - **State files in `state/` are CI-managed.** `city_signals.json`, `city_signals.md`,
@@ -551,7 +551,8 @@ it's a real paid price and a real choice made.
 - **Windows are parsed by `providers._extract_date_range`, which must track FIND's window
   format.** FIND emits full dates both sides ("17 July 2026 - 20 July 2026"); the parser handles
   that plus "DD Month - DD Month YYYY", "Month DD YYYY - …", and the short "Sep 10-14, 2026" /
-  "10-14 Sep 2026" forms, and returns None on a backwards range. A format the parser misses makes
+  "10-14 Sep 2026" forms, the cross-month "Nov 25-Dec 2, 2026" form (and "Dec 28-Jan 2, 2027"
+  across a year end), and returns None on a backwards range. A format the parser misses makes
   apidojo silently fail and every candidate fall to the (costlier, less price-accurate) LLM
   fallback — so if you change FIND's `window` wording, extend the parser and its regression tests
   (`test_providers.py`) in the same change.
@@ -706,7 +707,7 @@ knowledge-only. On Anthropic the flagship searches inline via `FIND_PROMPT`, who
 | `ANTHROPIC_API_KEY` | secret | Anthropic LLM calls |
 | `GEMINI_API_KEY` | secret | Gemini LLM calls |
 | `LLM_PROVIDER` | repo variable | `"anthropic"` or `"gemini"` |
-| `LLM_MODEL_CHAIN` | repo variable | Reasoning fallback chain, comma-separated. **Defaults in `daily.yml`** to `gemini-pro-latest,gemini-flash-latest,gemini-3.1-flash-lite` — do NOT let this fall through to the package default |
+| `LLM_MODEL_CHAIN` | repo variable | Reasoning fallback chain, comma-separated. **Defaults in `daily.yml`** to `gemini-flash-latest,gemini-3.1-flash-lite` (no pro: not needed for this workload) — do NOT let this fall through to the package default |
 | `LLM_SEARCH_MODEL_CHAIN` | repo variable | Search chain (lite tier only). Defaults to `gemini-3.1-flash-lite,gemini-flash-latest` |
 | `LLM_ATTEMPTS_PER_MODEL` | repo variable | Retries per model before advancing. Default 3. Prefer LOW — the chain is the resilience mechanism, the retry loop is only for a genuine blip |
 | `LLM_BACKOFF_SECONDS` | repo variable | Backoff ladder. Default `5,15` |

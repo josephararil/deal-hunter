@@ -1,46 +1,194 @@
 {
-  "seen": {
-    "bratislava|2026-10|skip": "2026-09-22",
-    "premierluxurymountainresort|2026-11|diamond": "2026-09-13",
-    "parkhotelandspavellahills|2026-10|good": "2026-09-13",
-    "sealifefamilyresorthotel|2026-10|skip": "2026-09-13",
-    "dbseabankresortspa|2026-10|skip": "2026-09-13",
-    "regnumbanskomountainresort|2026-10|good": "2026-09-16",
-    "hiltonchaniaoldtownresortandspa|2026-10|skip": "2026-09-16",
-    "iliomareresorthotel|2026-10|skip": "2026-09-16",
-    "artespaandparkhotel|2026-10|good": "2026-09-19",
-    "luckybanskoaparthotelspaandrelax|2026-11|good": "2026-09-19",
-    "ozhotelssui|2026-10|skip": "2026-09-19",
-    "london|2026-10|skip": "2026-09-19",
-    "premierluxurymountainresort|2026-11|good": "2026-09-22",
-    "rome|2026-10|skip": "2026-09-22",
-    "termedihissar|2026-10|skip": "2026-09-25",
-    "valencia|2026-10|good": "2026-09-28",
-    "parkhotelandspavellahills|2026-11|good": "2026-10-01",
-    "mursalitsahotel|2026-12|good": "2026-10-01",
-    "unahotelsdecroma|2026-11|skip": "2026-10-01",
-    "doubletreebyhiltonistanbulsirkeci|2026-10|skip": "2026-10-01",
-    "saintspasbalneocomplex|2026-11|good": "2026-10-04",
-    "luckybanskoaparthotelspaandrelax|2026-10|good": "2026-10-04",
-    "wyndhamgardenantalyakonyaalti|2026-11|skip": "2026-10-04",
-    "bari|2026-11|skip": "2026-10-04",
-    "hotelartespaandpark|2026-10|good": "2026-10-07",
-    "prestigehotelandaquapark|2026-10|skip": "2026-10-07",
-    "luckybanskoaparthotelspaandrelax|2026-11|diamond": "2026-10-10",
-    "sealifefamilyresorthotel|2026-10|good": "2026-10-10",
-    "athens|2027-01|skip": "2026-10-10",
-    "electrapalacethessaloniki|2026-11|good": "2026-10-12",
-    "novotelmilanonordcagranda|2026-11|skip": "2026-10-12",
-    "novotelromaeur|2026-11|skip": "2026-10-12"
-  },
   "monthly_count": {
     "2026-06": 4,
     "2026-07": 24,
     "2026-08": 8,
     "2026-09": 10,
-    "2026-10": 5
+    "2026-10": 6
   },
   "degraded_count": {
     "2026-08": 1
+  },
+  "props": {
+    "aaabilrstv": {
+      "date": "2026-09-22",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "bratislava"
+    },
+    "aeeeiilmmnnooprrrrrsttuuuxy": {
+      "date": "2026-09-22",
+      "tier": "diamond",
+      "price_eur": null,
+      "name": "premierluxurymountainresort"
+    },
+    "aaaadeehhiklllllnopprsstv": {
+      "date": "2026-10-01",
+      "tier": "good",
+      "price_eur": null,
+      "name": "parkhotelandspavellahills"
+    },
+    "aaeeeeffhiilllmoorrsstty": {
+      "date": "2026-10-10",
+      "tier": "good",
+      "price_eur": null,
+      "name": "sealifefamilyresorthotel"
+    },
+    "aaabbdeeknoprrssst": {
+      "date": "2026-09-13",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "dbseabankresortspa"
+    },
+    "aabeegikmmnnnnooorrrssttuu": {
+      "date": "2026-09-16",
+      "tier": "good",
+      "price_eur": null,
+      "name": "regnumbanskomountainresort"
+    },
+    "aaaacddehhiillnnnnooooprrsstttw": {
+      "date": "2026-09-16",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "hiltonchaniaoldtownresortandspa"
+    },
+    "aeeehiillmooorrrstt": {
+      "date": "2026-09-16",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "iliomareresorthotel"
+    },
+    "aaaadeehklnopprrstt": {
+      "date": "2026-10-07",
+      "tier": "good",
+      "price_eur": null,
+      "name": "hotelartespaandpark"
+    },
+    "aaaaaabcdeehkklllnnoopprrssttuxy": {
+      "date": "2026-10-10",
+      "tier": "diamond",
+      "price_eur": null,
+      "name": "luckybanskoaparthotelspaandrelax"
+    },
+    "ehiloosstuz": {
+      "date": "2026-09-19",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "ozhotelssui"
+    },
+    "dlnnoo": {
+      "date": "2026-09-19",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "london"
+    },
+    "emor": {
+      "date": "2026-09-22",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "rome"
+    },
+    "adeehiimrrsst": {
+      "date": "2026-09-25",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "termedihissar"
+    },
+    "aaceilnv": {
+      "date": "2026-09-28",
+      "tier": "good",
+      "price_eur": null,
+      "name": "valencia"
+    },
+    "aaehillmorssttu": {
+      "date": "2026-10-01",
+      "tier": "good",
+      "price_eur": null,
+      "name": "mursalitsahotel"
+    },
+    "aacdeehlmnoorstu": {
+      "date": "2026-10-01",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "unahotelsdecroma"
+    },
+    "abbbcdeeeehiiiiklllnnoorrsstttuuy": {
+      "date": "2026-10-01",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "doubletreebyhiltonistanbulsirkeci"
+    },
+    "aaabceeillmnnooppssstx": {
+      "date": "2026-10-04",
+      "tier": "good",
+      "price_eur": null,
+      "name": "saintspasbalneocomplex"
+    },
+    "aaaaaaaddeghikllmnnnnorttwyyy": {
+      "date": "2026-10-04",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "wyndhamgardenantalyakonyaalti"
+    },
+    "abir": {
+      "date": "2026-10-04",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "bari"
+    },
+    "aaaadeeeghiklnoppqrrsttu": {
+      "date": "2026-10-07",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "prestigehotelandaquapark"
+    },
+    "aehnst": {
+      "date": "2026-10-10",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "athens"
+    },
+    "aaaacceeeehiiklllnoprsstt": {
+      "date": "2026-10-12",
+      "tier": "good",
+      "price_eur": null,
+      "name": "electrapalacethessaloniki"
+    },
+    "aaaacddegillmnnnnoooorrtv": {
+      "date": "2026-10-12",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "novotelmilanonordcagranda"
+    },
+    "aeelmnooorrtuv": {
+      "date": "2026-10-12",
+      "tier": "skip",
+      "price_eur": null,
+      "name": "novotelromaeur"
+    },
+    "aaaeiiiiklnnoprrrssssttv": {
+      "date": "2026-10-15",
+      "tier": "diamond",
+      "price_eur": 161.15,
+      "name": "Saint Ivan Rilski SPA Resort"
+    },
+    "eeehiklloprt": {
+      "date": "2026-10-15",
+      "tier": "good",
+      "price_eur": 187.52,
+      "name": "Hotel Perelik"
+    },
+    "eeehhlmottt": {
+      "date": "2026-10-15",
+      "tier": "skip",
+      "price_eur": 227.54,
+      "name": "The Met Hotel"
+    },
+    "abceehllorstu": {
+      "date": "2026-10-15",
+      "tier": "skip",
+      "price_eur": 125,
+      "name": "Club Hotel Sera"
+    }
   }
 }

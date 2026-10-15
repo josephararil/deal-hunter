@@ -785,53 +785,48 @@
       "note": "Verified Prestige Hotel and Aquapark - All inclusive, 4-star for Oct 23-26, 2026: €1171.63/night (€3514.9 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-10-07",
       "updated": "2026-10-07"
+    },
+    "saintivanrilskisparesort|2026-11": {
+      "samples": [
+        {
+          "price": 161.15,
+          "date": "2026-10-15",
+          "source": "Booking.com (apidojo) live 2026-10-15"
+        }
+      ],
+      "realistic_price_eur": 161.15,
+      "note": "Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Nov 13-16, 2026: €161.15/night (€483.44 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "updated": "2026-10-15"
+    },
+    "hotelperelik|2026-12": {
+      "samples": [
+        {
+          "price": 187.52,
+          "date": "2026-10-15",
+          "source": "Booking.com (apidojo) live 2026-10-15"
+        }
+      ],
+      "realistic_price_eur": 187.52,
+      "note": "Verified Perelik Hotel, 5-star for Dec 11-14, 2026: €187.52/night (€562.57 total, 3 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "updated": "2026-10-15"
+    },
+    "themethotel|2026-11": {
+      "samples": [
+        {
+          "price": 227.54,
+          "date": "2026-10-15",
+          "source": "Booking.com (apidojo) live 2026-10-15"
+        }
+      ],
+      "realistic_price_eur": 227.54,
+      "note": "Verified The Met Hotel Thessaloniki, a Member of Design Hotels, 5-star for Nov 5-8, 2026: €227.54/night (€682.62 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "updated": "2026-10-15"
     }
   },
   "ledger": [
-    {
-      "date": "2026-06-30",
-      "destination": "Bansko, Bulgaria",
-      "window": "Jul 24-27, 2026",
-      "type": "hotel",
-      "claimed_price": 83.0,
-      "verdict": "kill",
-      "actual_price": 128.01,
-      "source": "Booking.com (apidojo) live 2026-06-30",
-      "note": "Grounded price for Premier Luxury Mountain Resort (Jul 24-27, 2026) is €128.01/night, which exceeds the country ceiling. Not emailing."
-    },
-    {
-      "date": "2026-07-01",
-      "destination": "Antalya, Turkey",
-      "window": "August 12-19, 2026",
-      "type": "hotel",
-      "claimed_price": 135,
-      "verdict": "over_ceiling",
-      "actual_price": null,
-      "source": "est_price_eur 135 > ceiling 100",
-      "note": "Leverages highly competitive direct charter-style flights from Sofia to Antalya ($71-$91 one-way on Pegasus/SunExpress). Grand Park Lara delivers incredible all-inclusive value for a family of three,…"
-    },
-    {
-      "date": "2026-07-01",
-      "destination": "Corfu, Greece",
-      "window": "July 15-22, 2026",
-      "type": "hotel",
-      "claimed_price": 115,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "Door-to-door transit from Plovdiv via Sofia Airport to the Corfu resort easily exceeds 5 hours, and Wizz Air's mandatory family seating plus a week's worth of luggage will drastically inflate the base price.",
-      "note": "The 'Toddler Tax' via budget airline baggage/seating fees and exhausting multi-leg ground/air transit logistics."
-    },
-    {
-      "date": "2026-07-01",
-      "destination": "Bansko, Bulgaria",
-      "window": "July 24-27, 2026",
-      "type": "hotel",
-      "claimed_price": 95,
-      "verdict": "skeptic_kill",
-      "actual_price": null,
-      "source": "This triggers the absolute-value trap; €95/night is simply the standard, unexceptional off-season summer rate for this property rather than a rare arbitrage opportunity.",
-      "note": "False discount framing based on winter peak pricing; absolute value is totally standard for Bansko in July."
-    },
     {
       "date": "2026-07-01",
       "destination": "Hisarya, Bulgaria",
@@ -3377,6 +3372,90 @@
       "final_score": 70,
       "source": "Electra Hotels official website live check 2026-10-12",
       "note": "While the indoor pool and 5-star luxury are great, a near 4-hour drive for a 4-night city break offers modest toddler utility compared to a dedicated spa resort."
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Bansko, Bulgaria",
+      "window": "Nov 13-16, 2026",
+      "type": "hotel",
+      "claimed_price": 110,
+      "verdict": "diamond",
+      "actual_price": 161.15,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "note": "An easy 2.5-hour drive delivers outstanding family utility with this highly-rated resort's excellent heated indoor pools, all-inclusive convenience, and dedicated kids' play areas."
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Pamporovo, Bulgaria",
+      "window": "Dec 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "good",
+      "actual_price": 187.52,
+      "llm_score": 78,
+      "final_score": 90,
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "note": "A virtually frictionless 1.5-hour drive to a 5-star mountain resort with a massive indoor pool, though the sheer size of the hotel and 8.3 rating implies a slightly less personalized, bustling…"
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Antalya, Turkey",
+      "window": "Nov 25-Dec 2, 2026",
+      "type": "hotel",
+      "claimed_price": 105,
+      "verdict": "skip",
+      "actual_price": 125,
+      "llm_score": 65,
+      "final_score": 34,
+      "source": "Aggregated market estimates and hotel direct property profiles for late autumn 2026",
+      "note": "While the 7-night duration helps amortize the travel days, flying via Sofia and Istanbul with a 4-year-old to a winter beach resort introduces significant logistical friction that heavily eats into…"
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Thessaloniki, Greece",
+      "window": "Nov 5-8, 2026",
+      "type": "hotel",
+      "claimed_price": 180,
+      "verdict": "skip",
+      "actual_price": 227.54,
+      "llm_score": 60,
+      "final_score": 63,
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "note": "The 4-hour drive and potential border delays for a short 3-night stay in a museum-heavy city offer limited return on hassle for a 4-year-old, despite the 5-star luxury."
     }
-  ]
+  ],
+  "spain_dest": {
+    "Valencia": {
+      "dest_id": "-406131",
+      "search_type": "city",
+      "kind": "city",
+      "name": "Valencia"
+    },
+    "Alicante": {
+      "dest_id": "-370210",
+      "search_type": "city",
+      "kind": "city",
+      "name": "Alicante"
+    },
+    "Malaga": {
+      "dest_id": "-390787",
+      "search_type": "city",
+      "kind": "city",
+      "name": "Málaga"
+    },
+    "Barcelona": {
+      "dest_id": "-372490",
+      "search_type": "city",
+      "kind": "city",
+      "name": "Barcelona"
+    },
+    "Madrid": {
+      "dest_id": "-390625",
+      "search_type": "city",
+      "kind": "city",
+      "name": "Madrid"
+    }
+  }
 }

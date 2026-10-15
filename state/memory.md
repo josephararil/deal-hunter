@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-10-12
+# Diamond Finder Memory — updated 2026-10-15
 
-## Price Baselines (47 entries)
+## Price Baselines (50 entries)
 
 ### aparthotelluckybanskospaandrelax|2026-09
 **Realistic:** ~€144.27/night &nbsp; **Updated:** 2026-08-13 &nbsp; **Samples:** 1
@@ -102,6 +102,11 @@ _Source: Booking.com (apidojo) live 2026-10-07_
 Verified Hotel Laguna Park & Aqua Club - All Inclusive, 4-star for Sep 6-11, 2026: €167.51/night (€837.56 total, 5 nights), review 8.7. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-22_
 
+### hotelperelik|2026-12
+**Realistic:** ~€187.52/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
+Verified Perelik Hotel, 5-star for Dec 11-14, 2026: €187.52/night (€562.57 total, 3 nights), review 8.3. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-15_
+
 ### huromacampingintown|2026-08
 **Realistic:** ~€63.89/night &nbsp; **Updated:** 2026-07-02 &nbsp; **Samples:** 1
 Verified hu Roma Camping In Town for Aug 6-10, 2026: €63.89/night (€255.56 total, 4 nights), review 8.5. Price matches the Stage-1 estimate.
@@ -187,6 +192,11 @@ _Source: Booking.com (apidojo) live 2026-07-04_
 Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-19_
 
+### saintivanrilskisparesort|2026-11
+**Realistic:** ~€161.15/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
+Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Nov 13-16, 2026: €161.15/night (€483.44 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-15_
+
 ### sanaspahotel|2026-08
 **Realistic:** ~€92.2/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
 Verified Sana Spa Hotel, 3-star for Aug 14-17, 2026: €92.2/night (€276.59 total, 3 nights), review 8.8. Price matches the Stage-1 estimate.
@@ -237,8 +247,17 @@ _Source: Booking.com (apidojo) live 2026-08-10_
 Verified SPA Resort St Ivan Rilski - Halfboard & All Inclusive, 4-star for Sep 11-14, 2026: €175.61/night (€526.83 total, 3 nights), review 9.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-22_
 
+### themethotel|2026-11
+**Realistic:** ~€227.54/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
+Verified The Met Hotel Thessaloniki, a Member of Design Hotels, 5-star for Nov 5-8, 2026: €227.54/night (€682.62 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-15_
+
 ## Outcome Ledger (200 entries)
 
+- 💎 2026-10-15 | Bansko, Bulgaria | Nov 13-16, 2026 | diamond score=88->100 claimed=€110 actual=€161.15 — An easy 2.5-hour drive delivers outstanding family utility with this highly-rated resort's…
+- 👍 2026-10-15 | Pamporovo, Bulgaria | Dec 11-14, 2026 | good score=78->90 claimed=€125 actual=€187.52 — A virtually frictionless 1.5-hour drive to a 5-star mountain resort with a massive indoor pool,…
+- · 2026-10-15 | Antalya, Turkey | Nov 25-Dec 2, 2026 | skip score=65->34 claimed=€105 actual=€125 — While the 7-night duration helps amortize the travel days, flying via Sofia and Istanbul with a…
+- · 2026-10-15 | Thessaloniki, Greece | Nov 5-8, 2026 | skip score=60->63 claimed=€180 actual=€227.54 — The 4-hour drive and potential border delays for a short 3-night stay in a museum-heavy city offer…
 - · 2026-10-12 | Milan City Break via PDV Direct | Nov 5 - Nov 10, 2026 | skip score=52->56 claimed=€120 actual=€120 — A 5-night city break in Milan involves significant walking and modest toddler appeal, even though…
 - 👍 2026-10-12 | Velingrad Spa Retreat | Nov 13 - Nov 16, 2026 | good score=86->100 claimed=€118 actual=€118 — A completely frictionless 1.5-hour drive delivers outstanding, guaranteed family utility through…
 - 👍 2026-10-12 | Bansko Pre-Season Mountain Escape | Nov 20 - Nov 23, 2026 | good score=88->100 claimed=€122 actual=€122 — An easy 2.5-hour drive delivers exceptional, weather-proof family utility via one of Bulgaria's…
@@ -285,8 +304,4 @@ _Source: Booking.com (apidojo) live 2026-08-22_
 - · 2026-09-13 | Malta Autumn Sun Escape | Oct 24-31, 2026 | skip score=62->0 claimed=€135 actual=€662.19 — The strong resort amenities are heavily undercut by the transit friction of flying via Sofia with a…
 - · 2026-09-13 | Antalya Late-Season All-Inclusive | Oct 23-30, 2026 | skip score=76->61 claimed=€170 actual=€171.95 — Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate…
 - 👍 2026-09-10 | Velingrad Thermal Spa Retreat | Sep 20-23, 2026 | good score=90->93 claimed=€110 actual=€285.0 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through excellent…
-- · 2026-09-10 | Antalya All-Inclusive Charter | Oct 8-15, 2026 | skip score=72->49 claimed=€142 actual=€342.39 — Massive toddler utility with extensive kids' clubs is partially offset by the logistics of a…
-- 💎 2026-09-10 | Bansko Mountain & SPA Break | Sep 25-28, 2026 | diamond score=95->100 claimed=€122 actual=€123.97 — A highly accessible, low-friction drive unlocks a premier flagship 5-star mountain property…
-- · 2026-09-10 | Athens Autumn City Break | Oct 15-20, 2026 | skip score=48->24 claimed=€130 actual=€245 — A 5-night stay in a busy, museum-heavy city offers limited engagement for a 4-year-old, further…
-- 💎 2026-09-07 | Bansko Mountain & SPA Break | Sep 25-28, 2026 | diamond score=90->100 claimed=€121 actual=€122.63 — A flagship 5-star mountain property offering guaranteed low-season family utility through top-tier…
 _... and 150 earlier entries_

@@ -54,6 +54,7 @@ for _name, _seed in [("signals_seen.json", {"seen": {}, "monthly_count": {}}),
         json.dump(_seed, f)
 
 import config as C
+C.SPAIN_SWEEP_ENABLED = False   # the Spain sweep hits Ryanair; test_spain.py covers it offline
 import common as X
 import llm_chain as L
 import memory as M
@@ -997,6 +998,50 @@ finally:
     L.call_llm, fa.ground_deal, X.send_email = _saved13
     os.chdir(_cwd)
     shutil.rmtree(sandbox13, ignore_errors=True)
+
+
+# ── Case 14: Spain section renders the sweep's numbers verbatim (HTML + text) ──
+print("\n=== Case 14: Spain email section + footer line ===\n")
+_deal14 = {
+    "kind": "spain", "city": "Valencia", "country": "Spain", "airport": "VLC",
+    "hotel_name": "Promo Hotel", "stars": 4, "review_score": 8.6,
+    "checkin": "2026-11-03", "checkout": "2026-11-07", "nights": 4, "window": "Nov 3-7, 2026",
+    "destination": "Valencia · Promo Hotel", "hotel_ppn_eur": 52.0, "hotel_total_eur": 208.0,
+    "hotel_p25_ppn_eur": 96.25, "hotel_sample": 6, "flight_out_eur": 19.99, "flight_ret_eur": 15.99,
+    "flight_rt_pp_eur": 35.98, "flight_median_rt_pp_eur": 69.99, "flight_family_eur": 107.94,
+    "fixed_eur": 170, "trip_variable_eur": 315.94, "typical_variable_eur": 594.97, "ratio": 0.531,
+    "allin_total_eur": 485.94, "typical_allin_eur": 764.97, "tier": "good",
+    "hotel_url": "https://www.booking.com/searchresults.html?ss=Promo+Hotel",
+    "flight_url": "https://www.ryanair.com/gb/en/trip/flights/select?adults=2&teens=0&children=1&infants=0&dateOut=2026-11-03&dateIn=2026-11-07&isConnectedFlight=false&discount=0&isReturn=true&promoCode=&originIata=SOF&destinationIata=VLC",
+    "realert_key": "spain:" + M.identity_key({"hotel_name": "Promo Hotel"}),
+    "realert_price_eur": 485.94, "about": "", "value_case": "", "red_flags": "",
+}
+_health14 = {"counts": {}, "spain": {"flights_ok": 1, "cities": [{}] * 7, "hotels_ok": 2,
+                                     "deals": [_deal14], "windows": [_deal14], "error": ""}}
+_html14 = fa.build_email_html([], [], [], 0, {}, _health14, None, spain=[_deal14])
+_text14 = fa.build_email_text([], [], [], {}, _health14, None, spain=[_deal14])
+for _blob, _kind in ((_html14, "html"), (_text14, "text")):
+    assert "€486 all-in for 3 · typical for these dates ~€765 · flights + hotel 47% below typical" in _blob, _kind
+    assert ("Spain sweep: 1/7 cities with Ryanair flights from SOF · 2 windows priced · 1 deal(s) · "
+            "best Valencia at 53% of typical") in _blob, _kind
+    assert "destinationIata=VLC" in _blob, _kind
+    assert "🇪🇸 Spain — flight + hotel deals" in _blob, _kind
+assert "Spain sweep: off" in fa._health_footer_text({"counts": {}, "spain": None})
+assert "Spain sweep" not in fa._health_footer_text({"counts": {}})
+print("Case 14: Spain section + footer render the sweep's numbers in HTML and text [OK]")
+
+
+# ── Case 15: the re-alert rule keys a Spain deal by realert_key, priced all-in ──
+print("\n=== Case 15: re-alert rule for Spain deals ===\n")
+_today15 = dt.date.today()
+_state15 = {"props": {_deal14["realert_key"]: {
+    "date": (_today15 - dt.timedelta(days=3)).isoformat(), "tier": "good", "price_eur": 485.94,
+    "name": "Promo Hotel"}}}
+assert not fa.is_new(_state15, _deal14, _today15.isoformat()), "same Spain deal re-alerted"
+assert fa.is_new(_state15, {**_deal14, "realert_price_eur": 410.0}, _today15.isoformat()), \
+    "Spain deal >=15% cheaper all-in (410 <= 413.049) must re-alert"
+assert not fa.is_new(_state15, {**_deal14, "realert_price_eur": 414.0}, _today15.isoformat())
+print("Case 15: Spain deals re-alert on realert_key + all-in total [OK]")
 
 
 print("\nAll assertions passed (Part 1 + Part 2).")

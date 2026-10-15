@@ -51,7 +51,7 @@ CITY_TIER_GROUPS = [
             "Edirne", "Kirklareli"
         ]),
         ("Direct Flights from PDV", [
-            "London", "Birmingham", "Manchester", "Milan", "Bratislava", "Valencia", "Murcia", "Sevilla"
+            "London", "Birmingham", "Manchester", "Milan", "Bratislava"
         ])
     ]),
     ("Tier 2 — Low-cost/Direct Flight from SOF", [
@@ -59,7 +59,6 @@ CITY_TIER_GROUPS = [
         ("Italy", ["Rome", "Bari", "Naples", "Bologna", "Venice"]),
         ("Greece", ["Athens", "Thessaloniki", "Chania", "Corfu"]),
         ("Central Europe", ["Vienna", "Budapest", "Prague", "Bratislava"]),
-        ("Spain", ["Barcelona", "Madrid", "Malaga", "Sevilla"]),
         ("Cyprus", ["Larnaca", "Paphos"]),
         ("Malta", ["Valetta"]),
         ("Germany", ["Munich", "Frankfurt", "Memmingen", "Berlin"]),
@@ -143,12 +142,6 @@ STAGE1_MIN_SCORE = 80
 # surface more of what it found).
 MAX_EMAILS_PER_RUN = 10
 
-# Days before the same property+season+tier can trigger another email. The anti-spam key
-# (find_city_anomalies.seen_key) is now keyed on the property identity + coarse season, so a
-# persistent deal whose label or exact dates drift day-to-day stays quiet for this whole
-# window instead of re-alerting under a slightly different name.
-SIGNAL_TTL_DAYS = 30
-
 # Retention for state/deals_history.json (the browsable UI's data source) — one record
 # per emailed deal per run. Mirrors memory.py's ledger retention (MAX_LEDGER_DAYS/ENTRIES).
 DEALS_HISTORY_MAX_DAYS = 180
@@ -188,6 +181,14 @@ DEALS_HISTORY_MAX_ENTRIES = 1000
 # requires ALL of: a high desirability score (DIAMOND_MIN_LLM_SCORE, above the ordinary
 # ~82 local baseline), a real discount (DIAMOND_MIN_DISCOUNT below normal), and the overall
 # DIAMOND_SCORE_THRESHOLD. Everything solid-but-ordinary lands in "good", not "diamond".
+#
+# A deal is a number we measured, not a number an LLM asserted (2026-10 rework). The reference
+# price now prefers real Booking.com history: with REF_MIN_SAMPLES or more live samples for the
+# property and season, their median replaces the skeptic's normal_price_eur outright (Invariant
+# H2) -- Lucky Bansko was €122 on all 8 live checks yet earned +12 bonuses from a guessed €140
+# "usual". "good" also needs a real GOOD_MIN_DISCOUNT, so a nice hotel at its usual price is a
+# skip. A trip that needs a flight or a long drive (not is_low_friction) is diamond-only, and a
+# price that did not come from Booking.com is capped at skip: an estimate cannot prove a deal.
 
 # Per-night "par" price: a coarse regional reference. INFORMATIONAL ONLY — shown to the skeptic
 # as context and used in log/digest display. It is no longer used by compute_final_score; with no
@@ -207,6 +208,14 @@ DIAMOND_SCORE_THRESHOLD = 88
 GOOD_SCORE_THRESHOLD    = 68
 DIAMOND_MIN_LLM_SCORE   = 85    # desirability floor for a diamond (ordinary local ≈ 82)
 DIAMOND_MIN_DISCOUNT    = 0.25  # grounded price must be >= 25% below the property's normal rate
+GOOD_MIN_DISCOUNT        = 0.10   # a "good" must be >= 10% below the reference price
+REF_MIN_SAMPLES          = 3      # Booking.com samples needed before history fully replaces the LLM's normal_price_eur
+REALERT_DAYS             = 90     # a property stays quiet this long after being emailed...
+REALERT_PRICE_DROP       = 0.15   # ...unless its live price drops >= 15% below the last emailed price (or tier rises)
+PRICE_SANITY_MULTIPLE    = 4.0    # live price > 4x FIND's estimate = wrong room / listing mismatch -> blocked
+MAX_RECENTLY_EMAILED_IN_PROMPT = 15  # recently-emailed properties listed in FIND's do-not-repeat block
+DRIVE_COUNTRIES   = ("bulgaria",)  # is_low_friction: drivable from Plovdiv
+DRIVE_CITY_TOKENS = ("kavala", "alexandroupoli", "thassos", "xanthi", "komotini", "edirne", "kirklareli")
 
 # ── Run resilience ───────────────────────────────────────────────────────────
 # Moved to the llm-chain package and configured as LLM_* env vars in daily.yml:
@@ -267,6 +276,14 @@ def transit_tier(destination):
     return 1 if any(tok in d for tok in _TIER1_TOKENS) else 2
 
 
+def is_low_friction(location):
+    """True for a drive from Plovdiv (Bulgaria, or a listed Greek/Turkish border town).
+    Everything else needs a flight from Sofia or a long drive, which the family takes only for
+    a diamond. Pass "City Country" (find_city_anomalies._location), never FIND's free label."""
+    loc = (location or "").lower()
+    return any(tok in loc for tok in DRIVE_COUNTRIES + DRIVE_CITY_TOKENS)
+
+
 def compute_final_score(llm_score, grounded_ppn, location, normal_price_eur=None):
     """Apply the deterministic modifiers to an LLM desirability score.
 
@@ -301,12 +318,13 @@ def tier_for(final_score, llm_score, discount):
 
     Diamond is intentionally hard: it needs a standout property (llm_score) AND a genuine
     steal (discount) AND a high overall score — so an ordinary local weekend, however cheap,
-    lands in 'good', not 'diamond'."""
+    lands in 'good', not 'diamond' — and 'good' also needs a real discount of at least
+    GOOD_MIN_DISCOUNT, so a nice hotel at its usual price is a skip."""
     if (final_score >= DIAMOND_SCORE_THRESHOLD
             and (llm_score or 0) >= DIAMOND_MIN_LLM_SCORE
             and (discount or 0) >= DIAMOND_MIN_DISCOUNT):
         return "diamond"
-    if final_score >= GOOD_SCORE_THRESHOLD:
+    if final_score >= GOOD_SCORE_THRESHOLD and (discount or 0) >= GOOD_MIN_DISCOUNT:
         return "good"
     return "skip"
 
@@ -331,7 +349,7 @@ HOTEL_MAPPING = {
 # Placeholders filled at runtime by find_city_anomalies.py / common.py:
 #   SEARCH_PROMPT          → {today}, {cities}   (Gemini search step — lead generation)
 #   SEARCH_RESULTS_PREAMBLE→ {leads}             (Gemini reasoning step — injected ahead of FIND/VERIFY)
-#   FIND_PROMPT            → {today}, {cities}, {memory}, {search_directive}, {trips}
+#   FIND_PROMPT            → {today}, {cities}, {memory}, {search_directive}, {trips}, {recently_emailed}
 #   SKEPTIC_PROMPT         → {today}, {diamond_threshold}, {good_threshold}, {diamond_min_llm},
 #                            {diamond_min_discount_pct}, {candidates}, {memory}, {trips}
 #   VERIFY_PROMPT          → {today}, {candidate}, {memory}
@@ -351,8 +369,8 @@ SEARCH_PROMPT = """Today is {today}. You are a sharp travel scout running live w
 Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING travel from the live web — raw material for an analyst who works downstream. You are NOT deciding what is a good deal, and you are NOT writing the final answer. You are casting a wide net for timely opportunities that nobody could guess from general knowledge alone.
 
 ### WHAT MAKES A GOOD LEAD
-- It is happening NOW or was announced recently, for travel STILL AHEAD of us: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, an error/sale fare, a newly launched route, a festival or event creating an off-peak trough. Ignore sales and dates that have already passed.
-- It is SPECIFIC: a named hotel / resort / cruise / airline, a concrete price, and concrete dates that fall in the future relative to {today}.
+- It is happening NOW or was announced recently, for travel STILL AHEAD of us: a flash sale, a fresh price drop, a new hotel opening or reopening, an unsold last-minute allocation, a festival or event creating an off-peak trough. Ignore sales and dates that have already passed.
+- It is SPECIFIC: a named hotel or resort, a concrete price, and concrete dates that fall in the future relative to {today}.
 - It is hard to know WITHOUT searching today. We do NOT need evergreen facts ("Bansko is cheap off-season", "Antalya has all-inclusive resorts") — the analyst already knows those. Surprise us with something live.
 - Variety beats repetition. Spread leads across different destinations, categories, and seasons rather than five versions of the same hotel. Assume yesterday you already reported the obvious ones; find different ones today.
 
@@ -362,14 +380,12 @@ Your ONLY job in this step is to surface FRESH, SPECIFIC LEADS for UPCOMING trav
 
 ### WHERE TO LOOK (sweep across all of these)
 - Premium off-season troughs: 4-5 star family resorts dropping hard between seasons with indoor/kids facilities still open.
-- Flight error fares / flash sales from PDV or SOF.
-- Last-minute package dumps: unsold flight+hotel bundles.
-- Regional cruises departing Istanbul, Athens (Piraeus), or Thessaloniki.
 - New openings, reopenings, or launch promotions.
 - Event- or shoulder-season windows where prices trough.
 
 Anchor destinations (a starting point, NOT a cage — chase a great lead anywhere reachable):
 {cities}
+(Spain is handled by a separate price sweep — skip Spanish leads.)
 
 ### DOs AND DON'Ts
 - DO report, for each lead: destination + named property, the price and exact dates, the live hook (why it is timely right now), and the source domain — verbatim.
@@ -431,6 +447,12 @@ good new one; use these to vary what you find, not repeat it.
 
 ---
 
+### ALREADY EMAILED IN THE LAST 90 DAYS (do not re-propose)
+The family has already been shown every property below. Do NOT propose any of them again unless you have specific live evidence that its price is now at least 15% below the price listed here. Spend your candidates on places NOT on this list.
+{recently_emailed}
+
+---
+
 ### SCORING CALIBRATION (Threshold: >= 80 Triggers an Email Alert)
 
 Your scoring dictates the pipeline routing. A score of 80 or above means the deal is so strong it warrants immediately emailing the user. Be conservative.
@@ -451,9 +473,11 @@ Your scoring dictates the pipeline routing. A score of 80 or above means the dea
 2. Tier 2: High-Friction Transit (Flights from Sofia Airport [SOF] OR Drives > 3 hours)
    - Baseline: High transit friction for a 4-year-old. 
    - Evaluation: Standard discounts or normal cheap flights from SOF must be scored **below 80**. To cross the **80+ email threshold**, a Sofia transit option must either offer a staggering price drop on a premium experience (e.g., a 5-star Antalya resort collapsing to €100/night with active indoor kid facilities), OR be a high-excitement destination at strong absolute value (see DESTINATION EXCITEMENT below).
+   - Reality check: every Tier 2 trip starts with a 1.5-hour highway drive to Sofia airport with a 4-year-old. The family will only do that for an exceptional, diamond-level deal, so propose a Tier 2 trip only when you believe it clears that bar.
 
 Target destinations, grouped by transit tier (aligns with the scoring hierarchy above):
 {cities}
+Spain is covered by a separate, dedicated flight + hotel price sweep. Do NOT propose Spanish destinations here.
 
 ---
 
@@ -467,18 +491,16 @@ A deal's value is not just the nightly price — it is whether the *stay length*
 ---
 
 ### HUNTING CATEGORIES
-Hunt for opportunities across these specific categories:
+Propose named HOTEL stays only (type "hotel"). Every price is checked against live Booking.com rates, and a cruise, a flight-only fare or a package cannot be checked, so it can never be emailed as a deal. Hunt across:
 - Premium Off-Season Troughs: 4 to 5-star family resorts with massive predictable price drops post-holidays or between seasons where indoor/kids infrastructure remains fully open.
-- Regional Cruises: Family-friendly itineraries departing from Istanbul, Athens (Piraeus), or Thessaloniki.
-- Flight Error/Sale Fares: Confirmed active low fares from SOF or PDV.
-- Package Dumps: Last-minute unsold flight+hotel bundles.
+- Flash sales, launch promotions and reopenings at a specific named hotel.
 
 ---
 
 ### SEARCH & VERIFICATION RULES
 {search_directive}
 - Never fabricate hotel names or flight availability. When you are estimating a price rather than citing one you found, put your best figure in est_price_eur — the downstream stages verify every price against live data.
-- Prices may be quoted in local currency: convert to EUR for est_price_eur. BGN is pegged at ~1.96 to the EUR; TRY and RSD float, so use a sensible current rate (this is only an estimate — Stage 3 grounds the real figure).
+- Prices may be quoted in local currency: convert to EUR for est_price_eur. Bulgaria has used the euro since 1 January 2026, so Bulgarian prices are already in EUR; TRY and RSD float, so use a sensible current rate (this is only an estimate — Stage 3 grounds the real figure).
 - Check child-safety/amenities: Ensure any off-season resort has an operating indoor heated pool, kids' area, or relevant infrastructure active *during* the specified travel window.
 
 ---

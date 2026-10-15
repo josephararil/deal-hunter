@@ -44,10 +44,15 @@ with open("state/memory.json", "w", encoding="utf-8") as f:
     # path and M.record_baseline's write path in find_city_anomalies.py. Antalya's
     # hotel_name is "Rixos Premium Antalya" (see _STAGE1 below), so its identity is
     # "rixospremiumantalya" (memory.identity lowercases + strips punctuation).
+    # Kempinski gets an other-month sample so Invariant N lets its diamond through; at €200 it
+    # is above the scorer's €180, so the any-month step keeps €180 and its numbers are unchanged.
     json.dump({"baselines": {"rixospremiumantalya|2027-01": {
         "realistic_price_eur": 100, "note": "seeded",
         "source": "Booking.com (apidojo) live 2026-06-01",
-        "updated": "2026-12-01"}}, "ledger": []}, f)
+        "updated": "2026-12-01"},
+        "kempinskigrandarena|2026-02": {
+        "samples": [{"price": 200, "date": "2026-02-01", "source": "seeded"}],
+        "realistic_price_eur": 200, "note": "seeded", "updated": "2026-02-01"}}, "ledger": []}, f)
 for _name, _seed in [("signals_seen.json", {"seen": {}, "monthly_count": {}}),
                      ("city_signals.json", {})]:
     with open(f"state/{_name}", "w", encoding="utf-8") as f:
@@ -874,7 +879,12 @@ try:
             "samples": [{"price": 122.12, "date": T0.isoformat(), "source": "Booking.com (apidojo)"}
                         for _ in range(3)],
             "realistic_price_eur": 122.12, "note": "seeded",
-            "source": "Booking.com (apidojo)", "updated": T0.isoformat()}}, "ledger": []}, f)
+            "source": "Booking.com (apidojo)", "updated": T0.isoformat()},
+            # Rome needs some prior price so Invariant N doesn't pre-empt the F demotion under
+            # test; at €150 (other month) it is above the scorer's €130, which stays the reference.
+            "hotelromatest|2026-03": {
+            "samples": [{"price": 150, "date": "2026-03-01", "source": "seeded"}],
+            "realistic_price_eur": 150, "note": "seeded", "updated": "2026-03-01"}}, "ledger": []}, f)
     with open("state/signals_seen.json", "w", encoding="utf-8") as f:
         json.dump({"props": {M.identity_key({"hotel_name": "Electra Palace Thessaloniki"}): {
             "date": (T0 - dt.timedelta(days=5)).isoformat(), "tier": "good", "price_eur": 203.0,
@@ -1042,6 +1052,141 @@ assert fa.is_new(_state15, {**_deal14, "realert_price_eur": 410.0}, _today15.iso
     "Spain deal >=15% cheaper all-in (410 <= 413.049) must re-alert"
 assert not fa.is_new(_state15, {**_deal14, "realert_price_eur": 414.0}, _today15.isoformat())
 print("Case 15: Spain deals re-alert on realert_key + all-in total [OK]")
+
+
+# ── Case 16: a pick needs real price history (H2 any-month step + Invariant N) ──
+# The 2026-10-15 run emailed Saint Ivan Rilski as a diamond on a guessed €220 "usual" while a
+# real €175.61 sat under a different FIND name and month, and emailed Hotel Perelik as good with
+# no real price on file at all. Expected values come from the approved plan's probe.
+print("\n=== Case 16: history gate — Booking.com name match, any-month reference, first sighting ===\n")
+import io, contextlib
+
+assert M.booking_key("SPA Resort St Ivan Rilski") == M.booking_key("Saint Ivan Rilski SPA Resort")
+assert M.booking_key("") == ""
+assert M.entry_booking_name({"note": "Verified Perelik Hotel, 5-star for Dec 11-14, 2026: €1"}) == "Perelik Hotel"
+assert M.entry_booking_name({"booking_name": "X", "note": "Verified Y for ..."}) == "X"
+_m16 = {"baselines": {}, "ledger": []}
+M.record_baseline(_m16, "x|2026-12", 100.0, booking_name="X Hotel")
+M.record_baseline(_m16, "y|2026-12", 100.0)
+assert _m16["baselines"]["x|2026-12"]["booking_name"] == "X Hotel"
+assert "booking_name" not in _m16["baselines"]["y|2026-12"]
+
+sandbox16 = _new_sandbox("dh_stub_c16_")
+_saved16 = (L.call_llm, fa.ground_deal, X.send_email)
+try:
+    _RILSKI_BK = "SPA Resort St Ivan Rilski - Halfboard & All Inclusive"
+    with open("state/memory.json", "w", encoding="utf-8") as f:
+        json.dump({"baselines": {
+            # a: other FIND name, other month, legacy entry with no booking_name field.
+            "sparesortstivanrilski|2026-09": {
+                "samples": [{"price": 175.61, "date": "2026-09-01", "source": "Booking.com (apidojo)"}],
+                "realistic_price_eur": 175.61, "source": "Booking.com (apidojo)", "updated": "2026-09-01",
+                "note": f"Verified {_RILSKI_BK}, 4-star for Sep 11-14, 2026: €175.61/night"},
+            # c: one same-month sample.
+            "hotelc16|2026-12": {
+                "samples": [{"price": 200.0, "date": "2026-09-01", "source": "Booking.com (apidojo)"}],
+                "realistic_price_eur": 200.0, "note": "seeded", "updated": "2026-09-01"},
+            # d: one other-month sample only.
+            "hoteld16|2026-06": {
+                "samples": [{"price": 190.0, "date": "2026-06-01", "source": "Booking.com (apidojo)"}],
+                "realistic_price_eur": 190.0, "note": "seeded", "updated": "2026-06-01"},
+        }, "ledger": []}, f)
+
+    def _cand16(dest, hotel, city, window, est):
+        return {"destination": dest, "hotel_name": hotel, "city": city, "country": "Bulgaria",
+                "score": 90, "type": "hotel", "window": window, "est_price_eur": est,
+                "reason": "x", "confidence": "high"}
+
+    _STAGE1_C16 = {"candidates": [   # one per city, so the per-city cap keeps all four
+        _cand16("Rilski 16", "Saint Ivan Rilski SPA Resort", "Bansko", "Nov 13-16, 2026", 160),
+        _cand16("Perelik 16", "Hotel Perelik", "Pamporovo", "Dec 11-14, 2026", 185),
+        _cand16("C 16", "Hotel C16", "Velingrad", "Dec 4-7, 2026", 160),
+        _cand16("D 16", "Hotel D16", "Hisarya", "Dec 11-14, 2026", 150),
+    ]}
+
+    def _score16(deal_id, dest, score, normal):
+        return {"deal_id": deal_id, "destination": dest, "score": score, "normal_price_eur": normal,
+                "why": "x", "about": "x", "value_case": "x", "red_flags": "",
+                "flight_cost_eur_total": 0, "ground_transport_eur": 0}
+
+    _SCORES_C16 = [_score16(1, "Rilski 16", 88, 220), _score16(2, "Perelik 16", 78, 230),
+                   _score16(3, "C 16", 78, 230), _score16(4, "D 16", 78, 230)]
+
+    def _stub_llm_c16(messages, model, max_tokens=2000, want_search=False, response_schema=None,
+                      provider=None, search_prompt=None):
+        if response_schema is C.STAGE1_RESPONSE_SCHEMA:
+            return json.dumps(_STAGE1_C16)
+        if response_schema is C.STAGE2_RESPONSE_SCHEMA:
+            return json.dumps(_SCORES_C16)
+        raise AssertionError(f"unexpected llm schema={response_schema}")
+
+    def _ground16(name, bk, ppn, dates):
+        return {"destination": name, "verdict": "confirm", "confidence": "high",
+                "grounding_method": "apidojo", "booking_name": bk,
+                "how_to_book": "Book at booking.com", "grounding": "apidojo live",
+                "assistant_summary": f"Verified {bk}, 4-star for {dates}: €{ppn}/night.",
+                "options": [_opt(ppn, round(ppn * 3, 2), dates, 3)]}
+
+    _GROUND_C16 = {
+        "Rilski 16": _ground16("Saint Ivan Rilski SPA Resort", _RILSKI_BK, 161.15, "Nov 13-16, 2026"),
+        "Perelik 16": _ground16("Hotel Perelik", "Perelik Hotel", 187.52, "Dec 11-14, 2026"),
+        "C 16": _ground16("Hotel C16", "Hotel C16", 160.0, "Dec 4-7, 2026"),
+        "D 16": _ground16("Hotel D16", "Hotel D16", 150.0, "Dec 11-14, 2026"),
+    }
+
+    _email16 = {}
+    def _stub_send_c16(subject, html, text):
+        _email16["subject"], _email16["html"], _email16["text"] = subject, html, text
+
+    L.call_llm = _as_chain(_stub_llm_c16)
+    fa.ground_deal = lambda d, m, t: _GROUND_C16.get(d.get("destination"), {})
+    X.send_email = _stub_send_c16
+
+    _log16 = io.StringIO()
+    with contextlib.redirect_stdout(_log16):
+        fa.main()
+    _log16 = _log16.getvalue()
+
+    def _line16(did):
+        return next(l for l in _log16.splitlines() if f"] #{did} " in l and " transit = " in l)
+
+    sig16 = {s["city"]: s for s in json.load(open("state/city_signals.json", encoding="utf-8"))["signals"]}
+
+    # a: matched by Booking.com name across FIND names and months; 175.61 < 220 so it is the
+    # reference. 1 - 161.15/175.61 = 0.0823 -> +4.1, +3 transit, 88 -> 95; under 10% -> skip.
+    a = sig16["Rilski 16"]
+    assert (a["normal_price_eur"], round(a["discount"], 4), a["final_score"], a["tier"]) \
+        == (175.61, 0.0823, 95, "skip"), a
+    assert "history_any" in _line16(1) and "(capped)" not in _line16(1), _line16(1)
+
+    # b: no prior price at all -> would be good (final 90, disc 0.1847) -> Invariant N caps it.
+    b = sig16["Perelik 16"]
+    assert (b["final_score"], b["tier"], round(b["discount"], 4)) == (90, "skip", 0.1847), b
+    assert "(capped)" in _line16(2) and " llm)" in _line16(2), _line16(2)
+    assert _email16["html"].count(fa.NOTE_FIRST) == 1, "NOTE_FIRST should render once (Perelik only)"
+
+    # c: one same-month sample -> min(230, 200) = 200; disc 0.2 -> +10 +3, 78 -> 91 -> good.
+    c16 = sig16["C 16"]
+    assert (c16["normal_price_eur"], round(c16["discount"], 4), c16["final_score"], c16["tier"]) \
+        == (200.0, 0.2, 91, "good"), c16
+    assert "(capped)" not in _line16(3), _line16(3)
+
+    # d: other-month sample only -> 190 < 230 -> history_any; disc 0.2105 -> 92 -> good.
+    d16 = sig16["D 16"]
+    assert (d16["normal_price_eur"], round(d16["discount"], 4), d16["final_score"], d16["tier"]) \
+        == (190.0, 0.2105, 92, "good"), d16
+    assert "history_any" in _line16(4) and "(capped)" not in _line16(4), _line16(4)
+
+    # This run's baselines carry the Booking.com name for future cross-name matching.
+    mem16 = json.load(open("state/memory.json", encoding="utf-8"))
+    assert mem16["baselines"]["hotelperelik|2026-12"]["booking_name"] == "Perelik Hotel", mem16["baselines"].keys()
+
+    print("Case 16: Booking.com-name match, any-month reference (lower only), first sighting "
+          "capped with NOTE_FIRST, booking_name stored [OK]")
+finally:
+    L.call_llm, fa.ground_deal, X.send_email = _saved16
+    os.chdir(_cwd)
+    shutil.rmtree(sandbox16, ignore_errors=True)
 
 
 print("\nAll assertions passed (Part 1 + Part 2).")

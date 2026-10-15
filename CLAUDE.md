@@ -34,12 +34,23 @@ find_city_anomalies.py
   │    renders a bounded trips block injected into both FIND_PROMPT and SKEPTIC_PROMPT so the
   │    scorer can calibrate against what this family actually pays and chooses.
   │
+  ├─ Anti-spam state load — state/signals_seen.json (load_seen + prune_seen, at the TOP of main)
+  │    Loaded before FIND so FIND can be told what was already emailed (see Invariant R).
+  │
   ├─ Stage 1 · FIND (L.call_llm, want_search=True)
   │    Score candidates 0–100. Each candidate includes est_price_eur (structured number —
   │    NOT extracted from prose). Anchored to CITIES but can extend to nearby destinations.
+  │    Named hotel stays only (cruises / flight-only fares / packages can't be live-priced).
+  │    FIND gets its OWN memory block: corrections only (verdicts correct/kill/hallucinated/
+  │    skeptic_kill/blocked), no baselines, no past good/skip rows — those taught it to
+  │    re-propose the same Velingrad/Bansko hotels. It also gets {recently_emailed}: the
+  │    properties emailed in the last 90 days (recently_emailed_text), with a do-not-repeat
+  │    instruction. Spain is excluded from FIND (no PDV-Spain route; Spain gets its own sweep).
   │
   ├─ Gate — FIND score >= STAGE1_MIN_SCORE (triage only). NO price filter: there is no hard
   │    price ceiling anywhere in the pipeline; price is handled by the deterministic scorer.
+  │    Then a PER-CITY CAP: only the highest-FIND-score survivor per city is grounded; the
+  │    rest are dropped like below-threshold candidates (not grounded, not ledgered).
   │
   ├─ Stage 2 · GROUND (ground_deal seam) — one call per gate survivor (BEFORE scoring)
   │    Primary: `providers.ground_api()` — Booking.com (apidojo) live rates, no LLM call.
@@ -47,8 +58,12 @@ find_city_anomalies.py
   │    Returns verdict: confirm | correct | kill, plus options[], how_to_book, grounding,
   │    assistant_summary, confidence. A kill drops the candidate here. A confirm/correct
   │    merges the REAL price onto the candidate and forwards it to the scorer — UNLESS a
-  │    DATA-QUALITY guard blocks it (confidence=low or grounded dates out of window; NOT
-  │    price). Blocked entries are logged in city_signals.md and never reach the scorer.
+  │    DATA-QUALITY guard blocks it (confidence=low, grounded dates out of window, or the
+  │    Invariant Q sanity check: live price > PRICE_SANITY_MULTIPLE x FIND's own estimate =
+  │    a listing mismatch). Blocked entries are logged in city_signals.md and the email's
+  │    dropped footer and never reach the scorer. Each grounded candidate carries
+  │    grounding_method ("apidojo" | "llm") forward; the run prints/emails the live-vs-LLM
+  │    price count.
   │    Grounding is swappable: `HOTEL_PROVIDER=""` forces LLM-only. Same
   │    `ground_deal(diamond, mem_text, today)` signature.
   │
@@ -79,6 +94,12 @@ find_city_anomalies.py
   │    tier (config.tier_for): DIAMOND needs ALL of final>=DIAMOND_SCORE_THRESHOLD,
   │    llm_score>=DIAMOND_MIN_LLM_SCORE, AND discount>=DIAMOND_MIN_DISCOUNT — so an ordinary
   │    local weekend, however cheap, is at most GOOD (>=GOOD_SCORE_THRESHOLD), else skip.
+  │    "good" additionally needs discount>=GOOD_MIN_DISCOUNT (10%): a nice hotel at its usual
+  │    price is a skip. REFERENCE PRICE (Invariant H2): with >=REF_MIN_SAMPLES real Booking.com
+  │    samples for the property+season (M.baseline_samples, merged across word orders), their
+  │    median replaces normal_price_eur; with 1-2 samples, min(llm, median). CAPS after tier_for
+  │    (Invariant U, then F): a non-apidojo price → skip + NOTE_UNVERIFIED; a "good" that is not
+  │    is_low_friction → skip + NOTE_FAR (far trips are diamond-only). Notes render in the email.
   │    The LLM never vetoes or tiers — a low final score is dropped by default, but every
   │    score is recorded. Same €85 can be a diamond for a standout (high llm_score) and a
   │    skip for an ordinary place. The scorer also emits a descriptive DOSSIER per candidate
@@ -107,15 +128,13 @@ find_city_anomalies.py
   │    MAX_BASELINE_SAMPLES real samples per property+season key rather than overwriting on
   │    every verification. prune() + save().
   │
-  ├─ Anti-spam gate — state/signals_seen.json
-  │    Keyed by PROPERTY-IDENTITY (hotel_name→city→label, punctuation-stripped) + coarse
-  │    SEASON (M.season_key of the window) + TIER, SIGNAL_TTL_DAYS TTL. EVERY scored candidate
-  │    (diamond/good/skip) passes through this gate — a candidate is "new" if that
-  │    property+season has not been emailed at that tier within the TTL. Season (not the exact
-  │    window) and a normalised identity (not FIND's drifting free-text label) mean the same
-  │    hotel with shifting dates/names no longer re-alerts; a TIER CHANGE (skip→good when the
-  │    price drops) still re-notifies. A single WILDCARD (the best non-local find) can bypass
-  │    suppression to keep variety visible.
+  ├─ Anti-spam gate (Invariant R) — state/signals_seen.json "props"
+  │    One entry per PROPERTY, keyed by M.identity_key (sorted characters of identity(), so
+  │    word order doesn't matter): {date, tier, price_eur, name}. EVERY scored/unscored
+  │    candidate passes is_new(): new if never emailed, or REALERT_DAYS (90) have passed, or a
+  │    higher tier, or its live price is >= REALERT_PRICE_DROP (15%) below the last emailed
+  │    price. No month or window in the key. The legacy "seen" map converts itself on load
+  │    (seed_props_from_legacy).
   │
   ├─ Email (common.send_email) — an honest daily digest of EVERY scored candidate
   │    One email per run, fired whenever ≥1 scored candidate is new/tier-changed (any tier,
@@ -124,9 +143,7 @@ find_city_anomalies.py
   │    description + a "Why it's a deal" value-case callout, a "typically ~€X/night"
   │    comparison from PRIOR baselines, a child-price caveat for hotels, and the booking link.
   │    MAX_EMAILS_PER_RUN caps only the actionable diamond/good picks; skips are context and
-  │    always shown in full. One item may carry a 🃏 WILDCARD badge — the best non-local find
-  │    (fly/far destination or non-hotel), surfaced regardless of tier so the digest visibly
-  │    reaches beyond the usual drivable towns. A "seen & dropped" footer lists that run's grounding kills /
+  │    always shown in full. A "seen & dropped" footer lists that run's grounding kills /
   │    guard blocks (destination + reason) so the digest reflects everything the pipeline
   │    looked at. Conscience note if monthly count >= 8.
   │
@@ -137,14 +154,14 @@ find_city_anomalies.py
   │    nothing scored at all, replaced outright with "pipeline degraded — N priced but
   │    unscored"). A run-health footer is now ALWAYS present in every email (not only degraded
   │    ones) — provider/models, per-stage status (stage1/2/3 ok/failed/partial + reason),
-  │    found/grounded/scored/unscored/dropped/emailed counts, tier-mix by transit tier, and
-  │    LLM budget seconds used — so a quiet day and a degraded day are never visually
-  │    indistinguishable.
+  │    found/grounded/scored/unscored/dropped/emailed counts, a "Prices: N live Booking.com ·
+  │    M LLM estimates" line, tier-mix by transit tier, and LLM budget seconds used — so a
+  │    quiet day and a degraded day are never visually indistinguishable.
   │
   └─ Always writes
        state/city_signals.json  — all Stage 1 candidates + full score breakdown (hunt: false)
        state/city_signals.md    — human-readable log with grounding + score/tier breakdown
-       state/signals_seen.json  — updated TTL state
+       state/signals_seen.json  — updated re-alert state (props)
        state/memory.json        — baselines + outcome ledger (updated every run)
        state/memory.md          — human-readable memory digest
        state/deals_history.json — one record per emailed deal (diamond/good/skip), for web/
@@ -156,16 +173,16 @@ find_city_anomalies.py
 |---|---|
 | `config.py` | City list + diamond-finder knobs; per-stage provider overrides; token budgets; prompts. **Names no model** — the `LLM models` and `Run resilience` blocks are deliberately empty and point at the `llm-chain` package |
 | `common.py` | `llm()`, `send_email()`, `parse_json_block()`, state IO |
-| `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()` |
+| `memory.py` | `load()`/`save()`; `record_baseline()`/`record_outcome()`/`prune()`; `summarize_for_prompt()`; `identity_key()`/`canonical()`/`baseline_samples()` (word-order-proof property key + merged price history) |
 | `find_city_anomalies.py` | The diamond finder — runs weekly, emails a digest of every scored candidate (diamond/good/skip) + unscored/dropped sections |
-| `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties()` |
+| `providers.py` | Booking.com (apidojo) Stage-2 grounding: `ground_api()`, `resolve_hotel()`, `price()`, `list_properties(order_by=None)`, `card_currency()`. Non-EUR cards are refused (price raises → LLM fallback; alternatives skip them). `FAILURES` collects each fallback reason for the health footer |
 | `trips.py` | Read-only user-maintained trip log: `load()`/`valid_trips()`/`price_anchors()`/`summarize_for_prompt()`/`backtest()`/`paste_snippet()` — see "Trip log" below |
 | `state/trips.json` | Hand-edited by the user (booked trips); the pipeline reads it but never writes it (Invariant T) |
 | `tools/migrate_memory.py` | One-off, already-run, idempotent migration script — the reviewable record of the 2026-08-10 state repair (baseline provenance purge, re-key, ledger revert, `trips.json` seed) |
 | `.github/workflows/daily.yml` | Runs the diamond finder at 06:00 UTC every Monday (`cron: "0 6 * * 1"`); commits `state/`; `timeout-minutes: 20` |
 | `state/city_signals.json` | Latest Stage 1 output (machine-readable) |
 | `state/city_signals.md` | Stage 1–3 output (human-readable log with Stage 3 verification outcomes) |
-| `state/signals_seen.json` | Anti-spam TTL memory: `property-identity\|season\|tier → date_emailed`, monthly count |
+| `state/signals_seen.json` | Anti-spam re-alert memory: `props` = `identity_key → {date, tier, price_eur, name}` (price_eur is EUR/night), monthly + degraded counts |
 | `state/memory.json` | Price baselines + outcome ledger (grows every run, pruned at 200 entries / 180 days) |
 | `state/memory.md` | Human-readable digest of memory.json |
 | `state/deals_history.json` | One dossier record per emailed deal (diamond/good/skip) — full about/value_case/options/red_flags, not just scores. Appended every run a digest is sent, pruned at `DEALS_HISTORY_MAX_ENTRIES`/`DEALS_HISTORY_MAX_DAYS` (config.py). Data source for `web/` |
@@ -278,6 +295,13 @@ outlasting CI's job timeout or silently pretending a bad run was a quiet one.
   (Tier-1 local vs Tier-2 fly), and LLM budget seconds used. This is what makes a degraded run
   visibly different from an ordinary quiet day, which was exactly the blind spot the
   2026-08-10 outage exploited.
+- **A run with zero live prices is flagged.** The footer's "Prices: N live Booking.com · M LLM
+  estimates" line gains "⚠ Booking.com returned nothing this run; every price is an estimate"
+  when something was grounded but nothing came from apidojo, plus "(first error: …)" from
+  `providers.FAILURES` (cleared per run in `main()`; read via `sys.modules` so the LLM-only
+  path never imports providers). `providers._get` keeps RapidAPI's response body in its
+  HTTPError. Four runs (16 Sep, 25 Sep, 4 Oct, 12 Oct 2026) had zero live prices and nothing
+  said so; CI logs that would have said why had expired, which is why the reason is in the email.
 
 ## Trip log
 
@@ -334,7 +358,7 @@ it's a real paid price and a real choice made.
 - **All email goes through `common.send_email()`.** Single SMTP path. No duplication.
 - **State files in `state/` are CI-managed.** `city_signals.json`, `city_signals.md`,
   `signals_seen.json`, `memory.json`, `memory.md`, `deals_history.json` are committed after
-  each run. They are real state, not scratch. Seed values: `{}` / `{"seen":{}, "monthly_count":{}}` /
+  each run. They are real state, not scratch. Seed values: `{}` / `{"props":{}, "monthly_count":{}}` /
   `{"baselines": {}, "ledger": []}` / `{"entries": []}`.
 - **(T, trips are user-owned) No code path writes, creates, reorders, or reformats
   `state/trips.json` after it's seeded.** `trips.py` reads it via `common.load_json` and never
@@ -506,17 +530,14 @@ it's a real paid price and a real choice made.
   fragile destination-string matching (`_match_candidate`, with a destination fallback).
   It only correlates within one run — candidate #1 today ≠ #1 tomorrow — so it must NEVER
   key `signals_seen.json` or `memory.json`; those stay keyed by durable identity across runs
-  (`memory.json` by `destination|season`; `signals_seen.json` by `property-identity|season|tier`
-  via `seen_key`). It appears in `city_signals.json`
+  (`memory.json` by `identity|season`; `signals_seen.json` by `M.identity_key` via
+  `realert_key`). It appears in `city_signals.json`
   (regenerated each run) for traceability only.
 - **The email is an honest digest of EVERY scored candidate, not a diamond/good-only alarm.**
   It shows diamonds, good finds AND skips — each with its full score breakdown — so the user
   builds a mental model of what the pipeline sees and why, and can human-override a
   low-scored deal (e.g. a Rome skip that's useful if they were going anyway). It fires
-  whenever ≥1 scored candidate is new or has changed tier since the last email (any tier).
-  Anti-spam TTL is keyed `property-identity|season|tier` (see `seen_key`), so a recurring
-  same-property skip stays quiet even as its label/exact dates drift, but a skip→good upgrade
-  re-notifies. One best non-local find may carry a 🃏 wildcard badge (may bypass suppression).
+  whenever ≥1 scored candidate is new per the re-alert rule (Invariant R, any tier).
   Only diamond/good picks are capped by MAX_EMAILS_PER_RUN; skips are always shown. Grounding
   kills / guard blocks appear in a
   compact "seen & dropped" footer (no email is sent purely for a kill). A day with nothing
@@ -525,10 +546,40 @@ it's a real paid price and a real choice made.
   `find_city_anomalies._identity()` byte-for-byte** — it was moved verbatim into `memory.py`,
   not reimplemented, including its `"&"` → `"and"` normalization. `find_city_anomalies.py`
   now aliases `_identity = M.identity` so baselines and anti-spam share one derivation
-  (`_identity = M.identity` near the top of the file). A behavioral drift here would break
-  every existing `signals_seen` key and reset the whole `SIGNAL_TTL_DAYS`-day anti-spam TTL
-  into a spam burst — do not "clean up" this function's body without checking every existing
-  key still matches.
+  (`_identity = M.identity` near the top of the file). A behavioral drift here would orphan
+  every existing baseline key and every `signals_seen` prop — do not "clean up" this
+  function's body without checking every existing key still matches. **Word-order merging is
+  layered on top, never inside:** `M.canonical()` / `M.identity_key()` sort the characters of
+  `identity()` (so "Hotel Arte SPA & Park" and "Arte SPA and Park Hotel" collide, and old
+  squashed keys can be converted), and `M.baseline_samples()` merges price history across
+  such variants at read time. Stored keys are never rewritten.
+- **(R, re-alert) A property is re-emailed only per `is_new`:** never emailed, or
+  `REALERT_DAYS` (90) since it was, or a higher tier, or a live price `REALERT_PRICE_DROP`
+  (15%) below the last emailed price. Never key anti-spam on month, season or exact window
+  again — that re-alerted the same hotel every month and on every good↔diamond flip. Looks
+  correct if broken: the digest still sends, just with the same hotels. Tests: Cases 11–13.
+- **(H2, history beats guess) With ≥ `REF_MIN_SAMPLES` real Booking.com samples
+  (`M.baseline_samples(prior_baselines, c)`), their median is the discount reference and the
+  scorer's `normal_price_eur` is ignored;** with 1–2 samples, `min(llm, median)` (median alone
+  if the LLM gave none). For a fly destination with a history reference the same per-night
+  flight cost is added to the reference, so the discount compares like with like. The reference
+  actually used is stored as `normal_price_eur` with `ref_source` (`history`/`llm`/`none`).
+  Looks correct if broken: a fake 15% discount yields a plausible "good" (Lucky Bansko was €122
+  on all 8 live checks yet got +12 bonuses from a guessed €140 "usual").
+- **(Q, price sanity) A grounded price > `PRICE_SANITY_MULTIPLE` (4×) FIND's own
+  `est_price_eur` is a data-quality block, never scored.** It is not a price ceiling — it
+  compares against FIND's estimate, not an absolute. `EST_GAP_FLAG_MULTIPLE` (1.4×,
+  display-only) still flags smaller gaps. Motivating case: a €1,171.63/night Varna listing vs a
+  €75 estimate (15.6×).
+- **(U, unverified) A candidate whose `grounding_method != "apidojo"` cannot be diamond/good**
+  → skip with `NOTE_UNVERIFIED`. Applied before F, so the note shown is the unverified one. An
+  LLM-estimated price cannot prove a deal; this also makes a run-wide Booking.com outage
+  quiet instead of spammy.
+- **(F, friction) A "good" that is not `C.is_low_friction(_location(c))` becomes skip with
+  `NOTE_FAR`;** diamonds pass. Low friction = Bulgaria or a listed Greek/Turkish border town
+  (`DRIVE_COUNTRIES`/`DRIVE_CITY_TOKENS`). Anything else means a 1.5h drive to Sofia airport
+  with a 4-year-old, which the family does only for a diamond. Plovdiv (PDV) has no Spain
+  route, so Spain was removed from FIND's PDV group.
 - **`city_signals.json` always has `hunt: false`.** The diamond finder does not trigger
   hotel crawls. The field exists for schema compatibility only.
 - **Memory is written every run**, including silent days. `memory.py` functions must
@@ -645,8 +696,10 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
   `web_search`, and grounding runs on a separate lite chain (`LLM_SEARCH_MODEL_CHAIN`) because
   flagship models time out on Google's grounding gateway. If the search call fails, the
   flagship reasoning step still runs — just from prior knowledge rather than live data.
-- **30-day TTL:** a great deal that persists for more than a month will be suppressed after
-  the first email. Acceptable given the "rare, act-now" framing.
+- **90-day re-alert window:** a great deal that persists for months is emailed once and then
+  only again if it gets 15% cheaper or reaches a higher tier. Acceptable given the "rare,
+  act-now" framing. Legacy-seeded props have `price_eur: null`, so the price-drop path for
+  them is off until they are emailed again.
 - **Family-only scope.** Destinations that require arduous travel or are poor fits for a
   4-year-old are excluded by the skeptic prompt. This is intentional, not a filter bug.
 - **Tier-2 (fly-from-SOF / long-drive) variety was investigated and deliberately deferred, not

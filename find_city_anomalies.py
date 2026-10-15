@@ -18,6 +18,8 @@ Outputs every run:
   state/signals_seen.json  — anti-spam re-alert state (props), committed by CI
   state/deals_history.json — one record per emailed deal (diamond/good/skip), pruned;
                              data source for the browsable web/ UI
+  state/spain_signals.json — the Spain sweep's per-city status and every priced window
+                             (spain.py), the tuning log for its ratio thresholds
 
 Emails an honest daily digest of every scored candidate (diamond/good/skip) whenever
 there is a new or tier-changed one, plus a "seen & dropped" footer of grounding kills.
@@ -35,6 +37,9 @@ import common as X
 import llm_chain as L
 import memory as M
 import trips as T
+# spain imports providers, which imports this module only lazily (inside ground_api), so
+# there is no cycle at import time.
+import spain as S
 
 
 # Every LLM outcome this run, as (stage_name, LLMResult). Printed at RUN COMPLETE so the log
@@ -454,6 +459,24 @@ def _prices_line(health):
     return line
 
 
+def _spain_line(health):
+    """One footer line on the Spain sweep; '' when the health dict carries no Spain entry."""
+    if "spain" not in health:
+        return ""
+    sp = health["spain"]
+    if sp is None:
+        return "Spain sweep: off"
+    if sp.get("error"):
+        return f"Spain sweep failed: {sp['error']}"
+    line = (f"Spain sweep: {sp.get('flights_ok', 0)}/{len(sp.get('cities') or [])} cities with "
+            f"Ryanair flights from SOF · {sp.get('hotels_ok', 0)} windows priced · "
+            f"{len(sp.get('deals') or [])} deal(s)")
+    if sp.get("windows"):
+        w = min(sp["windows"], key=lambda x: x["ratio"])
+        line += f" · best {w['city']} at {round(w['ratio'] * 100)}% of typical"
+    return line
+
+
 def _health_footer_html(health):
     """Always-present run-health footer so a degraded run never reads as an ordinary
     verdict-bearing digest. Diagnostic/trust information, kept visually unobtrusive."""
@@ -476,7 +499,8 @@ def _health_footer_html(health):
         f"<p style='margin:2px 0'>Tier mix — local: {t1.get('diamond', 0)} diamond/"
         f"{t1.get('good', 0)} good/{t1.get('skip', 0)} skip · far: {t2.get('diamond', 0)} diamond/"
         f"{t2.get('good', 0)} good/{t2.get('skip', 0)} skip</p>"
-        f"<p style='margin:2px 0'>{health.get('budget_used_s', 0)}s of LLM budget used.</p>"
+        + (f"<p style='margin:2px 0'>{_spain_line(health)}</p>" if _spain_line(health) else "")
+        + f"<p style='margin:2px 0'>{health.get('budget_used_s', 0)}s of LLM budget used.</p>"
         f"</div>"
     )
 
@@ -499,11 +523,76 @@ def _health_footer_text(health):
         f"Tier mix — local: {t1.get('diamond', 0)} diamond/{t1.get('good', 0)} good/"
         f"{t1.get('skip', 0)} skip · far: {t2.get('diamond', 0)} diamond/{t2.get('good', 0)} good/"
         f"{t2.get('skip', 0)} skip",
+        *([_spain_line(health)] if _spain_line(health) else []),
         f"{health.get('budget_used_s', 0)}s of LLM budget used.",
     ])
 
 
-def build_email_html(items, unscored, dropped, month_count, baselines, health, backtest):
+def _spain_lines(deal):
+    """The fixed text lines of one Spain deal card, shared by the HTML and text builders."""
+    return [
+        f"{deal['window']} · {deal['nights']} nights · {deal['stars']}★ · review {deal['review_score']}",
+        f"€{round(deal['allin_total_eur'])} all-in for 3 · typical for these dates "
+        f"~€{round(deal['typical_allin_eur'])} · flights + hotel {round((1 - deal['ratio']) * 100)}% below typical",
+        f"Hotel €{deal['hotel_ppn_eur']}/night (typical {deal['hotel_p25_ppn_eur']}) · Ryanair "
+        f"SOF⇄{deal['airport']} €{deal['flight_rt_pp_eur']} return per person "
+        f"(typical {deal['flight_median_rt_pp_eur']})",
+        f"Includes ~€{deal['fixed_eur']} for one checked bag, the drive to Sofia, parking and a transfer.",
+    ]
+
+
+def _spain_section_html(spain):
+    if not spain:
+        return ""
+    cards = ""
+    for deal in spain:
+        tier = deal.get("tier", "good")
+        badge = TIER_LABEL.get(tier, "👍 Good find")
+        lines = "".join(f"<div style='font-size:14px;color:#222;margin:3px 0'>{ln}</div>"
+                        for ln in _spain_lines(deal))
+        about = (f"<div style='font-size:14px;color:#333;line-height:1.5;margin:8px 0'>{deal['about']}</div>"
+                 if deal.get("about") else "")
+        value = (f"<div style='font-size:14px;color:#0a3;background:#f2faf4;border-left:3px solid #0a7d2e;"
+                 f"padding:8px 12px;margin:8px 0;line-height:1.5'><b style='color:#0a7d2e'>Why it's a deal:"
+                 f"</b> {deal['value_case']}</div>" if deal.get("value_case") else "")
+        flags = (f"<div style='font-size:13px;color:#c00;margin:4px 0'>Red flags: {deal['red_flags']}</div>"
+                 if deal.get("red_flags") else "")
+        links = (f"<div style='font-size:14px;margin:6px 0'>"
+                 f"<a href='{deal['hotel_url']}' style='color:#1a56db;text-decoration:none'>Book hotel</a>"
+                 f" &nbsp;·&nbsp; "
+                 f"<a href='{deal['flight_url']}' style='color:#1a56db;text-decoration:none'>Book flights</a></div>")
+        cards += (
+            f"<div style='padding:14px 0;border-bottom:1px solid #eee'>"
+            f"<div style='font-size:12px;font-weight:bold;color:{TIER_COLOR.get(tier, '#8a6d00')};"
+            f"margin-bottom:2px'>{badge}</div>"
+            f"<div style='font-size:17px;font-weight:bold'>{deal['hotel_name']} · {deal['city']}</div>"
+            f"{lines}{about}{value}{flags}{links}</div>"
+        )
+    return (f"<div style='margin-bottom:18px'><h3 style='margin:0 0 4px'>🇪🇸 Spain — flight + hotel deals</h3>"
+            f"{cards}</div>")
+
+
+def _spain_section_text(spain):
+    if not spain:
+        return ""
+    _label = {"diamond": "DIAMOND", "good": "GOOD FIND"}
+    parts = ["🇪🇸 Spain — flight + hotel deals"]
+    for deal in spain:
+        lines = [f"[{_label.get(deal.get('tier'), 'GOOD FIND')}] {deal['hotel_name']} · {deal['city']}"]
+        lines += _spain_lines(deal)
+        if deal.get("about"):
+            lines.append(deal["about"])
+        if deal.get("value_case"):
+            lines.append(f"Why it's a deal: {deal['value_case']}")
+        if deal.get("red_flags"):
+            lines.append(f"Red flags: {deal['red_flags']}")
+        lines.append(f"Book hotel: {deal['hotel_url']}")
+        lines.append(f"Book flights: {deal['flight_url']}")
+        parts.append("\n".join(lines))
+    return "\n\n---\n\n".join(parts)
+
+
+def build_email_html(items, unscored, dropped, month_count, baselines, health, backtest, spain=None):
     rows = ""
     for d in items:
         summary = d.get("assistant_summary") or d.get("reason", "")
@@ -685,6 +774,7 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
         f"<div style='font-family:system-ui,sans-serif;max-width:640px;padding:8px'>"
         f"<h2 style='margin-bottom:4px'>Diamond Finder</h2>"
         f"<p style='color:#555;margin:0 0 16px'>Today's digest — {headline}</p>"
+        f"{_spain_section_html(spain)}"
         f"<table style='width:100%;border-collapse:collapse'>{rows}</table>"
         f"{unscored_html}"
         f"{dropped_html}"
@@ -744,7 +834,7 @@ def build_history_entries(items, today, baselines):
     return entries
 
 
-def build_email_text(items, unscored, dropped, baselines, health, backtest):
+def build_email_text(items, unscored, dropped, baselines, health, backtest, spain=None):
     parts = []
     _text_tier = {"diamond": "DIAMOND", "good": "GOOD FIND", "skip": "SKIPPED"}
     for d in items:
@@ -790,6 +880,9 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest):
             lines.append(trip_note)
         parts.append("\n".join(lines))
     body = "\n\n---\n\n".join(parts)
+    spain_text = _spain_section_text(spain)
+    if spain_text:
+        body = spain_text + ("\n\n===\n\n" + body if body else "")
 
     # Unscored section — priced (live, real) but never judged by Stage 3, kept entirely
     # separate from the scored digest above (no tier label rendered for these at all).
@@ -1482,6 +1575,16 @@ def main():
             M.record_baseline(mem, M.baseline_key(c), actual_price,
                               note=M._clip(summary, 300), source=source3)
 
+    # Spain sweep (spain.py): deterministic Ryanair fare calendar + Booking.com hotels, judged
+    # by a same-dates ratio. Runs before M.save so its city-ref cache (mem["spain_dest"]) is
+    # persisted. Never raises; a failure is reported in its result and the health footer.
+    spain_result = None
+    if C.SPAIN_SWEEP_ENABLED:
+        _section("SPAIN SWEEP — Ryanair fare calendar + Booking.com")
+        spain_result = S.run_sweep(mem, dt.date.today())
+        X.save_json("spain_signals.json", {"generated": today, "cities": spain_result["cities"],
+                                           "windows": spain_result["windows"]})
+
     M.prune(mem)
     M.save(mem)
     _section("MEMORY + OUTPUTS")
@@ -1565,10 +1668,15 @@ def main():
     # Unscored candidates rank below skip, so one is new only for an unseen property or a
     # price drop; a later scored run of the same property outranks it and re-notifies.
     new_unscored = [d for d in unscored if is_new(seen_state, d, today)]
+    # Spain deals use the same re-alert rule, keyed "spain:<identity_key>" and compared on the
+    # all-in trip total (realert_price_eur), so the units never mix with hotel EUR/night.
+    new_spain = sorted((d for d in (spain_result or {}).get("deals", []) if is_new(seen_state, d, today)),
+                       key=lambda d: d["ratio"])
+    S.add_dossiers(new_spain, today)
     suppressed = len(scored_all) - len(new_scored)
     emailed = 0
 
-    if new_scored or new_unscored:
+    if new_scored or new_unscored or new_spain:
         actionable = [d for d in new_scored if d.get("tier") in ("diamond", "good")]
         skips      = [d for d in new_scored if d.get("tier") == "skip"]
         shown_actionable = actionable[:C.MAX_EMAILS_PER_RUN]
@@ -1595,7 +1703,8 @@ def main():
             place = d.get("city") or d.get("destination", "")
             return f"{name}, {place}" if place and place != name else name
 
-        if n_d == 0 and n_g == 0 and n_s == 0 and n_u > 0:
+        # Precedence: main diamond > Spain deal > main good > fallbacks.
+        if n_d == 0 and n_g == 0 and n_s == 0 and n_u > 0 and not new_spain:
             subject = f"⚠ Diamond Finder: pipeline degraded — {n_u} priced but unscored — {today}"
         else:
             if n_d:
@@ -1603,6 +1712,11 @@ def main():
                            key=lambda d: d.get("final_score") or 0)
                 subject = (f"💎 Diamond Finder: {n_d} diamond — {_best_label(best)} "
                            f"€{best.get('grounded_price_per_night_eur')}/night — {today}")
+            elif new_spain:
+                best = new_spain[0]
+                subject = (f"{'💎 ' if best['tier'] == 'diamond' else ''}🇪🇸 Spain deal: {best['city']} "
+                           f"{best['nights']} nights, €{round(best['allin_total_eur'])} all-in for 3 "
+                           f"(typical ~€{round(best['typical_allin_eur'])}) — {today}")
             elif n_g:
                 best = max((d for d in to_email if d.get("tier") == "good"),
                            key=lambda d: d.get("final_score") or 0)
@@ -1642,17 +1756,20 @@ def main():
             "tier_mix": tier_mix,
             "prices": {"live": live_prices, "llm": llm_prices,
                        "first_error": (_provider_failures() or [""])[0]},
+            "spain": spain_result,
             "budget_used_s": int((dt.datetime.now() - run_start).total_seconds()),
         }
 
         html = build_email_html(to_email, unscored_to_email, dropped, month_count,
-                                prior_baselines, health, backtest)
+                                prior_baselines, health, backtest, spain=new_spain)
         text = build_email_text(to_email, unscored_to_email, dropped, prior_baselines,
-                                health, backtest)
+                                health, backtest, spain=new_spain)
 
         # Persist everything that made it into this digest for the browsable UI —
         # independent of whether the SMTP send below succeeds. Unscored items are
         # deliberately excluded (Invariant H) — to_email only ever holds scored candidates.
+        # Spain deals are not added either: their flight + hotel shape does not fit the web
+        # UI's card yet (a web/ change of its own).
         hist = load_deals_history()
         hist["entries"].extend(build_history_entries(to_email, today, prior_baselines))
         X.save_json("deals_history.json", prune_deals_history(hist))
@@ -1663,12 +1780,14 @@ def main():
                 mark_seen(seen_state, d, today)
             for d in unscored_to_email:
                 mark_seen(seen_state, d, today)
-            if to_email:
+            for d in new_spain:
+                mark_seen(seen_state, d, today)
+            if to_email or new_spain:
                 increment_monthly(seen_state)
             if n_u:
                 increment_degraded(seen_state)
-            emailed = len(to_email) + n_u
-            print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in to_email + unscored_to_email)}")
+            emailed = len(to_email) + n_u + len(new_spain)
+            print(f"  [EMAIL SENT] {', '.join(d.get('destination', '?') for d in new_spain + to_email + unscored_to_email)}")
         except Exception as e:
             print(f"  [FAIL] email send error: {type(e).__name__}: {e} (state not marked seen)")
     elif scored_all or unscored:
@@ -1681,7 +1800,8 @@ def main():
 
     _section("RUN COMPLETE")
     print(f"  {len(candidates)} found -> {len(gate_survivors)} to grounding -> {len(grounded)} grounded "
-          f"-> {len(scored_all)} scored + {len(unscored)} unscored ({len(picks)} pick(s)) -> {emailed} emailed")
+          f"-> {len(scored_all)} scored + {len(unscored)} unscored ({len(picks)} pick(s)) -> {emailed} emailed"
+          f" · Spain {len(new_spain)} new deal(s)")
     # Which model actually served each stage. "fell back" is the chain working as designed,
     # NOT degradation — only a stage with no usable answer from any model is a failure.
     for _name, _res in STAGE_RESULTS:

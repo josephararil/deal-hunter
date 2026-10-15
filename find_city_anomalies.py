@@ -3,9 +3,9 @@ find_city_anomalies.py  —  Diamond Finder (daily; apidojo grounding with LLM f
 
 Three-stage gate (grounding runs BEFORE the skeptic, so desirability is judged on the
 real bookable price rather than the Stage-1 estimate):
-  Stage 1 (find):    one llm() call with web search. Asks for travel-arbitrage
-                     candidates scored 0-100 across hotels, cruises, flight fares,
-                     packages, and currency plays reachable from Plovdiv.
+  Stage 1 (find):    one llm() call with web search. Asks for named-hotel
+                     travel-arbitrage candidates scored 0-100, reachable from Plovdiv.
+                     At most one candidate per city is grounded.
   Stage 2 (ground):  one ground_deal() call per gate survivor. Fetches live Booking.com
                      prices at bookable dates; drops hallucinations/over-ceiling deals and
                      merges the real price onto the survivors. (verdict: confirm/correct/kill)
@@ -15,17 +15,17 @@ real bookable price rather than the Stage-1 estimate):
 Outputs every run:
   state/city_signals.json  — Stage 1 candidate list (hunt=False always; schema kept for reference)
   state/city_signals.md    — human-readable log including grounding + tier outcomes
-  state/signals_seen.json  — anti-spam TTL state, committed by CI
+  state/signals_seen.json  — anti-spam re-alert state (props), committed by CI
   state/deals_history.json — one record per emailed deal (diamond/good/skip), pruned;
                              data source for the browsable web/ UI
 
 Emails an honest daily digest of every scored candidate (diamond/good/skip) whenever
 there is a new or tier-changed one, plus a "seen & dropped" footer of grounding kills.
-Anti-spam TTL (destination|window|tier) keeps repeats quiet; a day with nothing new
-(or nothing found) sends nothing.
+A property is re-emailed only after 90 days, a >=15% live price drop, or a higher tier
+(Invariant R); a day with nothing new (or nothing found) sends nothing.
 """
 
-import json, re, datetime as dt, copy
+import json, re, datetime as dt, copy, statistics, sys
 try:
     from dotenv import load_dotenv; load_dotenv()
 except ImportError:
@@ -96,18 +96,21 @@ TIER_LABEL = {"diamond": "💎 Diamond", "good": "👍 Good find", "skip": "· S
 TIER_RANK = {"diamond": 0, "good": 1, "skip": 2, "unscored": 3}
 # Badge colour per tier.
 TIER_COLOR = {"diamond": "#0a7d2e", "good": "#8a6d00", "skip": "#777", "unscored": "#a15c00"}
+# Shown when a cap (Invariant U / F) demoted a would-be pick to skip.
+NOTE_FAR = "Capped at skip: this trip needs a flight or a long drive, so only a diamond gets through."
+NOTE_UNVERIFIED = "Capped at skip: this price is an LLM estimate, not a live Booking.com rate, so it can't be called a deal."
 
 
 def _baseline_note(baselines, d, grounded_ppn):
     """Short 'typically ~€X/night — N% under/over' note if a baseline exists for this
     property+season, else ''. `baselines` must be the PRIOR-run snapshot (taken before this
-    run recorded its own prices), else a deal compares against itself. Looked up via
-    memory.baseline_key(d) — the SAME identity+season key record_baseline writes under
-    (not FIND's free-text destination label, which record_baseline no longer keys by)."""
+    run recorded its own prices), else a deal compares against itself. Uses the median of
+    M.baseline_samples — every real sample for this property+season across word-order
+    variants of its baseline key — so it agrees with the scoring reference (Invariant H2)."""
     if grounded_ppn is None:
         return ""
-    b = (baselines or {}).get(M.baseline_key(d))
-    base = b.get("realistic_price_eur") if b else None
+    samples = M.baseline_samples(baselines or {}, d)
+    base = round(statistics.median(samples), 2) if samples else None
     if not base:
         return ""
     diff = (grounded_ppn - base) / base * 100
@@ -182,13 +185,43 @@ def _match_candidate(verdict, candidates):
 
 # --- anti-spam state helpers ---
 
+# Invariant R: one entry per PROPERTY (word-order-proof M.identity_key, or "spain:..." for a
+# Spain trip), not per month or tier. A property stays quiet after it is emailed until
+# REALERT_DAYS pass, its live price drops REALERT_PRICE_DROP below the last emailed price, or
+# it reaches a higher tier. The old key (identity|season|tier) re-alerted the same hotel every
+# month, on every good<->diamond flip, and whenever FIND reordered the words of its name.
+
+def seed_props_from_legacy(seen):
+    """Convert the legacy {"ident|season|tier": "YYYY-MM-DD"} map into props: one entry per
+    canonical identity, with the latest date, the best tier and no price (the price-drop path
+    stays off until the property is emailed again under the new scheme)."""
+    groups = {}
+    for key, date in seen.items():
+        parts = key.rsplit("|", 2)
+        if len(parts) != 3:
+            continue
+        ident, _season, tier = parts
+        groups.setdefault(M.canonical(ident), []).append((date, tier, ident))
+    props = {}
+    for ckey, rows in groups.items():
+        latest = max(rows, key=lambda r: r[0])
+        best_tier = min((r[1] for r in rows), key=lambda t: TIER_RANK.get(t, 9))
+        props[ckey] = {"date": latest[0], "tier": best_tier, "price_eur": None, "name": latest[2]}
+    return props
+
+
 def load_seen():
-    return X.load_json("signals_seen.json", {"seen": {}, "monthly_count": {}})
+    state = X.load_json("signals_seen.json", {"props": {}, "monthly_count": {}})
+    if "props" not in state:
+        state["props"] = seed_props_from_legacy(state.get("seen", {}))
+    state.pop("seen", None)
+    return state
 
 
-def prune_seen(state):
-    cutoff = (dt.date.today() - dt.timedelta(days=C.SIGNAL_TTL_DAYS)).isoformat()
-    state["seen"] = {k: v for k, v in state.get("seen", {}).items() if v >= cutoff}
+def prune_seen(state, today):
+    cutoff = (dt.date.fromisoformat(today) - dt.timedelta(days=C.REALERT_DAYS)).isoformat()
+    state["props"] = {k: v for k, v in state.get("props", {}).items()
+                      if v.get("date", "") >= cutoff}
     return state
 
 
@@ -196,21 +229,56 @@ def prune_seen(state):
 _identity = M.identity
 
 
-def seen_key(d):
-    """Anti-spam key: property identity + coarse SEASON (not the exact window) + tier.
-    Season collapses date drift ('Sep 1-5' and 'Sep 4-7' are one signal); tier is included so
-    a tier CHANGE (e.g. skip→good when the price drops) still re-notifies. Same
-    property+season+tier stays quiet for SIGNAL_TTL_DAYS."""
-    season = M.season_key(d.get("window", "") or "")
-    return f"{_identity(d)}|{season}|{d.get('tier', '')}"
+def realert_key(d):
+    return d["realert_key"] if "realert_key" in d else M.identity_key(d)
 
 
-def is_already_seen(state, d):
-    return seen_key(d) in state.get("seen", {})
+def realert_price(d):
+    """The price the re-alert rule compares: EUR/night for a hotel; a Spain deal sets
+    realert_price_eur to its all-in trip total (the "spain:" key prefix keeps units apart)."""
+    return d["realert_price_eur"] if "realert_price_eur" in d else d.get("grounded_price_per_night_eur")
 
 
-def mark_seen(state, d):
-    state.setdefault("seen", {})[seen_key(d)] = X.today_iso()
+def is_new(state, d, today):
+    p = state["props"].get(realert_key(d))
+    if p is None:
+        return True
+    if (dt.date.fromisoformat(today) - dt.date.fromisoformat(p["date"])).days >= C.REALERT_DAYS:
+        return True
+    if TIER_RANK.get(d.get("tier"), 9) < TIER_RANK.get(p.get("tier"), 9):
+        return True
+    last, now = p.get("price_eur"), realert_price(d)
+    if (isinstance(last, (int, float)) and isinstance(now, (int, float))
+            and now <= last * (1 - C.REALERT_PRICE_DROP)):
+        return True
+    return False
+
+
+def mark_seen(state, d, today):
+    state["props"][realert_key(d)] = {
+        "date": today, "tier": d.get("tier", ""), "price_eur": realert_price(d),
+        "name": d.get("hotel_name") or d.get("destination", ""),
+    }
+
+
+def recently_emailed_text(state):
+    """FIND's do-not-repeat list: most recently emailed hotels first (Spain trips excluded)."""
+    rows = sorted(((k, v) for k, v in state.get("props", {}).items() if not k.startswith("spain:")),
+                  key=lambda kv: kv[1].get("date", ""), reverse=True)[:C.MAX_RECENTLY_EMAILED_IN_PROMPT]
+    lines = []
+    for _k, v in rows:
+        if v.get("price_eur") is not None:
+            lines.append(f"- {v.get('name')} — emailed {v.get('date')} at €{v['price_eur']}/night ({v.get('tier')})")
+        else:
+            lines.append(f"- {v.get('name')} — emailed {v.get('date')} ({v.get('tier')})")
+    return "\n".join(lines) or "(none)"
+
+
+def _provider_failures():
+    """providers.FAILURES when the apidojo provider is loaded, else [] (LLM-only grounding
+    never imports it). Read via sys.modules so this module keeps its lazy providers import."""
+    mod = sys.modules.get("providers")
+    return mod.FAILURES if mod is not None else []
 
 
 def this_month():
@@ -373,6 +441,19 @@ def _backtest_note(backtest):
             f"never saw {backtest['unseen']}.")
 
 
+def _prices_line(health):
+    """'Prices: N live Booking.com · M LLM estimates', flagged when Booking.com returned
+    nothing for a run that did ground something (every price then is an estimate)."""
+    prices = health.get("prices") or {}
+    live, llm = prices.get("live", 0), prices.get("llm", 0)
+    line = f"Prices: {live} live Booking.com · {llm} LLM estimates"
+    if health.get("counts", {}).get("grounded", 0) > 0 and live == 0:
+        line += " — ⚠ Booking.com returned nothing this run; every price is an estimate"
+        if prices.get("first_error"):
+            line += f" (first error: {prices['first_error']})"
+    return line
+
+
 def _health_footer_html(health):
     """Always-present run-health footer so a degraded run never reads as an ordinary
     verdict-bearing digest. Diagnostic/trust information, kept visually unobtrusive."""
@@ -391,6 +472,7 @@ def _health_footer_html(health):
         f"<p style='margin:2px 0'>Found {counts.get('found', 0)} · grounded {counts.get('grounded', 0)} "
         f"· scored {counts.get('scored', 0)} · unscored {counts.get('unscored', 0)} · "
         f"dropped {counts.get('dropped', 0)} · emailed {counts.get('emailed', 0)}</p>"
+        f"<p style='margin:2px 0'>{_prices_line(health)}</p>"
         f"<p style='margin:2px 0'>Tier mix — local: {t1.get('diamond', 0)} diamond/"
         f"{t1.get('good', 0)} good/{t1.get('skip', 0)} skip · far: {t2.get('diamond', 0)} diamond/"
         f"{t2.get('good', 0)} good/{t2.get('skip', 0)} skip</p>"
@@ -413,6 +495,7 @@ def _health_footer_text(health):
         f"Found {counts.get('found', 0)} · grounded {counts.get('grounded', 0)} · "
         f"scored {counts.get('scored', 0)} · unscored {counts.get('unscored', 0)} · "
         f"dropped {counts.get('dropped', 0)} · emailed {counts.get('emailed', 0)}",
+        _prices_line(health),
         f"Tier mix — local: {t1.get('diamond', 0)} diamond/{t1.get('good', 0)} good/"
         f"{t1.get('skip', 0)} skip · far: {t2.get('diamond', 0)} diamond/{t2.get('good', 0)} good/"
         f"{t2.get('skip', 0)} skip",
@@ -427,8 +510,6 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
         tier = d.get("tier", "good")
         tier_badge = TIER_LABEL.get(tier, "👍 Good find")
         badge_color = TIER_COLOR.get(tier, "#8a6d00")
-        if d.get("is_wildcard"):
-            tier_badge = f"🃏 Wildcard · {tier_badge}"
         headline1, headline2 = _card_headline(d)
         price_line = _price_line(d)
 
@@ -475,6 +556,10 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
         # Compact score breakdown so the reasoning behind the tier is visible — especially
         # useful on a skip (you see exactly why it fell short and could still override it).
         score_html = _score_breakdown_html(d)
+        demote_html = (
+            f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{d['demote_note']}</div>"
+            if d.get("demote_note") else ""
+        )
         all_in_note = _all_in_note(d)
         all_in_html = (
             f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{all_in_note}</div>"
@@ -497,6 +582,7 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
             f"{about_html}"
             f"{value_case_html}"
             f"{score_html}"
+            f"{demote_html}"
             f"{all_in_html}"
             f"{base_html}"
             f"{opts_html}"
@@ -665,8 +751,6 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest):
         summary = d.get("assistant_summary") or d.get("reason", "")
         tier = d.get("tier", "good")
         tier_label = _text_tier.get(tier, "GOOD FIND")
-        if d.get("is_wildcard"):
-            tier_label = f"WILDCARD · {tier_label}"
         headline1, headline2 = _card_headline(d)
         price_line = _price_line(d)
         lines = [
@@ -682,6 +766,8 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest):
         score_note = _score_breakdown_text(d)
         if score_note:
             lines.append(score_note)
+        if d.get("demote_note"):
+            lines.append(d["demote_note"])
         all_in_note = _all_in_note(d)
         if all_in_note:
             lines.append(all_in_note)
@@ -915,12 +1001,14 @@ def main():
     # Module-level, so clear it per run — otherwise a second main() in the same process
     # (the test suite does this) would report models from the previous run in the footer.
     STAGE_RESULTS.clear()
+    _provider_failures().clear()
     _section(f"DIAMOND FINDER · {today} · provider={L.resolved_provider()}")
     # Every effective LLM knob and where it came from. A repo variable that silently failed
     # to reach the job is indistinguishable from a correct default without this.
     for _k, _info in L.resolved_config().items():
         print(f"  {_k:<26} {_info['value']}   [{_info['source']}]")
-    print(f"  gate:    FIND score>={C.STAGE1_MIN_SCORE} -> ground · anti-spam TTL {C.SIGNAL_TTL_DAYS}d")
+    print(f"  gate:    FIND score>={C.STAGE1_MIN_SCORE} -> ground · re-alert after {C.REALERT_DAYS}d, "
+          f"or {round(C.REALERT_PRICE_DROP * 100)}% cheaper, or a higher tier")
     print(f"  scoring: par={C.DIAMOND_PAR_EUR} default €{C.DEFAULT_DIAMOND_PAR_EUR} · "
           f"price x{C.PRICE_SCORE_WEIGHT} (bonus<={C.PRICE_BONUS_CAP}) · transit +/-{C.TRANSIT_TIER1_BONUS} · "
           f"diamond>={C.DIAMOND_SCORE_THRESHOLD} good>={C.GOOD_SCORE_THRESHOLD}")
@@ -945,6 +1033,14 @@ def main():
     trips_block = T.summarize_for_prompt(valid_trips)
     backtest = T.backtest(valid_trips, mem) if valid_trips else None
     print(f"  trips:   {len(valid_trips)} logged trip(s), {len(trip_anchors)} price anchor(s)")
+    # Anti-spam state is loaded up front: FIND is shown what was already emailed so it stops
+    # re-proposing it, and gets corrections only (no baselines, no past good/skip rows) --
+    # those were teaching it to bring back the same Velingrad/Bansko hotels every week.
+    # SKEPTIC and grounding keep the full mem_text.
+    seen_state = prune_seen(load_seen(), today)
+    mem_text_find = M.summarize_for_prompt(
+        mem, trip_anchors=trip_anchors, include_baselines=False,
+        outcome_verdicts=("correct", "kill", "hallucinated", "skeptic_kill", "blocked"))
     print(f"  memory:  {len(mem['baselines'])} baseline(s), {len(mem['ledger'])} ledger entry(s) loaded")
 
     # Stage 1: find candidates with web search
@@ -957,8 +1053,9 @@ def main():
                           if L.resolved_provider(C.PROVIDER_FIND) == "anthropic" else "")
         res1 = _stage_llm("FIND", L.call_llm(
             C.FIND_PROMPT.format(
-                today=today, cities=C.cities_prompt_text(), memory=mem_text,
-                search_directive=find_directive, trips=trips_block
+                today=today, cities=C.cities_prompt_text(), memory=mem_text_find,
+                search_directive=find_directive, trips=trips_block,
+                recently_emailed=recently_emailed_text(seen_state),
             ),
             stage="FIND", max_tokens=C.MAX_TOKENS_FIND, want_search=True,
             response_schema=C.STAGE1_RESPONSE_SCHEMA,
@@ -1002,11 +1099,26 @@ def main():
     # price is handled later by the deterministic scorer, so nothing is dropped on price.
     gate_survivors  = [c for c in candidates if c.get("score", 0) >= C.STAGE1_MIN_SCORE]
     below_threshold = [c for c in candidates if c.get("score", 0) < C.STAGE1_MIN_SCORE]
+    # One candidate per city: FIND tends to return two Bansko hotels in one run, and the
+    # digest then reads as a list of the same town. The higher FIND score keeps the slot.
+    # Capped candidates are not grounded and not ledgered, like below-threshold ones.
+    kept_by_city, city_capped = {}, []
+    for c in sorted(gate_survivors, key=lambda x: x.get("score", 0), reverse=True):
+        ckey = (c.get("city") or c.get("destination", "")).strip().lower()
+        if ckey in kept_by_city:
+            city_capped.append((c, kept_by_city[ckey]))
+        else:
+            kept_by_city[ckey] = c
+    capped_ids = {c.get("deal_id") for c, _ in city_capped}
+    gate_survivors = [c for c in gate_survivors if c.get("deal_id") not in capped_ids]
 
     if candidates:
         print(f"  gate (FIND score >= {C.STAGE1_MIN_SCORE}; no price filter — price is scored later):")
         for c in below_threshold:
             print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — FIND score {c.get('score', '?')} < {C.STAGE1_MIN_SCORE}")
+        for c, kept in city_capped:
+            print(f"    [DROP ] #{c.get('deal_id')} {c.get('destination', '?')} — one candidate per city: "
+                  f"#{kept.get('deal_id')} scored higher")
         for c in gate_survivors:
             print(f"    [PASS ] #{c.get('deal_id')} {c.get('destination', '?')} -> grounding")
         print(f"  -> {len(gate_survivors)} forwarded · {len(below_threshold)} below-threshold")
@@ -1064,6 +1176,17 @@ def main():
                 block_reason = "no grounded option returned"
             elif not _dates_in_window(first_dates, c.get("window", "")):
                 block_reason = f"dates out of window ({first_dates!r} vs candidate window {c.get('window', '')!r})"
+            else:
+                # Invariant Q: a live price wildly above FIND's own estimate is a listing
+                # mismatch (wrong room, wrong property), not a price -- e.g. a €1,171.63/night
+                # Varna "hotel" against a €75 estimate. Compared to the estimate, so it is
+                # not a price ceiling.
+                est = c.get("est_price_eur")
+                ppn0 = options3[0].get("price_per_night_eur")
+                if (isinstance(est, (int, float)) and isinstance(ppn0, (int, float)) and est > 0
+                        and ppn0 > est * C.PRICE_SANITY_MULTIPLE):
+                    block_reason = (f"live price €{ppn0} is {round(ppn0 / est, 1)}× FIND's €{est} "
+                                    f"estimate — likely a wrong room or listing match")
             if block_reason:
                 result["_block_reason"] = block_reason
                 print(f"             [BLOCK] not forwarded to scorer: {block_reason}")
@@ -1081,9 +1204,14 @@ def main():
                 "grounded_total_eur": o.get("total_eur"),
                 "grounded_nights": o.get("nights"),
                 "grounded_dates": o.get("dates"),
+                "grounding_method": result.get("grounding_method", "llm"),
             })
             print(f"             [-> SCORER]")
         print(f"  -> {len(grounded)} grounded candidate(s) forwarded to scorer")
+    live_prices = sum(1 for g in grounded if g.get("grounding_method") == "apidojo")
+    llm_prices = len(grounded) - live_prices
+    if grounded:
+        print(f"  prices: {live_prices} live Booking.com · {llm_prices} LLM estimates")
 
     # Stage 3: SCORER. The LLM returns a 0-100 desirability score per grounded candidate
     # (price held neutral). The pipeline then applies deterministic modifiers
@@ -1215,12 +1343,40 @@ def main():
             if extra_total and ppn and nights:
                 effective_ppn = ppn + extra_total / nights
 
+            # Invariant H2: real Booking.com history beats the scorer's guessed "usual price".
+            # With >= REF_MIN_SAMPLES live samples their median IS the reference; with 1-2,
+            # the lower of the two (a guess may only make the deal look smaller).
+            samples = M.baseline_samples(prior_baselines, c)
+            if len(samples) >= C.REF_MIN_SAMPLES:
+                ref, ref_source = round(statistics.median(samples), 2), "history"
+            elif samples:
+                hist = round(statistics.median(samples), 2)
+                if normal_price is not None and normal_price < hist:
+                    ref, ref_source = normal_price, "llm"
+                else:
+                    ref, ref_source = hist, "history"
+            else:
+                ref, ref_source = normal_price, ("llm" if normal_price is not None else "none")
+            ref_for_score = ref
+            if ref_source == "history" and ref is not None and extra_total and nights:
+                ref_for_score = ref + extra_total / nights   # same flight cost on both sides of the discount
+
             final, price_adj, transit_adj, discount = C.compute_final_score(
-                llm_val, effective_ppn, _location(c), normal_price)
+                llm_val, effective_ppn, _location(c), ref_for_score)
             tier = C.tier_for(final, llm_val, discount)
+            # Caps (Invariant U before F, so the note shown is the unverified one): an
+            # LLM-estimated price cannot prove a deal; a trip that needs a flight or a long
+            # drive is diamond-only.
+            grounding_method = c.get("grounding_method", "llm")
+            demote_note = ""
+            if grounding_method != "apidojo" and tier in ("diamond", "good"):
+                tier, demote_note = "skip", NOTE_UNVERIFIED
+            elif tier == "good" and not C.is_low_friction(_location(c)):
+                tier, demote_note = "skip", NOTE_FAR
             scores[did] = {"llm": llm_val, "price_adj": price_adj, "transit_adj": transit_adj,
                            "final": final, "tier": tier, "why": why, "discount": discount,
-                           "normal_price_eur": normal_price,
+                           "normal_price_eur": ref, "ref_source": ref_source,
+                           "demote_note": demote_note, "grounding_method": grounding_method,
                            "flight_cost_eur_total": flight_cost or None,
                            "ground_transport_eur": ground_cost or None,
                            "effective_ppn": effective_ppn if extra_total else None,
@@ -1231,14 +1387,17 @@ def main():
                           f"€{round(effective_ppn)}/night)" if extra_total else "")
             print(f"    [{label:<7}] #{did} {dest} — llm {llm_val} {_sgn(price_adj)} price "
                   f"{_sgn(transit_adj)} transit = {final} (disc {round(discount * 100)}% "
-                  f"vs €{normal_price or C.get_diamond_par(_location(c))}){extra_note} -> {tier}")
+                  f"vs €{ref} {ref_source}){extra_note} -> {tier}"
+                  + (" (capped)" if demote_note else ""))
             wl = M._clip(why, 150)
             if wl:
                 print(f"             {wl}")
 
             scored_item = {**c, "tier": tier, "final_score": final, "llm_score": llm_val,
                            "price_adj": price_adj, "transit_adj": transit_adj,
-                           "discount": discount, "normal_price_eur": normal_price,
+                           "discount": discount, "normal_price_eur": ref,
+                           "ref_source": ref_source, "demote_note": demote_note,
+                           "grounding_method": grounding_method,
                            "flight_cost_eur_total": flight_cost or None,
                            "ground_transport_eur": ground_cost or None,
                            "effective_ppn": effective_ppn if extra_total else None,
@@ -1395,33 +1554,19 @@ def main():
                         "window": c.get("window", ""), "kind": kind, "reason": reason})
 
     # Email — an honest daily digest of EVERY scored candidate (diamond/good/skip), so the
-    # reader can see what the pipeline weighed and why. Anti-spam TTL (keyed
-    # property|season|tier) fires the digest on any genuinely new/changed scored item and
-    # stays silent when there is nothing new. Only the actionable diamond/good picks are
+    # reader can see what the pipeline weighed and why. The re-alert rule (is_new, Invariant
+    # R) fires the digest on any genuinely new property, a >=15% cheaper one, or a higher
+    # tier, and stays silent when there is nothing new. Only the actionable diamond/good picks are
     # capped by MAX_EMAILS_PER_RUN; skips are context and always shown in full.
     _section("EMAIL — anti-spam gate + send")
-    seen_state = load_seen()
-    seen_state = prune_seen(seen_state)
-
     scored_sorted = sorted(scored_all, key=lambda p: (TIER_RANK.get(p.get("tier"), 9),
                                                       -(p.get("final_score") or 0)))
-    new_scored = [d for d in scored_sorted
-                  if not is_already_seen(seen_state, d)]
-    # Unscored candidates key as "...|unscored" for free (seen_key reads d["tier"]) — same
-    # TTL machinery, no special-casing needed.
-    new_unscored = [d for d in unscored if not is_already_seen(seen_state, d)]
+    new_scored = [d for d in scored_sorted if is_new(seen_state, d, today)]
+    # Unscored candidates rank below skip, so one is new only for an unseen property or a
+    # price drop; a later scored run of the same property outranks it and re-notifies.
+    new_unscored = [d for d in unscored if is_new(seen_state, d, today)]
     suppressed = len(scored_all) - len(new_scored)
     emailed = 0
-
-    # Wildcard: the single most interesting NON-LOCAL find this run — a fly/far destination
-    # or a non-hotel (cruise/package) — surfaced regardless of tier so the digest visibly
-    # reaches beyond the usual drivable towns. Chosen from everything scored, and pinned into
-    # the digest even if the anti-spam TTL would otherwise suppress it (it's only ever one
-    # extra, clearly-badged item), so the reader always sees the pipeline casting wide.
-    def _is_wildcard(d):
-        return C.transit_tier(_location(d)) == 2 or (d.get("type") or "hotel") != "hotel"
-    wildcard = max((d for d in scored_all if _is_wildcard(d)),
-                   key=lambda d: d.get("final_score") or 0, default=None)
 
     if new_scored or new_unscored:
         actionable = [d for d in new_scored if d.get("tier") in ("diamond", "good")]
@@ -1430,10 +1575,6 @@ def main():
         capped = len(actionable) - len(shown_actionable)
         to_email = sorted(shown_actionable + skips,
                           key=lambda p: (TIER_RANK.get(p.get("tier"), 9), -(p.get("final_score") or 0)))
-        if wildcard is not None:
-            wildcard["is_wildcard"] = True
-            if wildcard not in to_email:
-                to_email.append(wildcard)
         # Unscored items are always shown in full, like skips — no MAX_EMAILS_PER_RUN cap
         # (that cap applies only to actionable diamond/good picks).
         unscored_to_email = new_unscored
@@ -1443,7 +1584,7 @@ def main():
         n_s = sum(1 for d in to_email if d.get("tier") == "skip")
         n_u = len(unscored_to_email)
         print(f"  {len(new_scored)} new/changed scored ({n_d} diamond · {n_g} good · {n_s} skip) · "
-              f"{n_u} new unscored · {suppressed} suppressed by {C.SIGNAL_TTL_DAYS}d TTL · "
+              f"{n_u} new unscored · {suppressed} suppressed by the re-alert rule · "
               f"{capped} good/diamond over cap · {len(dropped)} in dropped footer")
 
         # Subject line (C9): an all-unscored send is flagged as a degraded run, never
@@ -1499,6 +1640,8 @@ def main():
                        "scored": len(scored_all), "unscored": len(unscored),
                        "dropped": len(dropped), "emailed": len(to_email) + n_u},
             "tier_mix": tier_mix,
+            "prices": {"live": live_prices, "llm": llm_prices,
+                       "first_error": (_provider_failures() or [""])[0]},
             "budget_used_s": int((dt.datetime.now() - run_start).total_seconds()),
         }
 
@@ -1517,9 +1660,9 @@ def main():
         try:
             X.send_email(subject, html, text)
             for d in to_email:
-                mark_seen(seen_state, d)
+                mark_seen(seen_state, d, today)
             for d in unscored_to_email:
-                mark_seen(seen_state, d)
+                mark_seen(seen_state, d, today)
             if to_email:
                 increment_monthly(seen_state)
             if n_u:
@@ -1530,7 +1673,7 @@ def main():
             print(f"  [FAIL] email send error: {type(e).__name__}: {e} (state not marked seen)")
     elif scored_all or unscored:
         print(f"  {len(scored_all) + len(unscored)} scored/unscored but all suppressed by "
-              f"{C.SIGNAL_TTL_DAYS}d anti-spam TTL — no email")
+              f"the re-alert rule — no email")
     else:
         print("  no email — nothing reached scoring today")
 

@@ -38,6 +38,7 @@ try:
 
     C.RAPIDAPI_KEY = "dummy-test-key"
     _real_ground_llm = fa._ground_llm
+    _real_get = P._get
 
     # ── Canned auto-complete data ─────────────────────────────────────────────
 
@@ -448,8 +449,66 @@ try:
         f"llm_calls={_stub_llm.calls}, verdict={result.get('verdict')!r}, "
         f"opt0={ (result.get('options') or [{}])[0] }")
 
+    # ── 31–32. Currency guard: a non-EUR card must never be labelled EUR ─────
+    def _card(name, ppn, cur, review=8.6):
+        return {"type": "property_card", "hotel_name": name, "class": 4, "review_score": review,
+                "composite_price_breakdown": {"gross_amount_per_night": {"value": ppn, "currency": cur}},
+                "min_total_price": ppn * 2}
+
+    P._get = _make_get(_AC_KEMPINSKI, {"result": [_card("Kempinski Hotel Grand Arena", 166.0, "BGN")]})
+    try:
+        P.price(ref_kemp, "2026-08-08", "2026-08-10")
+        _raised = ""
+    except ValueError as exc:
+        _raised = str(exc)
+    chk("price(): BGN-quoted card raises ValueError('non-EUR ...')",
+        "non-EUR" in _raised, f"got: {_raised!r}")
+
+    fa._ground_llm = _stub_llm; _stub_llm.calls = 0
+    P.FAILURES.clear()
+    result = P.ground_api(_kemp_diamond, "memory", "2026-06-29")
+    fa._ground_llm = _real_ground_llm
+    chk("ground_api: non-EUR card -> LLM fallback, reason recorded in FAILURES",
+        _stub_llm.calls == 1 and result.get("assistant_summary") == "LLM fallback"
+        and len(P.FAILURES) == 1 and "non-EUR" in P.FAILURES[0],
+        f"calls={_stub_llm.calls}, FAILURES={P.FAILURES}")
+
+    # ── 33. _price_alternatives skips a non-EUR card (cheapest here is USD) ──
+    P._get = _make_get(_AC_BANSKO_CITY_ONLY, {"result": [
+        _card("Dollar Cheap Hotel", 40.0, "USD"), _card("Euro One", 60.0, "EUR"),
+        _card("Euro Two", 70.0, "EUR")]})
+    alts_cur = P._price_alternatives(ref_alts, "2026-08-08", "2026-08-10")
+    chk("_price_alternatives: USD card skipped -> 2 EUR rates",
+        len(alts_cur) == 2 and all(r["name"] != "Dollar Cheap Hotel" for r in alts_cur),
+        f"got: {[r['name'] for r in alts_cur]}")
+
+    # ── 34. list_properties: order_by override; city default stays "price" ──
+    _sent = []
+    P._get = lambda path, params: (_sent.append(dict(params)), {"result": []})[1]
+    P.list_properties(ref_alts, "2026-08-08", "2026-08-10", order_by="popularity")
+    P.list_properties(ref_alts, "2026-08-08", "2026-08-10")
+    chk("list_properties: order_by='popularity' sent; default city search sends 'price'",
+        [p.get("order_by") for p in _sent] == ["popularity", "price"], f"got: {_sent}")
+
+    # ── 35. _get: a non-2xx keeps the status AND RapidAPI's body message ─────
+    class _Resp:
+        ok, status_code, text = False, 429, '{"message":"You have exceeded the MONTHLY quota"}'
+    _real_requests_get = requests.get
+    P._get = _real_get
+    requests.get = lambda *a, **k: _Resp()
+    try:
+        P._get("/properties/v2/list", {})
+        _http_msg = ""
+    except requests.HTTPError as exc:
+        _http_msg = str(exc)
+    finally:
+        requests.get = _real_requests_get
+    chk("_get: HTTP error message carries status and body",
+        "HTTP 429" in _http_msg and "MONTHLY quota" in _http_msg, f"got: {_http_msg!r}")
+    P._get = _make_get(_AC_KEMPINSKI, _PROPS_KEMPINSKI_UNDER)
+
     # ── Summary ───────────────────────────────────────────────────────────────
-    total = 30
+    total = 35
     passed = total - len(_failed)
     print(f"\n{passed}/{total} tests passed.")
     if _failed:

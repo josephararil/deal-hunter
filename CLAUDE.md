@@ -145,6 +145,13 @@ find_city_anomalies.py
   │    breakdown (llm · price · transit = final), live all-in price, the scorer's `about`
   │    description + a "Why it's a deal" value-case callout, a "typically ~€X/night"
   │    comparison from PRIOR baselines, a child-price caveat for hotels, and the booking link.
+  │    WORDING FOLLOWS PROVENANCE: the price line says "below its usual €N" only when
+  │    ref_source is history/history_any, else "below the scorer's guess of €N"; a
+  │    non-apidojo price is prefixed "Estimated:" and its est-gap note and child caveat say
+  │    "Estimated price", never "live"; on the alternatives path (option carries a `name`
+  │    different from the hotel) a note says the named hotel wasn't found and which property
+  │    was priced, and `trips.paste_snippet` uses that priced name. Looks correct if broken:
+  │    a guessed "usual" or an estimate called "live" still reads plausibly. Test: Case 16/17.
   │    MAX_EMAILS_PER_RUN caps only the actionable diamond/good picks; skips are context and
   │    always shown in full. A "seen & dropped" footer lists that run's grounding kills /
   │    guard blocks (destination + reason) so the digest reflects everything the pipeline
@@ -385,7 +392,9 @@ it's a real paid price and a real choice made.
   - `backtest(trips, memory)` — cross-references logged trips against the outcome ledger and
     returns counts of `picked` (pipeline had scored it diamond/good), `skipped` (seen but not
     surfaced), and `unseen` (never appeared in the ledger at all).
-  - `paste_snippet(item)` — the ready-to-paste JSON snippet described above.
+  - `paste_snippet(item)` — the ready-to-paste JSON snippet described above. Its
+    `hotel_name` is the first option's `name` when present (alternatives path: the named
+    hotel wasn't on Booking.com, so the price belongs to a different property).
 - **No FX conversion.** A non-EUR trip still contributes preference/novelty context via
   `summarize_for_prompt` (the LLM sees what was booked, where, and for how much in its own
   currency) but produces no price anchor — `price_anchors` only emits an anchor when

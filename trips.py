@@ -158,8 +158,12 @@ def paste_snippet(item):
     dates = P._extract_date_range(item.get("grounded_dates", "") or "")
     checkin, checkout = dates if dates else ("", "")
     total_paid = item.get("grounded_total_eur")
+    # On the alternatives path (named hotel not on Booking.com) the price belongs to the first
+    # option's property, so the snippet names that property, not FIND's hotel.
+    options = item.get("options") or []
+    priced_name = (options[0].get("name") or "") if options else ""
     snippet = {
-        "hotel_name": item.get("hotel_name") or item.get("destination", ""),
+        "hotel_name": priced_name or item.get("hotel_name") or item.get("destination", ""),
         "city": item.get("city"),
         "country": item.get("country"),
         "checkin": checkin,

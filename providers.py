@@ -544,6 +544,7 @@ def _to_stage3(rate, verdict, confidence, ref, today, mode="verified"):
         "assistant_summary": summary,
         "confidence":        confidence,
         "grounding_method":  "apidojo",
+        "booking_name":      rate["name"],   # what Booking.com actually priced; keys history across FIND names
     }
 
 

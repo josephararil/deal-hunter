@@ -94,16 +94,44 @@ def identity_key(d):
     return canonical(identity(d))
 
 
-def baseline_samples(baselines, d):
-    """Every real price sample for this property and season, merged across word-order variants
-    of its baseline key. A legacy entry with no `samples` list contributes its
-    realistic_price_eur. Keys are left as written (Invariant S); merging happens only here."""
+_NAME_ALIASES = {"st": "saint"}   # token-level aliases for booking_key; extend only with evidence
+_NOTE_NAME_RE = re.compile(r"^Verified (.+?)(?:, \d-star)? for ")
+
+
+def booking_key(name):
+    """Word-order-proof key for a Booking.com property name: lowercase, & -> and, split on
+    non-alphanumerics, map tokens through _NAME_ALIASES, join, sort characters. '' for no name.
+    FIND names one hotel many ways ('Saint Ivan Rilski SPA Resort' vs 'SPA Resort St Ivan
+    Rilski'); the Booking.com name of what was actually priced is the stable identity."""
+    tokens = re.split(r"[^a-z0-9]+", (name or "").lower().replace("&", "and"))
+    return canonical("".join(_NAME_ALIASES.get(t, t) for t in tokens if t))
+
+
+def entry_booking_name(entry):
+    """entry['booking_name'] if stored, else the name parsed from a legacy 'Verified X, N-star
+    for ...' note, else ''."""
+    if entry.get("booking_name"):
+        return entry["booking_name"]
+    m = _NOTE_NAME_RE.match(entry.get("note") or "")
+    return m.group(1) if m else ""
+
+
+def baseline_samples(baselines, d, any_season=False):
+    """Every real price sample for this property, merged across word-order variants of its
+    baseline key and across FIND names that priced the same Booking.com property (matched on
+    booking_key of d['booking_name']). Same season only unless any_season. A legacy entry with
+    no `samples` list contributes its realistic_price_eur. Keys are left as written
+    (Invariant S); merging happens only here."""
     season = season_key(d.get("window", "") or "")
     want = identity_key(d)
+    bk = booking_key(d.get("booking_name", ""))
     out = []
     for key, b in baselines.items():
         ident, _, key_season = key.rpartition("|")
-        if key_season != season or canonical(ident) != want:
+        if not (any_season or key_season == season):
+            continue
+        if not (canonical(ident) == want
+                or (bk and booking_key(entry_booking_name(b)) == bk)):
             continue
         if b.get("samples"):
             out.extend(s["price"] for s in b["samples"] if isinstance(s.get("price"), (int, float)))
@@ -163,7 +191,7 @@ def save(memory):
 
 # ── write ──────────────────────────────────────────────────────────────────────
 
-def record_baseline(memory, key, price_eur, note="", source="", date=None):
+def record_baseline(memory, key, price_eur, note="", source="", date=None, booking_name=""):
     """Upsert a realistic price baseline for a pre-built identity+season `key` (see
     baseline_key). Keeps a rolling sample of at most MAX_BASELINE_SAMPLES real prices and
     reports their median as realistic_price_eur, so one bad grounding can't singlehandedly
@@ -184,6 +212,8 @@ def record_baseline(memory, key, price_eur, note="", source="", date=None):
     entry["note"] = note
     entry["source"] = source
     entry["updated"] = date or dt.date.today().isoformat()
+    if booking_name:
+        entry["booking_name"] = booking_name
 
 
 def record_outcome(memory, destination, window, type_, claimed_price, verdict,

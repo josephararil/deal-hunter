@@ -294,6 +294,10 @@ try:
         fa._dates_in_window(opt_dates, "Aug 2026"), f"dates={opt_dates!r} vs 'Aug 2026'")
     chk("_to_stage3 verified: grounding_method == 'apidojo'",
         r.get("grounding_method") == "apidojo", f"got: {r.get('grounding_method')!r}")
+    r_bn = P._to_stage3({**rate_s3, "name": "Kempinski Grand Arena Bansko"}, "confirm", "high",
+                        ref_s3, "2026-06-29")
+    chk("_to_stage3 verified: booking_name is the priced card's name, not the ref's",
+        r_bn.get("booking_name") == "Kempinski Grand Arena Bansko", f"got: {r_bn.get('booking_name')!r}")
 
     # ── 14. _price_alternatives: filters review>=8.0 only (no price cap) → 3 results
     P._get = _make_get(_AC_BANSKO_CITY_ONLY, _PROPS_CITY_BANSKO)

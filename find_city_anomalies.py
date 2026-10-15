@@ -101,8 +101,10 @@ TIER_LABEL = {"diamond": "💎 Diamond", "good": "👍 Good find", "skip": "· S
 TIER_RANK = {"diamond": 0, "good": 1, "skip": 2, "unscored": 3}
 # Badge colour per tier.
 TIER_COLOR = {"diamond": "#0a7d2e", "good": "#8a6d00", "skip": "#777", "unscored": "#a15c00"}
-# Shown when a cap (Invariant U / F) demoted a would-be pick to skip.
+# Shown when a cap (Invariant U / N / F) demoted a would-be pick to skip.
 NOTE_FAR = "Capped at skip: this trip needs a flight or a long drive, so only a diamond gets through."
+NOTE_FIRST = ("Capped at skip: first live Booking.com price for this hotel, so there's no history "
+              "to prove a discount. A later run emails it again if it rates good or diamond.")
 NOTE_UNVERIFIED = "Capped at skip: this price is an LLM estimate, not a live Booking.com rate, so it can't be called a deal."
 
 
@@ -1298,6 +1300,7 @@ def main():
                 "grounded_nights": o.get("nights"),
                 "grounded_dates": o.get("dates"),
                 "grounding_method": result.get("grounding_method", "llm"),
+                "booking_name": result.get("booking_name", ""),
             })
             print(f"             [-> SCORER]")
         print(f"  -> {len(grounded)} grounded candidate(s) forwarded to scorer")
@@ -1438,8 +1441,11 @@ def main():
 
             # Invariant H2: real Booking.com history beats the scorer's guessed "usual price".
             # With >= REF_MIN_SAMPLES live samples their median IS the reference; with 1-2,
-            # the lower of the two (a guess may only make the deal look smaller).
+            # the lower of the two (a guess may only make the deal look smaller). With no
+            # same-month sample, other months may only LOWER the reference (a summer median
+            # must not inflate a winter one).
             samples = M.baseline_samples(prior_baselines, c)
+            any_samples = M.baseline_samples(prior_baselines, c, any_season=True)
             if len(samples) >= C.REF_MIN_SAMPLES:
                 ref, ref_source = round(statistics.median(samples), 2), "history"
             elif samples:
@@ -1448,22 +1454,31 @@ def main():
                     ref, ref_source = normal_price, "llm"
                 else:
                     ref, ref_source = hist, "history"
+            elif any_samples:
+                hist = round(statistics.median(any_samples), 2)
+                if normal_price is not None and normal_price < hist:
+                    ref, ref_source = normal_price, "llm"
+                else:
+                    ref, ref_source = hist, "history_any"
             else:
                 ref, ref_source = normal_price, ("llm" if normal_price is not None else "none")
             ref_for_score = ref
-            if ref_source == "history" and ref is not None and extra_total and nights:
+            if ref_source in ("history", "history_any") and ref is not None and extra_total and nights:
                 ref_for_score = ref + extra_total / nights   # same flight cost on both sides of the discount
 
             final, price_adj, transit_adj, discount = C.compute_final_score(
                 llm_val, effective_ppn, _location(c), ref_for_score)
             tier = C.tier_for(final, llm_val, discount)
-            # Caps (Invariant U before F, so the note shown is the unverified one): an
-            # LLM-estimated price cannot prove a deal; a trip that needs a flight or a long
-            # drive is diamond-only.
+            # Caps (Invariant U, then N, then F; the first that fires sets the note): an
+            # LLM-estimated price cannot prove a deal; a hotel with no PRIOR live price has no
+            # history to prove a discount (this run's own price never counts); a trip that
+            # needs a flight or a long drive is diamond-only.
             grounding_method = c.get("grounding_method", "llm")
             demote_note = ""
             if grounding_method != "apidojo" and tier in ("diamond", "good"):
                 tier, demote_note = "skip", NOTE_UNVERIFIED
+            elif tier in ("diamond", "good") and not any_samples:
+                tier, demote_note = "skip", NOTE_FIRST
             elif tier == "good" and not C.is_low_friction(_location(c)):
                 tier, demote_note = "skip", NOTE_FAR
             scores[did] = {"llm": llm_val, "price_adj": price_adj, "transit_adj": transit_adj,
@@ -1573,7 +1588,8 @@ def main():
                 and r3.get("grounding_method", "llm") == "apidojo"
                 and _dates_in_window(first_dates, c.get("window", ""))):
             M.record_baseline(mem, M.baseline_key(c), actual_price,
-                              note=M._clip(summary, 300), source=source3)
+                              note=M._clip(summary, 300), source=source3,
+                              booking_name=r3.get("booking_name", ""))
 
     # Spain sweep (spain.py): deterministic Ryanair fare calendar + Booking.com hotels, judged
     # by a same-dates ratio. Runs before M.save so its city-ref cache (mem["spain_dest"]) is

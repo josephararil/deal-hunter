@@ -35,12 +35,12 @@ jobs:
       #
       # The first four carry an explicit `|| <default>` rather than falling through to
       # llm_chain's own defaults, because llm_chain's defaults are flash-based and tuned for
-      # a different repo's workload. Falling through would silently move every reasoning
-      # stage off gemini-pro-latest -- a real quality change disguised as an unset variable.
-      # These four values reproduce this repo's pre-migration behaviour exactly:
-      # the chain is the old GEMINI_FALLBACK_MODEL_MAP ladder, and 3 attempts with a 5,15
-      # backoff is the old _MAX_RETRIES/_RETRY_DELAYS policy.
-      LLM_MODEL_CHAIN:          ${{ vars.LLM_MODEL_CHAIN        || 'gemini-pro-latest,gemini-flash-latest,gemini-3.1-flash-lite' }}
+      # a different repo's workload. Falling through would silently change the reasoning
+      # model -- a real quality change disguised as an unset variable.
+      # Reasoning runs on flash, with lite as the outage fallback; pro was dropped on
+      # 2026-10-15 as unnecessary for this workload. 3 attempts with a 5,15 backoff is the
+      # old _MAX_RETRIES/_RETRY_DELAYS policy.
+      LLM_MODEL_CHAIN:          ${{ vars.LLM_MODEL_CHAIN        || 'gemini-flash-latest,gemini-3.1-flash-lite' }}
       LLM_SEARCH_MODEL_CHAIN:   ${{ vars.LLM_SEARCH_MODEL_CHAIN || 'gemini-3.1-flash-lite,gemini-flash-latest' }}
       LLM_ATTEMPTS_PER_MODEL:   ${{ vars.LLM_ATTEMPTS_PER_MODEL || '3' }}
       LLM_BACKOFF_SECONDS:      ${{ vars.LLM_BACKOFF_SECONDS    || '5,15' }}

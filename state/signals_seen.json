@@ -4,7 +4,7 @@
     "2026-07": 24,
     "2026-08": 8,
     "2026-09": 10,
-    "2026-10": 6
+    "2026-10": 7
   },
   "degraded_count": {
     "2026-08": 1
@@ -189,6 +189,30 @@
       "tier": "skip",
       "price_eur": 125,
       "name": "Club Hotel Sera"
+    },
+    "adeeeghhlmnorrtt": {
+      "date": "2026-10-15",
+      "tier": "skip",
+      "price_eur": 470.63,
+      "name": "Grand Hotel Therme"
+    },
+    "aaehilmort": {
+      "date": "2026-10-15",
+      "tier": "skip",
+      "price_eur": 215.72,
+      "name": "Amira Hotel"
+    },
+    "aaaaaaabddhhiklmmnprrtwyyz": {
+      "date": "2026-10-15",
+      "tier": "skip",
+      "price_eur": 125,
+      "name": "Ramada Plaza by Wyndham Thraki"
+    },
+    "eehllooorsttv": {
+      "date": "2026-10-15",
+      "tier": "skip",
+      "price_eur": 60.55,
+      "name": "Hotel Orlovets"
     }
   }
 }

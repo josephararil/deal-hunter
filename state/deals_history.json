@@ -4565,6 +4565,165 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-15",
+      "deal_id": 4,
+      "destination": "Banya, Bulgaria",
+      "type": "hotel",
+      "window": "Nov 20-23, 2026",
+      "tier": "skip",
+      "llm_score": 88,
+      "price_adj": 1,
+      "transit_adj": 3,
+      "final_score": 92,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Grand Hotel Therme, 5-star for Nov 20-23, 2026: €470.63/night (€1411.88 total, 3 nights), review 8.9. Price corrected from the Stage-1 estimate.",
+      "about": "Grand Hotel Therme (rated 8.9/10) is a premier 5-star thermal resort in the village of Banya, renowned for its natural mineral spring water. It offers multiple indoor and outdoor thermal pools heated up to 38°C year-round, an expansive all-inclusive buffet concept, and an active indoor kids' adventure club. A 4-year-old has guaranteed water play and entertainment regardless of late-November mountain chills.",
+      "value_case": "At €471/night for a full all-inclusive family package, this rate sits directly in line with typical weekend winter rates for this landmark resort, offering exceptional net utility but no below-market rate discount.",
+      "why": "Unbeatable, weather-proof family utility with hot thermal mineral pools and extensive supervised kids' spaces just 2.5 hours from home.",
+      "red_flags": "The resort environment can get busy on weekends with corporate retreats and couples, creating peak dining crowd noise.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-20–2026-11-23, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.9. Live rate: €470.63/night (€1411.88 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Grand+Hotel+Therme&checkin=2026-11-20&checkout=2026-11-23&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 20-23, 2026",
+          "nights": 3,
+          "price_per_night_eur": 470.63,
+          "total_eur": 1411.88,
+          "source": "Booking.com (apidojo) live 2026-10-15",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Grand+Hotel+Therme&checkin=2026-11-20&checkout=2026-11-23&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-15",
+      "deal_id": 1,
+      "destination": "Bansko, Bulgaria",
+      "type": "hotel",
+      "window": "Dec 4-7, 2026",
+      "tier": "skip",
+      "llm_score": 80,
+      "price_adj": 3,
+      "transit_adj": 3,
+      "final_score": 86,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Amira Boutique Hotel, 5-star for Dec 4-7, 2026: €215.72/night (€647.17 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "about": "Amira Boutique Hotel is a highly rated (9.2/10) luxury boutique property situated near the base of the Pirin mountains in Bansko. The hotel features an intimate spa with a well-heated indoor pool, a dedicated children's corner, and refined dining. In early December before the ski lifts open, families can enjoy uncrowded mountain air, pine walks, and relaxed pool time without resort congestion.",
+      "value_case": "At €216/night, the rate is standard for pre-season entry at Amira, which regularly exceeds €280-€350 once the ski season begins in mid-December. It offers high boutique comfort, though not a steep discount over typical early-December pricing.",
+      "why": "A relaxed 2.5-hour drive leads to a top-tier boutique 5-star with an exceptionally warm 32°C indoor pool and playroom, ideal for a quiet late-autumn toddler weekend.",
+      "red_flags": "The town and ski infrastructure are largely dormant in early December prior to the official ski opening.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-12-04–2026-12-07, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €215.72/night (€647.17 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Amira+Boutique+Hotel&checkin=2026-12-04&checkout=2026-12-07&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Dec 4-7, 2026",
+          "nights": 3,
+          "price_per_night_eur": 215.72,
+          "total_eur": 647.17,
+          "source": "Booking.com (apidojo) live 2026-10-15",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Amira+Boutique+Hotel&checkin=2026-12-04&checkout=2026-12-07&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-15",
+      "deal_id": 3,
+      "destination": "Alexandroupoli, Greece",
+      "type": "hotel",
+      "window": "Nov 6-9, 2026",
+      "tier": "skip",
+      "llm_score": 72,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 82,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I checked Ramada Plaza by Wyndham Thraki for Nov 6–9, 2026, and found rooms starting at €125/night (€375 total for 3 nights), slightly higher than the €88 estimate. The property is open with its heated indoor spa facilities operational. You can book directly at https://www.ramadaplazathraki.com/.",
+      "about": "Ramada Plaza by Wyndham Thraki is a 5-star beachfront resort located just outside Alexandroupoli along the northern Aegean coast. The property features extensive indoor spa facilities with heated hydrotherapy pools, family-friendly hotel grounds, and an expansive seaside promenade. In November, while the beach is closed for swimming, the indoor pools and easy sea walks provide low-stress toddler recreation.",
+      "value_case": "At €125/night, this is a reasonable shoulder-season rate for a 5-star Greek resort that trades north of €220/night during high summer, representing a solid mild-season coastal escape.",
+      "why": "An easy 2.5-hour drive across the border delivers pleasant coastal air and functional heated indoor thalasso pools, offset by a shuttered off-season beach setting.",
+      "red_flags": "Border crossing times at Kapitan Petko Voyvoda/Ormenio can fluctuate, and outdoor resort activities are closed.",
+      "grounding": "Checked live availability and pricing for Ramada Plaza by Wyndham Thraki for the window Nov 6-9, 2026. The actual available rate is approximately €125/night (€375 total for 3 nights), which adjusts the initial €88 estimate. The property operates year-round with its heated indoor thalassotherapy pools open, though outdoor pools close seasonally.",
+      "how_to_book": "Book directly via the official website at https://www.ramadaplazathraki.com/ or via major online travel agencies like Booking.com. You can also contact the hotel directly at +30 255 108 9100.",
+      "options": [
+        {
+          "dates": "Nov 6-9, 2026",
+          "nights": 3,
+          "price_per_night_eur": 125,
+          "total_eur": 375,
+          "source": "Official hotel website availability check 2026-10-15",
+          "booking_url": "https://www.ramadaplazathraki.com/"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-15",
+      "deal_id": 2,
+      "destination": "Pamporovo, Bulgaria",
+      "type": "hotel",
+      "window": "Jan 10-13, 2027",
+      "tier": "skip",
+      "llm_score": 48,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 58,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "medium",
+      "summary": "Couldn't confirm Hotel Orlovets live; best-value family stays in Pamporovo for Jan 10-13, 2027: Апартамент Орфинда- Pamporovo €60.55/night; Studio Kalina Green Life €61.01/night; Northstar Ski Apartment in Mountain Lake Hotel €63.3/night.",
+      "about": "These are scattered private studio and apartment rentals located across Pamporovo resort rather than a centralized full-service resort hotel. Typical units offer basic kitchenettes and mountain views, but lack integrated childcare or guaranteed heated leisure infrastructure. A family with a 4-year-old would rely on external restaurants and public facilities across icy roads.",
+      "value_case": "At €61/night for mid-January ski season, the cash cost is low, but this reflects standard unbranded private apartment rates in Pamporovo rather than a marked-down luxury stay.",
+      "why": "Falling back to unserviced private rental apartments removes guaranteed warm pool access and family amenities, turning a snowy getaway into self-catering chore duty.",
+      "red_flags": "Self-catering private rental lacks guaranteed access to heated indoor pools, daily housekeeping, or on-site dining.",
+      "grounding": "Booking.com (apidojo) city search 2027-01-10-2027-01-13, order_by=price, review_score>=8.0. 3 option(s) returned.",
+      "how_to_book": "Search the listed properties on Booking.com for the dates above.",
+      "options": [
+        {
+          "dates": "Jan 10-13, 2027",
+          "nights": 3,
+          "price_per_night_eur": 60.55,
+          "total_eur": 181.65,
+          "source": "Booking.com (apidojo) live 2026-10-15",
+          "name": "Апартамент Орфинда- Pamporovo",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=%D0%90%D0%BF%D0%B0%D1%80%D1%82%D0%B0%D0%BC%D0%B5%D0%BD%D1%82+%D0%9E%D1%80%D1%84%D0%B8%D0%BD%D0%B4%D0%B0-+Pamporovo&checkin=2027-01-10&checkout=2027-01-13&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Jan 10-13, 2027",
+          "nights": 3,
+          "price_per_night_eur": 61.01,
+          "total_eur": 183.03,
+          "source": "Booking.com (apidojo) live 2026-10-15",
+          "name": "Studio Kalina Green Life",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Studio+Kalina+Green+Life&checkin=2027-01-10&checkout=2027-01-13&group_adults=2&group_children=1&age=4"
+        },
+        {
+          "dates": "Jan 10-13, 2027",
+          "nights": 3,
+          "price_per_night_eur": 63.3,
+          "total_eur": 189.91,
+          "source": "Booking.com (apidojo) live 2026-10-15",
+          "name": "Northstar Ski Apartment in Mountain Lake Hotel",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Northstar+Ski+Apartment+in+Mountain+Lake+Hotel&checkin=2027-01-10&checkout=2027-01-13&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

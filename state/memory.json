@@ -824,59 +824,37 @@
       "note": "Verified The Met Hotel Thessaloniki, a Member of Design Hotels, 5-star for Nov 5-8, 2026: €227.54/night (€682.62 total, 3 nights), review 8.7. Price corrected from the Stage-1 estimate.",
       "source": "Booking.com (apidojo) live 2026-10-15",
       "updated": "2026-10-15"
+    },
+    "amirahotel|2026-12": {
+      "samples": [
+        {
+          "price": 215.72,
+          "date": "2026-10-15",
+          "source": "Booking.com (apidojo) live 2026-10-15"
+        }
+      ],
+      "realistic_price_eur": 215.72,
+      "note": "Verified Amira Boutique Hotel, 5-star for Dec 4-7, 2026: €215.72/night (€647.17 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "updated": "2026-10-15",
+      "booking_name": "Amira Boutique Hotel"
+    },
+    "grandhoteltherme|2026-11": {
+      "samples": [
+        {
+          "price": 470.63,
+          "date": "2026-10-15",
+          "source": "Booking.com (apidojo) live 2026-10-15"
+        }
+      ],
+      "realistic_price_eur": 470.63,
+      "note": "Verified Grand Hotel Therme, 5-star for Nov 20-23, 2026: €470.63/night (€1411.88 total, 3 nights), review 8.9. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "updated": "2026-10-15",
+      "booking_name": "Grand Hotel Therme"
     }
   },
   "ledger": [
-    {
-      "date": "2026-07-01",
-      "destination": "Hisarya, Bulgaria",
-      "window": "July 17-20, 2026",
-      "type": "hotel",
-      "claimed_price": 78,
-      "verdict": "correct",
-      "actual_price": 103.67,
-      "source": "Booking.com (apidojo) live 2026-07-01",
-      "note": "Verified Hissar Spa Hotel, 4-star for Jul 17-20, 2026: €103.67/night (€311.01 total, 3 nights), review 8.3. Price differs from Stage-1 estimate but remains under the ceiling."
-    },
-    {
-      "date": "2026-07-01",
-      "destination": "Hisarya, Bulgaria",
-      "window": "17 July 2026 - 20 July 2026",
-      "type": "hotel",
-      "claimed_price": 104,
-      "verdict": "kill",
-      "actual_price": 104,
-      "llm_score": null,
-      "final_score": null,
-      "source": "Hotel Hissar official site / maintenance notice",
-      "note": "While the Hissar Spa Hotel is available for your requested dates at approximately €104/night, I must advise against this booking. The hotel has officially announced that its indoor pools, children's…"
-    },
-    {
-      "date": "2026-07-01",
-      "destination": "Bansko, Bulgaria",
-      "window": "10 September 2026 - 13 September 2026",
-      "type": "hotel",
-      "claimed_price": 105,
-      "verdict": "good",
-      "actual_price": 104,
-      "llm_score": 80,
-      "final_score": 68,
-      "source": "Lucky Bansko official website booking portal",
-      "note": "A highly convenient 2.5h drive for a perfectly sized 3-night weekend with excellent 5-star indoor kids' facilities, providing high family utility despite the seasonal outdoor closures."
-    },
-    {
-      "date": "2026-07-01",
-      "destination": "Thassos, Greece",
-      "window": "6 September 2026 - 11 September 2026",
-      "type": "hotel",
-      "claimed_price": 135,
-      "verdict": "kill",
-      "actual_price": 365,
-      "llm_score": null,
-      "final_score": null,
-      "source": "KAYAK / Booking.com live pricing 2026-07-01",
-      "note": "I searched for availability at Makryammos Bungalows for September 6–11, 2026, and found that the current market rates are approximately €365 per night, significantly higher than the estimated €135.…"
-    },
     {
       "date": "2026-07-01",
       "destination": "Rome, Italy",
@@ -3424,6 +3402,58 @@
       "final_score": 63,
       "source": "Booking.com (apidojo) live 2026-10-15",
       "note": "The 4-hour drive and potential border delays for a short 3-night stay in a museum-heavy city offer limited return on hassle for a 4-year-old, despite the 5-star luxury."
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Bansko, Bulgaria",
+      "window": "Dec 4-7, 2026",
+      "type": "hotel",
+      "claimed_price": 75,
+      "verdict": "skip",
+      "actual_price": 215.72,
+      "llm_score": 80,
+      "final_score": 86,
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "note": "A relaxed 2.5-hour drive leads to a top-tier boutique 5-star with an exceptionally warm 32°C indoor pool and playroom, ideal for a quiet late-autumn toddler weekend."
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Pamporovo, Bulgaria",
+      "window": "Jan 10-13, 2027",
+      "type": "hotel",
+      "claimed_price": 105,
+      "verdict": "skip",
+      "actual_price": 60.55,
+      "llm_score": 48,
+      "final_score": 58,
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "note": "Falling back to unserviced private rental apartments removes guaranteed warm pool access and family amenities, turning a snowy getaway into self-catering chore duty."
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Alexandroupoli, Greece",
+      "window": "Nov 6-9, 2026",
+      "type": "hotel",
+      "claimed_price": 88,
+      "verdict": "skip",
+      "actual_price": 125,
+      "llm_score": 72,
+      "final_score": 82,
+      "source": "Official hotel website availability check 2026-10-15",
+      "note": "An easy 2.5-hour drive across the border delivers pleasant coastal air and functional heated indoor thalasso pools, offset by a shuttered off-season beach setting."
+    },
+    {
+      "date": "2026-10-15",
+      "destination": "Banya, Bulgaria",
+      "window": "Nov 20-23, 2026",
+      "type": "hotel",
+      "claimed_price": 165,
+      "verdict": "skip",
+      "actual_price": 470.63,
+      "llm_score": 88,
+      "final_score": 92,
+      "source": "Booking.com (apidojo) live 2026-10-15",
+      "note": "Unbeatable, weather-proof family utility with hot thermal mineral pools and extensive supervised kids' spaces just 2.5 hours from home."
     }
   ],
   "spain_dest": {

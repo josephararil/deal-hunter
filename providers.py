@@ -280,8 +280,10 @@ _EXPLICIT_RE = re.compile(
 _LONG_RANGE_DAY_FIRST = re.compile(
     r"(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}))?\s*[-–]\s*(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})"
 )
+# Also the short cross-month form "Nov 25-Dec 2, 2026" (comma before the year), which fell
+# through to the LLM fallback on the 2026-10-15 run.
 _LONG_RANGE_MONTH_FIRST = re.compile(
-    r"([A-Za-z]+)\s+(\d{1,2})(?:\s+(\d{4}))?\s*[-–]\s*([A-Za-z]+)\s+(\d{1,2})\s+(\d{4})"
+    r"([A-Za-z]+)\s+(\d{1,2})(?:,?\s+(\d{4}))?\s*[-–]\s*([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})"
 )
 _MONTH_MAP = {
     "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
@@ -315,6 +317,9 @@ def _extract_date_range(window):
         d_out = _mk_date(yr2, mon2, day2)
     elif (m := _LONG_RANGE_MONTH_FIRST.search(window)):
         mon1, day1, yr1, mon2, day2, yr2 = m.groups()
+        # "Dec 28-Jan 2, 2027": the only year belongs to check-out, so check-in is a year earlier.
+        if not yr1 and _MONTH_MAP.get(mon1[:3].lower(), 0) > _MONTH_MAP.get(mon2[:3].lower(), 13):
+            yr1 = int(yr2) - 1
         d_in  = _mk_date(yr1 or yr2, mon1, day1)
         d_out = _mk_date(yr2, mon2, day2)
     elif (m := _EXPLICIT_RE.search(window)):

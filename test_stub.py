@@ -1177,6 +1177,13 @@ try:
         == (190.0, 0.2105, 92, "good"), d16
     assert "history_any" in _line16(4) and "(capped)" not in _line16(4), _line16(4)
 
+    # The price line names the reference by its source: a guess is never "its usual".
+    for _blob in (_email16["html"], _email16["text"]):
+        assert "~18% below the scorer's guess of €230" in _blob, "Perelik (llm ref) wording"
+        assert "~20% below its usual €200.0" in _blob, "C16 (history ref) wording"
+        assert "~21% below its usual €190.0" in _blob, "D16 (history_any ref) wording"
+        assert "its usual €230" not in _blob, "an LLM reference was presented as the usual price"
+
     # This run's baselines carry the Booking.com name for future cross-name matching.
     mem16 = json.load(open("state/memory.json", encoding="utf-8"))
     assert mem16["baselines"]["hotelperelik|2026-12"]["booking_name"] == "Perelik Hotel", mem16["baselines"].keys()
@@ -1190,3 +1197,50 @@ finally:
 
 
 print("\nAll assertions passed (Part 1 + Part 2).")
+
+
+# ── Case 17: email wording follows provenance (2026-10-15 review) ──
+# Ramada Alexandroupoli had an LLM-estimated price but was described as "live"; "Hotel Orlovets"
+# was shown (and offered as a trips.json snippet) at a Pamporovo apartment's €60.55.
+print("\n=== Case 17: estimated-price and named-hotel-not-found wording ===\n")
+import trips as T
+
+_base17 = {"hotel_name": "Ramada Alexandroupoli", "city": "Alexandroupoli", "country": "Greece",
+           "destination": "Ramada Alexandroupoli", "type": "hotel", "window": "Nov 13-16, 2026",
+           "tier": "skip", "grounded_price_per_night_eur": 140.0, "grounded_total_eur": 420.0,
+           "grounded_nights": 3, "grounded_dates": "Nov 13-16, 2026", "est_price_eur": 90,
+           "est_gap_flag": True, "options": [_opt(140.0, 420.0, "Nov 13-16, 2026", 3)]}
+_llm17 = {**_base17, "grounding_method": "llm"}
+_live17 = {**_base17, "grounding_method": "apidojo"}
+_h17 = {"counts": {}}
+for _blob in (fa.build_email_html([_llm17], [], [], 0, {}, _h17, None),
+              fa.build_email_text([_llm17], [], [], {}, _h17, None),
+              fa.build_email_html([], [_llm17], [], 0, {}, _h17, None),
+              fa.build_email_text([], [_llm17], [], {}, _h17, None)):
+    assert "Estimated: €140.0/night" in _blob
+    assert "⚠ Estimated price is 1.6× FIND's €90 estimate" in _blob
+    assert "Estimated price, not a live Booking.com rate" in _blob
+    assert "Live price" not in _blob and "Live rate" not in _blob and "live rate" not in _blob
+for _blob in (fa.build_email_html([_live17], [], [], 0, {}, _h17, None),
+              fa.build_email_text([_live17], [], [], {}, _h17, None)):
+    assert "Estimated" not in _blob
+    assert "⚠ Live price is 1.6× FIND's €90 estimate" in _blob
+    assert "⚠ Live rate is a base room price" in _blob
+
+# Alternatives path: the option carries the priced property's name.
+_alt17 = {**_live17, "hotel_name": "Hotel Orlovets", "destination": "Hotel Orlovets",
+          "city": "Pamporovo", "country": "Bulgaria", "est_gap_flag": False,
+          "grounded_price_per_night_eur": 60.55, "grounded_total_eur": 181.65,
+          "options": [{**_opt(60.55, 181.65, "Nov 13-16, 2026", 3), "name": "Pamporovo Apartment 7"}]}
+_note17 = ("⚠ Booking.com couldn't find Hotel Orlovets; the price shown is for "
+           "Pamporovo Apartment 7, a different property.")
+for _blob in (fa.build_email_html([_alt17], [], [], 0, {}, _h17, None),
+              fa.build_email_text([_alt17], [], [], {}, _h17, None),
+              fa.build_email_html([], [_alt17], [], 0, {}, _h17, None),
+              fa.build_email_text([], [_alt17], [], {}, _h17, None)):
+    assert _note17 in _blob
+assert json.loads(T.paste_snippet(_alt17))["hotel_name"] == "Pamporovo Apartment 7"
+assert json.loads(T.paste_snippet(_live17))["hotel_name"] == "Ramada Alexandroupoli"
+assert fa._not_found_note(_live17) == ""
+print("Case 17: estimated prices are labelled as estimates; an alternative's price carries its "
+      "own name in the note and the trips.json snippet [OK]")

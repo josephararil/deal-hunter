@@ -331,9 +331,17 @@ def _card_headline(d):
     return headline1, headline2
 
 
+def _is_live(d):
+    """True only for a Booking.com (apidojo) price. Missing provenance counts as an
+    estimate, the same fail-closed reading as Invariant B."""
+    return d.get("grounding_method") == "apidojo"
+
+
 def _price_line(d):
     """Price-first line: '€ppn/night · €total for N nights [· ~X% below its usual €normal]'.
-    Omits any part whose figure is missing rather than showing a broken sentence."""
+    Omits any part whose figure is missing rather than showing a broken sentence. The
+    reference is called "usual" only when it came from real price history (ref_source);
+    an LLM reference is named as the scorer's guess, and an LLM price as an estimate."""
     ppn = d.get("grounded_price_per_night_eur")
     total = d.get("grounded_total_eur")
     nights = d.get("grounded_nights")
@@ -343,11 +351,45 @@ def _price_line(d):
     if total is not None:
         parts.append(f"€{total} for {nights} nights" if nights is not None else f"€{total} total")
     line = " · ".join(parts)
+    if line and not _is_live(d):
+        line = f"Estimated: {line}"
     discount = d.get("discount")
     normal = d.get("normal_price_eur")
     if isinstance(discount, (int, float)) and discount >= 0.05 and normal is not None:
-        line += f" · ~{round(discount * 100)}% below its usual €{normal}"
+        if d.get("ref_source") in ("history", "history_any"):
+            line += f" · ~{round(discount * 100)}% below its usual €{normal}"
+        else:
+            line += f" · ~{round(discount * 100)}% below the scorer's guess of €{normal}"
     return line
+
+
+def _priced_name(d):
+    """Name of the property whose price is shown, when the grounder priced a different one.
+    The alternatives path (named hotel not found on Booking.com) puts each option's own
+    property name on it; the verified path does not."""
+    options = d.get("options") or []
+    name = (options[0].get("name") or "") if options else ""
+    return name if name and name != (d.get("hotel_name") or d.get("destination", "")) else ""
+
+
+def _not_found_note(d):
+    priced = _priced_name(d)
+    if not priced:
+        return ""
+    named = d.get("hotel_name") or d.get("destination", "")
+    return f"⚠ Booking.com couldn't find {named}; the price shown is for {priced}, a different property."
+
+
+def _child_caveat(d):
+    """Family-price caveat for hotels. A live apidojo rate can under-report the child
+    surcharge (a €103/night rate became €340 on click); an LLM price is only an estimate."""
+    if d.get("type") != "hotel":
+        return ""
+    if _is_live(d):
+        return ("⚠ Live rate is a base room price — reconfirm the 4-year-old is included at "
+                "this price on Booking before booking; child surcharges aren't always reflected.")
+    return ("⚠ Estimated price, not a live Booking.com rate — check the real price and that "
+            "the 4-year-old is included before booking.")
 
 
 def _options_html(d):
@@ -416,7 +458,8 @@ def _est_gap_note(d):
     ZeroDivisionError/TypeError by requiring both figures present and truthy."""
     if d.get("est_gap_flag") and d.get("grounded_price_per_night_eur") and d.get("est_price_eur"):
         ratio = round(d["grounded_price_per_night_eur"] / d["est_price_eur"], 1)
-        return (f"⚠ Live price is {ratio}× FIND's €{d['est_price_eur']} estimate — "
+        kind = "Live price" if _is_live(d) else "Estimated price"
+        return (f"⚠ {kind} is {ratio}× FIND's €{d['est_price_eur']} estimate — "
                 f"treat the estimate as unreliable here.")
     return ""
 
@@ -628,13 +671,15 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
         # Options list — each with dates, price, and a booking link or how-to-book text
         opts_html = _options_html(d)
 
-        # Family-price caveat for hotel deals: apidojo's live rate can under-report the
-        # child surcharge (the exact trap that made a €103/night rate become €340 on click).
+        child_caveat = _child_caveat(d)
         child_caveat_html = (
-            f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>"
-            f"⚠ Live rate is a base room price — reconfirm the 4-year-old is included at "
-            f"this price on Booking before booking; child surcharges aren't always reflected.</div>"
-            if d.get("type") == "hotel" else ""
+            f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{child_caveat}</div>"
+            if child_caveat else ""
+        )
+        not_found = _not_found_note(d)
+        not_found_html = (
+            f"<div style='font-size:13px;color:#a15c00;margin:4px 0'>{not_found}</div>"
+            if not_found else ""
         )
         grounding_html = (
             f"<div style='font-size:12px;color:#777;margin:4px 0'>Source: {d['grounding']}</div>"
@@ -669,6 +714,7 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
             f"<div style='font-size:17px;font-weight:bold'>{headline1}</div>"
             f"<div style='font-size:13px;color:#777;margin:3px 0'>{headline2}</div>"
             f"<div style='font-size:15px;color:#222;margin:4px 0'>{price_line}</div>"
+            f"{not_found_html}"
             f"<div style='font-size:14px;color:#222;margin:6px 0'>{summary}</div>"
             f"{about_html}"
             f"{value_case_html}"
@@ -720,11 +766,15 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
             headline1, headline2 = _card_headline(d)
             price_line = _price_line(d)
             opts_html_u = _options_html(d)
+            child_caveat_u = _child_caveat(d)
             child_caveat_html_u = (
-                f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>"
-                f"⚠ Live rate is a base room price — reconfirm the 4-year-old is included at "
-                f"this price on Booking before booking; child surcharges aren't always reflected.</div>"
-                if d.get("type") == "hotel" else ""
+                f"<div style='font-size:12px;color:#a15c00;margin:4px 0'>{child_caveat_u}</div>"
+                if child_caveat_u else ""
+            )
+            not_found_u = _not_found_note(d)
+            not_found_html_u = (
+                f"<div style='font-size:13px;color:#a15c00;margin:4px 0'>{not_found_u}</div>"
+                if not_found_u else ""
             )
             grounding_html_u = (
                 f"<div style='font-size:12px;color:#777;margin:4px 0'>Source: {d['grounding']}</div>"
@@ -741,6 +791,7 @@ def build_email_html(items, unscored, dropped, month_count, baselines, health, b
                 f"<div style='font-size:17px;font-weight:bold'>{headline1}</div>"
                 f"<div style='font-size:13px;color:#777;margin:3px 0'>{headline2}</div>"
                 f"<div style='font-size:15px;color:#222;margin:4px 0'>{price_line}</div>"
+                f"{not_found_html_u}"
                 f"{opts_html_u}"
                 f"{child_caveat_html_u}"
                 f"{grounding_html_u}"
@@ -849,8 +900,10 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest, spai
             f"[{tier_label}] {headline1}",
             headline2,
             price_line,
-            summary,
         ]
+        if _not_found_note(d):
+            lines.append(_not_found_note(d))
+        lines.append(summary)
         if d.get("about"):
             lines.append(d["about"])
         if d.get("value_case"):
@@ -867,9 +920,8 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest, spai
         if base_note:
             lines.append(base_note)
         lines.extend(_options_text(d))
-        if d.get("type") == "hotel":
-            lines.append("Note: live rate is a base room price — reconfirm the 4-year-old "
-                         "is included at this price on Booking before booking.")
+        if _child_caveat(d):
+            lines.append(_child_caveat(d))
         if d.get("grounding"):
             lines.append(f"Source: {d['grounding']}")
         if d.get("red_flags"):
@@ -898,10 +950,11 @@ def build_email_text(items, unscored, dropped, baselines, health, backtest, spai
             headline1, headline2 = _card_headline(d)
             price_line = _price_line(d)
             u_lines = [headline1, headline2, price_line]
+            if _not_found_note(d):
+                u_lines.append(_not_found_note(d))
             u_lines.extend(_options_text(d))
-            if d.get("type") == "hotel":
-                u_lines.append("Note: live rate is a base room price — reconfirm the 4-year-old "
-                               "is included at this price on Booking before booking.")
+            if _child_caveat(d):
+                u_lines.append(_child_caveat(d))
             if d.get("grounding"):
                 u_lines.append(f"Source: {d['grounding']}")
             est_gap_note = _est_gap_note(d)

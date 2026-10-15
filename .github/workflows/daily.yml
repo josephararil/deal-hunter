@@ -20,7 +20,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     # LLM_TOTAL_BUDGET_SECONDS=660 caps all LLM wall-clock time at 11 minutes; apidojo
-    # grounding is ~13s total; 20 minutes leaves headroom over that plus pip install/checkout.
+    # grounding is ~13s total; the Spain sweep adds ~30s (~56 Ryanair calendar calls at 0.5s
+    # spacing + up to 14 Booking.com list calls); 20 minutes leaves headroom over that plus
+    # pip install/checkout.
     timeout-minutes: 20
     env:
       PYTHONUNBUFFERED: "1"
@@ -58,6 +60,8 @@ jobs:
       EMAIL_FROM:        ${{ secrets.EMAIL_FROM }}
       RAPIDAPI_KEY:      ${{ secrets.RAPIDAPI_KEY }}
       HOTEL_PROVIDER:    ${{ vars.HOTEL_PROVIDER }}
+      # Optional: set the repo variable to "0" to disable the Spain flight + hotel sweep.
+      SPAIN_SWEEP:       ${{ vars.SPAIN_SWEEP }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

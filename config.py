@@ -344,6 +344,57 @@ HOTEL_MAPPING = {
     # "kempinski grand arena": {"dest_id": "-835297", "search_type": "city", "name": "Kempinski Hotel Grand Arena Bansko"},
 }
 
+# ── Spain sweep ─────────────────────────────────────────────────────────────
+# The family plans to move to Spain (Elche/Alicante, Valencia), so a genuinely cheap Spain
+# flight + stay is worth the 1.5h drive to Sofia where Florence is not. spain.py runs its own
+# deterministic sweep instead of asking FIND:
+#   1. Flights first. Ryanair's public fare calendar (keyless; one call per route-month) gives
+#      the whole SOF<->city fare distribution, so the flight bell curve costs ~56 calls a run.
+#   2. Hotels only for the SPAIN_WINDOWS_PER_CITY cheapest non-overlapping flight windows.
+#   3. ratio = (best hotel ppn x nights + 3 x round-trip fare)
+#            / (p25 hotel ppn x nights + 3 x median round-trip fare), same dates, same run.
+#      good <= SPAIN_GOOD_RATIO, diamond <= SPAIN_DIAMOND_RATIO. From the user's own example
+#      ("average 4 nights + flight in Valencia ~€1,200 all in: €800 is not a deal, €500 is"):
+#      a €35 return fare + a promo hotel lands at 0.532 (good); an ordinary cheap-flight week
+#      ~0.745 (nothing). Bags + SOF drive/parking/transfer (SPAIN_BAGS_EUR + SPAIN_GROUND_EUR)
+#      are shown in the all-in total but kept OUT of the ratio: they're the same every trip.
+# The LLM never sets a Spain number or tier (Invariant SP); it only writes the dossier prose.
+SPAIN_SWEEP_ENABLED = os.environ.get("SPAIN_SWEEP", "1") != "0"
+SPAIN_ORIGIN = "SOF"
+SPAIN_CITIES = [("Valencia", "VLC"), ("Alicante", "ALC"), ("Malaga", "AGP"), ("Barcelona", "BCN"),
+                ("Madrid", "MAD"), ("Murcia", "RMU"), ("Sevilla", "SVQ")]
+SPAIN_LEAD_DAYS     = 10        # earliest outbound = today + 10
+SPAIN_HORIZON_DAYS  = 70        # latest outbound  = today + 70
+SPAIN_NIGHTS        = (3, 4, 5)
+SPAIN_WINDOWS_PER_CITY = 2
+SPAIN_PASSENGERS    = 3         # Ryanair charges a 4-year-old the adult fare
+SPAIN_BAGS_EUR      = 80        # one 20kg checked bag, both ways, whole trip (display only)
+SPAIN_GROUND_EUR    = 90        # SOF drive + parking + destination transfer (display only)
+SPAIN_MIN_COMBOS    = 8         # fewer round-trip combos than this = "thin calendar", city skipped
+SPAIN_MIN_HOTEL_CARDS = 6       # fewer qualifying hotels than this = window skipped
+SPAIN_MIN_STARS     = 3
+SPAIN_MIN_REVIEW    = 8.0
+SPAIN_GOOD_RATIO    = 0.55
+SPAIN_DIAMOND_RATIO = 0.45
+RYANAIR_FARES_URL   = "https://www.ryanair.com/api/farfnd/v4/oneWayFares/{origin}/{dest}/cheapestPerDay"
+RYANAIR_HTTP_TIMEOUT = 20
+RYANAIR_PAUSE_S     = 0.5       # between calendar calls (56 per run)
+MAX_TOKENS_SPAIN    = 6000
+
+SPAIN_DOSSIER_PROMPT = """Today is {today}. A family of 3 (2 adults + a 4-year-old) is planning to move to Spain and is weighing a short trip there. A price sweep has ALREADY found the trip(s) below and measured them against typical prices for the same dates. The numbers are final: do not restate, recompute or judge them.
+
+For each trip, write:
+- about: 2-3 sentences on the hotel and its neighbourhood for someone who has never heard of it — what kind of place it is, where it sits relative to the centre/beach, and what a 4-year-old can do nearby. Use the star rating and review score given. If you do not know the specific hotel, say so plainly and describe the area instead. Never invent amenities.
+- value_case: 1-2 sentences in plain English on why this flight + hotel combination is unusually cheap for these dates, using only the figures given.
+- red_flags: anything to check before booking (location far from the centre, flight times awkward with a toddler, child pricing). Empty string if nothing.
+
+Trips:
+{trips}
+
+Return a JSON array, one object per trip, in input order: [{{"key": "<copy the key>", "about": "...", "value_case": "...", "red_flags": "..."}}]"""
+
+SPAIN_DOSSIER_SCHEMA = {"type": "array", "items": {"type": "object", "properties": {"key": {"type": "string"}, "about": {"type": "string"}, "value_case": {"type": "string"}, "red_flags": {"type": "string"}}, "required": ["key", "about", "value_case", "red_flags"]}}
+
 
 # ── LLM prompts ─────────────────────────────────────────────────────────────
 # Placeholders filled at runtime by find_city_anomalies.py / common.py:

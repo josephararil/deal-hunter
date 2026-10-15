@@ -187,6 +187,9 @@ find_city_anomalies.py
 | `state/memory.md` | Human-readable digest of memory.json |
 | `state/deals_history.json` | One dossier record per emailed deal (diamond/good/skip) — full about/value_case/options/red_flags, not just scores. Appended every run a digest is sent, pruned at `DEALS_HISTORY_MAX_ENTRIES`/`DEALS_HISTORY_MAX_DAYS` (config.py). Data source for `web/` |
 | `web/` | Standalone React (Vite) app to browse `deals_history.json` — see "Web UI" below |
+| `spain.py` | Spain flight + hotel sweep: Ryanair fare calendar, Booking.com hotels for the 2 cheapest windows, same-dates ratio — see "Spain sweep" below |
+| `test_spain.py` | Offline tests for `spain.py` (fare/combos/windows/ratio arithmetic, caching, per-city failure isolation, Invariant SP) |
+| `state/spain_signals.json` | CI-managed Spain sweep log: per-city status + every priced window, rewritten each run |
 
 ## Web UI (`web/`)
 
@@ -219,6 +222,54 @@ no server and does not call the pipeline or any LLM.
   `web/`) — no Worker script, pure static hosting, no CI redeploy step needed.
 - Since `deals_history.json` is only appended to when a digest is actually emailed, the UI
   shows exactly "everything that made it to the email" — nothing more, nothing less.
+
+## Spain sweep (`spain.py`)
+
+The family plans to move to Spain (Elche/Alicante, Valencia), so a genuinely cheap Spain flight
++ stay is worth the 1.5h drive to Sofia airport where any other flight destination needs a
+diamond. Plovdiv (PDV) has no Spain route. Spain is therefore NOT proposed by FIND; `spain.py`
+runs its own deterministic sweep every run (`main()`, before `M.save`), and the LLM only writes
+the descriptive dossier afterwards.
+
+- **Flights first.** Ryanair's public, keyless fare calendar
+  (`RYANAIR_FARES_URL`, one call per route-month, ~56 calls a run) gives every day's cheapest
+  one-way fare SOF⇄city across `SPAIN_LEAD_DAYS`..`SPAIN_HORIZON_DAYS`. Round-trip combos are
+  built for `SPAIN_NIGHTS` (3/4/5), and the city's whole round-trip fare distribution is known
+  from those few calls. A city with no fare days is "no direct Ryanair flights"; fewer than
+  `SPAIN_MIN_COMBOS` combos is a "thin calendar".
+- **Hotels only for the cheapest windows.** `pick_windows` takes the `SPAIN_WINDOWS_PER_CITY`
+  (2) cheapest non-overlapping combos; each gets one Booking.com list call
+  (`P.list_properties(..., order_by="popularity")`). Qualifying hotels: EUR-quoted, ≥3★,
+  review ≥8.0; fewer than `SPAIN_MIN_HOTEL_CARDS` (6) skips the window.
+- **The ratio** (same dates, same run, no seasonal history needed):
+  `ratio = (best ppn × nights + 3 × round-trip fare) / (p25 ppn × nights + 3 × median round-trip fare)`.
+  Hotel reference = 25th percentile of the qualifying hotels for that exact window; flight
+  reference = median of all the city's round-trip combos. 3 passengers because Ryanair charges
+  a 4-year-old the adult fare. good ≤ `SPAIN_GOOD_RATIO` (0.55), diamond ≤ `SPAIN_DIAMOND_RATIO`
+  (0.45). Calibrated on the user's own example ("an average 4 nights + flight in Valencia is
+  ~€1,200 all in; €800 is not a deal, €500 is"): a €35 return fare + a promo hotel lands at
+  0.532 (good); an ordinary cheap-flight week ~0.745 (nothing).
+- **Fixed costs are shown, not scored.** `SPAIN_BAGS_EUR` (80) + `SPAIN_GROUND_EUR` (90: SOF
+  drive, parking, transfer) are added to the all-in total in the email but kept out of the
+  ratio, because they are the same on every trip and would only dilute it.
+- **Caching:** `mem["spain_dest"]` (in `memory.json`) caches each city's resolved Booking.com
+  ref, so `resolve_hotel` runs once per city ever.
+- **Re-alert:** a Spain deal goes through the same `is_new` rule, keyed
+  `"spain:" + identity_key` and compared on the all-in trip total (`realert_price_eur`). The
+  prefix keeps EUR/trip apart from the main pipeline's EUR/night.
+- **Email:** a "🇪🇸 Spain — flight + hotel deals" section above the main items (HTML and text),
+  with Book hotel / Book flights links. Subject precedence: main diamond > Spain deal > main
+  good. The health footer carries a "Spain sweep: N/7 cities with Ryanair flights from SOF ·
+  W windows priced · D deal(s) · best <city> at X% of typical" line (or "off" / "failed: …").
+- **Tuning log:** `state/spain_signals.json` holds every city's status and every priced window
+  (any tier), so the 0.55/0.45 thresholds can be re-tuned from real runs.
+- **Coverage gap (accepted):** Ryanair only; Wizz Air fares are invisible (no keyless source).
+- **Not in `deals_history.json` / web UI:** a Spain deal's flight + hotel shape does not fit the
+  current card; adding it is a web/ change of its own.
+- `SPAIN_SWEEP=0` (repo variable) disables the sweep; the footer then reads "Spain sweep: off".
+- **Unverified at build time:** whether Ryanair's calendar and apidojo's `order_by=popularity`
+  accept requests from GitHub Actions IPs. Check the footer line on the first real run:
+  `0/7` with "flight lookup failed" everywhere means Ryanair blocks Actions.
 
 ## Hotel grounding seam (Booking.com / apidojo)
 
@@ -575,6 +626,11 @@ it's a real paid price and a real choice made.
   → skip with `NOTE_UNVERIFIED`. Applied before F, so the note shown is the unverified one. An
   LLM-estimated price cannot prove a deal; this also makes a run-wide Booking.com outage
   quiet instead of spammy.
+- **(SP, Spain arithmetic is the pipeline's) The LLM never sets or changes any Spain number or
+  tier.** `spain.add_dossiers` copies only `about`/`value_case`/`red_flags` from the LLM reply
+  onto a deal; every price, ratio and tier is computed in `spain.evaluate_window`. Looks correct
+  if broken: an LLM-"corrected" ratio would still render plausibly. Test: `test_spain.py`
+  (a dossier stub returning a bogus `ratio` leaves 0.531 intact).
 - **(F, friction) A "good" that is not `C.is_low_friction(_location(c))` becomes skip with
   `NOTE_FAR`;** diamonds pass. Low friction = Bulgaria or a listed Greek/Turkish border town
   (`DRIVE_COUNTRIES`/`DRIVE_CITY_TOKENS`). Anything else means a 1.5h drive to Sofia airport
@@ -669,6 +725,7 @@ knowledge-only. On Anthropic the flagship searches inline via `FIND_PROMPT`, who
 | `RAPIDAPI_KEY` | secret | Booking.com (apidojo) hotel grounding via RapidAPI (`providers.py`) |
 | `BOOKING_RAPIDAPI_HOST` | repo variable | RapidAPI host; default `apidojo-booking-v1.p.rapidapi.com` |
 | `HOTEL_PROVIDER` | repo variable | `"apidojo"` (default) or `""` to force LLM-only grounding |
+| `SPAIN_SWEEP` | repo variable | Optional. `0` disables the Spain sweep; unset or anything else runs it |
 
 ## Running locally
 
@@ -714,8 +771,9 @@ inspect `state/city_signals.md`, `state/signals_seen.json`, and `state/memory.js
 
 ## Out of scope (do not start without an explicit request)
 
-- **Live flight data integration** — a real flight-price API/search, or surfacing a hotel only
-  when a cheap flight exists in-window. The skeptic's `flight_cost_eur_total`/`ground_transport_eur`
+- **Live flight data integration** — Ryanair's fare calendar is used for the Spain sweep only;
+  flight data for other destinations remains out of scope (a real flight-price API/search, or
+  surfacing a hotel only when a cheap flight exists in-window). The skeptic's `flight_cost_eur_total`/`ground_transport_eur`
   (see Stage 3 above) are an LLM *estimate* folded into scoring, not live flight data — that
   distinction stays intentional; don't casually upgrade one into the other.
 - **Package operators** — scrape Bulgarian-market charter operators for unsold allocations.

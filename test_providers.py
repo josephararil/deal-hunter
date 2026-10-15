@@ -33,6 +33,7 @@ _failed = []
 try:
     import requests
     import config as C
+    C.SPAIN_SWEEP_ENABLED = False   # never hit Ryanair from this suite
     import providers as P
     import find_city_anomalies as fa
 

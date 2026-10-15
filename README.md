@@ -114,7 +114,15 @@ To run offline unit tests for the grounding provider:
 ```bash
 python test_providers.py           # apidojo: monkey-patched, no network
 HOTEL_PROVIDER="" python test_stub.py  # full pipeline: LLM-only, stub llm()
+python test_spain.py               # Spain sweep: stubbed fares/hotels, no network
 ```
+
+**Spain sweep.** Because the family plans to move to Spain, `spain.py` runs a separate,
+deterministic check every run: Ryanair's public fare calendar (SOF to Valencia, Alicante,
+Malaga, Barcelona, Madrid, Murcia, Sevilla) finds the two cheapest 3–5 night windows per city,
+Booking.com prices hotels for just those windows, and a trip is emailed only when flights + hotel
+cost at most 55% of the typical price for the same dates (45% for a 💎). The LLM only writes the
+description. Set the repo variable `SPAIN_SWEEP=0` to turn it off.
 
 ## Tuning (config.py)
 

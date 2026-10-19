@@ -4724,6 +4724,111 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-19",
+      "deal_id": 3,
+      "destination": "Borovets, Bulgaria",
+      "type": "hotel",
+      "window": "Nov 27-30, 2026",
+      "tier": "skip",
+      "llm_score": 81,
+      "price_adj": 12,
+      "transit_adj": 3,
+      "final_score": 96,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Rila Hotel Borovets, 4-star for Nov 27-30, 2026: €133.52/night (€400.55 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "about": "Hotel Rila is the landmark 4-star full-service resort in Borovets (rated 9.0), having undergone comprehensive modern renovations. It features a massive heated indoor semi-Olympic pool, hot tubs, supervised kids' play spaces, and multiple dining venues. While Borovets town is quiet before the ski season opens, the self-contained resort keeps a 4-year-old fully entertained indoors regardless of cold November weather.",
+      "value_case": "€134/night for Rila's premium room product during late November captures the off-peak window before ski rates explode past €220/night, making it high-grade accommodation at a steep markdown.",
+      "why": "A manageable 2-hour drive accesses Borovets' premier flagship resort with exceptional pool and kids' infrastructure, offset only by a sleepy, pre-snow resort atmosphere outside.",
+      "red_flags": "Town amenities, ski lifts, and off-property restaurants will mostly be closed or operating on reduced hours ahead of the official ski season.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-27–2026-11-30, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.0. Live rate: €133.52/night (€400.55 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Rila+Hotel+Borovets&checkin=2026-11-27&checkout=2026-11-30&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 27-30, 2026",
+          "nights": 3,
+          "price_per_night_eur": 133.52,
+          "total_eur": 400.55,
+          "source": "Booking.com (apidojo) live 2026-10-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Rila+Hotel+Borovets&checkin=2026-11-27&checkout=2026-11-30&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-19",
+      "deal_id": 2,
+      "destination": "Hisarya, Bulgaria",
+      "type": "hotel",
+      "window": "Nov 06-08, 2026",
+      "tier": "skip",
+      "llm_score": 73,
+      "price_adj": -2,
+      "transit_adj": 3,
+      "final_score": 74,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Sana Spa Hotel, 3-star for Nov 6-8, 2026: €102.35/night (€204.7 total, 2 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "about": "Sana Spa Hotel is an established 3-star mineral spa property (rated 8.6) situated right by the Roman ruins and town parks of Hisarya. Standout amenities include a heated indoor mineral pool, a modest kids' playroom, and a tranquil spa center. A family with a 4-year-old can split time between comfortable pool splashing and stroller-friendly park walks in Hisarya's mild autumn climate.",
+      "value_case": "At €102/night, this is a fair shoulder-season discount against normal weekend rates of around €125/night, offering solid mid-tier wellness without paying 5-star prices.",
+      "why": "A quick 45-minute drive makes for an exceptionally easy 2-night weekend with indoor warm pools, though the hotel experience is pleasant and comfortable rather than extraordinary.",
+      "red_flags": "The property is a classic mid-range hotel where some room furnishings and spa areas show age compared to modern regional luxury resorts.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-06–2026-11-08, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.6. Live rate: €102.35/night (€204.7 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-11-06&checkout=2026-11-08&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 6-8, 2026",
+          "nights": 2,
+          "price_per_night_eur": 102.35,
+          "total_eur": 204.7,
+          "source": "Booking.com (apidojo) live 2026-10-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-11-06&checkout=2026-11-08&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-10-19",
+      "deal_id": 4,
+      "destination": "Istanbul, Turkey",
+      "type": "hotel",
+      "window": "Nov 12-16, 2026",
+      "tier": "skip",
+      "llm_score": 48,
+      "price_adj": 7,
+      "transit_adj": -3,
+      "final_score": 52,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Ramada Plaza By Wyndham Istanbul Sultanahmet for Nov 12-16, 2026: €99.9/night (€399.6 total, 4 nights), review 7.9. Price matches the Stage-1 estimate.",
+      "about": "Ramada Plaza by Wyndham Istanbul Sultanahmet is a standard mid-scale urban hotel (rated 7.9) located within walking distance of the historic core. It offers tight city rooms, basic on-site dining, and a small indoor wellness pool. Exploring the steep cobblestones, heavy crowds, and transit-heavy sights of central Istanbul presents substantial physical friction with a 4-year-old.",
+      "value_case": "At €100/night the rate is reasonable for central Istanbul, but it sits close to standard shoulder-season pricing for a 7.9-rated business-style hotel without representing a dramatic discount.",
+      "why": "Unpredictable border queues, intense urban crowds, and uneven toddler appeal in Sultanahmet severely drag down the net value of an otherwise cheap city break.",
+      "red_flags": "Driving across the Kapitan Andreevo / Kapikule border crossing can involve several hours of idling delays, and a 7.9 Booking rating indicates inconsistent service and compact rooms.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-12–2026-11-16, currency=EUR, adults=2, children=[4]. Review score: 7.9. Live rate: €99.9/night (€399.6 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Ramada+Plaza+By+Wyndham+Istanbul+Sultanahmet&checkin=2026-11-12&checkout=2026-11-16&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 12-16, 2026",
+          "nights": 4,
+          "price_per_night_eur": 99.9,
+          "total_eur": 399.6,
+          "source": "Booking.com (apidojo) live 2026-10-19",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Ramada+Plaza+By+Wyndham+Istanbul+Sultanahmet&checkin=2026-11-12&checkout=2026-11-16&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }

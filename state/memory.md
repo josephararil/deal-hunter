@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-10-15
+# Diamond Finder Memory — updated 2026-10-19
 
-## Price Baselines (52 entries)
+## Price Baselines (55 entries)
 
 ### amirahotel|2026-12
 **Realistic:** ~€215.72/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
@@ -168,9 +168,9 @@ Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/ni
 _Source: Booking.com (apidojo) live 2026-09-28_
 
 ### parkhotelandspavellahills|2026-11
-**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-10-10 &nbsp; **Samples:** 2
-Verified Park Hotel and SPA Vella Hills, 4-star for Nov 6-9, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-10-10_
+**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-10-19 &nbsp; **Samples:** 3
+Verified Park Hotel and SPA Vella Hills, 4-star for Nov 20-23, 2026: €121.89/night (€365.67 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-19_
 
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
@@ -197,10 +197,20 @@ _Source: Booking.com (apidojo) live 2026-10-07_
 Verified Princess Andriana Resort & Spa - Ultra All-Inclusive, 5-star for Sep 5-12, 2026: €426.0/night (€2982.0 total, 7 nights), review 8.3. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-04_
 
+### ramadaplazabywyndhamistanbulsultanahmet|2026-11
+**Realistic:** ~€99.9/night &nbsp; **Updated:** 2026-10-19 &nbsp; **Samples:** 1
+Verified Ramada Plaza By Wyndham Istanbul Sultanahmet for Nov 12-16, 2026: €99.9/night (€399.6 total, 4 nights), review 7.9. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-19_
+
 ### regnumbanskomountainresort|2026-09
 **Realistic:** ~€151.8/night &nbsp; **Updated:** 2026-07-19 &nbsp; **Samples:** 1
 Verified Regnum Bansko Mountain Resort, 5-star for Sep 9-13, 2026: €151.8/night (€607.18 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-19_
+
+### rilahotelborovets|2026-11
+**Realistic:** ~€133.52/night &nbsp; **Updated:** 2026-10-19 &nbsp; **Samples:** 1
+Verified Rila Hotel Borovets, 4-star for Nov 27-30, 2026: €133.52/night (€400.55 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-19_
 
 ### saintivanrilskisparesort|2026-11
 **Realistic:** ~€161.15/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
@@ -216,6 +226,11 @@ _Source: Booking.com (apidojo) live 2026-07-18_
 **Realistic:** ~€97.76/night &nbsp; **Updated:** 2026-08-10 &nbsp; **Samples:** 4
 Verified Sana Spa Hotel, 3-star for Sep 18-21, 2026: €97.76/night (€293.28 total, 3 nights), review 8.7. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-08-10_
+
+### sanaspahotel|2026-11
+**Realistic:** ~€102.35/night &nbsp; **Updated:** 2026-10-19 &nbsp; **Samples:** 1
+Verified Sana Spa Hotel, 3-star for Nov 6-8, 2026: €102.35/night (€204.7 total, 2 nights), review 8.6. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-19_
 
 ### saniresortvillawithsharedpool|2026-09
 **Realistic:** ~€195.96/night &nbsp; **Updated:** 2026-08-01 &nbsp; **Samples:** 1
@@ -264,6 +279,10 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 
 ## Outcome Ledger (200 entries)
 
+- · 2026-10-19 | Velingrad, Bulgaria | Nov 20-23, 2026 | skip score=88->89 claimed=€46 actual=€121.89 — A virtually frictionless 1.5-hour drive leads to guaranteed, weather-proof family utility with hot…
+- · 2026-10-19 | Hisarya, Bulgaria | Nov 06-08, 2026 | skip score=73->74 claimed=€78 actual=€102.35 — A quick 45-minute drive makes for an exceptionally easy 2-night weekend with indoor warm pools,…
+- · 2026-10-19 | Borovets, Bulgaria | Nov 27-30, 2026 | skip score=81->96 claimed=€85 actual=€133.52 — A manageable 2-hour drive accesses Borovets' premier flagship resort with exceptional pool and…
+- · 2026-10-19 | Istanbul, Turkey | Nov 12-16, 2026 | skip score=48->52 claimed=€87 actual=€99.9 — Unpredictable border queues, intense urban crowds, and uneven toddler appeal in Sultanahmet…
 - 💎 2026-10-15 | Bansko, Bulgaria | Nov 13-16, 2026 | diamond score=88->100 claimed=€110 actual=€161.15 — An easy 2.5-hour drive delivers outstanding family utility with this highly-rated resort's…
 - 👍 2026-10-15 | Pamporovo, Bulgaria | Dec 11-14, 2026 | good score=78->90 claimed=€125 actual=€187.52 — A virtually frictionless 1.5-hour drive to a 5-star mountain resort with a massive indoor pool,…
 - · 2026-10-15 | Antalya, Turkey | Nov 25-Dec 2, 2026 | skip score=65->34 claimed=€105 actual=€125 — While the 7-night duration helps amortize the travel days, flying via Sofia and Istanbul with a…
@@ -310,8 +329,4 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 - 👍 2026-09-19 | Bansko Mountain Autumn Escape | Nov 6-9, 2026 | good score=85->100 claimed=€109 actual=€122.12 — An easy 2.5-hour drive to an exceptionally family-focused property offers fantastic indoor toddler…
 - · 2026-09-19 | London Direct PDV Airfare | Oct 22-29, 2026 | skip score=35->33 claimed=€53 actual=€68.27 — While a direct flight from Plovdiv minimizes transit pain, a 7-night stay in a modest suburban…
 - 👍 2026-09-16 | Velingrad Thermal Spa Retreat | 2026-09-25 to 2026-09-28 | good score=85->99 claimed=€118 actual=€126 — A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm…
-- 👍 2026-09-16 | Bansko Mountain Autumn Escape | 2026-10-08 to 2026-10-12 | good score=78->96 claimed=€135 actual=€108 — This easy 2.5-hour drive offers exceptional indoor wellness utility for a toddler, though a 4-night…
-- · 2026-09-16 | Thassos Shoulder-Season Beachfront | 2026-10-02 to 2026-10-05 | skip score=62->65 claimed=€115 actual=€126 — The scenic island beachfront is appealing, but closing just one day after checkout heavily signals…
-- · 2026-09-16 | Crete Island Autumn Break | 2026-10-10 to 2026-10-17 | skip score=65->66 claimed=€145 actual=€401 — While the newly opened 5-star property is exceptional, navigating a multi-leg transit via Sofia to…
-- 👍 2026-09-13 | Velingrad Thermal Spa Retreat | Oct 9-12, 2026 | good score=85->99 claimed=€118 actual=€117.91 — A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm…
 _... and 150 earlier entries_

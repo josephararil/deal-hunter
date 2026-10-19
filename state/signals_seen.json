@@ -4,7 +4,7 @@
     "2026-07": 24,
     "2026-08": 8,
     "2026-09": 10,
-    "2026-10": 7
+    "2026-10": 8
   },
   "degraded_count": {
     "2026-08": 1
@@ -213,6 +213,24 @@
       "tier": "skip",
       "price_eur": 60.55,
       "name": "Hotel Orlovets"
+    },
+    "abeehillooorrsttv": {
+      "date": "2026-10-19",
+      "tier": "skip",
+      "price_eur": 133.52,
+      "name": "Rila Hotel Borovets"
+    },
+    "aaaehlnopsst": {
+      "date": "2026-10-19",
+      "tier": "skip",
+      "price_eur": 102.35,
+      "name": "Sana Spa Hotel"
+    },
+    "aaaaaaaaabbddehhilllmmmnnnprsstttuuwyyz": {
+      "date": "2026-10-19",
+      "tier": "skip",
+      "price_eur": 99.9,
+      "name": "Ramada Plaza by Wyndham Istanbul Sultanahmet"
     }
   }
 }

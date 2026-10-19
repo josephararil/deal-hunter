@@ -740,12 +740,18 @@
           "price": 117.91,
           "date": "2026-10-10",
           "source": "Booking.com (apidojo) live 2026-10-10"
+        },
+        {
+          "price": 121.89,
+          "date": "2026-10-19",
+          "source": "Booking.com (apidojo) live 2026-10-19"
         }
       ],
       "realistic_price_eur": 117.91,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 6-9, 2026: €117.91/night (€353.74 total, 3 nights), review 9.3. Price matches the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-10-10",
-      "updated": "2026-10-10"
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 20-23, 2026: €121.89/night (€365.67 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "updated": "2026-10-19",
+      "booking_name": "Park Hotel and SPA Vella Hills"
     },
     "doubletreebyhiltonistanbulsirkeci|2026-10": {
       "samples": [
@@ -852,61 +858,51 @@
       "source": "Booking.com (apidojo) live 2026-10-15",
       "updated": "2026-10-15",
       "booking_name": "Grand Hotel Therme"
+    },
+    "sanaspahotel|2026-11": {
+      "samples": [
+        {
+          "price": 102.35,
+          "date": "2026-10-19",
+          "source": "Booking.com (apidojo) live 2026-10-19"
+        }
+      ],
+      "realistic_price_eur": 102.35,
+      "note": "Verified Sana Spa Hotel, 3-star for Nov 6-8, 2026: €102.35/night (€204.7 total, 2 nights), review 8.6. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "updated": "2026-10-19",
+      "booking_name": "Sana Spa Hotel"
+    },
+    "rilahotelborovets|2026-11": {
+      "samples": [
+        {
+          "price": 133.52,
+          "date": "2026-10-19",
+          "source": "Booking.com (apidojo) live 2026-10-19"
+        }
+      ],
+      "realistic_price_eur": 133.52,
+      "note": "Verified Rila Hotel Borovets, 4-star for Nov 27-30, 2026: €133.52/night (€400.55 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "updated": "2026-10-19",
+      "booking_name": "Rila Hotel Borovets"
+    },
+    "ramadaplazabywyndhamistanbulsultanahmet|2026-11": {
+      "samples": [
+        {
+          "price": 99.9,
+          "date": "2026-10-19",
+          "source": "Booking.com (apidojo) live 2026-10-19"
+        }
+      ],
+      "realistic_price_eur": 99.9,
+      "note": "Verified Ramada Plaza By Wyndham Istanbul Sultanahmet for Nov 12-16, 2026: €99.9/night (€399.6 total, 4 nights), review 7.9. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "updated": "2026-10-19",
+      "booking_name": "Ramada Plaza By Wyndham Istanbul Sultanahmet"
     }
   },
   "ledger": [
-    {
-      "date": "2026-07-01",
-      "destination": "Rome, Italy",
-      "window": "15 September 2026 - 20 September 2026",
-      "type": "hotel",
-      "claimed_price": 85,
-      "verdict": "skip",
-      "actual_price": 85,
-      "llm_score": 58,
-      "final_score": 66,
-      "source": "hu openair official booking engine check 2026-07-01",
-      "note": "While the bungalow and pools offer a good toddler refuge, the exhausting logistics of driving to Sofia, flying, and navigating a major historic city severely dilute the net family value."
-    },
-    {
-      "date": "2026-07-02",
-      "destination": "Rome, Italy",
-      "window": "Aug 6-10, 2026",
-      "type": "hotel",
-      "claimed_price": 85,
-      "verdict": "good",
-      "actual_price": 63.89,
-      "llm_score": 58,
-      "final_score": 70,
-      "source": "Booking.com (apidojo) live 2026-07-02",
-      "note": "The logistical friction of flying from Sofia and the severe August heat in a major city heavily limit the net family utility for a 4-year-old, even with good on-site pools."
-    },
-    {
-      "date": "2026-07-02",
-      "destination": "Bansko, Bulgaria",
-      "window": "Aug 6-9, 2026",
-      "type": "hotel",
-      "claimed_price": 128,
-      "verdict": "skip",
-      "actual_price": 167.61,
-      "llm_score": 81,
-      "final_score": 29,
-      "source": "Booking.com (apidojo) live 2026-07-02",
-      "note": "A highly convenient 2.5-hour drive and a perfectly sized 3-night stay with excellent 5-star kids' facilities deliver very high utility and zero transit fatigue."
-    },
-    {
-      "date": "2026-07-02",
-      "destination": "Velingrad, Bulgaria",
-      "window": "Aug 14-17, 2026",
-      "type": "hotel",
-      "claimed_price": 141,
-      "verdict": "skip",
-      "actual_price": 127,
-      "llm_score": 83,
-      "final_score": 57,
-      "source": "Spa Hotel Olimp official website price list 2026",
-      "note": "An ultra-low friction 1.5-hour drive combined with half-board dining and daily children's animation offers an exceptionally hassle-free and enjoyable family break."
-    },
     {
       "date": "2026-07-03",
       "destination": "Lake Garda (via PDV direct)",
@@ -3454,6 +3450,58 @@
       "final_score": 92,
       "source": "Booking.com (apidojo) live 2026-10-15",
       "note": "Unbeatable, weather-proof family utility with hot thermal mineral pools and extensive supervised kids' spaces just 2.5 hours from home."
+    },
+    {
+      "date": "2026-10-19",
+      "destination": "Velingrad, Bulgaria",
+      "window": "Nov 20-23, 2026",
+      "type": "hotel",
+      "claimed_price": 46,
+      "verdict": "skip",
+      "actual_price": 121.89,
+      "llm_score": 88,
+      "final_score": 89,
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "note": "A virtually frictionless 1.5-hour drive leads to guaranteed, weather-proof family utility with hot indoor mineral pools and dedicated kids' areas at a premier regional spa hotel."
+    },
+    {
+      "date": "2026-10-19",
+      "destination": "Hisarya, Bulgaria",
+      "window": "Nov 06-08, 2026",
+      "type": "hotel",
+      "claimed_price": 78,
+      "verdict": "skip",
+      "actual_price": 102.35,
+      "llm_score": 73,
+      "final_score": 74,
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "note": "A quick 45-minute drive makes for an exceptionally easy 2-night weekend with indoor warm pools, though the hotel experience is pleasant and comfortable rather than extraordinary."
+    },
+    {
+      "date": "2026-10-19",
+      "destination": "Borovets, Bulgaria",
+      "window": "Nov 27-30, 2026",
+      "type": "hotel",
+      "claimed_price": 85,
+      "verdict": "skip",
+      "actual_price": 133.52,
+      "llm_score": 81,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "note": "A manageable 2-hour drive accesses Borovets' premier flagship resort with exceptional pool and kids' infrastructure, offset only by a sleepy, pre-snow resort atmosphere outside."
+    },
+    {
+      "date": "2026-10-19",
+      "destination": "Istanbul, Turkey",
+      "window": "Nov 12-16, 2026",
+      "type": "hotel",
+      "claimed_price": 87,
+      "verdict": "skip",
+      "actual_price": 99.9,
+      "llm_score": 48,
+      "final_score": 52,
+      "source": "Booking.com (apidojo) live 2026-10-19",
+      "note": "Unpredictable border queues, intense urban crowds, and uneven toddler appeal in Sultanahmet severely drag down the net value of an otherwise cheap city break."
     }
   ],
   "spain_dest": {

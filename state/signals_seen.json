@@ -4,7 +4,7 @@
     "2026-07": 24,
     "2026-08": 8,
     "2026-09": 10,
-    "2026-10": 8
+    "2026-10": 9
   },
   "degraded_count": {
     "2026-08": 1
@@ -231,6 +231,24 @@
       "tier": "skip",
       "price_eur": 99.9,
       "name": "Ramada Plaza by Wyndham Istanbul Sultanahmet"
+    },
+    "deeehiilorrstv": {
+      "date": "2026-10-26",
+      "tier": "skip",
+      "price_eur": 65,
+      "name": "Riverside Hotel"
+    },
+    "ccddeeeelnooorrrstux": {
+      "date": "2026-10-26",
+      "tier": "skip",
+      "price_eur": 221.01,
+      "name": "Concorde De Luxe Resort"
+    },
+    "aaaeghlopssttuu": {
+      "date": "2026-10-26",
+      "tier": "skip",
+      "price_eur": 189.21,
+      "name": "Augusta SPA Hotel"
     }
   }
 }

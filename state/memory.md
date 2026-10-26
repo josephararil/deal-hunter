@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-10-19
+# Diamond Finder Memory — updated 2026-10-26
 
-## Price Baselines (55 entries)
+## Price Baselines (58 entries)
 
 ### amirahotel|2026-12
 **Realistic:** ~€215.72/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
@@ -22,15 +22,30 @@ _Source: Booking.com (apidojo) live 2026-07-03_
 Verified Hotel Arte SPA & Park, 5-star for Oct 13-16, 2026: €195.1/night (€585.31 total, 3 nights), review 9.2. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-09-28_
 
+### artespaandparkhotel|2026-11
+**Realistic:** ~€179.43/night &nbsp; **Updated:** 2026-10-26 &nbsp; **Samples:** 1
+Verified Hotel Arte SPA & Park, 5-star for Nov 15-18, 2026: €179.43/night (€538.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-26_
+
 ### asteriafamilysunnybeach|2026-09
 **Realistic:** ~€146.93/night &nbsp; **Updated:** 2026-09-04 &nbsp; **Samples:** 3
 Verified Asteria Family Sunny Beach - Ultra All Inclusive, 4-star for Sep 6-11, 2026: €146.93/night (€734.66 total, 5 nights), review 8.5. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-09-04_
 
+### augustaspahotel|2026-11
+**Realistic:** ~€189.21/night &nbsp; **Updated:** 2026-10-26 &nbsp; **Samples:** 1
+Verified Augusta SPA Hotel, 3-star for Nov 8-11, 2026: €189.21/night (€567.63 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-26_
+
 ### balneocomplexandspaaquatonik|2026-08
 **Realistic:** ~€116.39/night &nbsp; **Updated:** 2026-07-17 &nbsp; **Samples:** 1
 Verified Balneo Complex & Spa Aquatonik, 4-star for Aug 21-24, 2026: €116.39/night (€349.16 total, 3 nights), review 8.9. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-17_
+
+### concordedeluxeresort|2026-11
+**Realistic:** ~€221.01/night &nbsp; **Updated:** 2026-10-26 &nbsp; **Samples:** 1
+Verified Concorde De Luxe Resort Lara Antalya- Prive Ultra All Inclusive, 5-star for Nov 20-27, 2026: €221.01/night (€1547.08 total, 7 nights), review 9.1. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-10-26_
 
 ### dbseabankresortspa|2026-10
 **Realistic:** ~€662.19/night &nbsp; **Updated:** 2026-09-13 &nbsp; **Samples:** 1
@@ -279,6 +294,10 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 
 ## Outcome Ledger (200 entries)
 
+- · 2026-10-26 | Bansko | Dec 4-7, 2026 | skip score=54->64 claimed=€68 actual=€65 — A low-friction, 2.25-hour drive provides an easy weekend with a heated pool and playroom, but the…
+- · 2026-10-26 | Velingrad | Nov 15-18, 2026 | skip score=89->96 claimed=€155 actual=€179.43 — An effortless 75-minute drive unlocks Bulgaria's benchmark family spa resort with exceptional…
+- · 2026-10-26 | Hisarya | Nov 8-11, 2026 | skip score=52->5 claimed=€92 actual=€189.21 — The 45-minute drive is painless for a toddler, but the property is an older, utilitarian 3-star…
+- · 2026-10-26 | Lara, Antalya | Nov 20-27, 2026 | skip score=68->51 claimed=€125 actual=€221.01 — Top-tier all-inclusive resort comfort with heated indoor pools balances against Sofia airport…
 - · 2026-10-19 | Velingrad, Bulgaria | Nov 20-23, 2026 | skip score=88->89 claimed=€46 actual=€121.89 — A virtually frictionless 1.5-hour drive leads to guaranteed, weather-proof family utility with hot…
 - · 2026-10-19 | Hisarya, Bulgaria | Nov 06-08, 2026 | skip score=73->74 claimed=€78 actual=€102.35 — A quick 45-minute drive makes for an exceptionally easy 2-night weekend with indoor warm pools,…
 - · 2026-10-19 | Borovets, Bulgaria | Nov 27-30, 2026 | skip score=81->96 claimed=€85 actual=€133.52 — A manageable 2-hour drive accesses Borovets' premier flagship resort with exceptional pool and…
@@ -325,8 +344,4 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 - · 2026-09-22 | Bratislava Autumn City Break | Oct 3-7, 2026 | skip score=52->48 claimed=€31 actual=€58.73 — Direct low-cost flights from Plovdiv eliminate transit pain, but an apartment-based city break…
 - · 2026-09-22 | Rome Historic City Break | Oct 7-14, 2026 | skip score=45->46 claimed=€15 actual=€70.04 — The severe transit friction of flying via Sofia, combined with the inherent exhaustion of a 7-night…
 - 👍 2026-09-19 | Arte Spa Thermal Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€176 actual=€195.1 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's…
-- · 2026-09-19 | Antalya Late-Season UAI Charter | Oct 20-27, 2026 | skip score=68->44 claimed=€82 actual=€104.35 — Provides immense on-site toddler utility and adult relaxation that easily justifies the moderate…
-- 👍 2026-09-19 | Bansko Mountain Autumn Escape | Nov 6-9, 2026 | good score=85->100 claimed=€109 actual=€122.12 — An easy 2.5-hour drive to an exceptionally family-focused property offers fantastic indoor toddler…
-- · 2026-09-19 | London Direct PDV Airfare | Oct 22-29, 2026 | skip score=35->33 claimed=€53 actual=€68.27 — While a direct flight from Plovdiv minimizes transit pain, a 7-night stay in a modest suburban…
-- 👍 2026-09-16 | Velingrad Thermal Spa Retreat | 2026-09-25 to 2026-09-28 | good score=85->99 claimed=€118 actual=€126 — A nearly frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with warm…
 _... and 150 earlier entries_

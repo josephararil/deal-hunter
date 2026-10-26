@@ -1,53 +1,53 @@
-# Diamond Finder — 2026-10-19
+# Diamond Finder — 2026-10-26
 
 _Stage 1: 4 candidate(s). 4 grounded · 4 scored · 0 unscored. 0 diamond · 0 good._
 
-### Velingrad, Bulgaria · — FIND 86/100 (high) · est €46/night
-**Type:** hotel &nbsp; **Window:** Nov 20-23, 2026
-Lead verifies deep pre-holiday off-peak pricing starting from €46/night compared to typical €120+/night peak winter holiday rates. Park Hotel & SPA Vella Hills holds a 9.4 family rating and features a heated indoor mineral pool, playground, and nursery facilities, located only 1.5 hours drive from Plovdiv.
-_Score: LLM 88 -2 price +3 transit = **89** → skip_
+### Velingrad · — FIND 85/100 (high) · est €155/night
+**Type:** hotel &nbsp; **Window:** Nov 15-18, 2026
+November shoulder pricing at Bulgaria premier 5-star family spa hotel. Full access to heated indoor mineral pools, designated shallow indoor toddler pool, and supervised children playroom. Off-peak midweek pricing of ~€155/night offers substantial savings over holiday/weekend rates of €260+/night, with low transit friction (1h 15m drive from Plovdiv).
+_Score: LLM 89 +4 price +3 transit = **96** → skip_
 
-### Hisarya, Bulgaria · — FIND 84/100 (high) · est €78/night
-**Type:** hotel &nbsp; **Window:** Nov 06-08, 2026
-November shoulder season brings premium mineral spa stays down from €140+/night to €78/night. Located only 45 minutes from Plovdiv, eliminating transit friction for a 4-year-old while providing full access to heated indoor mineral pools, kids indoor playrooms, and mild park walking trails.
-_Score: LLM 73 -2 price +3 transit = **74** → skip_
+### Bansko · — FIND 83/100 (high) · est €68/night
+**Type:** hotel &nbsp; **Window:** Dec 4-7, 2026
+December pre-ski season trough with early booking discounts and half-board pricing. Features a heated indoor swimming pool, sauna, and an indoor children playroom. Just 2h 15m drive from Plovdiv, bypassing holiday congestion while providing 4-star comfort at €68/night versus peak winter rates exceeding €150/night.
+_Score: LLM 54 +7 price +3 transit = **64** → skip_
 
-### Borovets, Bulgaria · — FIND 82/100 (high) · est €85/night
-**Type:** hotel &nbsp; **Window:** Nov 27-30, 2026
-Pre-ski opening trough at Borovets' flagship resort offers large room rates around €85/night before surging past €220/night once ski season opens. Features a large heated indoor semi-Olympic pool and active kids play facilities within a low-stress 2-hour drive from Plovdiv.
-_Score: LLM 81 +12 price +3 transit = **96** → skip_
+### Hisarya · — FIND 82/100 (high) · est €92/night
+**Type:** hotel &nbsp; **Window:** Nov 8-11, 2026
+Off-peak midweek Balneo & Spa package under 45 minutes drive from Plovdiv. Includes full access to a large heated indoor mineral pool, kids splash pool, and salt room. Midweek pricing drops to ~€92/night compared to peak weekend rates of €140+/night, delivering an effortless, low-friction short wellness break for a 4-year-old.
+_Score: LLM 52 -50 price +3 transit = **5** → skip_
 
-### Istanbul, Turkey · — FIND 80/100 (high) · est €87/night
-**Type:** hotel &nbsp; **Window:** Nov 12-16, 2026
-Live leads show November city-break arbitrage with quality family hotel rates down to €87/night from €160+ summer/early autumn peaks. High excitement destination with smooth ground or direct air logistics; property includes family room configurations, indoor wellness/pool facilities, and direct tramway access for stroller-friendly sightseeing.
-_Score: LLM 48 +7 price -3 transit = **52** → skip_
+### Lara, Antalya · — FIND 81/100 (high) · est €125/night
+**Type:** hotel &nbsp; **Window:** Nov 20-27, 2026
+Significant late-autumn luxury rate drop for ultra-all-inclusive 5-star beachfront resort. Heated indoor pools, heated outdoor pool sections, and active year-round Domi kids club. Summer rates reach €350-450/night, collapsing to ~€125/night for 2 adults and 1 child, offsetting Sofia flight friction with luxury value and a 15-minute transfer from AYT airport.
+_Score: LLM 68 -14 price -3 transit = **51** → skip_
 
 ## Grounding & scoring
 
-### 🔧 Park Hotel and SPA Vella Hills — CORRECT (confidence: high) → final **89** (skip)
-**Summary:** Verified Park Hotel and SPA Vella Hills, 4-star for Nov 20-23, 2026: €121.89/night (€365.67 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
+### 🔧 Hotel Arte SPA & Park — CORRECT (confidence: high) → final **96** (skip)
+**Summary:** Verified Hotel Arte SPA & Park, 5-star for Nov 15-18, 2026: €179.43/night (€538.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
 **Options:**
-  - Nov 20-23, 2026 · €121.89/night · €365.67 total · [book](https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-11-20&checkout=2026-11-23&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-19_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-11-20&checkout=2026-11-23&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-20–2026-11-23, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.2. Live rate: €121.89/night (€365.67 total).
+  - Nov 15-18, 2026 · €179.43/night · €538.29 total · [book](https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-11-15&checkout=2026-11-18&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-26_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Hotel+Arte+SPA+%26+Park&checkin=2026-11-15&checkout=2026-11-18&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-15–2026-11-18, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.2. Live rate: €179.43/night (€538.29 total).
 
-### 🔧 Sana Spa Hotel — CORRECT (confidence: high) → final **74** (skip)
-**Summary:** Verified Sana Spa Hotel, 3-star for Nov 6-8, 2026: €102.35/night (€204.7 total, 2 nights), review 8.6. Price corrected from the Stage-1 estimate.
+### 🔧 Bansko — CORRECT (confidence: high) → final **64** (skip)
+**Summary:** Riverside Hotel in Bansko is bookable for December 5–7, 2026, at €65 per person per night on Half Board (€130 total for 2 nights). Because December 3–5 is fully booked, the stay is adjusted to December 5–7, bookable directly at https://www.riversidebansko.bg/.
 **Options:**
-  - Nov 6-8, 2026 · €102.35/night · €204.7 total · [book](https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-11-06&checkout=2026-11-08&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-19_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Sana+Spa+Hotel&checkin=2026-11-06&checkout=2026-11-08&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-06–2026-11-08, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.6. Live rate: €102.35/night (€204.7 total).
+  - Dec 5-7, 2026 · €65/night · €130 total · [book](https://www.riversidebansko.bg/) · _Riverside Hotel official website winter rates 2026/2027_
+**How to book:** Book online via the official hotel website (https://www.riversidebansko.bg/) or contact reservations directly at +359 886 581 514 or sales@riversidebansko.bg. A minimum stay of 2 nights applies.
+**Grounding:** Live search on the official Riverside Hotel Bansko site verifies standard pre-season early winter rates of €65 per person/night on Half Board basis for Dec 1–21, 2026. Within the Dec 4–7 window, full occupancy on Dec 3–5 requires shifting the stay to Dec 5–7 (2 nights), yielding €65/night (€130 total per person, €260 for 2 adults).
 
-### 🔧 Rila Hotel Borovets — CORRECT (confidence: high) → final **96** (skip)
-**Summary:** Verified Rila Hotel Borovets, 4-star for Nov 27-30, 2026: €133.52/night (€400.55 total, 3 nights), review 9.0. Price corrected from the Stage-1 estimate.
+### 🔧 Augusta SPA Hotel — CORRECT (confidence: high) → final **5** (skip)
+**Summary:** Verified Augusta SPA Hotel, 3-star for Nov 8-11, 2026: €189.21/night (€567.63 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.
 **Options:**
-  - Nov 27-30, 2026 · €133.52/night · €400.55 total · [book](https://www.booking.com/searchresults.html?ss=Rila+Hotel+Borovets&checkin=2026-11-27&checkout=2026-11-30&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-19_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Rila+Hotel+Borovets&checkin=2026-11-27&checkout=2026-11-30&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-27–2026-11-30, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.0. Live rate: €133.52/night (€400.55 total).
+  - Nov 8-11, 2026 · €189.21/night · €567.63 total · [book](https://www.booking.com/searchresults.html?ss=Augusta+SPA+Hotel&checkin=2026-11-08&checkout=2026-11-11&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-26_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Augusta+SPA+Hotel&checkin=2026-11-08&checkout=2026-11-11&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-08–2026-11-11, currency=EUR, adults=2, children=[4]. Property class: 3-star. Review score: 8.2. Live rate: €189.21/night (€567.63 total).
 
-### ✅ Ramada Plaza By Wyndham Istanbul Sultanahmet — CONFIRM (confidence: high) → final **52** (skip)
-**Summary:** Verified Ramada Plaza By Wyndham Istanbul Sultanahmet for Nov 12-16, 2026: €99.9/night (€399.6 total, 4 nights), review 7.9. Price matches the Stage-1 estimate.
+### 🔧 Concorde De Luxe Resort Lara Antalya- Prive Ultra All Inclusive — CORRECT (confidence: high) → final **51** (skip)
+**Summary:** Verified Concorde De Luxe Resort Lara Antalya- Prive Ultra All Inclusive, 5-star for Nov 20-27, 2026: €221.01/night (€1547.08 total, 7 nights), review 9.1. Price corrected from the Stage-1 estimate.
 **Options:**
-  - Nov 12-16, 2026 · €99.9/night · €399.6 total · [book](https://www.booking.com/searchresults.html?ss=Ramada+Plaza+By+Wyndham+Istanbul+Sultanahmet&checkin=2026-11-12&checkout=2026-11-16&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-19_
-**How to book:** Book at https://www.booking.com/searchresults.html?ss=Ramada+Plaza+By+Wyndham+Istanbul+Sultanahmet&checkin=2026-11-12&checkout=2026-11-16&group_adults=2&group_children=1&age=4
-**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-12–2026-11-16, currency=EUR, adults=2, children=[4]. Review score: 7.9. Live rate: €99.9/night (€399.6 total).
+  - Nov 20-27, 2026 · €221.01/night · €1547.08 total · [book](https://www.booking.com/searchresults.html?ss=Concorde+De+Luxe+Resort+Lara+Antalya-+Prive+Ultra+All+Inclusive&checkin=2026-11-20&checkout=2026-11-27&group_adults=2&group_children=1&age=4) · _Booking.com (apidojo) live 2026-10-26_
+**How to book:** Book at https://www.booking.com/searchresults.html?ss=Concorde+De+Luxe+Resort+Lara+Antalya-+Prive+Ultra+All+Inclusive&checkin=2026-11-20&checkout=2026-11-27&group_adults=2&group_children=1&age=4
+**Grounding:** Booking.com (apidojo) /properties/v2/list for 2026-11-20–2026-11-27, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 9.1. Live rate: €221.01/night (€1547.08 total).

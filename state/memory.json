@@ -900,61 +900,51 @@
       "source": "Booking.com (apidojo) live 2026-10-19",
       "updated": "2026-10-19",
       "booking_name": "Ramada Plaza By Wyndham Istanbul Sultanahmet"
+    },
+    "artespaandparkhotel|2026-11": {
+      "samples": [
+        {
+          "price": 179.43,
+          "date": "2026-10-26",
+          "source": "Booking.com (apidojo) live 2026-10-26"
+        }
+      ],
+      "realistic_price_eur": 179.43,
+      "note": "Verified Hotel Arte SPA & Park, 5-star for Nov 15-18, 2026: €179.43/night (€538.29 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-26",
+      "updated": "2026-10-26",
+      "booking_name": "Hotel Arte SPA & Park"
+    },
+    "augustaspahotel|2026-11": {
+      "samples": [
+        {
+          "price": 189.21,
+          "date": "2026-10-26",
+          "source": "Booking.com (apidojo) live 2026-10-26"
+        }
+      ],
+      "realistic_price_eur": 189.21,
+      "note": "Verified Augusta SPA Hotel, 3-star for Nov 8-11, 2026: €189.21/night (€567.63 total, 3 nights), review 8.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-26",
+      "updated": "2026-10-26",
+      "booking_name": "Augusta SPA Hotel"
+    },
+    "concordedeluxeresort|2026-11": {
+      "samples": [
+        {
+          "price": 221.01,
+          "date": "2026-10-26",
+          "source": "Booking.com (apidojo) live 2026-10-26"
+        }
+      ],
+      "realistic_price_eur": 221.01,
+      "note": "Verified Concorde De Luxe Resort Lara Antalya- Prive Ultra All Inclusive, 5-star for Nov 20-27, 2026: €221.01/night (€1547.08 total, 7 nights), review 9.1. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-10-26",
+      "updated": "2026-10-26",
+      "booking_name": "Concorde De Luxe Resort Lara Antalya- Prive Ultra All Inclusive"
     }
   },
   "ledger": [
-    {
-      "date": "2026-07-03",
-      "destination": "Lake Garda (via PDV direct)",
-      "window": "August 8-13, 2026",
-      "type": "hotel",
-      "claimed_price": 135,
-      "verdict": "skip",
-      "actual_price": 167,
-      "llm_score": 72,
-      "final_score": 43,
-      "source": "Parc Hotel Peschiera del Garda official property site",
-      "note": "Leveraging a direct flight from Plovdiv minimizes local departure friction, and Lake Garda delivers premium summer family utility, though navigating the onward train transfer to the hotel adds…"
-    },
-    {
-      "date": "2026-07-03",
-      "destination": "Turkish Aegean Coast",
-      "window": "August 24-29, 2026",
-      "type": "hotel",
-      "claimed_price": 85,
-      "verdict": "skip",
-      "actual_price": 386.21,
-      "llm_score": 45,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-07-03",
-      "note": "While an ultra all-inclusive resort with a massive aquapark offers outstanding in-window utility, the exhausting 7-hour drive—compounded by peak August border delays—heavily degrades the net family…"
-    },
-    {
-      "date": "2026-07-04",
-      "destination": "Rhodes, Greece",
-      "window": "Sep 5-12, 2026",
-      "type": "hotel",
-      "claimed_price": 210,
-      "verdict": "skip",
-      "actual_price": 426.0,
-      "llm_score": 75,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-07-04",
-      "note": "Massive in-window utility from the 5-star waterpark is excellent for a 4-year-old, though the transit requirement of driving to Sofia and flying adds noticeable friction and unquoted travel costs."
-    },
-    {
-      "date": "2026-07-04",
-      "destination": "Sunny Beach, Bulgaria",
-      "window": "Aug 10-15, 2026",
-      "type": "hotel",
-      "claimed_price": 135,
-      "verdict": "skip",
-      "actual_price": 215.0,
-      "llm_score": 82,
-      "final_score": 0,
-      "source": "Booking.com (apidojo) live 2026-07-04",
-      "note": "An easy 3-hour drive from Plovdiv delivers an ultra-low friction, high-utility summer beach break perfectly sized at 5 nights before toddler fatigue sets in."
-    },
     {
       "date": "2026-07-04",
       "destination": "Puglia Coastal Escape via Bari",
@@ -3502,6 +3492,58 @@
       "final_score": 52,
       "source": "Booking.com (apidojo) live 2026-10-19",
       "note": "Unpredictable border queues, intense urban crowds, and uneven toddler appeal in Sultanahmet severely drag down the net value of an otherwise cheap city break."
+    },
+    {
+      "date": "2026-10-26",
+      "destination": "Bansko",
+      "window": "Dec 4-7, 2026",
+      "type": "hotel",
+      "claimed_price": 68,
+      "verdict": "skip",
+      "actual_price": 65,
+      "llm_score": 54,
+      "final_score": 64,
+      "source": "Riverside Hotel official website winter rates 2026/2027",
+      "note": "A low-friction, 2.25-hour drive provides an easy weekend with a heated pool and playroom, but the property is a standard, dated regional hotel in a quiet pre-season resort."
+    },
+    {
+      "date": "2026-10-26",
+      "destination": "Velingrad",
+      "window": "Nov 15-18, 2026",
+      "type": "hotel",
+      "claimed_price": 155,
+      "verdict": "skip",
+      "actual_price": 179.43,
+      "llm_score": 89,
+      "final_score": 96,
+      "source": "Booking.com (apidojo) live 2026-10-26",
+      "note": "An effortless 75-minute drive unlocks Bulgaria's benchmark family spa resort with exceptional toddler-friendly warm pools and supervised play infrastructure."
+    },
+    {
+      "date": "2026-10-26",
+      "destination": "Hisarya",
+      "window": "Nov 8-11, 2026",
+      "type": "hotel",
+      "claimed_price": 92,
+      "verdict": "skip",
+      "actual_price": 189.21,
+      "llm_score": 52,
+      "final_score": 5,
+      "source": "Booking.com (apidojo) live 2026-10-26",
+      "note": "The 45-minute drive is painless for a toddler, but the property is an older, utilitarian 3-star balneo complex that provides basic utility without standout appeal."
+    },
+    {
+      "date": "2026-10-26",
+      "destination": "Lara, Antalya",
+      "window": "Nov 20-27, 2026",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "skip",
+      "actual_price": 221.01,
+      "llm_score": 68,
+      "final_score": 51,
+      "source": "Booking.com (apidojo) live 2026-10-26",
+      "note": "Top-tier all-inclusive resort comfort with heated indoor pools balances against Sofia airport transit hassle and connecting flights with a 4-year-old in late autumn."
     }
   ],
   "spain_dest": {

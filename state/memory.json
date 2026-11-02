@@ -942,61 +942,37 @@
       "source": "Booking.com (apidojo) live 2026-10-26",
       "updated": "2026-10-26",
       "booking_name": "Concorde De Luxe Resort Lara Antalya- Prive Ultra All Inclusive"
+    },
+    "sofitelistanbultaksim|2026-11": {
+      "samples": [
+        {
+          "price": 226.44,
+          "date": "2026-11-02",
+          "source": "Booking.com (apidojo) live 2026-11-02"
+        }
+      ],
+      "realistic_price_eur": 226.44,
+      "note": "Verified Sofitel Istanbul Taksim, 5-star for Nov 24-29, 2026: €226.44/night (€1132.2 total, 5 nights), review 8.2. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-11-02",
+      "updated": "2026-11-02",
+      "booking_name": "Sofitel Istanbul Taksim"
+    },
+    "novotelwienhauptbahnhof|2026-11": {
+      "samples": [
+        {
+          "price": 219.57,
+          "date": "2026-11-02",
+          "source": "Booking.com (apidojo) live 2026-11-02"
+        }
+      ],
+      "realistic_price_eur": 219.57,
+      "note": "Verified Novotel Wien Hauptbahnhof, 4-star for Nov 26-30, 2026: €219.57/night (€878.26 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-11-02",
+      "updated": "2026-11-02",
+      "booking_name": "Novotel Wien Hauptbahnhof"
     }
   },
   "ledger": [
-    {
-      "date": "2026-07-04",
-      "destination": "Puglia Coastal Escape via Bari",
-      "window": "Aug 23-28, 2026",
-      "type": "hotel",
-      "claimed_price": 150,
-      "verdict": "skip",
-      "actual_price": 69.49,
-      "llm_score": 42,
-      "final_score": 54,
-      "source": "Booking.com (apidojo) live 2026-07-04",
-      "note": "The failure to confirm a family resort means downgrading to a basic city guesthouse, offering poor utility for a 4-year-old that absolutely does not justify the hassle of flying via Sofia."
-    },
-    {
-      "date": "2026-07-04",
-      "destination": "Antalya All-Inclusive via SunExpress",
-      "window": "Aug 26-Sep 2, 2026",
-      "type": "hotel",
-      "claimed_price": 255,
-      "verdict": "skip",
-      "actual_price": 380,
-      "llm_score": 83,
-      "final_score": 0,
-      "source": "Booking.com live search 2026-07-04",
-      "note": "The exceptional family utility of an elite Antalya ultra-all-inclusive resort provides enough friction-free on-site entertainment to fully justify the Sofia departure logistics for a week."
-    },
-    {
-      "date": "2026-07-05",
-      "destination": "Lucky Bansko Aparthotel SPA & Relax",
-      "window": "Sep 10-13, 2026",
-      "type": "hotel",
-      "claimed_price": 104,
-      "verdict": "diamond",
-      "actual_price": 101.87,
-      "llm_score": 82,
-      "final_score": 89,
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "note": "An easy sub-3-hour drive and excellent 5-star kids' facilities deliver an ultra-low friction, high-utility weekend perfectly sized for a 4-year-old."
-    },
-    {
-      "date": "2026-07-05",
-      "destination": "Mövenpick Istanbul Golden Horn",
-      "window": "Sep 14-19, 2026",
-      "type": "hotel",
-      "claimed_price": 80,
-      "verdict": "skip",
-      "actual_price": 108.0,
-      "llm_score": 56,
-      "final_score": 54,
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "note": "While the destination is exciting, the exhausting 5-hour drive with border delays or flight transfers from Sofia heavily tax a family, and 5 nights in a massive city offers low net utility for a…"
-    },
     {
       "date": "2026-07-05",
       "destination": "Hissar Spa Hotel",
@@ -3544,6 +3520,58 @@
       "final_score": 51,
       "source": "Booking.com (apidojo) live 2026-10-26",
       "note": "Top-tier all-inclusive resort comfort with heated indoor pools balances against Sofia airport transit hassle and connecting flights with a 4-year-old in late autumn."
+    },
+    {
+      "date": "2026-11-02",
+      "destination": "Bansko, Perun Lodge Hotel",
+      "window": "Dec 4-7, 2026",
+      "type": "hotel",
+      "claimed_price": 78,
+      "verdict": "skip",
+      "actual_price": 92,
+      "llm_score": 62,
+      "final_score": 71,
+      "source": "Perun Lodge official website and winter season rate card 2026/2027",
+      "note": "An easy 2.5-hour drive provides convenient pre-season mountain downtime with a heated indoor pool, but the town is quiet and the property is an ordinary mid-range apart-hotel."
+    },
+    {
+      "date": "2026-11-02",
+      "destination": "Velingrad, Hotel Arte SPA & Park",
+      "window": "Nov 20-22, 2026",
+      "type": "hotel",
+      "claimed_price": 230,
+      "verdict": "skip",
+      "actual_price": 179,
+      "llm_score": 92,
+      "final_score": 95,
+      "source": "Hotel Arte SPA & Park direct booking system",
+      "note": "A seamless 1.5-hour drive leads to Bulgaria's benchmark luxury family spa resort, boasting superb year-round thermal pools and staffed toddler animation that maximize family utility."
+    },
+    {
+      "date": "2026-11-02",
+      "destination": "Istanbul, Sofitel Istanbul Taksim",
+      "window": "Nov 24-29, 2026",
+      "type": "hotel",
+      "claimed_price": 180,
+      "verdict": "skip",
+      "actual_price": 226.44,
+      "llm_score": 53,
+      "final_score": 55,
+      "source": "Booking.com (apidojo) live 2026-11-02",
+      "note": "While the hotel offers comfortable 5-star amenities with an indoor pool, navigating bustling Taksim with a 4-year-old over 5 nights creates high fatigue against unpredictable border driving."
+    },
+    {
+      "date": "2026-11-02",
+      "destination": "Vienna, Novotel Wien Hauptbahnhof",
+      "window": "Nov 26-30, 2026",
+      "type": "hotel",
+      "claimed_price": 135,
+      "verdict": "skip",
+      "actual_price": 219.57,
+      "llm_score": 62,
+      "final_score": 42,
+      "source": "Booking.com (apidojo) live 2026-11-02",
+      "note": "The early Christmas markets and reliable family-friendly hotel amenities deliver seasonal charm, but transit logistics via Sofia Airport and winter walking friction temper the overall utility for a…"
     }
   ],
   "spain_dest": {

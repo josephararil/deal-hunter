@@ -1,6 +1,6 @@
-# Diamond Finder Memory — updated 2026-10-26
+# Diamond Finder Memory — updated 2026-11-02
 
-## Price Baselines (58 entries)
+## Price Baselines (60 entries)
 
 ### amirahotel|2026-12
 **Realistic:** ~€215.72/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
@@ -167,6 +167,11 @@ _Source: Booking.com (apidojo) live 2026-09-01_
 Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
+### novotelwienhauptbahnhof|2026-11
+**Realistic:** ~€219.57/night &nbsp; **Updated:** 2026-11-02 &nbsp; **Samples:** 1
+Verified Novotel Wien Hauptbahnhof, 4-star for Nov 26-30, 2026: €219.57/night (€878.26 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-11-02_
+
 ### ozhotelssui|2026-10
 **Realistic:** ~€104.35/night &nbsp; **Updated:** 2026-09-19 &nbsp; **Samples:** 1
 Verified Oz Hotels Sui, 5-star for Oct 20-27, 2026: €104.35/night (€730.42 total, 7 nights), review 8.9. Price corrected from the Stage-1 estimate.
@@ -272,6 +277,11 @@ _Source: Booking.com (apidojo) live 2026-08-28_
 Verified Sealife Family Resort Hotel, 5-star for Oct 23-30, 2026: €159.14/night (€1113.96 total, 7 nights), review 9.3. Price matches the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-10-10_
 
+### sofitelistanbultaksim|2026-11
+**Realistic:** ~€226.44/night &nbsp; **Updated:** 2026-11-02 &nbsp; **Samples:** 1
+Verified Sofitel Istanbul Taksim, 5-star for Nov 24-29, 2026: €226.44/night (€1132.2 total, 5 nights), review 8.2. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-11-02_
+
 ### spahotelinfinitypark|2026-09
 **Realistic:** ~€285.0/night &nbsp; **Updated:** 2026-09-10 &nbsp; **Samples:** 1
 Verified SPA Hotel Infinity Park Velingrad, 5-star for Sep 20-23, 2026: €285.0/night (€855.0 total, 3 nights), review 9.1. Price corrected from the Stage-1 estimate.
@@ -294,6 +304,10 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 
 ## Outcome Ledger (200 entries)
 
+- · 2026-11-02 | Bansko, Perun Lodge Hotel | Dec 4-7, 2026 | skip score=62->71 claimed=€78 actual=€92 — An easy 2.5-hour drive provides convenient pre-season mountain downtime with a heated indoor pool,…
+- · 2026-11-02 | Velingrad, Hotel Arte SPA & Park | Nov 20-22, 2026 | skip score=92->95 claimed=€230 actual=€179 — A seamless 1.5-hour drive leads to Bulgaria's benchmark luxury family spa resort, boasting superb…
+- · 2026-11-02 | Istanbul, Sofitel Istanbul Taksim | Nov 24-29, 2026 | skip score=53->55 claimed=€180 actual=€226.44 — While the hotel offers comfortable 5-star amenities with an indoor pool, navigating bustling Taksim…
+- · 2026-11-02 | Vienna, Novotel Wien Hauptbahnhof | Nov 26-30, 2026 | skip score=62->42 claimed=€135 actual=€219.57 — The early Christmas markets and reliable family-friendly hotel amenities deliver seasonal charm,…
 - · 2026-10-26 | Bansko | Dec 4-7, 2026 | skip score=54->64 claimed=€68 actual=€65 — A low-friction, 2.25-hour drive provides an easy weekend with a heated pool and playroom, but the…
 - · 2026-10-26 | Velingrad | Nov 15-18, 2026 | skip score=89->96 claimed=€155 actual=€179.43 — An effortless 75-minute drive unlocks Bulgaria's benchmark family spa resort with exceptional…
 - · 2026-10-26 | Hisarya | Nov 8-11, 2026 | skip score=52->5 claimed=€92 actual=€189.21 — The 45-minute drive is painless for a toddler, but the property is an older, utilitarian 3-star…
@@ -340,8 +354,4 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 - · 2026-09-25 | Terme di Hissar, Hisarya | 2026-10-22 to 2026-10-26 | skip score=72->59 claimed=€95 actual=€211 — Frictionless 45-minute transit makes this a highly accessible local getaway, but a 4-night stay in…
 - · 2026-09-25 | Ilio Mare Resort Hotel, Thassos | 2026-10-01 to 2026-10-05 | skip score=45->44 claimed=€120 actual=€126 — The 5-hour door-to-door transit including a ferry crossing is disproportionate for a 4-night trip,…
 - 👍 2026-09-22 | Velingrad Thermal Spa Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€195 actual=€195.1 — A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Arte's…
-- 👍 2026-09-22 | Bansko Mountain Autumn Escape | Nov 6-9, 2026 | good score=85->96 claimed=€119.5 actual=€132.95 — An easy 2.5-hour drive to an exceptionally family-focused 5-star mountain resort offers fantastic…
-- · 2026-09-22 | Bratislava Autumn City Break | Oct 3-7, 2026 | skip score=52->48 claimed=€31 actual=€58.73 — Direct low-cost flights from Plovdiv eliminate transit pain, but an apartment-based city break…
-- · 2026-09-22 | Rome Historic City Break | Oct 7-14, 2026 | skip score=45->46 claimed=€15 actual=€70.04 — The severe transit friction of flying via Sofia, combined with the inherent exhaustion of a 7-night…
-- 👍 2026-09-19 | Arte Spa Thermal Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€176 actual=€195.1 — A near-effortless 1.5-hour drive delivers outstanding, guaranteed family utility through Arte's…
 _... and 150 earlier entries_

@@ -1,6 +1,11 @@
-# Diamond Finder Memory — updated 2026-11-02
+# Diamond Finder Memory — updated 2026-11-09
 
-## Price Baselines (60 entries)
+## Price Baselines (62 entries)
+
+### alexanderbeachhotelandspa|2026-11
+**Realistic:** ~€264.32/night &nbsp; **Updated:** 2026-11-09 &nbsp; **Samples:** 1
+Verified Alexander Beach Hotel & Spa, 5-star for Nov 20-23, 2026: €264.32/night (€792.95 total, 3 nights), review 8.3. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-11-09_
 
 ### amirahotel|2026-12
 **Realistic:** ~€215.72/night &nbsp; **Updated:** 2026-10-15 &nbsp; **Samples:** 1
@@ -167,6 +172,11 @@ _Source: Booking.com (apidojo) live 2026-09-01_
 Verified Mövenpick Istanbul Hotel Golden Horn, 5-star for Sep 14-19, 2026: €108.0/night (€540.0 total, 5 nights), review 8.5. Price corrected from the Stage-1 estimate.
 _Source: Booking.com (apidojo) live 2026-07-05_
 
+### novotelistanbulbosphorus|2026-11
+**Realistic:** ~€172.05/night &nbsp; **Updated:** 2026-11-09 &nbsp; **Samples:** 1
+Verified Novotel Istanbul Bosphorus Hotel, 5-star for Nov 26-30, 2026: €172.05/night (€688.2 total, 4 nights), review 8.3. Price corrected from the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-11-09_
+
 ### novotelwienhauptbahnhof|2026-11
 **Realistic:** ~€219.57/night &nbsp; **Updated:** 2026-11-02 &nbsp; **Samples:** 1
 Verified Novotel Wien Hauptbahnhof, 4-star for Nov 26-30, 2026: €219.57/night (€878.26 total, 4 nights), review 8.8. Price corrected from the Stage-1 estimate.
@@ -188,9 +198,9 @@ Verified Park Hotel and SPA Vella Hills, 4-star for Oct 9-12, 2026: €117.91/ni
 _Source: Booking.com (apidojo) live 2026-09-28_
 
 ### parkhotelandspavellahills|2026-11
-**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-10-19 &nbsp; **Samples:** 3
-Verified Park Hotel and SPA Vella Hills, 4-star for Nov 20-23, 2026: €121.89/night (€365.67 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.
-_Source: Booking.com (apidojo) live 2026-10-19_
+**Realistic:** ~€117.91/night &nbsp; **Updated:** 2026-11-09 &nbsp; **Samples:** 4
+Verified Park Hotel and SPA Vella Hills, 4-star for Nov 18-20, 2026: €78.29/night (€156.59 total, 2 nights), review 9.3. Price matches the Stage-1 estimate.
+_Source: Booking.com (apidojo) live 2026-11-09_
 
 ### premierluxurymountainresort|2026-08
 **Realistic:** ~€167.72/night &nbsp; **Updated:** 2026-07-18 &nbsp; **Samples:** 1
@@ -304,6 +314,10 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 
 ## Outcome Ledger (200 entries)
 
+- 🔒 2026-11-09 | Alexandroupoli, Alexander Beach Hotel & Spa | Nov 20-23, 2026 | blocked claimed=€55 actual=€264.32 — live price €264.32 is 4.8× FIND's €55 estimate — likely a wrong room or listing match
+- 💎 2026-11-09 | Velingrad, Park Hotel & SPA Vella Hills | Nov 18-20, 2026 | diamond score=88->100 claimed=€92 actual=€78.29 — An effortless 80-minute drive unlocks reliable, weather-proof family utility with hot thermal…
+- · 2026-11-09 | Pamporovo, Orlovetz Hotel | Dec 11-14, 2026 | skip score=71->81 claimed=€107 actual=€124 — A quick 80-minute mountain drive offers comfortable 5-star spa downtime with a large heated indoor…
+- · 2026-11-09 | Istanbul, Novotel Istanbul Bosphorus | Nov 26-30, 2026 | skip score=58->61 claimed=€125 actual=€172.05 — Galataport's flat waterfront promenade and an indoor pool offer good city ease, but a 4.5+ hour…
 - · 2026-11-02 | Bansko, Perun Lodge Hotel | Dec 4-7, 2026 | skip score=62->71 claimed=€78 actual=€92 — An easy 2.5-hour drive provides convenient pre-season mountain downtime with a heated indoor pool,…
 - · 2026-11-02 | Velingrad, Hotel Arte SPA & Park | Nov 20-22, 2026 | skip score=92->95 claimed=€230 actual=€179 — A seamless 1.5-hour drive leads to Bulgaria's benchmark luxury family spa resort, boasting superb…
 - · 2026-11-02 | Istanbul, Sofitel Istanbul Taksim | Nov 24-29, 2026 | skip score=53->55 claimed=€180 actual=€226.44 — While the hotel offers comfortable 5-star amenities with an indoor pool, navigating bustling Taksim…
@@ -350,8 +364,4 @@ _Source: Booking.com (apidojo) live 2026-10-15_
 - 👍 2026-09-28 | Valencia, Spain | Oct 15-22, 2026 | good score=78->83 claimed=€125 actual=€74.81 — Direct flights from Plovdiv keep transit friction manageable, while the city offers world-class…
 - 👍 2026-09-28 | Velingrad, Bulgaria | Oct 9-12, 2026 | good score=75->89 claimed=€117.91 actual=€117.91 — This highly accessible 4-star spa hotel provides excellent heated pools and a kids' club just 1.5…
 - 👍 2026-09-25 | Arte Spa & Park Hotel, Velingrad | 2026-10-13 to 2026-10-16 | good score=88->91 claimed=€195 actual=€195.1 — A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Velingrad's…
-- 👍 2026-09-25 | Premier Luxury Mountain Resort, Bansko | 2026-11-06 to 2026-11-09 | good score=85->96 claimed=€133 actual=€133 — An easy 2.5-hour drive delivers a family to a high-end mountain resort with excellent heated indoor…
-- · 2026-09-25 | Terme di Hissar, Hisarya | 2026-10-22 to 2026-10-26 | skip score=72->59 claimed=€95 actual=€211 — Frictionless 45-minute transit makes this a highly accessible local getaway, but a 4-night stay in…
-- · 2026-09-25 | Ilio Mare Resort Hotel, Thassos | 2026-10-01 to 2026-10-05 | skip score=45->44 claimed=€120 actual=€126 — The 5-hour door-to-door transit including a ferry crossing is disproportionate for a 4-night trip,…
-- 👍 2026-09-22 | Velingrad Thermal Spa Retreat | Oct 13-16, 2026 | good score=88->100 claimed=€195 actual=€195.1 — A frictionless 1.5-hour drive unlocks guaranteed, weather-proof family utility with Arte's…
 _... and 150 earlier entries_

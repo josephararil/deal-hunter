@@ -745,12 +745,17 @@
           "price": 121.89,
           "date": "2026-10-19",
           "source": "Booking.com (apidojo) live 2026-10-19"
+        },
+        {
+          "price": 78.29,
+          "date": "2026-11-09",
+          "source": "Booking.com (apidojo) live 2026-11-09"
         }
       ],
       "realistic_price_eur": 117.91,
-      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 20-23, 2026: €121.89/night (€365.67 total, 3 nights), review 9.2. Price corrected from the Stage-1 estimate.",
-      "source": "Booking.com (apidojo) live 2026-10-19",
-      "updated": "2026-10-19",
+      "note": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 18-20, 2026: €78.29/night (€156.59 total, 2 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-11-09",
+      "updated": "2026-11-09",
       "booking_name": "Park Hotel and SPA Vella Hills"
     },
     "doubletreebyhiltonistanbulsirkeci|2026-10": {
@@ -970,61 +975,37 @@
       "source": "Booking.com (apidojo) live 2026-11-02",
       "updated": "2026-11-02",
       "booking_name": "Novotel Wien Hauptbahnhof"
+    },
+    "alexanderbeachhotelandspa|2026-11": {
+      "samples": [
+        {
+          "price": 264.32,
+          "date": "2026-11-09",
+          "source": "Booking.com (apidojo) live 2026-11-09"
+        }
+      ],
+      "realistic_price_eur": 264.32,
+      "note": "Verified Alexander Beach Hotel & Spa, 5-star for Nov 20-23, 2026: €264.32/night (€792.95 total, 3 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-11-09",
+      "updated": "2026-11-09",
+      "booking_name": "Alexander Beach Hotel & Spa"
+    },
+    "novotelistanbulbosphorus|2026-11": {
+      "samples": [
+        {
+          "price": 172.05,
+          "date": "2026-11-09",
+          "source": "Booking.com (apidojo) live 2026-11-09"
+        }
+      ],
+      "realistic_price_eur": 172.05,
+      "note": "Verified Novotel Istanbul Bosphorus Hotel, 5-star for Nov 26-30, 2026: €172.05/night (€688.2 total, 4 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "source": "Booking.com (apidojo) live 2026-11-09",
+      "updated": "2026-11-09",
+      "booking_name": "Novotel Istanbul Bosphorus Hotel"
     }
   },
   "ledger": [
-    {
-      "date": "2026-07-05",
-      "destination": "Hissar Spa Hotel",
-      "window": "Sep 17-20, 2026",
-      "type": "hotel",
-      "claimed_price": 103,
-      "verdict": "good",
-      "actual_price": 122.94,
-      "llm_score": 83,
-      "final_score": 74,
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "note": "An ultra-local 45-minute drive eliminates transit friction entirely, offering high relaxing utility with thermal pools and park spaces for a perfectly paced 3-night family weekend."
-    },
-    {
-      "date": "2026-07-05",
-      "destination": "hu Roma Camping In Town",
-      "window": "Sep 21-26, 2026",
-      "type": "hotel",
-      "claimed_price": 64,
-      "verdict": "good",
-      "actual_price": 57.72,
-      "llm_score": 57,
-      "final_score": 69,
-      "source": "Booking.com (apidojo) live 2026-07-05",
-      "note": "The resort pools offer decent on-site toddler utility, but the exhausting logistics of driving to Sofia for a flight and navigating a sprawling city for 5 nights drastically reduce net family value."
-    },
-    {
-      "date": "2026-07-06",
-      "destination": "Velingrad",
-      "window": "2026-08-01 - 2026-08-04",
-      "type": "hotel",
-      "claimed_price": 77,
-      "verdict": "good",
-      "actual_price": 151,
-      "llm_score": 84,
-      "final_score": 68,
-      "source": "Official Hotel Website - Summer SPA Getaway offer",
-      "note": "An effortless 1.5-hour drive delivers outstanding family utility with thermal mineral pools and dedicated kids' animation perfectly suited for a toddler over a short 3-night break."
-    },
-    {
-      "date": "2026-07-06",
-      "destination": "Bansko",
-      "window": "2026-08-14 - 2026-08-17",
-      "type": "hotel",
-      "claimed_price": 83,
-      "verdict": "diamond",
-      "actual_price": 83,
-      "llm_score": 82,
-      "final_score": 97,
-      "source": "Official Premier Luxury Mountain Resort website, confirmed via 'Stay More, Pay Less' offer",
-      "note": "A scenic 2.5-hour drive yields a highly relaxed premium mountain retreat with open spaces and heated pools, ideally sized at 3 nights before a 4-year-old loses interest."
-    },
     {
       "date": "2026-07-06",
       "destination": "Nessebar",
@@ -3572,6 +3553,58 @@
       "final_score": 42,
       "source": "Booking.com (apidojo) live 2026-11-02",
       "note": "The early Christmas markets and reliable family-friendly hotel amenities deliver seasonal charm, but transit logistics via Sofia Airport and winter walking friction temper the overall utility for a…"
+    },
+    {
+      "date": "2026-11-09",
+      "destination": "Alexandroupoli, Alexander Beach Hotel & Spa",
+      "window": "Nov 20-23, 2026",
+      "type": "hotel",
+      "claimed_price": 55,
+      "verdict": "blocked",
+      "actual_price": 264.32,
+      "llm_score": null,
+      "final_score": null,
+      "source": "Booking.com (apidojo) live 2026-11-09",
+      "note": "live price €264.32 is 4.8× FIND's €55 estimate — likely a wrong room or listing match"
+    },
+    {
+      "date": "2026-11-09",
+      "destination": "Velingrad, Park Hotel & SPA Vella Hills",
+      "window": "Nov 18-20, 2026",
+      "type": "hotel",
+      "claimed_price": 92,
+      "verdict": "diamond",
+      "actual_price": 78.29,
+      "llm_score": 88,
+      "final_score": 100,
+      "source": "Booking.com (apidojo) live 2026-11-09",
+      "note": "An effortless 80-minute drive unlocks reliable, weather-proof family utility with hot thermal pools, a dedicated toddler splash zone, and an indoor playroom."
+    },
+    {
+      "date": "2026-11-09",
+      "destination": "Pamporovo, Orlovetz Hotel",
+      "window": "Dec 11-14, 2026",
+      "type": "hotel",
+      "claimed_price": 107,
+      "verdict": "skip",
+      "actual_price": 124,
+      "llm_score": 71,
+      "final_score": 81,
+      "source": "Bulgaria Ski / Pamporovo.me booking engine (accessed 2026-11-09)",
+      "note": "A quick 80-minute mountain drive offers comfortable 5-star spa downtime with a large heated indoor pool, though pre-season Pamporovo provides limited outdoor activity for a preschooler before the ski…"
+    },
+    {
+      "date": "2026-11-09",
+      "destination": "Istanbul, Novotel Istanbul Bosphorus",
+      "window": "Nov 26-30, 2026",
+      "type": "hotel",
+      "claimed_price": 125,
+      "verdict": "skip",
+      "actual_price": 172.05,
+      "llm_score": 58,
+      "final_score": 61,
+      "source": "Booking.com (apidojo) live 2026-11-09",
+      "note": "Galataport's flat waterfront promenade and an indoor pool offer good city ease, but a 4.5+ hour drive and border crossing create significant friction for a 4-year-old."
     }
   ],
   "spain_dest": {

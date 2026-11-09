@@ -5,7 +5,7 @@
     "2026-08": 8,
     "2026-09": 10,
     "2026-10": 9,
-    "2026-11": 1
+    "2026-11": 2
   },
   "degraded_count": {
     "2026-08": 1
@@ -24,10 +24,10 @@
       "name": "premierluxurymountainresort"
     },
     "aaaadeehhiklllllnopprsstv": {
-      "date": "2026-10-01",
-      "tier": "good",
-      "price_eur": null,
-      "name": "parkhotelandspavellahills"
+      "date": "2026-11-09",
+      "tier": "diamond",
+      "price_eur": 78.29,
+      "name": "Park Hotel & SPA Vella Hills"
     },
     "aaeeeeffhiilllmoorrsstty": {
       "date": "2026-10-10",
@@ -268,6 +268,18 @@
       "tier": "skip",
       "price_eur": 219.57,
       "name": "Novotel Wien Hauptbahnhof"
+    },
+    "eehllooorttvz": {
+      "date": "2026-11-09",
+      "tier": "skip",
+      "price_eur": 124,
+      "name": "Orlovetz Hotel"
+    },
+    "abbehillnnooooprsssttuuv": {
+      "date": "2026-11-09",
+      "tier": "skip",
+      "price_eur": 172.05,
+      "name": "Novotel Istanbul Bosphorus"
     }
   }
 }

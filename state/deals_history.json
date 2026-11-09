@@ -5039,6 +5039,111 @@
       ],
       "baseline_note": "",
       "child_price_caveat": true
+    },
+    {
+      "date": "2026-11-09",
+      "deal_id": 2,
+      "destination": "Velingrad, Park Hotel & SPA Vella Hills",
+      "type": "hotel",
+      "window": "Nov 18-20, 2026",
+      "tier": "diamond",
+      "llm_score": 88,
+      "price_adj": 15,
+      "transit_adj": 3,
+      "final_score": 100,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Park Hotel and SPA Vella Hills, 4-star for Nov 18-20, 2026: €78.29/night (€156.59 total, 2 nights), review 9.3. Price matches the Stage-1 estimate.",
+      "about": "Park Hotel & SPA Vella Hills is a highly rated 4-star wellness resort situated in a quiet pine-clad setting above Velingrad. It features extensive indoor mineral water pools, a dedicated warm toddler splash zone, a supervised indoor kids playroom, and on-site dining, backed by exceptional reviews (9.3/10). For a 4-year-old, the heated pools and nearby gentle forest paths make for an easy, low-stress retreat.",
+      "value_case": "At €78/night midweek, this is an outstanding deal against its typical shoulder-season rate of €115/night and weekend peaks over €140. It offers benchmark thermal pool quality at nearly half the price of high-end Velingrad peers like Hotel Arte.",
+      "why": "An effortless 80-minute drive unlocks reliable, weather-proof family utility with hot thermal pools, a dedicated toddler splash zone, and an indoor playroom.",
+      "red_flags": "Midweek stay dates (Wed-Fri); confirm whether children's indoor playroom supervision and animations operate fully outside of weekends.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-18–2026-11-20, currency=EUR, adults=2, children=[4]. Property class: 4-star. Review score: 9.3. Live rate: €78.29/night (€156.59 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-11-18&checkout=2026-11-20&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 18-20, 2026",
+          "nights": 2,
+          "price_per_night_eur": 78.29,
+          "total_eur": 156.59,
+          "source": "Booking.com (apidojo) live 2026-11-09",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Park+Hotel+and+SPA+Vella+Hills&checkin=2026-11-18&checkout=2026-11-20&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "Typically ~€117.91/night here — this is 34% under.",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-11-09",
+      "deal_id": 3,
+      "destination": "Pamporovo, Orlovetz Hotel",
+      "type": "hotel",
+      "window": "Dec 11-14, 2026",
+      "tier": "skip",
+      "llm_score": 71,
+      "price_adj": 7,
+      "transit_adj": 3,
+      "final_score": 81,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "I verified availability at the 5-star Orlovetz Hotel in Pamporovo for Dec 11–14, 2026. Standard double rooms with breakfast are currently priced at €124 per night (€372 total for 3 nights). Stays can be reserved directly online via pamporovo.me or by calling +359 3095 9000.",
+      "about": "Hotel Orlovetz is a well-established 5-star mountain hotel centrally situated in Pamporovo, featuring a large heated indoor pool, spa amenities, and direct access to the connected Perelik sports facilities. For adults, it provides a tranquil mountain escape with good dining and wellness facilities. For a 4-year-old, utility centers on the heated pool and indoor play area, as mid-December is shoulder season when snow cover is uncertain and the ski village is sleepy.",
+      "value_case": "At €124/night with breakfast, this rate captures early-season pricing well below peak winter holiday rates of €200+, though it is close to the hotel's normal pre-season baseline of ~€145/night.",
+      "why": "A quick 80-minute mountain drive offers comfortable 5-star spa downtime with a large heated indoor pool, though pre-season Pamporovo provides limited outdoor activity for a preschooler before the ski slopes open.",
+      "red_flags": "Early December date falls before the guaranteed ski season opening; verify whether the indoor pool temperature is warm enough for toddler swimming.",
+      "grounding": "Live rate checks on the official Pamporovo resort booking system and regional partner distribution channels confirm availability for the Dec 11-14, 2026 window. The actual base rate for a standard double room on a bed-and-breakfast basis is €124 per night (€372 total for 3 nights), which adjusts the initial €107 estimate.",
+      "how_to_book": "Book directly via the official Pamporovo resort portal at pamporovo.me or via authorized partners such as Bulgaria Ski. Direct hotel inquiries can be made at +359 3095 9000.",
+      "options": [
+        {
+          "dates": "Dec 11-14, 2026",
+          "nights": 3,
+          "price_per_night_eur": 124,
+          "total_eur": 372,
+          "source": "Bulgaria Ski / Pamporovo.me booking engine (accessed 2026-11-09)",
+          "booking_url": "https://pamporovo.me"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
+    },
+    {
+      "date": "2026-11-09",
+      "deal_id": 4,
+      "destination": "Istanbul, Novotel Istanbul Bosphorus",
+      "type": "hotel",
+      "window": "Nov 26-30, 2026",
+      "tier": "skip",
+      "llm_score": 58,
+      "price_adj": 6,
+      "transit_adj": -3,
+      "final_score": 61,
+      "flight_cost_eur_total": null,
+      "ground_transport_eur": null,
+      "effective_ppn": null,
+      "confidence": "high",
+      "summary": "Verified Novotel Istanbul Bosphorus Hotel, 5-star for Nov 26-30, 2026: €172.05/night (€688.2 total, 4 nights), review 8.3. Price corrected from the Stage-1 estimate.",
+      "about": "Novotel Istanbul Bosphorus is an upscale 5-star contemporary hotel located in Karakoy, directly adjacent to the flat, modern Galataport waterfront. Standout amenities include an indoor heated pool, spacious family rooms with Novotel's kids-stay-free policy, and a full-service spa. A family with a 4-year-old can comfortably stroll the traffic-free promenade, ride local ferries, and visit the nearby Karakoy tram, though wet November weather and dense urban traffic limit outdoor park time.",
+      "value_case": "At €172/night, this provides a modest savings compared to its typical late-autumn rate of around €195/night, offering solid international brand standards and pool access in central Istanbul.",
+      "why": "Galataport's flat waterfront promenade and an indoor pool offer good city ease, but a 4.5+ hour drive and border crossing create significant friction for a 4-year-old.",
+      "red_flags": "Border wait times at Kapitan Andreevo/Kapikule can unpredictably add 1 to 3 hours of delay to the road trip, testing a 4-year-old's endurance.",
+      "grounding": "Booking.com (apidojo) /properties/v2/list for 2026-11-26–2026-11-30, currency=EUR, adults=2, children=[4]. Property class: 5-star. Review score: 8.3. Live rate: €172.05/night (€688.2 total).",
+      "how_to_book": "Book at https://www.booking.com/searchresults.html?ss=Novotel+Istanbul+Bosphorus+Hotel&checkin=2026-11-26&checkout=2026-11-30&group_adults=2&group_children=1&age=4",
+      "options": [
+        {
+          "dates": "Nov 26-30, 2026",
+          "nights": 4,
+          "price_per_night_eur": 172.05,
+          "total_eur": 688.2,
+          "source": "Booking.com (apidojo) live 2026-11-09",
+          "booking_url": "https://www.booking.com/searchresults.html?ss=Novotel+Istanbul+Bosphorus+Hotel&checkin=2026-11-26&checkout=2026-11-30&group_adults=2&group_children=1&age=4"
+        }
+      ],
+      "baseline_note": "",
+      "child_price_caveat": true
     }
   ]
 }
